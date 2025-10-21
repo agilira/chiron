@@ -1,0 +1,437 @@
+// CHIRON CONFIGURATION
+// =============================================
+// This is the ONLY configuration file you need to edit.
+// All navigation, branding, and settings are controlled from here.
+
+window.chironConfig = {
+  // ============ CONFIGURATION DATA ============
+  // Edit these values to customize your documentation site
+  data: {
+    "project": {
+      "name": "Chiron",
+      "title": "Chiron Documentation Template", 
+      "description": "Modern and accessible documentation template for libraries and applications"
+    },
+    "branding": {
+      "name": "Chiron",
+      "tagline": "Documentation Template",
+      "description": "Modern and accessible documentation template for libraries and applications",
+      "company": "Agilira",
+      "company_url": "https://github.com/agilira",
+      "colors": {
+        "primary": "#3b82f6",
+        "primary_dark": "#2563eb", 
+        "accent": "#10b981"
+      },
+      "logo": {
+        "src": "assets/logo-black.png",
+        "src_dark": "assets/logo-white.png",
+        "alt": "Chiron Logo",
+        "footer_src": "assets/logo-footer.png",
+        "footer_src_dark": "assets/logo-footer-white.png"
+      }
+    },
+    "navigation": {
+      "header": [
+        {"label": "Documentation", "url": "index.html"},
+        {"label": "API", "url": "api-reference.html"}
+      ],
+      "header_actions": {
+        "github_link": "https://github.com/agilira/chiron",
+        "theme_toggle": true
+      },
+      "sidebar": [
+        {
+          "section": "Sidebar Section",
+          "items": [
+            {"label": "Link to Section", "anchor": "index.html#overview"},
+            {"label": "API Reference", "url": "api-reference.html"},
+          ]
+        },
+        {
+          "section": "Examples", 
+          "items": [
+            {"label": "External Link", "url": "https://github.com/agilira/chiron"},
+            {"label": "Page with ToC", "url": "api-reference.html"},
+            {"label": "-&nbsp; Link to Section", "anchor": "api-reference.html#section1"},
+            {"label": "-&nbsp; Link to Section", "anchor": "api-reference.html#section2"},
+            {"label": "-&nbsp; Link to Section", "anchor": "api-reference.html#section3"},
+            {"label": "-&nbsp; Link to Section", "anchor": "api-reference.html#section4"},
+            {"label": "-&nbsp; Link to Section", "anchor": "api-reference.html#section5"}
+            
+          ]
+        },
+
+      ]
+    },
+    "github": {
+      "owner": "agilira",
+      "repo": "chiron", 
+      "branch": "main",
+      "show_version": true,
+      "current_version": "v1.0.0"
+    },
+    "features": {
+      "search": false,
+      "code_copy": true,
+      "table_of_contents": true,
+      "breadcrumbs": true,
+      "cookie_consent": true,
+      "dark_mode": false,
+      "print_styles": true
+    }
+  },
+
+  // ============ CONFIGURATION MANAGER ============
+  // Don't edit below this line unless you know what you're doing
+  
+  config: null,
+  isLoaded: false,
+
+  async load() {
+    this.config = this.data;
+    this.isLoaded = true;
+    console.log('Configuration loaded successfully');
+    return this.config;
+  },
+
+  apply() {
+    if (!this.isLoaded) {
+      console.error('Configuration not loaded successfully');
+      return;
+    }
+    
+    console.log('Applying configuration...');
+    this.applyMetaTags();
+    this.applyStructuredData();
+    this.applyLogos();
+    this.applyNavigation();
+    this.applyFooter();
+    this.applyFeatures();
+    this.applyHomepageContent();
+    console.log('Configuration applied');
+  },
+
+  applyMetaTags() {
+    const { branding, github } = this.config;
+    
+    if (!branding) {
+      console.warn('Branding configuration not found');
+      return;
+    }
+    
+    // Update page title only if not already set
+    if (document.title === 'Documentation Template' || document.title === '') {
+      document.title = `${branding.name} - ${branding.tagline}`;
+    }
+    
+    // Update meta description only if not already set
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription && metaDescription.content === 'Modern and accessible documentation template for libraries and applications') {
+      metaDescription.content = branding.description;
+    }
+    
+    // Update author
+    const metaAuthor = document.querySelector('meta[name="author"]');
+    if (metaAuthor) {
+      metaAuthor.content = branding.company;
+    }
+    
+    // Update Open Graph tags only if using default values
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle && ogTitle.content === 'Chiron Documentation Template') {
+      ogTitle.content = `${branding.name} - ${branding.tagline}`;
+    }
+    
+    const ogDescription = document.querySelector('meta[property="og:description"]');
+    if (ogDescription && ogDescription.content === 'Modern and accessible documentation template for libraries and applications') {
+      ogDescription.content = branding.description;
+    }
+    
+    // Update Twitter Card tags only if using default values
+    const twitterTitle = document.querySelector('meta[property="twitter:title"]');
+    if (twitterTitle && twitterTitle.content === 'Chiron Documentation Template') {
+      twitterTitle.content = `${branding.name} - ${branding.tagline}`;
+    }
+    
+    const twitterDescription = document.querySelector('meta[property="twitter:description"]');
+    if (twitterDescription && twitterDescription.content === 'Modern and accessible documentation template for libraries and applications') {
+      twitterDescription.content = branding.description;
+    }
+    
+    // Update URLs if github config is available
+    if (github) {
+      const baseUrl = `https://${github.owner}.github.io/${github.repo}/`;
+      
+      const ogUrl = document.querySelector('meta[property="og:url"]');
+      if (ogUrl) ogUrl.content = baseUrl;
+      
+      const twitterUrl = document.querySelector('meta[property="twitter:url"]');
+      if (twitterUrl) twitterUrl.content = baseUrl;
+      
+      const ogImage = document.querySelector('meta[property="og:image"]');
+      if (ogImage) ogImage.content = `${baseUrl}og-image.png`;
+      
+      const twitterImage = document.querySelector('meta[property="twitter:image"]');
+      if (twitterImage) twitterImage.content = `${baseUrl}og-image.png`;
+    }
+    
+    console.log('Meta tags updated');
+  },
+
+  applyStructuredData() {
+    const { branding, github } = this.config;
+    
+    if (!branding) {
+      console.warn('Branding configuration not found for structured data');
+      return;
+    }
+    
+    const structuredDataScript = document.querySelector('script[type="application/ld+json"]');
+    if (structuredDataScript) {
+      const structuredData = {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": branding.name,
+        "description": branding.description,
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Any",
+        "softwareVersion": github ? github.current_version : "1.0.0",
+        "author": {
+          "@type": "Organization",
+          "name": branding.company,
+          "url": branding.company_url
+        },
+        "codeRepository": github ? `https://github.com/${github.owner}/${github.repo}` : null,
+        "programmingLanguage": "JavaScript",
+        "license": "https://opensource.org/licenses/MIT",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      };
+      
+      structuredDataScript.textContent = JSON.stringify(structuredData, null, 2);
+    }
+    
+    console.log('Structured data updated');
+  },
+
+  applyLogos() {
+    const { branding } = this.config;
+    
+    if (!branding || !branding.logo) {
+      console.warn('Logo configuration not found');
+      return;
+    }
+    
+    // Update header logo
+    const headerLogo = document.querySelector('.logo-img');
+    if (headerLogo) {
+      headerLogo.src = branding.logo.src;
+      headerLogo.alt = branding.logo.alt;
+      headerLogo.setAttribute('data-logo-light', branding.logo.src);
+      headerLogo.setAttribute('data-logo-dark', branding.logo.src_dark);
+    }
+    
+    // Update footer logo
+    const footerLogo = document.querySelector('.footer-logo');
+    if (footerLogo) {
+      footerLogo.src = branding.logo.footer_src;
+      footerLogo.alt = branding.logo.alt;
+      footerLogo.setAttribute('data-logo-light', branding.logo.footer_src);
+      footerLogo.setAttribute('data-logo-dark', branding.logo.footer_src_dark);
+    }
+    
+    // Apply current theme to logos
+    if (window.documentationApp) {
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+      window.documentationApp.updateLogosForTheme(currentTheme);
+    }
+    
+    console.log('Logos configured');
+  },
+
+  applyNavigation() {
+    const { navigation } = this.config;
+    
+    if (navigation && navigation.header) {
+      this.applyHeaderNavigation(navigation.header);
+    }
+    
+    if (navigation && navigation.header_actions) {
+      this.applyHeaderActions(navigation.header_actions);
+    }
+    
+    if (navigation && navigation.sidebar) {
+      this.applySidebarNavigation(navigation.sidebar);
+    }
+  },
+
+  applyHeaderNavigation(headerNav) {
+    const headerNavElement = document.querySelector('.header-nav');
+    if (!headerNavElement) return;
+    
+    headerNavElement.innerHTML = headerNav.map(item => {
+      const activeClass = item.active ? ' active' : '';
+      const target = item.external ? ' target="_blank" rel="noopener"' : '';
+      return `<a href="${item.url}" class="nav-link${activeClass}"${target}>${item.label}</a>`;
+    }).join('');
+  },
+
+  applyHeaderActions(actions) {
+    const actionsContainer = document.querySelector('.header-actions');
+    if (!actionsContainer) return;
+    
+    let html = '';
+    
+    if (actions.github_link) {
+      html += `<a href="${actions.github_link}" class="header-action-btn" target="_blank" rel="noopener" aria-label="GitHub Repository">
+        <svg width="20" height="20" viewBox="0 0 16 16" fill="none">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z" fill="currentColor"/>
+        </svg>
+      </a>`;
+    }
+    
+    if (actions.theme_toggle) {
+      html += `<button class="header-action-btn theme-toggle" aria-label="Toggle theme">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="theme-icon-sun">
+          <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="theme-icon-moon">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </button>`;
+    }
+    
+    actionsContainer.innerHTML = html;
+    
+    // Re-initialize theme toggle if it was added
+    if (actions.theme_toggle && window.documentationApp) {
+      window.documentationApp.setupThemeToggle();
+    }
+  },
+
+  applySidebarNavigation(sidebarNav) {
+    const sidebarNavElement = document.querySelector('.sidebar-nav');
+    if (!sidebarNavElement) return;
+    
+    const html = sidebarNav.map(section => {
+      const itemsHtml = section.items.map(item => {
+        const activeClass = item.active ? ' active' : '';
+        const target = item.external ? ' target="_blank" rel="noopener"' : '';
+        const href = item.url || item.anchor || '#';
+        return `<li><a href="${href}" class="nav-item${activeClass}"${target}>${item.label}</a></li>`;
+      }).join('');
+      
+      return `
+        <div class="nav-section">
+          <h3 class="nav-section-title">${section.section}</h3>
+          <ul class="nav-list">${itemsHtml}</ul>
+        </div>
+      `;
+    }).join('');
+    
+    sidebarNavElement.innerHTML = html;
+  },
+
+  applyFooter() {
+    const { footer } = this.config;
+    if (!footer) return;
+    
+    // Update footer description
+    if (footer.description) {
+      const footerDescription = document.querySelector('.footer-description');
+      if (footerDescription) {
+        footerDescription.textContent = footer.description;
+      }
+    }
+    
+    // Update social links
+    if (footer.social && Array.isArray(footer.social)) {
+      // Social links removed for professional docs footer
+    }
+    
+    // Update copyright year
+    const currentYear = new Date().getFullYear();
+    const copyrightYearElement = document.querySelector('.copyright-year');
+    if (copyrightYearElement) {
+      copyrightYearElement.textContent = currentYear;
+    }
+  },
+
+
+
+  applyFeatures() {
+    // Features application logic here if needed
+  },
+
+  applyHomepageContent() {
+    const { branding, github } = this.config;
+    
+    if (!branding) {
+      console.warn('Branding configuration not found for homepage content');
+      return;
+    }
+    
+    // Update project name in header
+    const projectNameLink = document.querySelector('.project-name');
+    if (projectNameLink) {
+      projectNameLink.textContent = branding.name;
+      if (github) {
+        projectNameLink.href = `https://github.com/${github.owner}/${github.repo}`;
+      }
+    }
+    
+    // Update main hero section if exists
+    const heroTitle = document.querySelector('.hero-title, h1');
+    if (heroTitle && heroTitle.textContent.includes('Documentation Template')) {
+      heroTitle.innerHTML = heroTitle.innerHTML.replace('Documentation Template', branding.name);
+    }
+    
+    // Update breadcrumbs
+    const breadcrumbProject = document.querySelector('.breadcrumb a[href*="chiron"]');
+    if (breadcrumbProject) {
+      breadcrumbProject.textContent = branding.name;
+      if (github) {
+        breadcrumbProject.href = `https://github.com/${github.owner}/${github.repo}`;
+      }
+    }
+    
+    // Update installation command if present
+    const installCommand = document.querySelector('code');
+    if (installCommand && installCommand.textContent.includes('git clone')) {
+      if (github) {
+        installCommand.textContent = `git clone https://github.com/${github.owner}/${github.repo}.git`;
+      }
+    }
+    
+    // Update any hardcoded GitHub links
+    const githubLinks = document.querySelectorAll('a[href*="agilira/chiron"]');
+    if (github) {
+      githubLinks.forEach(link => {
+        const newHref = link.href.replace('agilira/chiron', `${github.owner}/${github.repo}`);
+        link.href = newHref;
+      });
+    }
+    
+    // Update company links
+    const companyLinks = document.querySelectorAll('a[href*="github.com/agilira"]:not([href*="/chiron"])');
+    if (branding.company_url) {
+      companyLinks.forEach(link => {
+        link.href = branding.company_url;
+      });
+    }
+    
+    console.log('Homepage content updated');
+  },
+
+  capitalizeFirst(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+};
+
+// Initialize the global instance
+window.chironConfig = window.chironConfig;
