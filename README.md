@@ -1,6 +1,6 @@
 # Chiron - README on Steroids
 
-A modern, accessible documentation template for microsites (2-3 pages max). Perfect when you need more than a README but less than a full documentation site.
+A modern, accessible documentation template for microsites. Perfect when you need more than a README but less than a full documentation site.
 
 ## Overview
 
@@ -10,7 +10,6 @@ Chiron is the perfect solution when your project needs more than a simple README
 - **Library documentation** (API reference + examples)
 - **Tool documentation** (setup + usage)
 - **Project documentation** (overview + guides)
-- **Microsites** (2-3 pages maximum)
 
 ## Quick Start
 
@@ -212,33 +211,12 @@ Chiron was the wise centaur who mentored heroes like Achilles and Jason. He tran
 **When to use Chiron:**
 - Your project needs more than a README
 - You want professional documentation
-- You need 2-3 pages maximum
 - You want zero build complexity
 - You need a full documentation site (use Jekyll/Hugo instead)
-
-## Changelog
-
-See [CHANGELOG.md](./CHANGELOG.md) for a detailed list of changes and version history.
-
-### Recent Updates
-- ✅ Dynamic breadcrumb navigation
-- ✅ Centralized OpenGraph management  
-- ✅ Automatic SEO file generation
-- ✅ Enhanced table styling with borders and alternating rows
-- ✅ Developer tools with keyboard shortcuts
-- ✅ Comprehensive accessibility documentation
-- ✅ Improved table UX (removed confusing hover effects)
 
 ## Accessibility
 
 Chiron is built with accessibility as a core principle, following WCAG 2.1 AA guidelines. See [ACCESSIBILITY.md](./ACCESSIBILITY.md) for detailed accessibility information and testing procedures.
-
-### Key Accessibility Features
-- ♿ **WCAG 2.1 AA Compliant** - Meets all accessibility standards
-- ⌨️ **Full Keyboard Navigation** - Complete keyboard accessibility
-- 🎯 **Screen Reader Support** - Compatible with all major screen readers
-- 🎨 **High Contrast Support** - Meets color contrast requirements
-- 📱 **Mobile Accessibility** - Touch-friendly and responsive design
 
 ## License
 
