@@ -345,6 +345,7 @@ body {
 [data-theme="dark"] .feature-card {
     background: var(--bg-secondary);
     border-color: var(--border-primary);
+    border-bottom-color: var(--border-secondary);
     color: var(--text-primary);
 }
 
@@ -756,16 +757,18 @@ body {
     display: block;
     background: white;
     border: 1px solid var(--gray-200);
+    border-bottom: 2px solid var(--gray-300);
     border-radius: var(--border-radius-lg);
     padding: var(--space-6);
     transition: all var(--transition-normal);
     text-decoration: none;
     color: inherit;
+    box-shadow: var(--shadow-sm);
 }
 
 .feature-card:hover,
 .feature-card:focus {
-    border-color: var(--primary-300);
+    border-color: var(--primary-400);
     box-shadow: var(--shadow-md);
     text-decoration: none;
     color: inherit;
