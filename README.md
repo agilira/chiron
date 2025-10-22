@@ -93,7 +93,7 @@ Comprehensive configurations options:
 ### Template Info
 
 Optimized for:
-- Small documentattion sites
+- Small documentation sites
 - Fast Depoloyment
 
 Templates included (alphabetic order):
