@@ -53,7 +53,9 @@ window.chironConfig = {
         {
           "section": "Resources", 
           "items": [
-            {"label": "GitHub Repository", "url": "https://github.com/agilira/chiron", "external": true}
+            {"label": "GitHub Repository", "url": "https://github.com/agilira/chiron", "external": true},
+            {"label": "Changelog", "url": "CHANGELOG.md", "external": false},
+            {"label": "Accessibility Guide", "url": "ACCESSIBILITY.md", "external": false}
           ]
         }
       ],
@@ -86,8 +88,8 @@ window.chironConfig = {
       },
       "twitter": {
         "card": "summary_large_image",
-        "site": "@agilira",
-        "creator": "@agilira"
+        "site": "@agilirax",
+        "creator": "@agilirax"
       }
     },
     "features": {
@@ -129,11 +131,6 @@ window.chironConfig = {
     this.applyFooter();
     this.applyFeatures();
     this.applyHomepageContent();
-    
-    // Auto-generate SEO files in development mode
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') {
-        this.generateSEOFiles();
-    }
     console.log('Configuration applied');
   },
 
@@ -799,17 +796,6 @@ Sitemap: ${sitemapUrl}`;
     console.log('🔗 Sitemap URL:', sitemapUrl);
   },
 
-  generateSEOFiles() {
-    console.log('🔧 Auto-generating SEO files for development...');
-    
-    // Generate sitemap
-    this.generateSitemap();
-    
-    // Generate robots.txt
-    this.generateRobotsTxt();
-    
-    console.log('✅ SEO files generated! Upload sitemap.xml and robots.txt to your repository root.');
-  },
 
   capitalizeFirst(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);

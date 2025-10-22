@@ -1,8 +1,8 @@
 # SEO Setup for Chiron
 
-## Automatic SEO File Generation
+## SEO File Generation
 
-Chiron automatically generates SEO files when running in development mode (localhost or file:// protocol).
+Chiron provides tools to generate SEO files when needed using the developer tools.
 
 ### Generated Files
 
@@ -12,8 +12,10 @@ Chiron automatically generates SEO files when running in development mode (local
 ### How to Deploy SEO Files
 
 1. **Generate Files**: 
-   - Open your site in development mode (localhost or file://)
-   - Files will be automatically downloaded to your Downloads folder
+   - Open your site and press `Ctrl + Shift + D` to show developer tools
+   - Click "📄 Sitemap" to generate sitemap.xml
+   - Click "🤖 Robots" to generate robots.txt
+   - Files will be downloaded to your Downloads folder
 
 2. **Upload to Repository**:
    - Copy `sitemap.xml` to your repository root

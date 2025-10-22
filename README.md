@@ -93,8 +93,8 @@ Comprehensive configuration options:
       },
       "twitter": {
         "card": "summary_large_image",
-        "site": "@agilira",
-        "creator": "@agilira"
+        "site": "@agilirax",
+        "creator": "@agilirax"
       }
     },
     "features": {
@@ -194,6 +194,29 @@ Chiron was the wise centaur who mentored heroes like Achilles and Jason. He tran
 Chiron was considered to be the best centaur amongst all, he was called the "wisest and justest of all the centaurs" whose skills were said to almost match those of his foster father Apollo.
 
 Like the mythological mentor, Chiron transforms complex technical information into clear, accessible knowledge. Every design choice serves one purpose: making knowledge accessible to everyone because knowledge should be accessible, and learning should feel effortless.
+
+## Changelog
+
+See [CHANGELOG.md](./CHANGELOG.md) for a detailed list of changes and version history.
+
+### Recent Updates
+- ✅ Dynamic breadcrumb navigation
+- ✅ Centralized OpenGraph management  
+- ✅ Automatic SEO file generation
+- ✅ Enhanced table styling
+- ✅ Developer tools with keyboard shortcuts
+- ✅ Comprehensive accessibility documentation
+
+## Accessibility
+
+Chiron is built with accessibility as a core principle, following WCAG 2.1 AA guidelines. See [ACCESSIBILITY.md](./ACCESSIBILITY.md) for detailed accessibility information and testing procedures.
+
+### Key Accessibility Features
+- ♿ **WCAG 2.1 AA Compliant** - Meets all accessibility standards
+- ⌨️ **Full Keyboard Navigation** - Complete keyboard accessibility
+- 🎯 **Screen Reader Support** - Compatible with all major screen readers
+- 🎨 **High Contrast Support** - Meets color contrast requirements
+- 📱 **Mobile Accessibility** - Touch-friendly and responsive design
 
 ## License
 
