@@ -40,8 +40,7 @@ Comprehensive configurations options:
     },
     "navigation": {
       "header": [
-        {"label": "Documentation", "url": "index.html"},
-        {"label": "API", "url": "api-reference.html"}
+        {"label": "Documentation", "url": "index.html"}
       ],
       "header_actions": {
         "github_link": "https://github.com/agilira/chiron",
@@ -49,27 +48,31 @@ Comprehensive configurations options:
       },
       "sidebar": [
         {
-          "section": "Sidebar Section",
+          "section": "Getting Started",
           "items": [
-            {"label": "Link to Section", "anchor": "index.html#overview"},
+            {"label": "Overview", "url": "index.html", "active": true},
             {"label": "API Reference", "url": "api-reference.html"},
+            {"label": "Privacy Policy", "url": "privacy-policy.html"},
+            {"label": "Terms of Service", "url": "terms-of-service.html"},
+            {"label": "Cookie Policy", "url": "cookie-policy.html"}
           ]
         },
         {
-          "section": "Examples", 
+          "section": "Resources", 
           "items": [
-            {"label": "External Link", "url": "https://github.com/agilira/chiron"},
-            {"label": "Page with ToC", "url": "api-reference.html"},
-            {"label": "-&nbsp; Link to Section", "anchor": "api-reference.html#section1"},
-            {"label": "-&nbsp; Link to Section", "anchor": "api-reference.html#section2"},
-            {"label": "-&nbsp; Link to Section", "anchor": "api-reference.html#section3"},
-            {"label": "-&nbsp; Link to Section", "anchor": "api-reference.html#section4"},
-            {"label": "-&nbsp; Link to Section", "anchor": "api-reference.html#section5"}
-            
+            {"label": "GitHub Repository", "url": "https://github.com/agilira/chiron", "external": true}
           ]
-        },
-
-      ]
+        }
+      ],
+      "breadcrumb": {
+        "enabled": true,
+        "items": [
+          {"label": "AGILira", "url": "https://github.com/agilira", "external": true},
+          {"label": "Chiron", "url": "https://github.com/agilira/chiron", "external": true},
+          {"label": "Documentation", "url": "index.html"},
+          {"label": "Current Page", "url": "", "current": true}
+        ]
+      }
     },
     "github": {
       "owner": "agilira",
@@ -77,6 +80,22 @@ Comprehensive configurations options:
       "branch": "main",
       "show_version": true,
       "current_version": "v1.0.0"
+    },
+    "opengraph": {
+      "site_name": "Chiron Documentation",
+      "type": "website",
+      "locale": "en_US",
+      "image": {
+        "url": "og-image.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Chiron Documentation Template"
+      },
+      "twitter": {
+        "card": "summary_large_image",
+        "site": "@agilira",
+        "creator": "@agilira"
+      }
     },
     "features": {
       "search": false,

@@ -933,6 +933,12 @@ body {
     background: var(--gray-200);
 }
 
+/* Smooth transitions for dynamic content */
+.sidebar-nav,
+.breadcrumb-list {
+    transition: opacity 0.2s ease;
+}
+
 /* Table of Contents */
 .table-of-contents {
     position: sticky;

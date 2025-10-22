@@ -33,8 +33,7 @@ window.chironConfig = {
     },
     "navigation": {
       "header": [
-        {"label": "Documentation", "url": "index.html"},
-        {"label": "API", "url": "api-reference.html"}
+        {"label": "Documentation", "url": "index.html"}
       ],
       "header_actions": {
         "github_link": "https://github.com/agilira/chiron",
@@ -57,7 +56,16 @@ window.chironConfig = {
             {"label": "GitHub Repository", "url": "https://github.com/agilira/chiron", "external": true}
           ]
         }
-      ]
+      ],
+      "breadcrumb": {
+        "enabled": true,
+        "items": [
+          {"label": "AGILira", "url": "https://github.com/agilira", "external": true},
+          {"label": "Chiron", "url": "https://github.com/agilira/chiron", "external": true},
+          {"label": "Documentation", "url": "index.html"},
+          {"label": "Current Page", "url": "", "current": true}
+        ]
+      }
     },
     "github": {
       "owner": "agilira",
@@ -117,6 +125,7 @@ window.chironConfig = {
     this.applyStructuredData();
     this.applyLogos();
     this.applyNavigation();
+    this.applyBreadcrumb();
     this.applyFooter();
     this.applyFeatures();
     this.applyHomepageContent();
@@ -367,6 +376,10 @@ window.chironConfig = {
     const sidebarNavElement = document.querySelector('.sidebar-nav');
     if (!sidebarNavElement) return;
     
+    // Add transition for smooth updates
+    sidebarNavElement.style.opacity = '0.7';
+    sidebarNavElement.style.transition = 'opacity 0.2s ease';
+    
     // Auto-detect current page and update active states
     this.updateActiveStates(sidebarNav);
     
@@ -386,7 +399,11 @@ window.chironConfig = {
       `;
     }).join('');
     
-    sidebarNavElement.innerHTML = html;
+    // Use requestAnimationFrame for smoother updates
+    requestAnimationFrame(() => {
+      sidebarNavElement.innerHTML = html;
+      sidebarNavElement.style.opacity = '1';
+    });
   },
 
   updateActiveStates(sidebarNav) {
@@ -440,6 +457,104 @@ window.chironConfig = {
     };
     
     return pageMap[filename] || null;
+  },
+
+  applyBreadcrumb() {
+    const { navigation } = this.config;
+    
+    if (!navigation || !navigation.breadcrumb || !navigation.breadcrumb.enabled) {
+      return;
+    }
+    
+    const breadcrumbElement = document.querySelector('.breadcrumb-list');
+    if (!breadcrumbElement) return;
+    
+    // Add transition class for smooth updates
+    breadcrumbElement.style.opacity = '0.7';
+    breadcrumbElement.style.transition = 'opacity 0.2s ease';
+    
+    // Auto-detect current page and update breadcrumb
+    this.updateBreadcrumbForCurrentPage(navigation.breadcrumb);
+    
+    const html = navigation.breadcrumb.items
+      .filter(item => item.label && item.label.trim() !== '') // Filter out hidden items
+      .map((item, index, filteredItems) => {
+        const isLast = index === filteredItems.length - 1;
+        const currentClass = item.current ? ' current' : '';
+        
+        if (isLast) {
+          return `<li class="breadcrumb-item${currentClass}">${item.label}</li>`;
+        } else {
+          const target = item.external ? ' target="_blank" rel="noopener"' : '';
+          const href = item.url || '#';
+          return `
+            <li class="breadcrumb-item">
+              <a href="${href}"${target}>${item.label}</a>
+            </li>
+            <li class="breadcrumb-separator">/</li>
+          `;
+        }
+      }).join('');
+    
+    // Use requestAnimationFrame for smoother updates
+    requestAnimationFrame(() => {
+      breadcrumbElement.innerHTML = html;
+      breadcrumbElement.style.opacity = '1';
+      console.log('Breadcrumb updated');
+    });
+  },
+
+  updateBreadcrumbForCurrentPage(breadcrumbConfig) {
+    const currentPage = this.getCurrentPageName();
+    
+    // Reset all current states
+    breadcrumbConfig.items.forEach(item => {
+      item.current = false;
+    });
+    
+    // Set current page based on page name
+    const pageMap = {
+      'index': 'Documentation',
+      'api-reference': 'API Reference',
+      'privacy-policy': 'Privacy Policy',
+      'terms-of-service': 'Terms of Service',
+      'cookie-policy': 'Cookie Policy'
+    };
+    
+    const currentLabel = pageMap[currentPage] || 'Documentation';
+    
+    // Find the "Current Page" item and update it
+    const currentItem = breadcrumbConfig.items.find(item => 
+      item.label === 'Current Page'
+    );
+    
+    // Find the Documentation item
+    const docItem = breadcrumbConfig.items.find(item => 
+      item.label === 'Documentation'
+    );
+    
+    if (currentPage === 'index') {
+      // On homepage: Documentation is current, hide "Current Page"
+      if (docItem) {
+        docItem.current = true;
+        docItem.url = ''; // Current page has no URL
+      }
+      if (currentItem) {
+        currentItem.current = false;
+        currentItem.label = ''; // Hide current page item
+      }
+    } else {
+      // On other pages: Documentation is a link, Current Page is current
+      if (docItem) {
+        docItem.current = false;
+        docItem.url = 'index.html'; // Link to home
+      }
+      if (currentItem) {
+        currentItem.current = true;
+        currentItem.label = currentLabel;
+        currentItem.url = ''; // Current page has no URL
+      }
+    }
   },
 
   applyFooter() {
