@@ -42,26 +42,21 @@ window.chironConfig = {
       },
       "sidebar": [
         {
-          "section": "Sidebar Section",
+          "section": "Getting Started",
           "items": [
-            {"label": "Link to Section", "anchor": "index.html#overview"},
+            {"label": "Overview", "url": "index.html", "active": true},
             {"label": "API Reference", "url": "api-reference.html"},
+            {"label": "Privacy Policy", "url": "privacy-policy.html"},
+            {"label": "Terms of Service", "url": "terms-of-service.html"},
+            {"label": "Cookie Policy", "url": "cookie-policy.html"}
           ]
         },
         {
-          "section": "Examples", 
+          "section": "Resources", 
           "items": [
-            {"label": "External Link", "url": "https://github.com/agilira/chiron"},
-            {"label": "Page with ToC", "url": "api-reference.html"},
-            {"label": "-&nbsp; Link to Section", "anchor": "api-reference.html#section1"},
-            {"label": "-&nbsp; Link to Section", "anchor": "api-reference.html#section2"},
-            {"label": "-&nbsp; Link to Section", "anchor": "api-reference.html#section3"},
-            {"label": "-&nbsp; Link to Section", "anchor": "api-reference.html#section4"},
-            {"label": "-&nbsp; Link to Section", "anchor": "api-reference.html#section5"}
-            
+            {"label": "GitHub Repository", "url": "https://github.com/agilira/chiron", "external": true}
           ]
-        },
-
+        }
       ]
     },
     "github": {
@@ -70,6 +65,22 @@ window.chironConfig = {
       "branch": "main",
       "show_version": true,
       "current_version": "v1.0.0"
+    },
+    "opengraph": {
+      "site_name": "Chiron Documentation",
+      "type": "website",
+      "locale": "en_US",
+      "image": {
+        "url": "og-image.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Chiron Documentation Template"
+      },
+      "twitter": {
+        "card": "summary_large_image",
+        "site": "@agilira",
+        "creator": "@agilira"
+      }
     },
     "features": {
       "search": false,
@@ -113,7 +124,7 @@ window.chironConfig = {
   },
 
   applyMetaTags() {
-    const { branding, github } = this.config;
+    const { branding, github, opengraph } = this.config;
     
     if (!branding) {
       console.warn('Branding configuration not found');
@@ -137,46 +148,84 @@ window.chironConfig = {
       metaAuthor.content = branding.company;
     }
     
-    // Update Open Graph tags only if using default values
-    const ogTitle = document.querySelector('meta[property="og:title"]');
-    if (ogTitle && ogTitle.content === 'Chiron Documentation Template') {
-      ogTitle.content = `${branding.name} - ${branding.tagline}`;
-    }
+    // Update Open Graph tags
+    this.updateOpenGraphTags(branding, github, opengraph);
     
-    const ogDescription = document.querySelector('meta[property="og:description"]');
-    if (ogDescription && ogDescription.content === 'Modern and accessible documentation template for libraries and applications') {
-      ogDescription.content = branding.description;
-    }
-    
-    // Update Twitter Card tags only if using default values
-    const twitterTitle = document.querySelector('meta[property="twitter:title"]');
-    if (twitterTitle && twitterTitle.content === 'Chiron Documentation Template') {
-      twitterTitle.content = `${branding.name} - ${branding.tagline}`;
-    }
-    
-    const twitterDescription = document.querySelector('meta[property="twitter:description"]');
-    if (twitterDescription && twitterDescription.content === 'Modern and accessible documentation template for libraries and applications') {
-      twitterDescription.content = branding.description;
-    }
-    
-    // Update URLs if github config is available
-    if (github) {
-      const baseUrl = `https://${github.owner}.github.io/${github.repo}/`;
-      
-      const ogUrl = document.querySelector('meta[property="og:url"]');
-      if (ogUrl) ogUrl.content = baseUrl;
-      
-      const twitterUrl = document.querySelector('meta[property="twitter:url"]');
-      if (twitterUrl) twitterUrl.content = baseUrl;
-      
-      const ogImage = document.querySelector('meta[property="og:image"]');
-      if (ogImage) ogImage.content = `${baseUrl}og-image.png`;
-      
-      const twitterImage = document.querySelector('meta[property="twitter:image"]');
-      if (twitterImage) twitterImage.content = `${baseUrl}og-image.png`;
-    }
+    // Update Twitter Card tags
+    this.updateTwitterTags(branding, github, opengraph);
     
     console.log('Meta tags updated');
+  },
+
+  updateOpenGraphTags(branding, github, opengraph) {
+    const baseUrl = github ? `https://${github.owner}.github.io/${github.repo}/` : '';
+    
+    // Open Graph basic tags
+    this.updateMetaTag('og:title', `${branding.name} - ${branding.tagline}`);
+    this.updateMetaTag('og:description', branding.description);
+    this.updateMetaTag('og:type', opengraph?.type || 'website');
+    this.updateMetaTag('og:site_name', opengraph?.site_name || `${branding.name} Documentation`);
+    this.updateMetaTag('og:locale', opengraph?.locale || 'en_US');
+    
+    if (baseUrl) {
+      this.updateMetaTag('og:url', baseUrl);
+    }
+    
+    // Open Graph image
+    if (opengraph?.image) {
+      const imageUrl = baseUrl ? `${baseUrl}${opengraph.image.url}` : opengraph.image.url;
+      this.updateMetaTag('og:image', imageUrl);
+      this.updateMetaTag('og:image:width', opengraph.image.width?.toString());
+      this.updateMetaTag('og:image:height', opengraph.image.height?.toString());
+      this.updateMetaTag('og:image:alt', opengraph.image.alt);
+    }
+  },
+
+  updateTwitterTags(branding, github, opengraph) {
+    const baseUrl = github ? `https://${github.owner}.github.io/${github.repo}/` : '';
+    
+    // Twitter Card tags
+    this.updateMetaTag('twitter:card', opengraph?.twitter?.card || 'summary_large_image');
+    this.updateMetaTag('twitter:title', `${branding.name} - ${branding.tagline}`);
+    this.updateMetaTag('twitter:description', branding.description);
+    
+    if (opengraph?.twitter?.site) {
+      this.updateMetaTag('twitter:site', opengraph.twitter.site);
+    }
+    
+    if (opengraph?.twitter?.creator) {
+      this.updateMetaTag('twitter:creator', opengraph.twitter.creator);
+    }
+    
+    if (baseUrl) {
+      this.updateMetaTag('twitter:url', baseUrl);
+    }
+    
+    // Twitter image
+    if (opengraph?.image) {
+      const imageUrl = baseUrl ? `${baseUrl}${opengraph.image.url}` : opengraph.image.url;
+      this.updateMetaTag('twitter:image', imageUrl);
+    }
+  },
+
+  updateMetaTag(property, content) {
+    const selector = property.startsWith('og:') || property.startsWith('twitter:') 
+      ? `meta[property="${property}"]` 
+      : `meta[name="${property}"]`;
+    
+    let metaTag = document.querySelector(selector);
+    
+    if (!metaTag) {
+      metaTag = document.createElement('meta');
+      if (property.startsWith('og:') || property.startsWith('twitter:')) {
+        metaTag.setAttribute('property', property);
+      } else {
+        metaTag.setAttribute('name', property);
+      }
+      document.head.appendChild(metaTag);
+    }
+    
+    metaTag.setAttribute('content', content);
   },
 
   applyStructuredData() {
@@ -318,6 +367,9 @@ window.chironConfig = {
     const sidebarNavElement = document.querySelector('.sidebar-nav');
     if (!sidebarNavElement) return;
     
+    // Auto-detect current page and update active states
+    this.updateActiveStates(sidebarNav);
+    
     const html = sidebarNav.map(section => {
       const itemsHtml = section.items.map(item => {
         const activeClass = item.active ? ' active' : '';
@@ -335,6 +387,59 @@ window.chironConfig = {
     }).join('');
     
     sidebarNavElement.innerHTML = html;
+  },
+
+  updateActiveStates(sidebarNav) {
+    const currentPage = this.getCurrentPageName();
+    
+    // Reset all active states
+    sidebarNav.forEach(section => {
+      section.items.forEach(item => {
+        item.active = false;
+      });
+    });
+    
+    // Set active state for current page
+    sidebarNav.forEach(section => {
+      section.items.forEach(item => {
+        if (item.url && this.getPageNameFromUrl(item.url) === currentPage) {
+          item.active = true;
+        }
+      });
+    });
+  },
+
+  getCurrentPageName() {
+    const path = window.location.pathname;
+    const filename = path.split('/').pop();
+    
+    // Handle different page names
+    const pageMap = {
+      'index.html': 'index',
+      'api-reference.html': 'api-reference',
+      'privacy-policy.html': 'privacy-policy',
+      'terms-of-service.html': 'terms-of-service',
+      'cookie-policy.html': 'cookie-policy'
+    };
+    
+    return pageMap[filename] || 'index';
+  },
+
+  getPageNameFromUrl(url) {
+    if (!url || url.startsWith('http') || url.startsWith('#')) {
+      return null;
+    }
+    
+    const filename = url.split('/').pop();
+    const pageMap = {
+      'index.html': 'index',
+      'api-reference.html': 'api-reference',
+      'privacy-policy.html': 'privacy-policy',
+      'terms-of-service.html': 'terms-of-service',
+      'cookie-policy.html': 'cookie-policy'
+    };
+    
+    return pageMap[filename] || null;
   },
 
   applyFooter() {
