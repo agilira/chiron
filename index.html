@@ -8,19 +8,24 @@
     <meta name="keywords" content="documentation template, chiron, accessibility, responsive design, modern UI, developer tools">
     <meta name="author" content="AGILira">
     
-    <!-- Open Graph / Facebook - Managed by config.js -->
+    <!-- Open Graph / Facebook - Fallback for accessibility -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="">
-    <meta property="og:title" content="">
-    <meta property="og:description" content="">
-    <meta property="og:image" content="">
+    <meta property="og:url" content="https://agilira.github.io/chiron/">
+    <meta property="og:title" content="Chiron Documentation Template">
+    <meta property="og:description" content="Modern and accessible documentation template for libraries and applications">
+    <meta property="og:image" content="https://agilira.github.io/chiron/og-image.png">
+    <meta property="og:site_name" content="Chiron Documentation">
 
-    <!-- Twitter - Managed by config.js -->
+    <!-- Twitter - Fallback for accessibility -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="">
-    <meta property="twitter:title" content="">
-    <meta property="twitter:description" content="">
-    <meta property="twitter:image" content="">
+    <meta property="twitter:url" content="https://agilira.github.io/chiron/">
+    <meta property="twitter:title" content="Chiron Documentation Template">
+    <meta property="twitter:description" content="Modern and accessible documentation template for libraries and applications">
+    <meta property="twitter:image" content="https://agilira.github.io/chiron/og-image.png">
+    <meta property="twitter:site" content="@agilirax">
+    <meta property="twitter:creator" content="@agilirax">
+    
+    <!-- Enhanced by config.js when JavaScript is available -->
     
     <!-- Favicon base -->
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -77,9 +82,7 @@
                     Chiron
                 </a>
                 <nav class="header-nav">
-                    <a href="index.html" class="nav-link active">HOME</a>
-                    <a href="/api" class="nav-link">API</a>
-                    <a href="/cli" class="nav-link">CLI</a>
+                    <a href="index.html">Documentation</a>
                 </nav>
             </div>
             <div class="header-right">
@@ -112,7 +115,26 @@
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <nav class="sidebar-nav">
-                <!-- Populated dynamically by config.js -->
+                <!-- Fallback navigation for accessibility (works without JS) -->
+                <div class="nav-section">
+                    <div class="nav-section-title">Getting Started</div>
+                    <ul class="nav-list">
+                        <li><a href="index.html" class="nav-item active">Overview</a></li>
+                        <li><a href="api-reference.html" class="nav-item">API Reference</a></li>
+                        <li><a href="privacy-policy.html" class="nav-item">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html" class="nav-item">Terms of Service</a></li>
+                        <li><a href="cookie-policy.html" class="nav-item">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-section-title">Resources</div>
+                    <ul class="nav-list">
+                        <li><a href="https://github.com/agilira/chiron" class="nav-item" target="_blank" rel="noopener">GitHub Repository</a></li>
+                        <li><a href="CHANGELOG.md" class="nav-item">Changelog</a></li>
+                        <li><a href="ACCESSIBILITY.md" class="nav-item">Accessibility Guide</a></li>
+                    </ul>
+                </div>
+                <!-- Populated dynamically by config.js (enhances fallback) -->
             </nav>
         </aside>
 
@@ -122,15 +144,21 @@
                 <!-- Breadcrumb -->
                 <nav class="breadcrumb" aria-label="Breadcrumb">
                     <ol class="breadcrumb-list">
-                        <!-- Populated dynamically by config.js -->
+                        <!-- Fallback breadcrumb for accessibility (works without JS) -->
+                        <li class="breadcrumb-item"><a href="https://github.com/agilira" target="_blank" rel="noopener">AGILira</a></li>
+                        <li class="breadcrumb-separator">/</li>
+                        <li class="breadcrumb-item"><a href="https://github.com/agilira/chiron" target="_blank" rel="noopener">Chiron</a></li>
+                        <li class="breadcrumb-separator">/</li>
+                        <li class="breadcrumb-item current">Documentation</li>
+                        <!-- Populated dynamically by config.js (enhances fallback) -->
                     </ol>
                 </nav>
 
                 <!-- Page Header -->
                 <header class="page-header">
-                    <h1 class="page-title">Documentation Template</h1>
+                    <h1 class="page-title">Chiron</h1>
                     <p class="page-description">
-                        Modern and accessible documentation template for libraries and applications.
+                        A modern, accessible documentation template for microsites. Perfect when you need more than a README but less than a full documentation site.
                     </p>
                 </header>
 
@@ -138,7 +166,7 @@
                 <div class="content">
                     <section class="content-section" id="overview">
                         <h2>Overview</h2>
-                        <p>Chiron is a modern documentation template designed for creating professional, accessible, and responsive documentation sites. Built with performance and usability in mind, it provides a comprehensive foundation for documenting libraries, applications, and projects with a focus on developer experience and end-user accessibility.</p>
+                        <p>Chiron is a <strong>README on steroids</strong> - the perfect solution when your project needs more than a simple README but less than a full documentation site. Built for microsites, it provides professional, accessible documentation without the complexity of build processes.</p>
                         
                         <div class="feature-grid">
                             <!-- Feature Card -->

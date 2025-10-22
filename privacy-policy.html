@@ -74,9 +74,7 @@
                     Chiron
                 </a>
                 <nav class="header-nav">
-                    <a href="index.html" class="nav-link active">HOME</a>
-                    <a href="/api" class="nav-link">API</a>
-                    <a href="/cli" class="nav-link">CLI</a>
+                    <a href="index.html" class="nav-link active">Documentation</a>
                 </nav>
             </div>
             <div class="header-right">
@@ -109,7 +107,26 @@
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <nav class="sidebar-nav">
-                <!-- Populated dynamically by config.js -->
+                <!-- Fallback navigation for accessibility (works without JS) -->
+                <div class="nav-section">
+                    <div class="nav-section-title">Getting Started</div>
+                    <ul class="nav-list">
+                        <li><a href="index.html" class="nav-item">Overview</a></li>
+                        <li><a href="api-reference.html" class="nav-item">API Reference</a></li>
+                        <li><a href="privacy-policy.html" class="nav-item active">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html" class="nav-item">Terms of Service</a></li>
+                        <li><a href="cookie-policy.html" class="nav-item">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-section-title">Resources</div>
+                    <ul class="nav-list">
+                        <li><a href="https://github.com/agilira/chiron" class="nav-item" target="_blank" rel="noopener">GitHub Repository</a></li>
+                        <li><a href="CHANGELOG.md" class="nav-item">Changelog</a></li>
+                        <li><a href="ACCESSIBILITY.md" class="nav-item">Accessibility Guide</a></li>
+                    </ul>
+                </div>
+                <!-- Populated dynamically by config.js (enhances fallback) -->
             </nav>
         </aside>
 
@@ -119,7 +136,15 @@
                 <!-- Breadcrumb -->
                 <nav class="breadcrumb" aria-label="Breadcrumb">
                     <ol class="breadcrumb-list">
-                        <!-- Populated dynamically by config.js -->
+                        <!-- Fallback breadcrumb for accessibility (works without JS) -->
+                        <li class="breadcrumb-item"><a href="https://github.com/agilira" target="_blank" rel="noopener">AGILira</a></li>
+                        <li class="breadcrumb-separator">/</li>
+                        <li class="breadcrumb-item"><a href="https://github.com/agilira/chiron" target="_blank" rel="noopener">Chiron</a></li>
+                        <li class="breadcrumb-separator">/</li>
+                        <li class="breadcrumb-item"><a href="index.html">Documentation</a></li>
+                        <li class="breadcrumb-separator">/</li>
+                        <li class="breadcrumb-item current">Privacy Policy</li>
+                        <!-- Populated dynamically by config.js (enhances fallback) -->
                     </ol>
                 </nav>
 

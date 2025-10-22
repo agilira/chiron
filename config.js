@@ -9,13 +9,13 @@ window.chironConfig = {
   data: {
     "project": {
       "name": "Chiron",
-      "title": "Chiron Documentation Template", 
-      "description": "Modern and accessible documentation template for libraries and applications"
+      "title": "Chiron - README on Steroids", 
+      "description": "A modern, accessible documentation template for microsites (2-3 pages). Perfect when you need more than a README but less than a full documentation site."
     },
     "branding": {
       "name": "Chiron",
-      "tagline": "Documentation Template",
-      "description": "Modern and accessible documentation template for libraries and applications",
+      "tagline": "README on Steroids",
+      "description": "A modern, accessible documentation template for microsites (2-3 pages). Perfect when you need more than a README but less than a full documentation site.",
       "company": "Agilira",
       "company_url": "https://github.com/agilira",
       "colors": {

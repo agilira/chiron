@@ -512,17 +512,19 @@ body {
     border-right-color: var(--border-primary);
 }
 
-[data-theme="dark"] .content tr:hover {
+/* Table hover removed for better UX */
+/* [data-theme="dark"] .content tr:hover {
     background: var(--gray-700);
-}
+} */
 
 [data-theme="dark"] .content tr:nth-child(even) {
     background: var(--gray-800);
 }
 
-[data-theme="dark"] .content tr:nth-child(even):hover {
+/* Table hover removed for better UX */
+/* [data-theme="dark"] .content tr:nth-child(even):hover {
     background: var(--gray-600);
-}
+} */
 
 [data-theme="dark"] .code-copy {
     background: var(--bg-tertiary);
@@ -929,7 +931,7 @@ body {
 }
 
 .content th {
-    background: var(--gray-50);
+    background: var(--gray-100);
     font-weight: 600;
     color: var(--gray-900);
     font-size: var(--font-size-sm);
@@ -948,17 +950,19 @@ body {
     border-bottom: none;
 }
 
-.content tr:hover {
+/* Table hover removed for better UX */
+/* .content tr:hover {
     background: var(--gray-100);
-}
+} */
 
 .content tr:nth-child(even) {
     background: var(--gray-50);
 }
 
-.content tr:nth-child(even):hover {
+/* Table hover removed for better UX */
+/* .content tr:nth-child(even):hover {
     background: var(--gray-200);
-}
+} */
 
 /* Smooth transitions for dynamic content */
 .sidebar-nav,

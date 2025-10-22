@@ -1,10 +1,16 @@
-# Chiron Documentation Template
+# Chiron - README on Steroids
 
-Standardized modern documentation template designed for creating simple, professional, accessible, and responsive documentation sites.
+A modern, accessible documentation template for microsites (2-3 pages max). Perfect when you need more than a README but less than a full documentation site.
 
 ## Overview
 
-Chiron is built with performance and usability in mind, it provides a comprehensive foundation for documenting libraries, applications, and projects with a focus on developer experience and end-user accessibility.
+Chiron is the perfect solution when your project needs more than a simple README but doesn't require a full documentation site. Think of it as a **README on steroids** - clean, fast, and accessible.
+
+**Perfect for:**
+- **Library documentation** (API reference + examples)
+- **Tool documentation** (setup + usage)
+- **Project documentation** (overview + guides)
+- **Microsites** (2-3 pages maximum)
 
 ## Quick Start
 
@@ -127,33 +133,35 @@ Comprehensive configuration options:
 ```
 ### Tables
 
+Chiron includes beautiful, accessible table styling with borders, alternating rows, and responsive design. Tables automatically adapt to both light and dark themes.
+
 ```html
 <section class="content-section with-code" id="section5">
-<h3>Lorem Ipsum Dolor</h3>
-  <div class="cookie-table">
+<h3>Performance Comparison</h3>
+  <div class="content">
     <table>
       <thead>
           <tr>
-            <th>First</th>
-            <th>Second</th>
-            <th>Third</th>
+            <th>Method</th>
+            <th>Allocations</th>
+            <th>Performance</th>
           </tr>
       </thead>
       <tbody>
         <tr>
-          <td><code>ExampleCode1()</code></td>
-          <td>1 (data)</td>
-          <td>Lorem</td>
+          <td><code>CachedTimeNano()</code></td>
+          <td>0</td>
+          <td>Fastest</td>
         </tr>
         <tr>
-          <td><code>ExampleCode2()</code></td>
-          <td>2 (data)</td>
-          <td>Ipsum</td>
+          <td><code>CachedTime()</code></td>
+          <td>1 (time.Time)</td>
+          <td>Fast</td>
         </tr>
         <tr>
-          <td><code>ExampleCode3()</code></td>
-          <td>3 (data)</td>
-          <td>Dolor</td>
+          <td><code>CachedTimeString()</code></td>
+          <td>1 (string)</td>
+          <td>Moderate</td>
         </tr>
       </tbody>
     </table>
@@ -177,8 +185,11 @@ fmt.Printf("ISO timestamp: %s\n", timeStr)</code></pre>
 ```
 
 ## Best For
-- Documentation Microsites
-- Fast Deployment
+- **README on Steroids** - When a simple README isn't enough
+- **Microsites** - 2-3 pages maximum
+- **Fast Deployment** - No build process, just HTML/CSS/JS
+- **Library Documentation** - API reference + examples
+- **Tool Documentation** - Setup + usage guides
 
 ### Templates Included (alphabetical order):
 - api-reference.html
@@ -191,9 +202,19 @@ fmt.Printf("ISO timestamp: %s\n", timeStr)</code></pre>
 
 Chiron was the wise centaur who mentored heroes like Achilles and Jason. He transformed raw potential into mastery through clear, patient guidance.
 
-Chiron was considered to be the best centaur amongst all, he was called the "wisest and justest of all the centaurs" whose skills were said to almost match those of his foster father Apollo.
+**Chiron's Philosophy:**
+- **Simplicity** - No build process, no complexity
+- **Speed** - Fast loading, minimal dependencies  
+- **Accessibility** - Works for everyone, everywhere
+- **Responsive** - Perfect on any device
+- **Maintainable** - Single config file, easy updates
 
-Like the mythological mentor, Chiron transforms complex technical information into clear, accessible knowledge. Every design choice serves one purpose: making knowledge accessible to everyone because knowledge should be accessible, and learning should feel effortless.
+**When to use Chiron:**
+- Your project needs more than a README
+- You want professional documentation
+- You need 2-3 pages maximum
+- You want zero build complexity
+- You need a full documentation site (use Jekyll/Hugo instead)
 
 ## Changelog
 
@@ -203,9 +224,10 @@ See [CHANGELOG.md](./CHANGELOG.md) for a detailed list of changes and version hi
 - ✅ Dynamic breadcrumb navigation
 - ✅ Centralized OpenGraph management  
 - ✅ Automatic SEO file generation
-- ✅ Enhanced table styling
+- ✅ Enhanced table styling with borders and alternating rows
 - ✅ Developer tools with keyboard shortcuts
 - ✅ Comprehensive accessibility documentation
+- ✅ Improved table UX (removed confusing hover effects)
 
 ## Accessibility
 
