@@ -108,10 +108,75 @@ Comprehensive configurations options:
     }
   },
 ```
+## Design Elements
 
-### Template Info
+### Feature Cards
 
-Optimized for:
+```html
+<div class="feature-grid">
+  <a href="#" class="feature-card" aria-label="Lorem ipsum dolor sit amet">
+    <div class="feature-icon" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h3>Lorem Ipsum</h3>
+    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p>
+  </a>
+</div>
+```
+### Tables
+
+```html
+<section class="content-section with-code" id="section5">
+<h3>Lorem Ipsum Dolor</h3>
+  <div class="cookie-table">
+    <table>
+      <thead>
+          <tr>
+            <th>First</th>
+            <th>Second</th>
+            <th>Third</th>
+          </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>ExampleCode1()</code></td>
+          <td>1 (data)</td>
+          <td>Lorem</td>
+        </tr>
+        <tr>
+          <td><code>ExampleCode2()</code></td>
+          <td>2 (data)</td>
+          <td>Ipsum</td>
+        </tr>
+        <tr>
+          <td><code>ExampleCode3()</code></td>
+          <td>3 (data)</td>
+          <td>Dolor</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+```
+### Code Blocks
+
+```html
+<section class="content-section with-code" id="section3">
+<h3>CachedTimeString</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-language">bash</span>
+      <button class="code-copy" aria-label="Copy code">Copy</button>
+  </div>
+  <pre class="line-numbers"><code class="language-bash">timeStr := timecache.CachedTimeString()
+fmt.Printf("ISO timestamp: %s\n", timeStr)</code></pre>
+  </div>
+</section>
+```
+
+### Best For
 - Small documentation sites
 - Fast Depoloyment
 
