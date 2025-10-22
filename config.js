@@ -129,6 +129,11 @@ window.chironConfig = {
     this.applyFooter();
     this.applyFeatures();
     this.applyHomepageContent();
+    
+    // Auto-generate SEO files in development mode
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') {
+        this.generateSEOFiles();
+    }
     console.log('Configuration applied');
   },
 
@@ -646,6 +651,164 @@ window.chironConfig = {
     }
     
     console.log('Homepage content updated');
+  },
+
+  generateSitemap() {
+    const { github, navigation } = this.config;
+    
+    if (!github) {
+      console.warn('GitHub configuration not found for sitemap generation');
+      return;
+    }
+    
+    const baseUrl = `https://${github.owner}.github.io/${github.repo}/`;
+    const currentDate = new Date().toISOString();
+    
+    // Get all pages from navigation
+    const pages = [];
+    
+    // Add homepage
+    pages.push({
+      url: baseUrl,
+      lastmod: currentDate,
+      changefreq: 'weekly',
+      priority: '1.0'
+    });
+    
+    // Add pages from sidebar navigation
+    if (navigation && navigation.sidebar) {
+      navigation.sidebar.forEach(section => {
+        if (section.items) {
+          section.items.forEach(item => {
+            if (item.url && !item.external && !item.url.startsWith('http') && !item.url.startsWith('#')) {
+              pages.push({
+                url: `${baseUrl}${item.url}`,
+                lastmod: currentDate,
+                changefreq: 'monthly',
+                priority: '0.8'
+              });
+            }
+          });
+        }
+      });
+    }
+    
+    // Add header navigation pages
+    if (navigation && navigation.header) {
+      navigation.header.forEach(item => {
+        if (item.url && !item.external && !item.url.startsWith('http') && !item.url.startsWith('#')) {
+          pages.push({
+            url: `${baseUrl}${item.url}`,
+            lastmod: currentDate,
+            changefreq: 'monthly',
+            priority: '0.9'
+          });
+        }
+      });
+    }
+    
+    // Remove duplicates
+    const uniquePages = pages.filter((page, index, self) => 
+      index === self.findIndex(p => p.url === page.url)
+    );
+    
+    // Generate sitemap XML
+    const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${uniquePages.map(page => `  <url>
+    <loc>${page.url}</loc>
+    <lastmod>${page.lastmod}</lastmod>
+    <changefreq>${page.changefreq}</changefreq>
+    <priority>${page.priority}</priority>
+  </url>`).join('\n')}
+</urlset>`;
+    
+    // Create and download sitemap
+    this.downloadSitemap(sitemapXml);
+    
+    console.log('Sitemap generated with', uniquePages.length, 'pages');
+  },
+
+  downloadSitemap(sitemapXml) {
+    // Create a blob with the sitemap content
+    const blob = new Blob([sitemapXml], { type: 'application/xml' });
+    const url = URL.createObjectURL(blob);
+    
+    // Create a temporary link element
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'sitemap.xml';
+    link.style.display = 'none';
+    
+    // Add to DOM, click, and remove
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    // Clean up the URL object
+    URL.revokeObjectURL(url);
+    
+    // Show the sitemap URL for SEO configuration
+    const { github } = this.config;
+    if (github) {
+      const sitemapUrl = `https://${github.owner}.github.io/${github.repo}/sitemap.xml`;
+      console.log('📄 Sitemap generated!');
+      console.log('🔗 Sitemap URL for SEO:', sitemapUrl);
+      console.log('💡 Add this URL to your robots.txt and submit to Google Search Console');
+      
+      // Show URL in a toast notification
+      if (window.documentationApp && window.documentationApp.showToast) {
+        window.documentationApp.showToast(`Sitemap generated! URL: ${sitemapUrl}`, 'success');
+      }
+    }
+  },
+
+  generateRobotsTxt() {
+    const { github } = this.config;
+    
+    if (!github) {
+      console.warn('GitHub configuration not found for robots.txt generation');
+      return;
+    }
+    
+    const baseUrl = `https://${github.owner}.github.io/${github.repo}/`;
+    const sitemapUrl = `${baseUrl}sitemap.xml`;
+    
+    const robotsTxt = `User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: ${sitemapUrl}`;
+    
+    // Create and download robots.txt
+    const blob = new Blob([robotsTxt], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'robots.txt';
+    link.style.display = 'none';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    URL.revokeObjectURL(url);
+    
+    console.log('🤖 Robots.txt generated!');
+    console.log('🔗 Sitemap URL:', sitemapUrl);
+  },
+
+  generateSEOFiles() {
+    console.log('🔧 Auto-generating SEO files for development...');
+    
+    // Generate sitemap
+    this.generateSitemap();
+    
+    // Generate robots.txt
+    this.generateRobotsTxt();
+    
+    console.log('✅ SEO files generated! Upload sitemap.xml and robots.txt to your repository root.');
   },
 
   capitalizeFirst(str) {

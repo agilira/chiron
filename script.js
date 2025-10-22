@@ -22,6 +22,9 @@ class DocumentationApp {
         this.setupKeyboardNavigation();
         this.setupThemeToggle();
         this.setupCookieConsent();
+        this.setupSitemapGeneration();
+        this.setupRobotsGeneration();
+        this.setupDeveloperTools();
     }
 
     // Sidebar mobile
@@ -559,6 +562,68 @@ class DocumentationApp {
                 cookieBanner.classList.add('show');
             });
         }
+    }
+
+    // Sitemap generation
+    setupSitemapGeneration() {
+        const sitemapBtn = document.getElementById('sitemapGenerateBtn');
+        if (!sitemapBtn) return;
+
+        sitemapBtn.addEventListener('click', () => {
+            if (window.chironConfig && window.chironConfig.generateSitemap) {
+                window.chironConfig.generateSitemap();
+            } else {
+                console.warn('ChironConfig not available for sitemap generation');
+            }
+        });
+    }
+
+    // Robots.txt generation
+    setupRobotsGeneration() {
+        const robotsBtn = document.getElementById('robotsGenerateBtn');
+        if (!robotsBtn) return;
+
+        robotsBtn.addEventListener('click', () => {
+            if (window.chironConfig && window.chironConfig.generateRobotsTxt) {
+                window.chironConfig.generateRobotsTxt();
+            } else {
+                console.warn('ChironConfig not available for robots.txt generation');
+            }
+        });
+    }
+
+    // Developer tools
+    setupDeveloperTools() {
+        const developerTools = document.getElementById('developerTools');
+        if (!developerTools) return;
+
+        // Show/hide developer tools with Ctrl+Shift+D
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+                e.preventDefault();
+                const isVisible = developerTools.style.display !== 'none';
+                developerTools.style.display = isVisible ? 'none' : 'block';
+                
+                if (!isVisible) {
+                    console.log('🛠️ Developer tools activated! Press Ctrl+Shift+D to hide.');
+                }
+            }
+        });
+
+        // Add dark mode styles for developer tools
+        const observer = new MutationObserver(() => {
+            if (document.documentElement.getAttribute('data-theme') === 'dark') {
+                developerTools.style.background = 'var(--bg-secondary)';
+                developerTools.style.borderColor = 'var(--border-primary)';
+                developerTools.style.color = 'var(--text-primary)';
+            } else {
+                developerTools.style.background = 'var(--gray-100)';
+                developerTools.style.borderColor = 'var(--gray-300)';
+                developerTools.style.color = 'var(--gray-700)';
+            }
+        });
+
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
     }
 }
 

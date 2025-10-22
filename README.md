@@ -1,16 +1,16 @@
-# Chiron Documentation Tempate
+# Chiron Documentation Template
 
 Standardized modern documentation template designed for creating simple, professional, accessible, and responsive documentation sites.
 
 ## Overview
 
-Chiron is Built with performance and usability in mind, it provides a comprehensive foundation for documenting libraries, applications, and projects with a focus on developer experience and end-user accessibility.
+Chiron is built with performance and usability in mind, it provides a comprehensive foundation for documenting libraries, applications, and projects with a focus on developer experience and end-user accessibility.
 
 ## Quick Start
 
 ### Single Config File (`config.js`)
 
-Comprehensive configurations options:
+Comprehensive configuration options:
 
 ```js
  data: {
@@ -176,13 +176,13 @@ fmt.Printf("ISO timestamp: %s\n", timeStr)</code></pre>
 </section>
 ```
 
-### Best For
-- Small documentation sites
-- Fast Depoloyment
+## Best For
+- Documentation Microsites
+- Fast Deployment
 
-Templates included (alphabetic order):
+### Templates Included (alphabetical order):
 - api-reference.html
-- Cookie-policy.html
+- cookie-policy.html
 - index.html
 - privacy-policy.html
 - terms-of-service.html
