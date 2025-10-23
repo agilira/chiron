@@ -1,5 +1,7 @@
 /* Reset e variabili CSS */
 :root {
+    /* Performance optimizations */
+    --will-change: auto;
     /* Colori principali */
     --primary-50: #eff6ff;
     --primary-100: #dbeafe;
@@ -77,8 +79,33 @@
     box-sizing: border-box;
 }
 
+/* Performance optimizations */
+* {
+    will-change: var(--will-change);
+}
+
+/* Critical CSS for above-the-fold content */
+.header {
+    contain: layout style paint;
+}
+
+.main-content {
+    contain: layout;
+}
+
+/* Optimize animations */
+@media (prefers-reduced-motion: no-preference) {
+    .feature-card,
+    .header-action-btn,
+    .nav-item {
+        will-change: transform;
+    }
+}
+
+/* Optimize for smooth scrolling */
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: var(--header-height);
 }
 
 body {

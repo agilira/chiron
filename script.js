@@ -313,6 +313,9 @@ class DocumentationApp {
 
     // Code blocks
     setupCodeBlocks() {
+        // Lazy load Prism.js only when code blocks are present
+        this.lazyLoadPrism();
+        
         document.querySelectorAll('.code-copy').forEach(button => {
             button.addEventListener('click', async () => {
                 const codeBlock = button.closest('.code-block');
@@ -334,6 +337,60 @@ class DocumentationApp {
                 }
             });
         });
+    }
+
+    // Lazy load Prism.js for syntax highlighting
+    lazyLoadPrism() {
+        const codeBlocks = document.querySelectorAll('pre[class*="language-"], code[class*="language-"]');
+        if (codeBlocks.length === 0) return;
+
+        // Check if Prism is already loaded
+        if (window.Prism) {
+            this.initializePrism();
+            return;
+        }
+
+        // Load Prism.js dynamically
+        const loadPrism = () => {
+            const scripts = [
+                'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js',
+                'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js',
+                'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js',
+                'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.js'
+            ];
+
+            let loadedCount = 0;
+            scripts.forEach((src, index) => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = () => {
+                    loadedCount++;
+                    if (loadedCount === scripts.length) {
+                        this.initializePrism();
+                    }
+                };
+                document.head.appendChild(script);
+            });
+        };
+
+        // Load Prism when code blocks come into view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    loadPrism();
+                    observer.disconnect();
+                }
+            });
+        });
+
+        codeBlocks.forEach(block => observer.observe(block));
+    }
+
+    initializePrism() {
+        if (window.Prism) {
+            Prism.highlightAll();
+            console.log('Prism.js initialized with lazy loading');
+        }
     }
 
     // Table of contents
