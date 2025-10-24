@@ -639,8 +639,8 @@ window.chironConfig = {
       });
     }
     
-    // Update company links
-    const companyLinks = document.querySelectorAll('a[href*="github.com/agilira"]:not([href*="/chiron"])');
+    // Update company links (exclude repository links)
+    const companyLinks = document.querySelectorAll('a[href="https://github.com/agilira"]');
     if (branding.company_url) {
       companyLinks.forEach(link => {
         link.href = branding.company_url;
