@@ -5,7 +5,7 @@
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
 [![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![Accessibility](https://img.shields.io/badge/WCAG%202.1-AA-brightgreen.svg)](./ACCESSIBILITY.md)
+[![Accessibility](https://img.shields.io/badge/WCAG%202.2-AA-brightgreen.svg)](./ACCESSIBILITY.md)
 
 
 Chiron is a modern, accessible documentation template designed to bridge the gap between simple README files and complex documentation sites. Built with pure HTML, CSS, and JavaScript, it requires **zero build process** while delivering professional-looking documentation experiences.
@@ -16,7 +16,7 @@ Chiron is a modern, accessible documentation template designed to bridge the gap
 
 - **Single Config File**: Comprehensive `config.js` for complete customization
 - **Responsive Design**: Perfect on desktop, tablet, and mobile devices
-- **Accessibility First**: WCAG 2.1 AA compliant with comprehensive testing
+- **Accessibility First**: WCAG 2.2 AA compliant with comprehensive testing
 - **Dark Mode Support**: Built-in theme switching with user preference persistence
 - **Professional Templates**: Ready-to-use pages for API docs, policies, and guides
 - **SEO Optimized**: Complete meta tags, Open Graph, and structured data
@@ -225,17 +225,17 @@ Beautiful, accessible tables that work perfectly on all devices:
         <tr>
           <td><code>index.html</code></td>
           <td>Main documentation</td>
-          <td>WCAG 2.1 AA</td>
+          <td>WCAG 2.2 AA</td>
         </tr>
         <tr>
           <td><code>api-reference.html</code></td>
           <td>API documentation</td>
-          <td>WCAG 2.1 AA</td>
+          <td>WCAG 2.2 AA</td>
         </tr>
         <tr>
           <td><code>privacy-policy.html</code></td>
           <td>Privacy compliance</td>
-          <td>WCAG 2.1 AA</td>
+          <td>WCAG 2.2 AA</td>
         </tr>
       </tbody>
     </table>
@@ -288,7 +288,7 @@ Chiron is perfect for various documentation scenarios:
 
 ## Accessibility
 
-Chiron is built with accessibility as a core principle, following **WCAG 2.1 AA guidelines** to ensure your documentation is usable by everyone.
+Chiron is built with accessibility as a core principle, following **WCAG 2.2 AA guidelines** to ensure your documentation is usable by everyone.
 
 ### Accessibility Features
 
@@ -324,7 +324,7 @@ Like the wise centaur who could transform confusion into clarity with gentle gui
 - **Configuration System**: Single `config.js` file controls everything
 - **Template Library**: Professional pages for docs, APIs, and legal content
 - **Design System**: Reusable components and consistent styling
-- **Accessibility Framework**: WCAG 2.1 AA compliance built-in
+- **Accessibility Framework**: WCAG 2.2 AA compliance built-in
 - **SEO Optimization**: Complete meta tags and structured data
 
 ## Testing
