@@ -12,10 +12,14 @@ class TemplateEngine {
     this.config = config;
     this.rootDir = rootDir;
     this.templateCache = {};
+    this.cacheMaxSize = 50; // Limit cache size
+    this.cacheKeys = []; // Track insertion order for LRU
   }
 
   /**
    * Escape HTML special characters for safe meta tag content
+   * @param {string} text - Text to escape
+   * @returns {string} Escaped text safe for HTML attributes
    */
   escapeHtml(text) {
     if (!text) return '';
@@ -28,10 +32,58 @@ class TemplateEngine {
   }
 
   /**
-   * Load template file
+   * Validate and sanitize URL for safe use in href attributes
+   * @param {string} url - URL to validate
+   * @returns {string} Safe URL or '#' if invalid
+   */
+  sanitizeUrl(url) {
+    if (!url || typeof url !== 'string') return '#';
+    
+    const trimmed = url.trim();
+    
+    // Block dangerous protocols
+    const dangerousProtocols = ['javascript:', 'data:', 'vbscript:', 'file:'];
+    const lowerUrl = trimmed.toLowerCase();
+    
+    if (dangerousProtocols.some(proto => lowerUrl.startsWith(proto))) {
+      console.warn(`Blocked dangerous URL: ${url}`);
+      return '#';
+    }
+    
+    // Allow relative URLs, http(s), and anchors
+    if (trimmed.startsWith('#') || 
+        trimmed.startsWith('/') || 
+        trimmed.startsWith('./') ||
+        trimmed.startsWith('../') ||
+        trimmed.startsWith('http://') || 
+        trimmed.startsWith('https://')) {
+      // URL encode special HTML characters but preserve URL structure
+      return trimmed
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+    
+    // Assume it's a relative path
+    return trimmed
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  /**
+   * Load template file from disk with LRU caching
+   * @param {string} templateName - Name of template file (e.g., 'page.html')
+   * @returns {string} Template content
+   * @throws {Error} If template file not found
    */
   loadTemplate(templateName) {
+    // Return from cache if exists
     if (this.templateCache[templateName]) {
+      // Move to end (most recently used)
+      const index = this.cacheKeys.indexOf(templateName);
+      if (index > -1) {
+        this.cacheKeys.splice(index, 1);
+        this.cacheKeys.push(templateName);
+      }
       return this.templateCache[templateName];
     }
 
@@ -46,31 +98,66 @@ class TemplateEngine {
     }
 
     const template = fs.readFileSync(templatePath, 'utf8');
+    
+    // Implement LRU cache eviction
+    if (this.cacheKeys.length >= this.cacheMaxSize) {
+      const oldestKey = this.cacheKeys.shift();
+      delete this.templateCache[oldestKey];
+    }
+    
+    // Add to cache
     this.templateCache[templateName] = template;
+    this.cacheKeys.push(templateName);
+    
     return template;
   }
 
   /**
-   * Render navigation items
+   * Render navigation items recursively
+   * @param {Array<Object>} items - Navigation items from config
+   * @param {Object} context - Page context with isActive function
+   * @returns {string} Rendered HTML for navigation
    */
   renderNavigation(items, context) {
+    if (!Array.isArray(items)) {
+      console.warn('Navigation items must be an array');
+      return '';
+    }
+
     return items.map(item => {
+      if (!item || typeof item !== 'object') {
+        console.warn('Invalid navigation item:', item);
+        return '';
+      }
+
       if (item.section) {
+        // Validate section structure
+        if (!item.items || !Array.isArray(item.items)) {
+          console.warn('Section must have items array:', item);
+          return '';
+        }
+
         // Render section with items
         const itemsHtml = item.items.map(subItem => {
+          if (!subItem || typeof subItem !== 'object') {
+            return '';
+          }
+
           const url = subItem.file 
-            ? subItem.file.replace('.md', '.html')
-            : subItem.url;
+            ? this.escapeHtml(subItem.file.replace('.md', '.html'))
+            : this.sanitizeUrl(subItem.url || '#');
           
+          const label = this.escapeHtml(subItem.label || 'Untitled');
           const isActive = context.isActive(subItem);
           const activeClass = isActive ? ' active' : '';
-          const external = subItem.external ? ' target="_blank" rel="noopener"' : '';
+          const external = subItem.external ? ' target="_blank" rel="noopener noreferrer"' : '';
 
-          return `<li><a href="${url}" class="nav-item${activeClass}"${external}>${subItem.label}</a></li>`;
+          return `<li><a href="${url}" class="nav-item${activeClass}"${external}>${label}</a></li>`;
         }).join('\n                        ');
 
+        const sectionTitle = this.escapeHtml(item.section);
         return `<div class="nav-section">
-                    <div class="nav-section-title">${item.section}</div>
+                    <div class="nav-section-title">${sectionTitle}</div>
                     <ul class="nav-list">
                         ${itemsHtml}
                     </ul>
@@ -86,13 +173,20 @@ class TemplateEngine {
   renderHeaderNav() {
     const headerItems = this.config.navigation?.header || [];
     
-    if (headerItems.length === 0) {
+    if (!Array.isArray(headerItems) || headerItems.length === 0) {
       return '';
     }
     
     return headerItems.map(item => {
-      const target = item.external ? ' target="_blank" rel="noopener"' : '';
-      return `<a href="${item.url}"${target}>${item.label}</a>`;
+      if (!item || typeof item !== 'object') {
+        return '';
+      }
+
+      const url = this.sanitizeUrl(item.url || '#');
+      const label = this.escapeHtml(item.label || 'Untitled');
+      const target = item.external ? ' target="_blank" rel="noopener noreferrer"' : '';
+      
+      return `<a href="${url}"${target}>${label}</a>`;
     }).join('\n                    ');
   }
 
@@ -107,10 +201,17 @@ class TemplateEngine {
     const breadcrumbItems = this.config.navigation.breadcrumb.items || [];
     const isHomepage = context.page.filename === 'index.html';
     
-    // Build breadcrumb items HTML
+    // Build breadcrumb items HTML with proper escaping
     const itemsHtml = breadcrumbItems.map(item => {
-      const target = item.external ? ' target="_blank" rel="noopener"' : '';
-      return `<li class="breadcrumb-item"><a href="${item.url}"${target}>${item.label}</a></li>
+      if (!item || typeof item !== 'object') {
+        return '';
+      }
+
+      const url = this.sanitizeUrl(item.url || '#');
+      const label = this.escapeHtml(item.label || 'Untitled');
+      const target = item.external ? ' target="_blank" rel="noopener noreferrer"' : '';
+      
+      return `<li class="breadcrumb-item"><a href="${url}"${target}>${label}</a></li>
                         <li class="breadcrumb-separator">/</li>`;
     }).join('\n                        ');
     
@@ -125,12 +226,13 @@ class TemplateEngine {
     }
     
     // For other pages: "Breadcrumb Items / Documentation / Page Title"
+    const pageTitle = this.escapeHtml(context.page.title || 'Untitled');
     return `<nav class="breadcrumb" aria-label="Breadcrumb">
                     <ol class="breadcrumb-list">
                         ${itemsHtml}
                         <li class="breadcrumb-item"><a href="index.html">Documentation</a></li>
                         <li class="breadcrumb-separator">/</li>
-                        <li class="breadcrumb-item current" aria-current="page">${context.page.title}</li>
+                        <li class="breadcrumb-item current" aria-current="page">${pageTitle}</li>
                     </ol>
                 </nav>`;
   }
@@ -143,7 +245,10 @@ class TemplateEngine {
     const { page } = context;
 
     const baseUrl = project.base_url.replace(/\/$/, '');
-    const pageUrl = `${baseUrl}/${page.filename}`;
+    
+    // SECURITY: Validate and sanitize filename to prevent URL injection
+    const safeFilename = page.filename.replace(/[^a-zA-Z0-9\-_\.]/g, '');
+    const pageUrl = `${baseUrl}/${safeFilename}`;
     
     // Fallback for OG image if not configured
     const ogImage = seo.opengraph?.image 
@@ -223,9 +328,23 @@ class TemplateEngine {
    * Render footer legal links
    */
   renderFooterLinks() {
-    return this.config.footer.legal_links.map(link => {
-      const url = link.file ? link.file.replace('.md', '.html') : link.url;
-      return `<a href="${url}" class="footer-legal-link">${link.label}</a>`;
+    const legalLinks = this.config.footer?.legal_links || [];
+    
+    if (!Array.isArray(legalLinks)) {
+      return '';
+    }
+
+    return legalLinks.map(link => {
+      if (!link || typeof link !== 'object') {
+        return '';
+      }
+
+      const url = link.file 
+        ? this.escapeHtml(link.file.replace('.md', '.html'))
+        : this.sanitizeUrl(link.url || '#');
+      const label = this.escapeHtml(link.label || 'Untitled');
+      
+      return `<a href="${url}" class="footer-legal-link">${label}</a>`;
     }).join('\n                                    ');
   }
 
@@ -270,7 +389,9 @@ class TemplateEngine {
   }
 
   /**
-   * Main render function
+   * Main render function - processes template and replaces all placeholders
+   * @param {Object} context - Page context with config and page data
+   * @returns {string} Fully rendered HTML page
    */
   render(context) {
     const template = this.loadTemplate('page.html');
@@ -278,48 +399,48 @@ class TemplateEngine {
 
     // Build replacements map
     const replacements = {
-      // Meta
-      '{{PAGE_TITLE}}': context.page.title,
+      // Meta (escape user content for safety)
+      '{{PAGE_TITLE}}': this.escapeHtml(context.page.title),
       '{{PAGE_LANG}}': project.language,
       '{{META_TAGS}}': this.renderMetaTags(context),
       '{{STRUCTURED_DATA}}': this.renderStructuredData(context),
       '{{ANALYTICS}}': this.renderAnalytics(),
       
-      // Branding
-      '{{PROJECT_NAME}}': project.name,
-      '{{PROJECT_DESCRIPTION}}': project.description,
-      '{{COMPANY_NAME}}': branding.company,
+      // Branding (escape user-provided strings)
+      '{{PROJECT_NAME}}': this.escapeHtml(project.name),
+      '{{PROJECT_DESCRIPTION}}': this.escapeHtml(project.description),
+      '{{COMPANY_NAME}}': this.escapeHtml(branding.company),
       '{{COMPANY_URL}}': branding.company_url,
-      '{{LOGO_LIGHT}}': `assets/${branding.logo.light}`,
-      '{{LOGO_DARK}}': `assets/${branding.logo.dark}`,
-      '{{LOGO_ALT}}': branding.logo.alt,
-      '{{LOGO_FOOTER_LIGHT}}': `assets/${branding.logo.footer_light}`,
-      '{{LOGO_FOOTER_DARK}}': `assets/${branding.logo.footer_dark}`,
+      '{{LOGO_LIGHT}}': path.posix.join('assets', branding.logo.light),
+      '{{LOGO_DARK}}': path.posix.join('assets', branding.logo.dark),
+      '{{LOGO_ALT}}': this.escapeHtml(branding.logo.alt),
+      '{{LOGO_FOOTER_LIGHT}}': path.posix.join('assets', branding.logo.footer_light),
+      '{{LOGO_FOOTER_DARK}}': path.posix.join('assets', branding.logo.footer_dark),
       
-      // GitHub
-      '{{GITHUB_OWNER}}': github.owner,
-      '{{GITHUB_REPO}}': github.repo,
-      '{{GITHUB_URL}}': `https://github.com/${github.owner}/${github.repo}`,
+      // GitHub (validate these are safe)
+      '{{GITHUB_OWNER}}': this.escapeHtml(github.owner),
+      '{{GITHUB_REPO}}': this.escapeHtml(github.repo),
+      '{{GITHUB_URL}}': `https://github.com/${this.escapeHtml(github.owner)}/${this.escapeHtml(github.repo)}`,
       
-      // Navigation
+      // Navigation (already rendered as HTML, safe)
       '{{HEADER_NAV}}': this.renderHeaderNav(),
       '{{NAVIGATION}}': this.renderNavigation(this.config.navigation.sidebar, context),
       '{{BREADCRUMB}}': this.renderBreadcrumb(context),
       
-      // Content
+      // Content (HTML from Markdown parser, trusted)
       '{{PAGE_CONTENT}}': context.page.content,
       
       // Footer
-      '{{COPYRIGHT_HOLDER}}': this.config.footer.copyright_holder,
+      '{{COPYRIGHT_HOLDER}}': this.escapeHtml(this.config.footer.copyright_holder),
       '{{COPYRIGHT_YEAR}}': new Date().getFullYear(),
       '{{FOOTER_LEGAL_LINKS}}': this.renderFooterLinks(),
       
-      // Cookie consent
-      '{{COOKIE_BANNER_TEXT}}': cookies.banner_text,
-      '{{COOKIE_POLICY_LABEL}}': cookies.policy_label,
-      '{{COOKIE_ACCEPT_LABEL}}': cookies.accept_label,
-      '{{COOKIE_DECLINE_LABEL}}': cookies.decline_label,
-      '{{COOKIE_MANAGE_LABEL}}': cookies.manage_label,
+      // Cookie consent (escape user text)
+      '{{COOKIE_BANNER_TEXT}}': this.escapeHtml(cookies.banner_text),
+      '{{COOKIE_POLICY_LABEL}}': this.escapeHtml(cookies.policy_label),
+      '{{COOKIE_ACCEPT_LABEL}}': this.escapeHtml(cookies.accept_label),
+      '{{COOKIE_DECLINE_LABEL}}': this.escapeHtml(cookies.decline_label),
+      '{{COOKIE_MANAGE_LABEL}}': this.escapeHtml(cookies.manage_label),
       
       // Features
       '{{SHOW_THEME_TOGGLE}}': features.dark_mode ? '' : 'style="display:none"',

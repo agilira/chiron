@@ -123,30 +123,113 @@ class DocumentationApp {
         }
         
         let searchData = null;
+        let searchDataPromise = null; // Cache the promise to prevent race conditions
         let currentFocus = -1;
+        let searchTimeout = null; // Store timeout reference for cleanup
+        let isDestroyed = false; // Flag to prevent operations after cleanup
+        let abortController = null; // For canceling fetch requests
+        let lastSearchTime = 0; // For rate limiting
+        const RATE_LIMIT_MS = 100; // Minimum time between searches (100ms)
         
-        // Lazy load search index
-        const loadSearchIndex = async () => {
-            if (searchData) return;
-            
-            try {
-                const response = await fetch('search-index.json');
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                searchData = data.pages;
-            } catch (error) {
-                console.error('Failed to load search index:', error);
-                searchResults.innerHTML = '<div class="search-no-results">Search unavailable</div>';
-                searchResults.hidden = false;
+        // Cleanup function to prevent memory leaks
+        const cleanup = () => {
+            isDestroyed = true;
+            if (searchTimeout) {
+                clearTimeout(searchTimeout);
+                searchTimeout = null;
+            }
+            if (abortController) {
+                abortController.abort();
+                abortController = null;
             }
         };
         
-        // Simple search function
+        // Register cleanup on page unload and navigation
+        window.addEventListener('beforeunload', cleanup);
+        
+        // Also cleanup on page visibility change (better for SPA scenarios)
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) cleanup();
+        });
+        
+        // Lazy load search index
+        const loadSearchIndex = async () => {
+            // Check if destroyed
+            if (isDestroyed) {
+                throw new Error('Search has been destroyed');
+            }
+            
+            // Return cached data if available
+            if (searchData) return searchData;
+            
+            // Return pending promise if already loading
+            if (searchDataPromise) return searchDataPromise;
+            
+            // Start loading and cache the promise
+            searchDataPromise = (async () => {
+                try {
+                    // Create new AbortController for this request with timeout
+                    abortController = new AbortController();
+                    
+                    // Set timeout for fetch request (10 seconds)
+                    const timeoutId = setTimeout(() => {
+                        abortController.abort();
+                    }, 10000);
+                    
+                    const response = await fetch('search-index.json', {
+                        signal: abortController.signal
+                    });
+                    
+                    // Clear timeout on successful fetch
+                    clearTimeout(timeoutId);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    // Check again if destroyed during async operation
+                    if (isDestroyed) {
+                        throw new Error('Search was destroyed during loading');
+                    }
+                    
+                    searchData = data.pages;
+                    abortController = null; // Clear after success
+                    return searchData;
+                } catch (error) {
+                    // Don't log if request was aborted intentionally
+                    if (error.name !== 'AbortError') {
+                        console.error('Failed to load search index:', error);
+                    }
+                    
+                    searchDataPromise = null; // Reset on error to allow retry
+                    abortController = null;
+                    
+                    if (!isDestroyed && searchResults && error.name !== 'AbortError') {
+                        const errorMessage = error.name === 'AbortError' 
+                            ? 'Search request timeout' 
+                            : 'Search unavailable';
+                        searchResults.innerHTML = `<div class="search-no-results">${errorMessage}</div>`;
+                        searchResults.hidden = false;
+                    }
+                    throw error;
+                }
+            })();
+            
+            return searchDataPromise;
+        };
+        
+        // Simple search function with rate limiting
         const simpleSearch = (query, pages) => {
+            // Rate limiting check
+            const now = Date.now();
+            if (now - lastSearchTime < RATE_LIMIT_MS) {
+                // Too fast, use cached results or wait
+                return [];
+            }
+            lastSearchTime = now;
+            
             const lowerQuery = query.toLowerCase();
             const results = [];
             
@@ -182,15 +265,54 @@ class DocumentationApp {
             return results.sort((a, b) => b.score - a.score).slice(0, 10);
         };
         
-        // Highlight matches
+        // Highlight matches - SECURITY: Prevent XSS and regex injection
         const highlightMatches = (text, query) => {
             if (!query || !text) return text;
-            const regex = new RegExp(`(${query})`, 'gi');
-            return text.replace(regex, '<span class="search-result-match">$1</span>');
+            
+            // Escape special regex characters in query to prevent regex injection
+            const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            
+            // Validate the escaped query length to prevent ReDoS attacks
+            if (escapedQuery.length > 200) {
+                console.warn('Query too long for highlighting');
+                return text
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+            }
+            
+            try {
+                const regex = new RegExp(`(${escapedQuery})`, 'gi');
+                
+                // Escape HTML first to prevent XSS
+                const escapedText = text
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+                
+                // Then highlight matches - the span is safe since escapedText is already escaped
+                return escapedText.replace(regex, '<span class="search-result-match">$1</span>');
+            } catch (error) {
+                console.error('Error creating regex:', error);
+                // Return escaped text without highlighting if regex fails
+                return text
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+            }
         };
         
-        // Perform search
-        const performSearch = (query) => {
+        // Perform search with race condition protection
+        const performSearch = async (query) => {
+            // Check if destroyed
+            if (isDestroyed) return;
+            
             if (!query || query.length < 2) {
                 searchResults.hidden = true;
                 searchResults.style.display = 'none';
@@ -199,14 +321,39 @@ class DocumentationApp {
                 return;
             }
             
+            // Store query timestamp to detect race conditions
+            const queryTimestamp = Date.now();
+            
+            // Load data if not available
             if (!searchData) {
                 searchResults.innerHTML = '<div class="search-loading">Loading...</div>';
                 searchResults.hidden = false;
                 searchInput.setAttribute('aria-expanded', 'true');
-                return;
+                
+                try {
+                    await loadSearchIndex();
+                } catch (error) {
+                    // Error already handled in loadSearchIndex
+                    return;
+                }
+                
+                // RACE CONDITION CHECK: After async operation, verify query hasn't changed
+                if (isDestroyed) return;
+                if (searchInput.value.trim() !== query) {
+                    // User typed something else, abort this search
+                    return;
+                }
             }
             
             const results = simpleSearch(query, searchData);
+            
+            // RACE CONDITION CHECK: Verify query is still current before rendering
+            if (isDestroyed) return;
+            const currentQuery = searchInput.value.trim();
+            if (currentQuery !== query) {
+                // Query changed during search, don't show stale results
+                return;
+            }
             
             if (results.length === 0) {
                 searchResults.innerHTML = '<div class="search-no-results">No results found</div>';
@@ -238,18 +385,34 @@ class DocumentationApp {
             currentFocus = -1;
         };
         
-        // Debounce search
-        let searchTimeout;
+        // Debounce search with proper cleanup
         searchInput.addEventListener('input', (e) => {
-            clearTimeout(searchTimeout);
+            // Clear any pending search
+            if (searchTimeout) {
+                clearTimeout(searchTimeout);
+                searchTimeout = null;
+            }
+            
+            const query = e.target.value.trim();
+            
+            // If query is empty or too short, clear immediately
+            if (query.length < 2) {
+                performSearch(query); // Will clear the results
+                return;
+            }
+            
+            // Debounce actual search
             searchTimeout = setTimeout(() => {
-                performSearch(e.target.value.trim());
-            }, 200);
+                searchTimeout = null; // Clear reference after execution
+                performSearch(query);
+            }, 200); // 200ms debounce delay
         });
         
         // Load index on first focus
         searchInput.addEventListener('focus', () => {
-            loadSearchIndex();
+            if (!isDestroyed) {
+                loadSearchIndex();
+            }
         });
         
         // Close on blur (with delay to allow clicks on results)
@@ -348,7 +511,7 @@ class DocumentationApp {
 
     displaySearchResults(results, container) {
         if (results.length === 0) {
-            container.innerHTML = '<div class="search-no-results">Nessun risultato trovato</div>';
+            container.innerHTML = '<div class="search-no-results">No results found</div>';
             return;
         }
 
@@ -404,7 +567,7 @@ class DocumentationApp {
                         behavior: 'smooth'
                     });
                     
-                    // Aggiorna URL senza ricaricare la pagina
+                    // Update URL without reloading the page
                     history.pushState(null, null, `#${targetId}`);
                 }
             });
@@ -445,7 +608,7 @@ class DocumentationApp {
         // Skip link for screen readers
         const skipLink = document.createElement('a');
         skipLink.href = '#main-content';
-        skipLink.textContent = 'Salta al contenuto principale';
+        skipLink.textContent = 'Skip to main content';
         skipLink.className = 'skip-link';
         skipLink.style.cssText = `
             position: absolute;
@@ -486,42 +649,52 @@ class DocumentationApp {
     }
 
     closeModals() {
-        // Chiudi sidebar se aperta
+        // Close sidebar if open
         if (this.sidebar && this.sidebar.classList.contains('open')) {
             this.sidebar.classList.remove('open');
             this.mobileOverlay.classList.remove('open');
             document.body.style.overflow = '';
         }
         
-        // Nascondi risultati ricerca
+        // Hide search results
         this.hideSearchResults();
         if (this.searchInput) {
             this.searchInput.blur();
         }
     }
 
-    // Code blocks
+    // Code blocks - Use event delegation for better performance
     setupCodeBlocks() {
-        document.querySelectorAll('.code-copy').forEach(button => {
-            button.addEventListener('click', async () => {
-                const codeBlock = button.closest('.code-block');
-                const code = codeBlock.querySelector('code');
-                const text = code.textContent;
+        // Single event listener using event delegation
+        document.addEventListener('click', async (e) => {
+            const button = e.target.closest('.code-copy');
+            if (!button) return;
 
-                try {
-                    await navigator.clipboard.writeText(text);
-                    this.showToast('Code copied to clipboard!', 'success');
-                    
-                    // Feedback visivo
-                    const originalText = button.textContent;
-                    button.textContent = 'Copied!';
-                    setTimeout(() => {
-                        button.textContent = originalText;
-                    }, 2000);
-                } catch (err) {
-                    this.showToast('Errore nella copia del codice', 'error');
-                }
-            });
+            const codeBlock = button.closest('.code-block');
+            if (!codeBlock) return;
+
+            const code = codeBlock.querySelector('code');
+            if (!code) return;
+
+            const text = code.textContent;
+
+            try {
+                await navigator.clipboard.writeText(text);
+                this.showToast('Code copied to clipboard!', 'success');
+                
+                // Visual feedback
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>Copied!';
+                button.classList.add('copied');
+                
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy code:', err);
+                this.showToast('Failed to copy code', 'error');
+            }
         });
     }
 
@@ -534,7 +707,9 @@ class DocumentationApp {
         const headings = document.querySelectorAll('h2, h3');
         if (headings.length > 0 && !toc.querySelector('.toc-list').children.length) {
             const tocList = toc.querySelector('.toc-list');
-            tocList.innerHTML = '';
+            
+            // Use DocumentFragment for better performance
+            const fragment = document.createDocumentFragment();
 
             headings.forEach(heading => {
                 if (!heading.id) {
@@ -550,8 +725,11 @@ class DocumentationApp {
                 
                 const li = document.createElement('li');
                 li.appendChild(link);
-                tocList.appendChild(li);
+                fragment.appendChild(li);
             });
+            
+            // Single DOM update instead of multiple appendChild calls
+            tocList.appendChild(fragment);
         }
 
         // Highlight current section in TOC
@@ -650,9 +828,33 @@ class DocumentationApp {
         const themeToggle = document.querySelector('.theme-toggle');
         if (!themeToggle) return;
 
+        // Safe localStorage access with fallback
+        const getStoredTheme = () => {
+            try {
+                return localStorage.getItem('theme');
+            } catch (e) {
+                console.warn('localStorage not available:', e);
+                return null;
+            }
+        };
+        
+        const setStoredTheme = (theme) => {
+            try {
+                localStorage.setItem('theme', theme);
+            } catch (e) {
+                console.warn('Cannot save theme preference:', e);
+            }
+        };
+
         // Initialize theme from localStorage or system preference
-        const savedTheme = localStorage.getItem('theme');
-        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        const savedTheme = getStoredTheme();
+        
+        // Check if matchMedia is supported (for older browsers)
+        let systemTheme = 'light';
+        if (window.matchMedia) {
+            systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        
         const currentTheme = savedTheme || systemTheme;
         
         this.setTheme(currentTheme);
@@ -662,18 +864,20 @@ class DocumentationApp {
             const currentTheme = document.documentElement.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             this.setTheme(newTheme);
-            localStorage.setItem('theme', newTheme);
+            setStoredTheme(newTheme);
             
             // Show feedback
             this.showToast(`Switched to ${newTheme} mode`, 'success');
         });
 
-        // Listen for system theme changes
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-            if (!localStorage.getItem('theme')) {
-                this.setTheme(e.matches ? 'dark' : 'light');
-            }
-        });
+        // Listen for system theme changes (if supported)
+        if (window.matchMedia) {
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!getStoredTheme()) {
+                    this.setTheme(e.matches ? 'dark' : 'light');
+                }
+            });
+        }
     }
 
     // Set theme helper function
@@ -716,8 +920,28 @@ class DocumentationApp {
 
         if (!cookieBanner) return;
 
+        // Safe localStorage helpers
+        const getCookieConsent = () => {
+            try {
+                return localStorage.getItem('cookieConsent');
+            } catch (e) {
+                console.warn('localStorage not available:', e);
+                return null;
+            }
+        };
+        
+        const setCookieConsent = (value) => {
+            try {
+                localStorage.setItem('cookieConsent', value);
+                return true;
+            } catch (e) {
+                console.warn('Cannot save cookie consent:', e);
+                return false;
+            }
+        };
+
         // Check if user has already given consent
-        const hasConsented = localStorage.getItem('cookieConsent');
+        const hasConsented = getCookieConsent();
         
         if (!hasConsented) {
             // Show banner after a brief delay
@@ -729,18 +953,25 @@ class DocumentationApp {
         // Handle acceptance
         if (cookieAcceptBtn) {
             cookieAcceptBtn.addEventListener('click', () => {
-                localStorage.setItem('cookieConsent', 'accepted');
-                cookieBanner.classList.remove('show');
-                this.showToast('Cookie preferences saved', 'success');
+                if (setCookieConsent('accepted')) {
+                    cookieBanner.classList.remove('show');
+                    this.showToast('Cookie preferences saved', 'success');
+                } else {
+                    this.showToast('Could not save preferences', 'error');
+                }
             });
         }
 
         // Handle decline
         if (cookieDeclineBtn) {
             cookieDeclineBtn.addEventListener('click', () => {
-                localStorage.setItem('cookieConsent', 'declined');
-                cookieBanner.classList.remove('show');
-                this.showToast('Non-essential cookies disabled', 'success');
+                if (setCookieConsent('declined')) {
+                    cookieBanner.classList.remove('show');
+                    this.showToast('Non-essential cookies disabled', 'success');
+                } else {
+                    cookieBanner.classList.remove('show');
+                    this.showToast('Preferences not saved (storage disabled)', 'error');
+                }
             });
         }
 

@@ -1,7 +1,5 @@
 /* Reset e variabili CSS */
 :root {
-    /* Performance optimizations */
-    --will-change: auto;
     /* Colori principali */
     --primary-50: #eff6ff;
     --primary-100: #dbeafe;
@@ -87,11 +85,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-/* Performance optimizations */
-* {
-    will-change: var(--will-change);
 }
 
 /* Critical CSS for above-the-fold content */

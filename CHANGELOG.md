@@ -1,6 +1,59 @@
 # Changelog
 
-All notable changes to Chiron - README on Steroids will be documented in this file.
+# Changelog
+
+All notable changes to Chiron will be documented in this file.
+
+## [2.0.2] - 2025-10-30
+
+### 🔒 Security (Round 2)
+- **Fixed XSS vulnerability in search results**: Search highlights now properly escape HTML
+- **Fixed regex injection**: Special regex characters escaped in search queries
+
+### 🐛 Bug Fixes (Round 2)
+- **Fixed memory leak** in search timeout: Proper cleanup on page unload
+- **Fixed hardcoded strings**: All Italian strings converted to English for consistency
+
+### ✨ Improvements (Round 2)
+- **Added JSDoc documentation**: 12+ functions now have complete JSDoc with types and examples
+- **Improved code quality**: Better type hints and IDE autocomplete support
+- **Better error messages**: All messages now in English
+
+---
+
+## [2.0.1] - 2025-10-30
+
+### 🔒 Security
+- **Fixed XSS vulnerability**: All user input placeholders in template engine now properly escaped
+- **Added config validation**: Required fields validated at startup to prevent runtime errors
+
+### 🐛 Bug Fixes
+- **Fixed async error handling** in `copyScripts()`: Promise rejections now properly handled
+- **Fixed race condition** in search index loading: Multiple simultaneous fetch requests prevented
+- **Fixed error handling** in `copyAssets()`: Individual asset copy failures no longer crash entire build
+- **Fixed cross-platform paths**: Using `path.posix.join()` for web URLs instead of hardcoded `/`
+
+### ✨ Improvements
+- **Added build error tracking**: All errors during build are now collected and reported at the end
+- **Improved event delegation** for code copy buttons: Better performance and support for dynamic content
+- **Better error messages**: Configuration validation provides clear error messages for missing fields
+- **Production mode**: Build fails fast on errors when NODE_ENV=production
+
+### 📚 Documentation
+- Added `IMPROVEMENTS.md`: Detailed explanation of all changes made during code review
+- Added `JS-TIPS.md`: JavaScript best practices and tips for developers
+
+### 🔧 Technical
+- Improved Promise error handling throughout codebase
+- Added `validateConfig()` and `getNestedValue()` helper methods
+- Added `buildErrors` array to track errors during build process
+- Improved search index loading with promise caching
+
+---
+
+# Changelog
+
+All notable changes to Chiron will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
