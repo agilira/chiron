@@ -1,0 +1,29 @@
+{
+  "name": "chiron",
+  "version": "2.0.0",
+  "description": "Modern documentation builder for GitHub Pages",
+  "main": "builder/index.js",
+  "scripts": {
+    "build": "node builder/index.js",
+    "dev": "node builder/index.js --watch",
+    "preview": "npx serve docs",
+    "clean": "node -e \"require('fs').rmSync('docs', {recursive: true, force: true})\""
+  },
+  "keywords": [
+    "documentation",
+    "static-site-generator",
+    "markdown",
+    "github-pages"
+  ],
+  "author": "Agilira",
+  "license": "MIT",
+  "dependencies": {
+    "flexsearch": "^0.8.212",
+    "gray-matter": "^4.0.3",
+    "js-yaml": "^4.1.0",
+    "marked": "^11.1.1"
+  },
+  "devDependencies": {
+    "chokidar": "^3.5.3"
+  }
+}

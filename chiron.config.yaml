@@ -1,0 +1,173 @@
+# Chiron Documentation Builder Configuration
+# ==========================================
+# This is the main configuration file for your documentation site.
+# Edit this file to customize your project.
+
+# Project Information
+project:
+  name: Chiron
+  title: Chiron - README on Steroids
+  description: A modern, accessible documentation template for microsites. Perfect when you need more than a README but less than a full documentation site.
+  language: it
+  base_url: https://agilira.github.io/chiron
+
+# Branding
+branding:
+  company: Agilira
+  company_url: https://github.com/agilira
+  tagline: README on Steroids
+  
+  # Logo paths (relative to assets folder)
+  logo:
+    light: logo-black.png
+    dark: logo-white.png
+    alt: Chiron Logo
+    footer_light: logo-footer.png
+    footer_dark: logo-footer-white.png
+  
+  # Color scheme
+  colors:
+    primary: "#3b82f6"
+    primary_dark: "#2563eb"
+    accent: "#10b981"
+
+# GitHub Integration
+github:
+  owner: agilira
+  repo: chiron
+  branch: main
+  show_version: true
+  current_version: v1.0.0
+
+# SEO & Social
+seo:
+  keywords:
+    - documentation template
+    - chiron
+    - accessibility
+    - responsive design
+    - modern UI
+    - developer tools
+  
+  opengraph:
+    site_name: Chiron Documentation
+    type: website
+    locale: en_US
+    image: og-image.png
+    image_width: 1200
+    image_height: 630
+    image_alt: Chiron Documentation Template
+  
+  twitter:
+    card: summary_large_image
+    site: "@agilirax"
+    creator: "@agilirax"
+
+# Analytics (optional)
+analytics:
+  google_analytics: "" # Add your GA4 Measurement ID (e.g., G-XXXXXXXXXX)
+  # google_tag_manager: "" # Optional: GTM ID (e.g., GTM-XXXXXXX)
+
+# Navigation Structure
+navigation:
+  # Header navigation (top bar)
+  # Add multiple links, use 'external: true' for external links
+  # See HEADER-NAVIGATION.md for full documentation
+  header:
+    - label: Documentation
+      url: index.html
+  
+  # Sidebar navigation
+  sidebar:
+    - section: Getting Started
+      items:
+        - label: Overview
+          file: index.md
+          active: true
+        - label: API Reference
+          file: api-reference.md
+        - label: UI Showcase
+          file: showcase.md
+    
+    - section: Legal
+      items:
+        - label: Privacy Policy
+          file: privacy-policy.md
+        - label: Terms of Service
+          file: terms-of-service.md
+        - label: Cookie Policy
+          file: cookie-policy.md
+    
+    - section: Resources
+      items:
+        - label: GitHub Repository
+          url: https://github.com/agilira/chiron
+          external: true
+        - label: Changelog
+          file: CHANGELOG.md
+        - label: Accessibility Guide
+          file: ACCESSIBILITY.md
+  
+  # Breadcrumb configuration
+  breadcrumb:
+    enabled: true
+    items:
+      - label: AGILira
+        url: https://github.com/agilira
+        external: true
+      - label: Chiron
+        url: https://github.com/agilira/chiron
+        external: true
+
+# Features Toggle
+features:
+  search: true
+  code_copy: true
+  breadcrumbs: true
+  cookie_consent: true
+  dark_mode: true
+  print_styles: true
+  scroll_to_top: true
+
+# Footer Configuration
+footer:
+  copyright_holder: Agilira
+  legal_links:
+    - label: Privacy Policy
+      file: privacy-policy.md
+    - label: Terms of Service
+      file: terms-of-service.md
+    - label: Cookie Policy
+      file: cookie-policy.md
+
+# Cookie Consent
+cookies:
+  banner_text: "We use cookies to enhance your browsing experience and analyze our traffic. By clicking 'Accept', you consent to our use of cookies."
+  policy_label: Cookie Policy
+  accept_label: Accept All
+  decline_label: Decline
+  manage_label: Manage Preferences
+
+# Build Configuration
+build:
+  output_dir: docs
+  content_dir: content
+  assets_dir: assets
+  templates_dir: templates
+  
+  # Files to copy as-is
+  static_files:
+    - favicon-*.png
+    - og-image.png
+    - robots.txt
+  
+  # Generate sitemap
+  sitemap:
+    enabled: true
+    priority: 0.8
+    changefreq: weekly
+  
+  # Generate robots.txt
+  robots:
+    enabled: true
+    allow_all: true

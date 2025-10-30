@@ -113,10 +113,198 @@ class DocumentationApp {
         });
     }
 
-    // Search system
+    // Search system - Simple and fast
     setupSearch() {
-        // Search removed for GitHub Pages - replaced with version link
-        return;
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        
+        if (!searchInput || !searchResults) {
+            return;
+        }
+        
+        let searchData = null;
+        let currentFocus = -1;
+        
+        // Lazy load search index
+        const loadSearchIndex = async () => {
+            if (searchData) return;
+            
+            try {
+                const response = await fetch('search-index.json');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                searchData = data.pages;
+            } catch (error) {
+                console.error('Failed to load search index:', error);
+                searchResults.innerHTML = '<div class="search-no-results">Search unavailable</div>';
+                searchResults.hidden = false;
+            }
+        };
+        
+        // Simple search function
+        const simpleSearch = (query, pages) => {
+            const lowerQuery = query.toLowerCase();
+            const results = [];
+            
+            for (const page of pages) {
+                let score = 0;
+                
+                // Search in title (highest priority)
+                if (page.title.toLowerCase().includes(lowerQuery)) {
+                    score += 10;
+                }
+                
+                // Search in description
+                if (page.description && page.description.toLowerCase().includes(lowerQuery)) {
+                    score += 5;
+                }
+                
+                // Search in content
+                if (page.content.toLowerCase().includes(lowerQuery)) {
+                    score += 1;
+                }
+                
+                // Search in headings
+                if (page.headings && page.headings.some(h => h.toLowerCase().includes(lowerQuery))) {
+                    score += 3;
+                }
+                
+                if (score > 0) {
+                    results.push({ ...page, score });
+                }
+            }
+            
+            // Sort by score
+            return results.sort((a, b) => b.score - a.score).slice(0, 10);
+        };
+        
+        // Highlight matches
+        const highlightMatches = (text, query) => {
+            if (!query || !text) return text;
+            const regex = new RegExp(`(${query})`, 'gi');
+            return text.replace(regex, '<span class="search-result-match">$1</span>');
+        };
+        
+        // Perform search
+        const performSearch = (query) => {
+            if (!query || query.length < 2) {
+                searchResults.hidden = true;
+                searchResults.style.display = 'none';
+                searchResults.innerHTML = '';
+                searchInput.setAttribute('aria-expanded', 'false');
+                return;
+            }
+            
+            if (!searchData) {
+                searchResults.innerHTML = '<div class="search-loading">Loading...</div>';
+                searchResults.hidden = false;
+                searchInput.setAttribute('aria-expanded', 'true');
+                return;
+            }
+            
+            const results = simpleSearch(query, searchData);
+            
+            if (results.length === 0) {
+                searchResults.innerHTML = '<div class="search-no-results">No results found</div>';
+                searchResults.hidden = false;
+                searchResults.style.display = 'block';
+                return;
+            }
+            
+            // Render results
+            const html = results.map((page, index) => {
+                const title = highlightMatches(page.title, query);
+                const description = highlightMatches(
+                    page.description || page.content.substring(0, 150) + '...',
+                    query
+                );
+                
+                return `
+                    <a href="${page.url}" class="search-result-item" data-index="${index}">
+                        <div class="search-result-title">${title}</div>
+                        <div class="search-result-description">${description}</div>
+                    </a>
+                `;
+            }).join('');
+            
+            searchResults.innerHTML = html;
+            searchResults.hidden = false;
+            searchResults.style.display = 'block';
+            searchInput.setAttribute('aria-expanded', 'true');
+            currentFocus = -1;
+        };
+        
+        // Debounce search
+        let searchTimeout;
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                performSearch(e.target.value.trim());
+            }, 200);
+        });
+        
+        // Load index on first focus
+        searchInput.addEventListener('focus', () => {
+            loadSearchIndex();
+        });
+        
+        // Close on blur (with delay to allow clicks on results)
+        searchInput.addEventListener('blur', () => {
+            setTimeout(() => {
+                searchResults.hidden = true;
+                searchResults.style.display = 'none';
+            }, 200);
+        });
+        
+        // Keyboard navigation
+        searchInput.addEventListener('keydown', (e) => {
+            const items = searchResults.querySelectorAll('.search-result-item');
+            
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                currentFocus++;
+                if (currentFocus >= items.length) currentFocus = 0;
+                setActive(items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                currentFocus--;
+                if (currentFocus < 0) currentFocus = items.length - 1;
+                setActive(items);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (currentFocus > -1 && items[currentFocus]) {
+                    items[currentFocus].click();
+                }
+            } else if (e.key === 'Escape') {
+                searchResults.hidden = true;
+                searchResults.style.display = 'none';
+                searchInput.blur();
+            }
+        });
+        
+        const setActive = (items) => {
+            items.forEach((item, index) => {
+                const isActive = index === currentFocus;
+                item.classList.toggle('active', isActive);
+                // Set ARIA attributes for screen readers
+                item.setAttribute('aria-selected', isActive);
+            });
+            if (items[currentFocus]) {
+                items[currentFocus].scrollIntoView({ block: 'nearest' });
+            }
+        };
+        
+        // Close on click outside
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                searchResults.hidden = true;
+                searchResults.style.display = 'none';
+            }
+        });
     }
 
     createSearchResults() {
@@ -314,9 +502,6 @@ class DocumentationApp {
 
     // Code blocks
     setupCodeBlocks() {
-        // Lazy load Prism.js only when code blocks are present
-        this.lazyLoadPrism();
-        
         document.querySelectorAll('.code-copy').forEach(button => {
             button.addEventListener('click', async () => {
                 const codeBlock = button.closest('.code-block');
@@ -338,60 +523,6 @@ class DocumentationApp {
                 }
             });
         });
-    }
-
-    // Lazy load Prism.js for syntax highlighting
-    lazyLoadPrism() {
-        const codeBlocks = document.querySelectorAll('pre[class*="language-"], code[class*="language-"]');
-        if (codeBlocks.length === 0) return;
-
-        // Check if Prism is already loaded
-        if (window.Prism) {
-            this.initializePrism();
-            return;
-        }
-
-        // Load Prism.js dynamically
-        const loadPrism = () => {
-            const scripts = [
-                'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js',
-                'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js',
-                'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js',
-                'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.js'
-            ];
-
-            let loadedCount = 0;
-            scripts.forEach((src, index) => {
-                const script = document.createElement('script');
-                script.src = src;
-                script.onload = () => {
-                    loadedCount++;
-                    if (loadedCount === scripts.length) {
-                        this.initializePrism();
-                    }
-                };
-                document.head.appendChild(script);
-            });
-        };
-
-        // Load Prism when code blocks come into view
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    loadPrism();
-                    observer.disconnect();
-                }
-            });
-        });
-
-        codeBlocks.forEach(block => observer.observe(block));
-    }
-
-    initializePrism() {
-        if (window.Prism) {
-            Prism.highlightAll();
-            console.log('Prism.js initialized with lazy loading');
-        }
     }
 
     // Table of contents
@@ -721,6 +852,7 @@ class DocumentationApp {
         // Initial state
         toggleScrollButton();
     }
+
 }
 
 // DocumentationApp class ends here
