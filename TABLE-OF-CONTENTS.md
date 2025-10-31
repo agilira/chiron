@@ -1,14 +1,14 @@
 # Table of Contents (TOC)
 
-Chiron supporta Table of Contents (TOC) **manuale** direttamente nel Markdown. Questo approccio è semplice, flessibile e non richiede configurazione.
+Chiron supports **manual** Table of Contents (TOC) directly in Markdown. This approach is simple, flexible, and requires no configuration.
 
-## 🎯 Come Funziona
+## How It Works
 
-1. **Heading automatici con ID**: Ogni heading (`## Title`) ottiene automaticamente un ID (`id="title"`)
-2. **Link interni**: Usa la sintassi Markdown standard `[Text](#id)`
-3. **Smooth scroll**: Lo script.js gestisce automaticamente lo scroll fluido
+1. **Automatic heading IDs**: Each heading (`## Title`) automatically gets an ID (`id="title"`)
+2. **Internal links**: Use standard Markdown syntax `[Text](#id)`
+3. **Smooth scroll**: script.js automatically handles smooth scrolling
 
-## 📝 Esempio Base
+## Basic Example
 
 ```markdown
 ---
@@ -37,9 +37,9 @@ More content...
 Even more content...
 ```
 
-## 🎨 TOC Stilizzato
+## Styled TOC
 
-Puoi usare HTML per un TOC più ricco:
+You can use HTML for a richer TOC:
 
 ```markdown
 ## Table of Contents
@@ -60,7 +60,7 @@ Puoi usare HTML per un TOC più ricco:
 ...
 ```
 
-Poi in `custom.css`:
+Then in `custom.css`:
 
 ```css
 .toc {
@@ -76,26 +76,26 @@ Poi in `custom.css`:
 }
 ```
 
-## 🔗 Come Funzionano gli ID
+## How IDs Work
 
-Gli heading vengono convertiti automaticamente in ID:
+Headings are automatically converted to IDs:
 
-| Heading | ID Generato |
+| Heading | Generated ID |
 |---------|-------------|
 | `## Getting Started` | `#getting-started` |
 | `## API Reference` | `#api-reference` |
 | `### User Authentication` | `#user-authentication` |
 | `## FAQ & Support` | `#faq-support` |
 
-**Regole di conversione:**
-- Tutto lowercase
-- Spazi → trattini (`-`)
-- Caratteri speciali rimossi
-- Solo lettere, numeri e trattini
+**Conversion rules:**
+- All lowercase
+- Spaces → hyphens (`-`)
+- Special characters removed
+- Only letters, numbers, and hyphens
 
-## 📱 TOC Responsive
+## Responsive TOC
 
-Per un TOC che si nasconde su mobile:
+For a TOC that hides on mobile:
 
 ```markdown
 <div class="toc desktop-only">
@@ -118,10 +118,11 @@ In `custom.css`:
 }
 ```
 
-## 🎯 Best Practices
+## Best Practices
 
-### 1. Posiziona il TOC in Alto
-Metti il TOC subito dopo il titolo principale:
+### 1. Position TOC at the Top
+
+Place the TOC right after the main title:
 
 ```markdown
 # Page Title
@@ -135,7 +136,8 @@ Brief introduction...
 ## Section 1
 ```
 
-### 2. Usa Indentazione per Sottosezioni
+### 2. Use Indentation for Subsections
+
 ```markdown
 ## Table of Contents
 
@@ -145,44 +147,48 @@ Brief introduction...
 - [Another Topic](#another-topic)
 ```
 
-### 3. Non Includere il TOC nel TOC
-Non linkare "Table of Contents" a se stesso:
+### 3. Don't Include TOC in the TOC
 
-✅ **Buono:**
+Don't link "Table of Contents" to itself:
+
+**Good:**
 ```markdown
 ## Table of Contents
 - [Introduction](#introduction)
 ```
 
-❌ **Da evitare:**
+**Avoid:**
 ```markdown
 ## Table of Contents
 - [Table of Contents](#table-of-contents)
 - [Introduction](#introduction)
 ```
 
-### 4. Mantienilo Breve
-Un TOC con più di 10 voci diventa difficile da usare. Considera di:
-- Mostrare solo heading di livello 2 (`##`)
-- Dividere la pagina in più pagine
-- Usare sezioni collassabili
+### 4. Keep It Short
 
-## 🚀 Esempi Avanzati
+A TOC with more than 10 items becomes difficult to use. Consider:
+- Showing only level 2 headings (`##`)
+- Splitting the page into multiple pages
+- Using collapsible sections
 
-### TOC con Emoji
+## Advanced Examples
+
+### TOC with Emoji
+
 ```markdown
-## 📚 Table of Contents
+## Table of Contents
 
-- 🚀 [Quick Start](#quick-start)
-- ⚙️ [Configuration](#configuration)
-- 📖 [API Reference](#api-reference)
-- ❓ [FAQ](#faq)
+- [Quick Start](#quick-start) - Get up and running
+- [Configuration](#configuration) - Customize settings
+- [API Reference](#api-reference) - Complete docs
+- [FAQ](#faq) - Common questions
 ```
 
-### TOC Collassabile
+### Collapsible TOC
+
 ```markdown
 <details>
-<summary><strong>📚 Table of Contents</strong></summary>
+<summary><strong>Table of Contents</strong></summary>
 
 - [Introduction](#introduction)
 - [Getting Started](#getting-started)
@@ -191,7 +197,8 @@ Un TOC con più di 10 voci diventa difficile da usare. Considera di:
 </details>
 ```
 
-### TOC con Descrizioni
+### TOC with Descriptions
+
 ```markdown
 ## Table of Contents
 
@@ -200,43 +207,43 @@ Un TOC con più di 10 voci diventa difficile da usare. Considera di:
 - **[API Reference](#api-reference)** - Complete API documentation
 ```
 
-## 🔍 Verifica ID degli Heading
+## Verify Heading IDs
 
-Per verificare quale ID ha un heading:
+To verify which ID a heading has:
 
-1. Apri la pagina nel browser
-2. Ispeziona l'heading (F12)
-3. Guarda l'attributo `id`
+1. Open the page in browser
+2. Inspect the heading (F12)
+3. Check the `id` attribute
 
-Oppure usa questa regola:
+Or use this rule:
 ```javascript
-// In console del browser
+// In browser console
 document.querySelectorAll('h2, h3, h4').forEach(h => {
   console.log(h.textContent, '→', h.id);
 });
 ```
 
-## 💡 Perché Manuale?
+## Why Manual?
 
-**Vantaggi del TOC manuale:**
-- ✅ **Controllo totale**: Decidi cosa includere
-- ✅ **Flessibilità**: Puoi personalizzare testo e struttura
-- ✅ **Semplicità**: Nessuna configurazione necessaria
-- ✅ **Portabilità**: Funziona anche su GitHub
-- ✅ **Performance**: Nessun JavaScript extra
+**Advantages of manual TOC:**
+- **Full control**: Decide what to include
+- **Flexibility**: Can customize text and structure
+- **Simplicity**: No configuration needed
+- **Portability**: Works on GitHub too
+- **Performance**: No extra JavaScript
 
-**Svantaggi:**
-- ❌ Devi aggiornarlo manualmente se cambi gli heading
+**Disadvantages:**
+- Must update manually if you change headings
 
-## 🎨 Stili Predefiniti
+## Predefined Styles
 
-Chiron include già stili per liste e link. Il TOC eredita automaticamente:
+Chiron already includes styles for lists and links. The TOC automatically inherits:
 - Smooth scroll
 - Hover effects
 - Dark mode support
 - Responsive design
 
-## 📚 Vedi Anche
+## See Also
 
 - [Markdown Guide](https://www.markdownguide.org/extended-syntax/#heading-ids)
 - [GitHub Flavored Markdown](https://github.github.com/gfm/)

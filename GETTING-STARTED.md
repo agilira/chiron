@@ -1,81 +1,81 @@
 # Getting Started with Chiron v2.0
 
-Questa guida ti aiuterà a creare il tuo primo sito di documentazione con Chiron in meno di 5 minuti.
+This guide will help you create your first documentation site with Chiron in less than 5 minutes.
 
-## 📋 Prerequisiti
+## Prerequisites
 
-- Node.js 18 o superiore
-- npm o yarn
-- Un editor di testo (VS Code consigliato)
+- Node.js 18 or higher
+- npm or yarn
+- A text editor (VS Code recommended)
 
-## 🚀 Setup Iniziale
+## Initial Setup
 
-### 1. Installa le Dipendenze
+### 1. Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 2. Verifica l'Installazione
+### 2. Verify Installation
 
 ```bash
 npm run build
 ```
 
-Se tutto funziona, vedrai:
+If everything works, you'll see:
 
 ```
-🏗️  Building Chiron documentation site...
+Building Chiron documentation site...
 
-📄 Processing content files...
+Processing content files...
   ✓ Generated: index.html
   ✓ Generated: api-reference.html
 
-📦 Copying assets...
+Copying assets...
 ✓ Assets copied
 ✓ Static files copied
 ✓ Scripts and styles copied
 
-🗺️  Generating sitemap...
+Generating sitemap...
 ✓ Sitemap generated
 
-🤖 Generating robots.txt...
+Generating robots.txt...
 ✓ Robots.txt generated
 
-✨ Build completed successfully!
+Build completed successfully!
 ```
 
-### 3. Anteprima del Sito
+### 3. Preview the Site
 
 ```bash
 npm run preview
 ```
 
-Apri http://localhost:3000 nel browser.
+Open http://localhost:3000 in your browser.
 
-## 📝 Crea la Tua Prima Pagina
+## Create Your First Page
 
-### 1. Crea un File Markdown
+### 1. Create a Markdown File
 
-Crea `content/getting-started.md`:
+Create `content/getting-started.md`:
 
 ```markdown
 ---
 title: Getting Started
-description: Come iniziare con il mio progetto
+description: How to get started with my project
 ---
 
 # Getting Started
 
-Benvenuto nella documentazione!
+Welcome to the documentation!
 
-## Installazione
+## Installation
 
 ```bash
 npm install my-project
 ```
 
-## Primo Utilizzo
+## First Usage
 
 ```javascript
 const myProject = require('my-project');
@@ -83,15 +83,15 @@ const myProject = require('my-project');
 myProject.init();
 ```
 
-## Prossimi Passi
+## Next Steps
 
-- Leggi la [API Reference](api-reference.html)
-- Esplora gli esempi
+- Read the [API Reference](api-reference.html)
+- Explore the examples
 ```
 
-### 2. Aggiungi alla Navigazione
+### 2. Add to Navigation
 
-Modifica `chiron.config.yaml`:
+Edit `chiron.config.yaml`:
 
 ```yaml
 navigation:
@@ -100,103 +100,103 @@ navigation:
       items:
         - label: Overview
           file: index.md
-        - label: Getting Started  # ← NUOVO
-          file: getting-started.md  # ← NUOVO
+        - label: Getting Started  # ← NEW
+          file: getting-started.md  # ← NEW
         - label: API Reference
           file: api-reference.md
 ```
 
-### 3. Ricompila
+### 3. Rebuild
 
 ```bash
 npm run build
 ```
 
-La tua nuova pagina è pronta in `docs/getting-started.html`!
+Your new page is ready in `docs/getting-started.html`!
 
-## ⚙️ Personalizza la Configurazione
+## Customize the Configuration
 
-### Informazioni Base
+### Basic Information
 
-Modifica `chiron.config.yaml`:
+Edit `chiron.config.yaml`:
 
 ```yaml
 project:
-  name: Il Mio Progetto  # ← Cambia questo
-  title: Documentazione - Il Mio Progetto  # ← E questo
-  description: La mia fantastica documentazione  # ← E questo
-  base_url: https://username.github.io/my-repo  # ← URL GitHub Pages
+  name: My Project  # ← Change this
+  title: Documentation - My Project  # ← And this
+  description: My amazing documentation  # ← And this
+  base_url: https://username.github.io/my-repo  # ← GitHub Pages URL
 ```
 
 ### Branding
 
 ```yaml
 branding:
-  company: La Mia Azienda  # ← Nome azienda
-  company_url: https://mycompany.com  # ← URL azienda
-  tagline: Il mio slogan  # ← Slogan
+  company: My Company  # ← Company name
+  company_url: https://mycompany.com  # ← Company URL
+  tagline: My slogan  # ← Slogan
 ```
 
-### Colori
+### Colors
 
 ```yaml
 branding:
   colors:
-    primary: "#3b82f6"  # ← Colore primario (blu)
-    primary_dark: "#2563eb"  # ← Colore primario scuro
-    accent: "#10b981"  # ← Colore accent (verde)
+    primary: "#3b82f6"  # ← Primary color (blue)
+    primary_dark: "#2563eb"  # ← Dark primary color
+    accent: "#10b981"  # ← Accent color (green)
 ```
 
-Usa qualsiasi colore hex che preferisci!
+Use any hex color you prefer!
 
-## 🎨 Personalizza i Logo
+## Customize Logos
 
-### 1. Prepara i Tuoi Logo
+### 1. Prepare Your Logos
 
-Crea questi file nella cartella `assets/`:
+Create these files in the `assets/` folder:
 
-- `logo-black.png` - Logo per tema chiaro
-- `logo-white.png` - Logo per tema scuro
-- `logo-footer.png` - Logo footer tema chiaro
-- `logo-footer-white.png` - Logo footer tema scuro
+- `logo-black.png` - Logo for light theme
+- `logo-white.png` - Logo for dark theme
+- `logo-footer.png` - Footer logo for light theme
+- `logo-footer-white.png` - Footer logo for dark theme
 
-Dimensioni consigliate: 32x32px o 64x64px (SVG ancora meglio)
+Recommended sizes: 32x32px or 64x64px (SVG is even better)
 
-### 2. Aggiorna la Configurazione
+### 2. Update Configuration
 
 ```yaml
 branding:
   logo:
     light: logo-black.png
     dark: logo-white.png
-    alt: Il Mio Logo
+    alt: My Logo
     footer_light: logo-footer.png
     footer_dark: logo-footer-white.png
 ```
 
-## 📄 Struttura delle Pagine
+## Page Structure
 
-### Frontmatter Completo
+### Complete Frontmatter
 
 ```markdown
 ---
-title: Titolo della Pagina
-description: Descrizione per SEO e social media
-author: Il Tuo Nome
+title: Page Title
+description: Description for SEO and social media
+author: Your Name
 date: 2025-01-30
 ---
 
-# Contenuto della pagina
+# Page content
 ```
 
-### Elementi Markdown Supportati
+### Supported Markdown Elements
 
 #### Headers
 
 ```markdown
-# H1 - Titolo Principale
-## H2 - Sezione
-### H3 - Sottosezione
+# H1 - Main Title
+## H2 - Section
+### H3 - Subsection
 ```
 
 #### Code Blocks
@@ -209,15 +209,15 @@ function hello() {
 ```
 ````
 
-#### Tabelle
+#### Tables
 
 ```markdown
-| Colonna 1 | Colonna 2 |
-|-----------|-----------|
-| Dato 1    | Dato 2    |
+| Column 1 | Column 2 |
+|----------|----------|
+| Data 1   | Data 2   |
 ```
 
-#### Liste
+#### Lists
 
 ```markdown
 - Item 1
@@ -225,25 +225,25 @@ function hello() {
   - Sub-item 2.1
   - Sub-item 2.2
 
-1. Primo
-2. Secondo
-3. Terzo
+1. First
+2. Second
+3. Third
 ```
 
-#### Link e Immagini
+#### Links and Images
 
 ```markdown
 [Link](https://example.com)
 ![Alt text](assets/image.png)
 ```
 
-## 🌐 Deploy su GitHub Pages
+## Deploy to GitHub Pages
 
-### Setup Repository
+### Repository Setup
 
-1. **Crea un repository su GitHub**
+1. **Create a GitHub repository**
 
-2. **Inizializza Git** (se non l'hai già fatto):
+2. **Initialize Git** (if you haven't already):
 
 ```bash
 git init
@@ -254,20 +254,20 @@ git remote add origin https://github.com/username/my-repo.git
 git push -u origin main
 ```
 
-3. **Configura GitHub Pages**:
-   - Vai su Settings → Pages
+3. **Configure GitHub Pages**:
+   - Go to Settings → Pages
    - Source: `main` branch
    - Folder: `/docs`
    - Save
 
-4. **Aggiorna base_url** in `chiron.config.yaml`:
+4. **Update base_url** in `chiron.config.yaml`:
 
 ```yaml
 project:
   base_url: https://username.github.io/my-repo
 ```
 
-5. **Rebuild e push**:
+5. **Rebuild and push**:
 
 ```bash
 npm run build
@@ -276,93 +276,93 @@ git commit -m "Build documentation"
 git push
 ```
 
-Il tuo sito sarà live in pochi minuti!
+Your site will be live in a few minutes!
 
-### Workflow Automatico
+### Automatic Workflow
 
-Ogni volta che modifichi la documentazione:
+Every time you modify the documentation:
 
 ```bash
-# 1. Modifica i file in content/
+# 1. Edit files in content/
 # 2. Build
 npm run build
 
-# 3. Commit e push
+# 3. Commit and push
 git add .
 git commit -m "Update documentation"
 git push
 ```
 
-## 🔧 Comandi Utili
+## Useful Commands
 
 ### Development
 
 ```bash
-# Watch mode - ricompila automaticamente
+# Watch mode - auto-rebuild
 npm run dev
 ```
 
-Lascia questo comando in esecuzione mentre modifichi i file. Il sito verrà ricompilato automaticamente ad ogni salvataggio.
+Keep this command running while you edit files. The site will be automatically recompiled on every save.
 
 ### Build
 
 ```bash
-# Build singolo
+# Single build
 npm run build
 
-# Build pulito (rimuove output precedente)
+# Clean build (removes previous output)
 npm run clean && npm run build
 ```
 
 ### Preview
 
 ```bash
-# Anteprima locale
+# Local preview
 npm run preview
 ```
 
-## 📚 Prossimi Passi
+## Next Steps
 
-1. **Leggi la documentazione completa**: `docs/index.html`
-2. **Esplora l'API Reference**: `docs/api-reference.html`
-3. **Personalizza il template**: `templates/page.html`
-4. **Modifica gli stili**: `styles.css`
+1. **Read the complete documentation**: `docs/index.html`
+2. **Explore the API Reference**: `docs/api-reference.html`
+3. **Customize the template**: `templates/page.html`
+4. **Modify styles**: `styles.css`
 
-## 🆘 Problemi Comuni
+## Common Problems
 
 ### "Cannot find module"
 
 ```bash
-# Reinstalla le dipendenze
+# Reinstall dependencies
 rm -rf node_modules
 npm install
 ```
 
 ### "File not found"
 
-- Verifica che il file sia in `content/`
-- Controlla il nome del file in `chiron.config.yaml`
-- Assicurati che l'estensione sia `.md`
+- Verify the file is in `content/`
+- Check the filename in `chiron.config.yaml`
+- Ensure the extension is `.md`
 
 ### "Build failed"
 
-- Controlla la sintassi YAML in `chiron.config.yaml`
-- Verifica che tutti i file referenziati esistano
-- Controlla i log per errori specifici
+- Check YAML syntax in `chiron.config.yaml`
+- Verify all referenced files exist
+- Check logs for specific errors
 
-### Stili non applicati
+### Styles not applied
 
 ```bash
-# Pulisci e ricompila
+# Clean and rebuild
 npm run clean
 npm run build
 
-# Pulisci cache browser (Ctrl+Shift+R)
+# Clear browser cache (Ctrl+Shift+R)
 ```
 
-## 💡 Tips & Tricks
+## Tips & Tricks
 
-### Organizza i Contenuti
+### Organize Content
 
 ```
 content/
@@ -377,43 +377,41 @@ content/
     └── reference.md
 ```
 
-### Usa il Watch Mode
+### Use Watch Mode
 
-Durante lo sviluppo, usa sempre:
+During development, always use:
 
 ```bash
 npm run dev
 ```
 
-Così vedrai le modifiche immediatamente.
+This way you'll see changes immediately.
 
-### Testa Localmente
+### Test Locally
 
-Prima di fare push, testa sempre:
+Before pushing, always test:
 
 ```bash
 npm run build
 npm run preview
 ```
 
-### Commit Frequenti
+### Commit Frequently
 
-Fai commit piccoli e frequenti:
+Make small, frequent commits:
 
 ```bash
 git add content/my-page.md
 git commit -m "Add my-page documentation"
 ```
 
-## 🎓 Risorse
+## Resources
 
 - **Markdown Guide**: https://www.markdownguide.org/
 - **YAML Syntax**: https://yaml.org/
 - **GitHub Pages**: https://pages.github.com/
 - **Chiron Issues**: https://github.com/agilira/chiron/issues
 
-## 🎉 Congratulazioni!
+## Congratulations!
 
-Ora sai come usare Chiron! Inizia a creare la tua documentazione e condividila con il mondo.
-
-Buona documentazione! 📚✨
+Now you know how to use Chiron! Start creating your documentation and share it with the world.

@@ -6,14 +6,21 @@
 
 const fs = require('fs');
 const path = require('path');
+const { logger } = require('./logger');
+
+// Template Engine Configuration Constants
+const TEMPLATE_CONFIG = {
+  CACHE_MAX_SIZE: 50  // Maximum number of templates to cache
+};
 
 class TemplateEngine {
   constructor(config, rootDir) {
     this.config = config;
     this.rootDir = rootDir;
     this.templateCache = {};
-    this.cacheMaxSize = 50; // Limit cache size
+    this.cacheMaxSize = TEMPLATE_CONFIG.CACHE_MAX_SIZE;
     this.cacheKeys = []; // Track insertion order for LRU
+    this.logger = logger.child('TemplateEngine');
   }
 
   /**
@@ -22,7 +29,7 @@ class TemplateEngine {
    * @returns {string} Escaped text safe for HTML attributes
    */
   escapeHtml(text) {
-    if (!text) return '';
+    if (!text) {return '';}
     return text
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
@@ -37,7 +44,7 @@ class TemplateEngine {
    * @returns {string} Safe URL or '#' if invalid
    */
   sanitizeUrl(url) {
-    if (!url || typeof url !== 'string') return '#';
+    if (!url || typeof url !== 'string') {return '#';}
     
     const trimmed = url.trim();
     
@@ -46,7 +53,7 @@ class TemplateEngine {
     const lowerUrl = trimmed.toLowerCase();
     
     if (dangerousProtocols.some(proto => lowerUrl.startsWith(proto))) {
-      console.warn(`Blocked dangerous URL: ${url}`);
+      this.logger.warn('Blocked dangerous URL', { url });
       return '#';
     }
     
@@ -120,20 +127,20 @@ class TemplateEngine {
    */
   renderNavigation(items, context) {
     if (!Array.isArray(items)) {
-      console.warn('Navigation items must be an array');
+      this.logger.warn('Navigation items must be an array');
       return '';
     }
 
     return items.map(item => {
       if (!item || typeof item !== 'object') {
-        console.warn('Invalid navigation item:', item);
+        this.logger.warn('Invalid navigation item', { item });
         return '';
       }
 
       if (item.section) {
         // Validate section structure
         if (!item.items || !Array.isArray(item.items)) {
-          console.warn('Section must have items array:', item);
+          this.logger.warn('Section must have items array', { section: item.section });
           return '';
         }
 
@@ -241,13 +248,13 @@ class TemplateEngine {
    * Render meta tags
    */
   renderMetaTags(context) {
-    const { project, seo, github } = this.config;
+    const { project, seo } = this.config;
     const { page } = context;
 
     const baseUrl = project.base_url.replace(/\/$/, '');
     
     // SECURITY: Validate and sanitize filename to prevent URL injection
-    const safeFilename = page.filename.replace(/[^a-zA-Z0-9\-_\.]/g, '');
+    const safeFilename = page.filename.replace(/[^a-zA-Z0-9\-_.]/g, '');
     const pageUrl = `${baseUrl}/${safeFilename}`;
     
     // Fallback for OG image if not configured
@@ -298,7 +305,7 @@ class TemplateEngine {
   /**
    * Render structured data (JSON-LD)
    */
-  renderStructuredData(context) {
+  renderStructuredData(_context) {
     const { project, branding, github } = this.config;
     
     return `<script type="application/ld+json">

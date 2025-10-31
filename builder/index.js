@@ -8,14 +8,49 @@
 
 const fs = require('fs');
 const path = require('path');
-const yaml = require('js-yaml');
 const MarkdownParser = require('./markdown-parser');
 const TemplateEngine = require('./template-engine');
 const SearchIndexer = require('./search-indexer');
 const { generateSitemap } = require('./generators/sitemap');
 const { generateRobots } = require('./generators/robots');
+const { logger } = require('./logger');
+const { ParseError } = require('./errors');
+const { loadConfig } = require('./config/config-loader');
+const { copyDirRecursive, ensureDir } = require('./utils/file-utils');
 
+// Build Configuration Constants
+const BUILD_CONFIG = {
+  MAX_DEPTH: 10,              // Maximum recursion depth for asset copying
+  MAX_FILES_TO_INDEX: 1000,   // Maximum files for search index
+  DEBOUNCE_DELAY: 300,        // Delay before rebuilding in watch mode
+  WATCH_STABILTY: 200,        // File stability threshold for watcher
+  WATCH_POLL_INTERVAL: 100    // Poll interval for file watcher
+};
+
+/**
+ * Chiron Documentation Builder
+ * ============================
+ * Main builder class for generating static documentation sites from Markdown and YAML config.
+ * 
+ * @class ChironBuilder
+ * @description Orchestrates the build process including:
+ * - Configuration loading and validation
+ * - Markdown parsing and HTML generation  
+ * - Asset copying and optimization
+ * - Sitemap and robots.txt generation
+ * - Search index creation
+ * - File watching for development
+ * 
+ * @example
+ * const ChironBuilder = require('./builder');
+ * const builder = new ChironBuilder();
+ * builder.build();
+ */
 class ChironBuilder {
+  /**
+   * Create a new Chiron builder instance
+   * @param {string} [configPath='chiron.config.yaml'] - Path to configuration file
+   */
   constructor(configPath = 'chiron.config.yaml') {
     this.rootDir = path.resolve(__dirname, '..');
     this.configPath = path.join(this.rootDir, configPath);
@@ -23,6 +58,7 @@ class ChironBuilder {
     this.markdownParser = new MarkdownParser();
     this.templateEngine = null;
     this.buildErrors = []; // Track errors during build
+    this.logger = logger.child('Builder');
   }
 
   /**
@@ -31,108 +67,9 @@ class ChironBuilder {
    * @throws {Error} If config file cannot be read or is invalid
    */
   loadConfig() {
-    try {
-      const configContent = fs.readFileSync(this.configPath, 'utf8');
-      this.config = yaml.load(configContent);
-      
-      // Validate configuration
-      this.validateConfig(this.config);
-      
-      console.log('✓ Configuration loaded successfully');
-      return this.config;
-    } catch (error) {
-      console.error('✗ Error loading configuration:', error.message);
-      process.exit(1);
-    }
-  }
-
-  /**
-   * Validate configuration has all required fields
-   * @param {Object} config - Configuration object to validate
-   * @returns {boolean} True if valid
-   * @throws {Error} If required fields are missing or invalid
-   */
-  validateConfig(config) {
-    // Input validation
-    if (!config || typeof config !== 'object') {
-      throw new Error('Configuration must be a valid object');
-    }
-
-    const required = [
-      'project.name',
-      'project.base_url',
-      'build.output_dir',
-      'build.content_dir',
-      'build.templates_dir',
-      'navigation.sidebar'
-    ];
-    
-    for (const path of required) {
-      const value = this.getNestedValue(config, path);
-      if (value === undefined || value === null || value === '') {
-        throw new Error(`Missing required configuration: ${path}`);
-      }
-    }
-    
-    // SECURITY: Validate base_url format to prevent injection
-    const baseUrl = config.project.base_url;
-    if (typeof baseUrl !== 'string') {
-      throw new Error('project.base_url must be a string');
-    }
-    
-    const trimmedUrl = baseUrl.trim();
-    if (!trimmedUrl.startsWith('http://') && !trimmedUrl.startsWith('https://')) {
-      throw new Error('project.base_url must be a valid URL starting with http:// or https://');
-    }
-    
-    // Validate no dangerous protocols
-    const dangerousProtocols = ['javascript:', 'data:', 'vbscript:', 'file:'];
-    if (dangerousProtocols.some(proto => trimmedUrl.toLowerCase().includes(proto))) {
-      throw new Error('project.base_url contains dangerous protocol');
-    }
-    
-    // Validate navigation structure
-    if (!Array.isArray(config.navigation.sidebar)) {
-      throw new Error('navigation.sidebar must be an array');
-    }
-    
-    // SECURITY: Validate critical paths are strings and don't contain path traversal
-    const paths = ['build.output_dir', 'build.content_dir', 'build.templates_dir', 'build.assets_dir'];
-    for (const pathKey of paths) {
-      const value = this.getNestedValue(config, pathKey);
-      if (value) {
-        if (typeof value !== 'string') {
-          throw new Error(`${pathKey} must be a string`);
-        }
-        // Check for path traversal attempts
-        if (value.includes('..') || value.startsWith('/') || /^[a-zA-Z]:/.test(value)) {
-          throw new Error(`${pathKey} must be a relative path without '..' or absolute paths`);
-        }
-      }
-    }
-    
-    // Validate project name and description are strings
-    if (typeof config.project.name !== 'string') {
-      throw new Error('project.name must be a string');
-    }
-    
-    if (config.project.description && typeof config.project.description !== 'string') {
-      throw new Error('project.description must be a string');
-    }
-    
-    return true;
-  }
-
-  /**
-   * Get nested value from object using dot notation
-   * @param {Object} obj - Object to search in
-   * @param {string} path - Dot-separated path (e.g., 'project.name')
-   * @returns {*} Value at the path, or undefined if not found
-   * @example
-   * getNestedValue({ project: { name: 'Chiron' } }, 'project.name') // 'Chiron'
-   */
-  getNestedValue(obj, path) {
-    return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+    this.config = loadConfig(this.configPath);
+    this.logger.info('Configuration loaded successfully');
+    return this.config;
   }
 
   /**
@@ -145,9 +82,7 @@ class ChironBuilder {
     
     // Ensure output directory exists
     const outputDir = path.join(this.rootDir, this.config.build.output_dir);
-    if (!fs.existsSync(outputDir)) {
-      fs.mkdirSync(outputDir, { recursive: true });
-    }
+    ensureDir(outputDir);
   }
 
   /**
@@ -158,7 +93,7 @@ class ChironBuilder {
     const contentDir = path.join(this.rootDir, this.config.build.content_dir);
     
     if (!fs.existsSync(contentDir)) {
-      console.warn(`⚠ Content directory not found: ${contentDir}`);
+      this.logger.warn('Content directory not found', { path: contentDir });
       return [];
     }
 
@@ -208,7 +143,7 @@ class ChironBuilder {
         const customPath = path.join(this.rootDir, file.outputName);
         const customHTML = fs.readFileSync(customPath, 'utf8');
         fs.writeFileSync(outputPath, customHTML, 'utf8');
-        console.log(`  ✓ Generated: ${file.outputName} (using custom HTML)`);
+        this.logger.info(`Generated: ${file.outputName} (using custom HTML)`);
         
         // Try to extract title from custom HTML for sitemap
         const titleMatch = customHTML.match(/<title>(.*?)<\/title>/i);
@@ -216,7 +151,7 @@ class ChironBuilder {
         
         return {
           url: file.outputName,
-          title: title,
+          title,
           description: this.config.project.description,
           lastmod: new Date().toISOString().split('T')[0]
         };
@@ -252,7 +187,7 @@ class ChironBuilder {
 
       // Write output file
       fs.writeFileSync(outputPath, html, 'utf8');
-      console.log(`  ✓ Generated: ${file.outputName}`);
+      this.logger.info(`Generated: ${file.outputName}`);
 
       return {
         url: file.outputName,
@@ -261,25 +196,35 @@ class ChironBuilder {
         lastmod: new Date().toISOString().split('T')[0]
       };
     } catch (error) {
-      // Track the error with full details
+      // Wrap in appropriate error type
+      const parseError = error instanceof ParseError ? error : new ParseError(
+        `Failed to process ${file.filename}: ${error.message}`,
+        file.path,
+        { originalError: error.message, stack: error.stack }
+      );
+      
       this.buildErrors.push({ 
         file: file.filename, 
-        error: error.message,
-        stack: error.stack 
+        error: parseError.message,
+        stack: parseError.stack 
       });
-      console.error(`  ✗ Error processing ${file.filename}:`, error.message);
+      
+      this.logger.error(`Error processing ${file.filename}`, { 
+        error: parseError.message,
+        file: file.path
+      });
       
       // Fail fast if strict mode is enabled or in production
       const args = process.argv.slice(2);
       const isStrict = args.includes('--strict') || args.includes('-s');
       
       if (process.env.NODE_ENV === 'production' || isStrict) {
-        console.error('\n❌ Build failed in strict mode. Use --no-strict to continue on errors.\n');
-        throw error;
+        this.logger.error('Build failed in strict mode. Use --no-strict to continue on errors.');
+        throw parseError;
       }
       
       // In development, log but continue
-      console.warn('  ⚠ Continuing build in development mode (use --strict to fail on errors)');
+      this.logger.warn('Continuing build in development mode (use --strict to fail on errors)');
       return null;
     }
   }
@@ -294,97 +239,15 @@ class ChironBuilder {
     const outputDir = path.join(this.rootDir, this.config.build.output_dir, 'assets');
 
     if (!fs.existsSync(assetsDir)) {
-      console.warn(`⚠ Assets directory not found: ${assetsDir}`);
+      this.logger.warn('Assets directory not found', { path: assetsDir });
       return;
     }
 
-    // Create output assets directory
-    if (!fs.existsSync(outputDir)) {
-      fs.mkdirSync(outputDir, { recursive: true });
-    }
-
-    // Track visited paths to prevent infinite loops from circular symlinks
-    const visitedPaths = new Set();
-    const MAX_DEPTH = 10; // Maximum recursion depth
-
-    // Copy all files from assets with error handling and circular symlink protection
-    const copyRecursive = (src, dest, depth = 0) => {
-      // Check recursion depth limit
-      if (depth > MAX_DEPTH) {
-        console.warn(`  ⚠ Maximum recursion depth reached for: ${src}`);
-        return;
-      }
-
-      // Get real path to detect circular symlinks and path traversal
-      let realSrc;
-      try {
-        realSrc = fs.realpathSync(src);
-      } catch (error) {
-        console.error(`  ✗ Error resolving path ${src}:`, error.message);
-        return;
-      }
-
-      // SECURITY: Prevent path traversal - ensure real path is within assets directory
-      const realAssetsDir = fs.realpathSync(assetsDir);
-      
-      // Normalize paths for consistent comparison across OS
-      const normalizedRealSrc = path.normalize(realSrc);
-      const normalizedAssetsDir = path.normalize(realAssetsDir);
-      
-      if (!normalizedRealSrc.startsWith(normalizedAssetsDir)) {
-        console.warn(`  ⚠ Blocked path traversal attempt: ${src} -> ${realSrc}`);
-        return;
-      }
-
-      // Check if we've already visited this path (circular symlink detection)
-      if (visitedPaths.has(realSrc)) {
-        console.warn(`  ⚠ Circular symlink detected, skipping: ${src}`);
-        return;
-      }
-
-      visitedPaths.add(realSrc);
-
-      try {
-        const entries = fs.readdirSync(src, { withFileTypes: true });
-        
-        for (const entry of entries) {
-          const srcPath = path.join(src, entry.name);
-          const destPath = path.join(dest, entry.name);
-
-          try {
-            if (entry.isDirectory()) {
-              if (!fs.existsSync(destPath)) {
-                fs.mkdirSync(destPath, { recursive: true });
-              }
-              copyRecursive(srcPath, destPath, depth + 1);
-            } else if (entry.isFile() || entry.isSymbolicLink()) {
-              // Copy file or symlink
-              fs.copyFileSync(srcPath, destPath);
-            } else {
-              console.warn(`  ⚠ Skipping unsupported file type: ${entry.name}`);
-            }
-          } catch (error) {
-            console.error(`  ✗ Error copying ${entry.name}:`, error.message);
-            this.buildErrors.push({
-              file: entry.name,
-              error: `Failed to copy asset: ${error.message}`
-            });
-          }
-        }
-      } catch (error) {
-        console.error(`  ✗ Error reading directory ${src}:`, error.message);
-        throw error;
-      }
-
-      // Don't remove from visited set - keep it to prevent complex circular references
-      // The set will be cleared when copyRecursive finishes completely
-    };
-
     try {
-      copyRecursive(assetsDir, outputDir);
-      console.log('✓ Assets copied');
+      copyDirRecursive(assetsDir, outputDir, BUILD_CONFIG.MAX_DEPTH);
+      this.logger.info('Assets copied');
     } catch (error) {
-      console.error('✗ Failed to copy assets:', error.message);
+      this.logger.error('Failed to copy assets', { error: error.message });
       this.buildErrors.push({
         file: 'assets',
         error: `Failed to copy assets: ${error.message}`
@@ -424,7 +287,7 @@ class ChironBuilder {
       }
     }
 
-    console.log('✓ Static files copied');
+    this.logger.info('Static files copied');
   }
 
   /**
@@ -454,21 +317,21 @@ class ChironBuilder {
             if (file === 'custom.css' || file === 'custom.js') {
               await fs.writeFile(dest, '', 'utf8');
             } else {
-              console.warn(`  ⚠ File not found: ${file}`);
+              this.logger.warn('File not found', { file });
             }
           }
         } catch (err) {
-          console.error(`  ✗ Error processing ${file}:`, err.message);
+          this.logger.error('Error processing file', { file, error: err.message });
           this.buildErrors.push({
-            file: file,
+            file,
             error: `Failed to process: ${err.message}`
           });
         }
       }));
 
-      console.log('✓ Scripts and styles copied');
+      this.logger.info('Scripts and styles copied');
     } catch (error) {
-      console.error('✗ Failed to copy scripts:', error.message);
+      this.logger.error('Failed to copy scripts', { error: error.message });
       this.buildErrors.push({
         file: 'scripts',
         error: `Failed to copy scripts: ${error.message}`
@@ -492,7 +355,7 @@ class ChironBuilder {
       const customPath = path.join(this.rootDir, '404.html');
       const customHTML = fs.readFileSync(customPath, 'utf8');
       fs.writeFileSync(outputPath, customHTML, 'utf8');
-      console.log('  ✓ Generated: 404.html (using custom HTML)');
+      this.logger.info('Generated: 404.html (using custom HTML)');
       return;
     }
 
@@ -517,94 +380,148 @@ class ChironBuilder {
 
     const html = this.templateEngine.render(pageContext);
     fs.writeFileSync(outputPath, html, 'utf8');
-    console.log('  ✓ Generated: 404.html (default)');
+    this.logger.info('Generated: 404.html (default)');
   }
 
   /**
    * Build the entire site
    * Processes all markdown files, copies assets, and generates sitemap/robots.txt
    * @returns {Promise<void>}
+   * @throws {Error} In strict mode or production environment
    */
   async build() {
     const buildStartTime = Date.now();
-    console.log('\n🏗️  Building Chiron documentation site...\n');
+    this.logger.info('Building Chiron documentation site...\n');
 
-    this.init();
+    try {
+      this.init();
+    } catch (error) {
+      this.logger.error('Failed to initialize builder', { error: error.message });
+      process.exit(1);
+    }
     
     // Reset error tracking
     this.buildErrors = [];
 
     // Process all markdown files
-    console.log('📄 Processing content files...');
+    this.logger.info('Processing content files...');
     const contentFiles = this.getContentFiles();
-    console.log(`   Found ${contentFiles.length} markdown file(s)\n`);
+    this.logger.info(`Found ${contentFiles.length} markdown file(s)`);
     
-    // Process files in parallel for better performance
-    const pagePromises = contentFiles.map(file => 
-      Promise.resolve(this.processMarkdownFile(file))
-    );
+    // Validate we have content files
+    if (contentFiles.length === 0) {
+      this.logger.warn('No markdown files found in content directory');
+    }
     
-    const pageResults = await Promise.all(pagePromises);
-    const pages = pageResults.filter(page => page !== null);
+    // Process files sequentially to avoid race conditions with file system
+    const pages = [];
+    for (const file of contentFiles) {
+      const result = await Promise.resolve(this.processMarkdownFile(file));
+      if (result !== null) {
+        pages.push(result);
+      }
+    }
     
-    console.log(`\n   Successfully processed: ${pages.length}/${contentFiles.length} files`);
+    this.logger.info(`Successfully processed: ${pages.length}/${contentFiles.length} files`);
 
-    // Generate 404 page
-    this.generate404();
+    // Generate 404 page (wrapped in try-catch)
+    try {
+      this.generate404();
+    } catch (error) {
+      this.logger.error('Error generating 404 page', { error: error.message });
+      this.buildErrors.push({ file: '404.html', error: error.message });
+    }
 
     // Copy assets and static files
-    console.log('\n📦 Copying assets...');
-    this.copyAssets();
-    this.copyStaticFiles();
-    await this.copyScripts();
+    this.logger.info('Copying assets...');
+    try {
+      this.copyAssets();
+    } catch (error) {
+      this.logger.error('Error copying assets', { error: error.message });
+      this.buildErrors.push({ file: 'assets', error: error.message });
+    }
+    
+    try {
+      this.copyStaticFiles();
+    } catch (error) {
+      this.logger.error('Error copying static files', { error: error.message });
+      this.buildErrors.push({ file: 'static', error: error.message });
+    }
+    
+    try {
+      await this.copyScripts();
+    } catch (error) {
+      this.logger.error('Error copying scripts', { error: error.message });
+      this.buildErrors.push({ file: 'scripts', error: error.message });
+    }
 
     // Generate sitemap
     if (this.config.build.sitemap?.enabled) {
-      console.log('\n🗺️  Generating sitemap...');
-      generateSitemap(this.config, pages, this.rootDir);
-      console.log('✓ Sitemap generated');
+      this.logger.info('Generating sitemap...');
+      try {
+        generateSitemap(this.config, pages, this.rootDir);
+        this.logger.info('Sitemap generated');
+      } catch (error) {
+        this.logger.error('Error generating sitemap', { error: error.message });
+        this.buildErrors.push({ file: 'sitemap.xml', error: error.message });
+      }
     }
 
     // Generate robots.txt
     if (this.config.build.robots?.enabled) {
-      console.log('\n🤖 Generating robots.txt...');
-      generateRobots(this.config, this.rootDir);
-      console.log('✓ Robots.txt generated');
+      this.logger.info('Generating robots.txt...');
+      try {
+        generateRobots(this.config, this.rootDir);
+        this.logger.info('Robots.txt generated');
+      } catch (error) {
+        this.logger.error('Error generating robots.txt', { error: error.message });
+        this.buildErrors.push({ file: 'robots.txt', error: error.message });
+      }
     }
 
     // Generate search index
     if (this.config.features?.search) {
-      console.log('\n🔍 Generating search index...');
-      const searchIndexer = new SearchIndexer(this.config, this.rootDir);
-      searchIndexer.generate();
-      searchIndexer.save();
+      this.logger.info('Generating search index...');
+      try {
+        const searchIndexer = new SearchIndexer(this.config, this.rootDir);
+        searchIndexer.generate();
+        searchIndexer.save();
+      } catch (error) {
+        this.logger.error('Error generating search index', { error: error.message });
+        this.buildErrors.push({ file: 'search-index.json', error: error.message });
+      }
     }
 
     // Report build errors if any
     if (this.buildErrors.length > 0) {
-      console.log('\n⚠️  Build completed with errors:');
+      this.logger.warn(`Build completed with ${this.buildErrors.length} error(s)`);
       this.buildErrors.forEach((err, index) => {
-        console.error(`  ${index + 1}. ${err.file}: ${err.error}`);
+        this.logger.error(`${index + 1}. ${err.file}`, { error: err.error });
         if (process.env.DEBUG) {
-          console.error(`     Stack: ${err.stack}`);
+          this.logger.debug('Stack trace', { stack: err.stack });
         }
       });
-      console.log(`\n⚠️  Total errors: ${this.buildErrors.length}`);
-      console.log('💡 Set DEBUG=true for full stack traces\n');
+      this.logger.info('Set DEBUG=true for full stack traces');
+      
+      // Exit with error in strict mode
+      const args = process.argv.slice(2);
+      const isStrict = args.includes('--strict') || args.includes('-s');
+      if (process.env.NODE_ENV === 'production' || isStrict) {
+        this.logger.error('Build failed. See errors above.');
+        process.exit(1);
+      }
     } else {
       const buildTime = ((Date.now() - buildStartTime) / 1000).toFixed(2);
-      console.log(`\n✨ Build completed successfully in ${buildTime}s!\n`);
+      this.logger.info(`Build completed successfully in ${buildTime}s`);
     }
     
-    console.log(`📁 Output directory: ${this.config.build.output_dir}/`);
-    console.log(`🌐 Pages generated: ${pages.length}`);
-    if (this.config.build.sitemap?.enabled) {
-      console.log(`🗺️  Sitemap: ${this.config.build.output_dir}/sitemap.xml`);
-    }
-    if (this.config.build.robots?.enabled) {
-      console.log(`🤖 Robots: ${this.config.build.output_dir}/robots.txt`);
-    }
-    console.log('\n💡 Run "npm run preview" to preview your site\n');
+    this.logger.info('Build summary', {
+      outputDir: this.config.build.output_dir,
+      pagesGenerated: pages.length,
+      sitemap: this.config.build.sitemap?.enabled ? `${this.config.build.output_dir}/sitemap.xml` : null,
+      robots: this.config.build.robots?.enabled ? `${this.config.build.output_dir}/robots.txt` : null
+    });
+    this.logger.info('Run "npm run preview" to preview your site');
   }
 
   /**
@@ -612,7 +529,7 @@ class ChironBuilder {
    * Watches config, content, and templates for changes and rebuilds automatically
    */
   watch() {
-    console.log('👀 Watching for changes...\n');
+    this.logger.info('Watching for changes...');
     
     const chokidar = require('chokidar');
     const contentDir = path.join(this.rootDir, this.config.build.content_dir);
@@ -625,10 +542,10 @@ class ChironBuilder {
       }
       
       rebuildTimeout = setTimeout(() => {
-        console.log(`\n📝 File changed: ${path.relative(this.rootDir, filePath)}`);
+        this.logger.info('File changed', { file: path.relative(this.rootDir, filePath) });
         this.build();
         rebuildTimeout = null;
-      }, 300); // Wait 300ms before rebuilding
+      }, BUILD_CONFIG.DEBOUNCE_DELAY);
     };
     
     const watcher = chokidar.watch([
@@ -639,8 +556,8 @@ class ChironBuilder {
       persistent: true,
       ignoreInitial: true,
       awaitWriteFinish: {
-        stabilityThreshold: 200,
-        pollInterval: 100
+        stabilityThreshold: BUILD_CONFIG.WATCH_STABILTY,
+        pollInterval: BUILD_CONFIG.WATCH_POLL_INTERVAL
       }
     });
 
@@ -648,9 +565,9 @@ class ChironBuilder {
 
     // Cleanup on process exit
     process.on('SIGINT', () => {
-      console.log('\n\n� Stopping watch mode...');
+      this.logger.info('Stopping watch mode...');
       watcher.close();
-      if (rebuildTimeout) clearTimeout(rebuildTimeout);
+      if (rebuildTimeout) {clearTimeout(rebuildTimeout);}
       process.exit(0);
     });
 

@@ -2,7 +2,7 @@
 
 Feature cards are a great way to showcase features, services, or sections of your documentation in a visually appealing grid layout.
 
-## 🎨 Basic Usage
+## Basic Usage
 
 ### Simple Feature Card Grid
 
@@ -30,7 +30,7 @@ Feature cards are a great way to showcase features, services, or sections of you
 </div>
 ```
 
-## 📐 Structure
+## Structure
 
 ### HTML Structure
 
@@ -53,7 +53,7 @@ Feature cards are a great way to showcase features, services, or sections of you
 - **`.feature-icon`** - Icon container with colored background
 - **`svg`** - Icon (24x24px recommended)
 
-## 🎯 Examples
+## Examples
 
 ### Example 1: Documentation Sections
 
@@ -151,7 +151,7 @@ Feature cards are a great way to showcase features, services, or sections of you
 </div>
 ```
 
-## 🎨 SVG Icons
+## SVG Icons
 
 ### Where to Find Icons
 
@@ -209,7 +209,7 @@ Use this SVG format for best results:
 </svg>
 ```
 
-## 🎯 Non-Clickable Cards
+## Non-Clickable Cards
 
 If you don't want cards to be links, use `<div>` instead of `<a>`:
 
@@ -225,7 +225,7 @@ If you don't want cards to be links, use `<div>` instead of `<a>`:
 </div>
 ```
 
-## 📱 Responsive Behavior
+## Responsive Behavior
 
 The feature grid automatically adapts:
 
@@ -235,7 +235,7 @@ The feature grid automatically adapts:
 
 No configuration needed - it just works!
 
-## 🎨 Customization
+## Customization
 
 ### Change Icon Colors
 
@@ -283,15 +283,15 @@ Edit `custom.css`:
 }
 ```
 
-## ♿ Accessibility
+## Accessibility
 
 Feature cards are designed with accessibility in mind:
 
-- ✅ **Keyboard navigable** - Tab through cards
-- ✅ **Screen reader friendly** - Proper semantic HTML
-- ✅ **Focus indicators** - Clear focus outline
-- ✅ **No motion** - Hover effects use color only (no movement)
-- ✅ **High contrast** - Works in dark mode
+- **Keyboard navigable** - Tab through cards
+- **Screen reader friendly** - Proper semantic HTML
+- **Focus indicators** - Clear focus outline
+- **No motion** - Hover effects use color only (no movement)
+- **High contrast** - Works in dark mode
 
 ### Best Practices
 
@@ -300,7 +300,7 @@ Feature cards are designed with accessibility in mind:
 3. **Add `target="_blank"` for external links** - Opens in new tab
 4. **Include `rel="noopener"` for external links** - Security best practice
 
-## 🚀 Advanced Examples
+## Advanced Examples
 
 ### Cards with Badges
 
@@ -333,7 +333,7 @@ Feature cards are designed with accessibility in mind:
 </div>
 ```
 
-## 📚 Complete Example
+## Complete Example
 
 Here's a complete example with 6 cards:
 

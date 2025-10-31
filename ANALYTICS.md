@@ -2,12 +2,12 @@
 
 Chiron supports optional analytics integration for tracking your documentation site usage.
 
-## 📊 Supported Platforms
+## Supported Platforms
 
 - **Google Analytics 4 (GA4)** - Modern analytics platform
 - **Google Tag Manager (GTM)** - Tag management system (optional)
 
-## 🚀 Quick Setup
+## Quick Setup
 
 ### Google Analytics 4
 
@@ -60,7 +60,7 @@ analytics:
    - Add any other tracking scripts
    - Publish your container
 
-## ⚙️ Configuration Options
+## Configuration Options
 
 ### Full Configuration Example
 
@@ -85,7 +85,7 @@ analytics:
 
 The builder will skip adding any analytics scripts.
 
-## 🔍 How It Works
+## How It Works
 
 ### With Analytics Enabled
 
@@ -106,7 +106,7 @@ When you provide a Google Analytics ID, the builder automatically adds this to t
 
 If no analytics ID is provided, the `{{ANALYTICS}}` placeholder remains empty, and no tracking scripts are added.
 
-## 📈 What Gets Tracked
+## What Gets Tracked
 
 ### Google Analytics 4 Tracks:
 
@@ -124,7 +124,7 @@ If no analytics ID is provided, the `{{ANALYTICS}}` placeholder remains empty, a
 - Users can opt-out via browser settings
 - GDPR compliant when configured correctly
 
-## 🛡️ Privacy & GDPR
+## Privacy & GDPR
 
 ### Cookie Consent
 
@@ -155,7 +155,7 @@ function loadAnalytics() {
 }
 ```
 
-## 🧪 Testing Analytics
+## Testing Analytics
 
 ### 1. Check Installation
 
@@ -192,7 +192,7 @@ gtag('config', 'G-XXXXXXXXXX', {
 
 Then check the browser console for tracking events.
 
-## 🚫 Disabling Analytics
+## Disabling Analytics
 
 ### Temporarily
 
@@ -212,7 +212,7 @@ Remove the entire analytics section:
 #   google_analytics: ""
 ```
 
-## 📊 Advanced: Custom Events
+## Advanced: Custom Events
 
 ### Track Custom Events
 
@@ -251,7 +251,7 @@ document.querySelectorAll('a[href^="http"]').forEach(link => {
 });
 ```
 
-## 🔗 Multiple Sites
+## Multiple Sites
 
 If you have multiple documentation sites, use different GA4 properties:
 
@@ -267,14 +267,14 @@ analytics:
 
 Or use the same property with different data streams.
 
-## 📚 Resources
+## Resources
 
 - [Google Analytics 4 Documentation](https://support.google.com/analytics/answer/10089681)
 - [Google Tag Manager Guide](https://support.google.com/tagmanager/answer/6102821)
 - [GA4 Event Tracking](https://developers.google.com/analytics/devguides/collection/ga4/events)
 - [GDPR Compliance](https://support.google.com/analytics/answer/9019185)
 
-## ❓ FAQ
+## FAQ
 
 **Q: Is analytics required?**  
 A: No, it's completely optional. Leave the field empty to skip analytics.

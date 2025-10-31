@@ -1,8 +1,8 @@
 # Header Navigation Configuration
 
-La navigazione nell'header di Chiron è completamente configurabile tramite il file `chiron.config.yaml`.
+The header navigation in Chiron is fully configurable through the `chiron.config.yaml` file.
 
-## 📋 Configurazione Base
+## Basic Configuration
 
 ```yaml
 navigation:
@@ -11,11 +11,11 @@ navigation:
       url: index.html
 ```
 
-## 🔧 Opzioni Disponibili
+## Available Options
 
-### Link Interni
+### Internal Links
 
-Per link alle pagine del tuo sito:
+For links to pages on your site:
 
 ```yaml
 navigation:
@@ -28,9 +28,9 @@ navigation:
       url: getting-started.html
 ```
 
-### Link Esterni
+### External Links
 
-Per link esterni (si aprono in una nuova tab):
+For external links (open in a new tab):
 
 ```yaml
 navigation:
@@ -43,9 +43,9 @@ navigation:
       external: true
 ```
 
-## 📝 Esempi Completi
+## Complete Examples
 
-### Esempio Minimale
+### Minimal Example
 
 ```yaml
 navigation:
@@ -54,7 +54,7 @@ navigation:
       url: index.html
 ```
 
-### Esempio con Link Multipli
+### Multiple Links Example
 
 ```yaml
 navigation:
@@ -70,7 +70,7 @@ navigation:
       external: true
 ```
 
-### Esempio Completo
+### Complete Example
 
 ```yaml
 navigation:
@@ -90,22 +90,23 @@ navigation:
       external: true
 ```
 
-## 🎨 Comportamento
+## Behavior
 
-### Link Interni
-- Navigazione standard (stessa tab)
-- Nessun attributo `target` o `rel`
-- Ideale per pagine della documentazione
+### Internal Links
+- Standard navigation (same tab)
+- No `target` or `rel` attributes
+- Ideal for documentation pages
 
-### Link Esterni
-- Si aprono in una nuova tab (`target="_blank"`)
-- Includono `rel="noopener"` per sicurezza
-- Ideale per GitHub, siti esterni, etc.
+### External Links
+- Open in a new tab (`target="_blank"`)
+- Include `rel="noopener"` for security
+- Ideal for GitHub, external sites, etc.
 
-## 💡 Best Practices
+## Best Practices
 
-### 1. Mantieni l'Header Semplice
-L'header dovrebbe contenere solo i link più importanti (3-5 massimo):
+### 1. Keep Header Simple
+
+The header should contain only the most important links (3-5 maximum):
 
 ```yaml
 navigation:
@@ -119,56 +120,58 @@ navigation:
       external: true
 ```
 
-### 2. Usa Label Brevi
-Le label dovrebbero essere concise e chiare:
+### 2. Use Short Labels
 
-✅ **Buono:**
+Labels should be concise and clear:
+
+✅ **Good:**
 ```yaml
 - label: Docs
 - label: API
 - label: GitHub
 ```
 
-❌ **Da evitare:**
+❌ **Avoid:**
 ```yaml
 - label: Complete Documentation Guide
 - label: Full API Reference Documentation
 ```
 
-### 3. Ordina per Importanza
-Metti i link più importanti per primi:
+### 3. Order by Importance
+
+Put the most important links first:
 
 ```yaml
 navigation:
   header:
-    - label: Documentation  # Più importante
+    - label: Documentation  # Most important
       url: index.html
-    - label: API           # Importante
+    - label: API           # Important
       url: api-reference.html
-    - label: GitHub        # Meno critico
+    - label: GitHub        # Less critical
       url: https://github.com/username/repo
       external: true
 ```
 
-## 🔍 Accessibilità
+## Accessibility
 
-L'header navigation include automaticamente:
+The header navigation automatically includes:
 
-- `aria-label="Main navigation"` per screen readers
-- Link semantici con `<a>` tags
-- Attributi `rel="noopener"` per link esterni (sicurezza)
-- Hover states per feedback visivo
+- `aria-label="Main navigation"` for screen readers
+- Semantic links with `<a>` tags
+- `rel="noopener"` for external links (security)
+- Hover states for visual feedback
 
-## 📱 Responsive
+## Responsive
 
-Su mobile (< 768px):
-- L'header navigation viene **nascosta automaticamente**
-- Appare il menu hamburger per la sidebar
-- Gli utenti accedono alla navigazione tramite la sidebar mobile
+On mobile (< 768px):
+- Header navigation is **automatically hidden**
+- Hamburger menu appears for the sidebar
+- Users access navigation through the mobile sidebar
 
-## 🎯 Integrazione con Breadcrumb
+## Integration with Breadcrumb
 
-L'header navigation è indipendente dal breadcrumb:
+Header navigation is independent from the breadcrumb:
 
 ```yaml
 navigation:
@@ -177,7 +180,7 @@ navigation:
     - label: Documentation
       url: index.html
   
-  # Breadcrumb (sotto l'header)
+  # Breadcrumb (below header)
   breadcrumb:
     enabled: true
     items:
@@ -189,9 +192,9 @@ navigation:
         external: true
 ```
 
-## 🚀 Template Personalizzato
+## Custom Template
 
-Se vuoi personalizzare ulteriormente l'header, puoi modificare `templates/page.html`:
+If you want to further customize the header, you can modify `templates/page.html`:
 
 ```html
 <nav class="header-nav" aria-label="Main navigation">
@@ -199,11 +202,11 @@ Se vuoi personalizzare ulteriormente l'header, puoi modificare `templates/page.h
 </nav>
 ```
 
-Il placeholder `{{HEADER_NAV}}` viene sostituito automaticamente con i link configurati.
+The `{{HEADER_NAV}}` placeholder is automatically replaced with the configured links.
 
-## 🎨 Stili CSS
+## CSS Styles
 
-Gli stili dell'header navigation sono in `styles.css`:
+Header navigation styles are in `styles.css`:
 
 ```css
 .header-nav {
@@ -225,14 +228,14 @@ Gli stili dell'header navigation sono in `styles.css`:
 }
 ```
 
-Puoi personalizzare questi stili in `custom.css` se necessario.
+You can customize these styles in `custom.css` if needed.
 
-## 📚 Vedi Anche
+## See Also
 
-- [Breadcrumb Configuration](./BREADCRUMB.md) - Configurazione breadcrumb
-- [Sidebar Navigation](./SIDEBAR-NAVIGATION.md) - Navigazione sidebar
-- [Footer Links](./FOOTER-LINKS.md) - Link nel footer
-- [Customization Guide](./CUSTOMIZATION.md) - Personalizzazione avanzata
+- [Breadcrumb Configuration](./BREADCRUMB.md) - Breadcrumb configuration
+- [Sidebar Navigation](./SIDEBAR-NAVIGATION.md) - Sidebar navigation
+- [Footer Links](./FOOTER-LINKS.md) - Footer links
+- [Customization Guide](./CUSTOMIZATION.md) - Advanced customization
 
 ---
 

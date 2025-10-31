@@ -4,6 +4,7 @@ package-lock.json
 
 # Build output
 docs/
+docs-api/
 
 # Editor directories and files
 .vscode/

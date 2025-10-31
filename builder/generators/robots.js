@@ -4,8 +4,8 @@
  * Generates robots.txt for search engine crawlers
  */
 
-const fs = require('fs');
 const path = require('path');
+const { writeFile } = require('../utils/file-utils');
 
 /**
  * Generate robots.txt
@@ -38,7 +38,9 @@ Sitemap: ${baseUrl}/sitemap.xml
   }
 
   const outputPath = path.join(rootDir, config.build.output_dir, 'robots.txt');
-  fs.writeFileSync(outputPath, robots, 'utf8');
+  
+  // Write file (automatically creates directory if needed)
+  writeFile(outputPath, robots);
 }
 
 module.exports = { generateRobots };

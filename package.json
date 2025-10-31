@@ -7,7 +7,14 @@
     "build": "node builder/index.js",
     "dev": "node builder/index.js --watch",
     "preview": "npx serve docs",
-    "clean": "node -e \"require('fs').rmSync('docs', {recursive: true, force: true})\""
+    "clean": "node -e \"require('fs').rmSync('docs', {recursive: true, force: true})\"",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint builder/ tests/",
+    "lint:fix": "eslint builder/ tests/ --fix",
+    "docs": "jsdoc -c jsdoc.json",
+    "docs:watch": "nodemon --watch builder --ext js --exec npm run docs"
   },
   "keywords": [
     "documentation",
@@ -24,6 +31,11 @@
     "marked": "^11.1.1"
   },
   "devDependencies": {
-    "chokidar": "^3.5.3"
+    "@types/jest": "^30.0.0",
+    "chokidar": "^3.5.3",
+    "docdash": "^2.0.2",
+    "eslint": "^9.38.0",
+    "jest": "^30.2.0",
+    "jsdoc": "^4.0.5"
   }
 }

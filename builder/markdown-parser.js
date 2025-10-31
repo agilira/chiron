@@ -6,11 +6,19 @@
 
 const matter = require('gray-matter');
 const { marked } = require('marked');
+const { logger } = require('./logger');
+
+// Parser Configuration Constants
+const PARSER_CONFIG = {
+  MAX_CONTENT_SIZE: 10 * 1024 * 1024, // 10MB
+  MAX_ID_LENGTH: 100
+};
 
 class MarkdownParser {
   constructor() {
     // Track generated IDs to prevent duplicates
     this.usedIds = new Set();
+    this.logger = logger.child('MarkdownParser');
     
     // Configure marked options
     marked.setOptions({
@@ -38,7 +46,7 @@ class MarkdownParser {
         .replace(/\s+/g, '-') // Replace spaces with hyphens
         .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
         .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
-        .substring(0, 100); // Limit ID length
+        .substring(0, PARSER_CONFIG.MAX_ID_LENGTH); // Limit ID length
       
       // Handle duplicate IDs
       let finalId = baseId || `heading-${level}-${Math.random().toString(36).substr(2, 9)}`;
@@ -68,7 +76,7 @@ class MarkdownParser {
       const lowerHref = href.toLowerCase().trim();
       
       if (dangerousProtocols.some(proto => lowerHref.startsWith(proto))) {
-        console.warn(`Blocked dangerous link protocol: ${href}`);
+        this.logger.warn('Blocked dangerous link protocol', { href });
         return text;
       }
       
@@ -133,7 +141,7 @@ class MarkdownParser {
     }
 
     // Check content size to prevent DoS
-    const MAX_CONTENT_SIZE = 10 * 1024 * 1024; // 10MB
+    const MAX_CONTENT_SIZE = PARSER_CONFIG.MAX_CONTENT_SIZE;
     if (content.length > MAX_CONTENT_SIZE) {
       throw new Error(`Content too large: ${content.length} bytes (max ${MAX_CONTENT_SIZE})`);
     }
@@ -151,7 +159,7 @@ class MarkdownParser {
         markdown
       };
     } catch (error) {
-      console.error('Error parsing markdown:', error);
+      this.logger.error('Error parsing markdown', { error: error.message, stack: error.stack });
       throw new Error(`Failed to parse markdown: ${error.message}`);
     }
   }

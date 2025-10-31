@@ -4,159 +4,159 @@
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
 [![Markdown](https://img.shields.io/badge/Markdown-GFM-blue.svg)](https://github.github.com/gfm/)
 
-**Chiron** è un builder moderno per siti di documentazione, ottimizzato per GitHub Pages. Scrivi in Markdown, configura in YAML, ottieni un sito professionale.
+**Chiron** is a modern documentation builder optimized for GitHub Pages. Write in Markdown, configure in YAML, get a professional site.
 
-## 🎯 Caratteristiche Principali
+## Key Features
 
-- **📝 Markdown-First**: Scrivi la documentazione in Markdown con frontmatter YAML
-- **⚙️ Configurazione YAML**: Un solo file `chiron.config.yaml` per tutto
-- **🚀 Build Automatico**: Genera HTML, sitemap.xml e robots.txt automaticamente
-- **🎨 Design Moderno**: Interfaccia pulita e responsive
-- **♿ Accessibilità**: WCAG 2.2 AA compliant
-- **🌙 Dark Mode**: Supporto nativo per tema scuro
-- **🔍 SEO Ottimizzato**: Meta tags completi, Open Graph, Schema.org
-- **📦 GitHub Pages Ready**: Output ottimizzato per hosting statico
-- **🎯 Custom Pages**: Supporto per `index.html` e `404.html` personalizzate
-- **📊 Analytics**: Integrazione opzionale con Google Analytics 4 e GTM
-- **📈 Mermaid Diagrams**: Supporto nativo per diagrammi e flowchart
+- **Markdown-First**: Write documentation in Markdown with YAML frontmatter
+- **YAML Configuration**: Single `chiron.config.yaml` file for everything
+- **Automatic Build**: Generates HTML, sitemap.xml, and robots.txt automatically
+- **Modern Design**: Clean, responsive interface
+- **Accessibility**: WCAG 2.2 AA compliant
+- **Dark Mode**: Native support for dark theme
+- **SEO Optimized**: Complete meta tags, Open Graph, Schema.org
+- **GitHub Pages Ready**: Output optimized for static hosting
+- **Custom Pages**: Support for custom `index.html` and `404.html`
+- **Analytics**: Optional integration with Google Analytics 4 and GTM
+- **Code Blocks**: Copy-to-clipboard functionality for code snippets
 
-## 🚀 Quick Start
+## Quick Start
 
-### Installazione
+### Installation
 
 ```bash
-# Clona il repository
+# Clone the repository
 git clone https://github.com/agilira/chiron.git
 cd chiron
 
-# Installa le dipendenze
+# Install dependencies
 npm install
 ```
 
-### Utilizzo Base
+### Basic Usage
 
-1. **Configura il tuo progetto** in `chiron.config.yaml`:
+1. **Configure your project** in `chiron.config.yaml`:
 
 ```yaml
 project:
-  name: Il Mio Progetto
-  title: Documentazione - Il Mio Progetto
-  description: Documentazione completa del mio progetto
+  name: My Project
+  title: Documentation - My Project
+  description: Complete documentation for my project
   base_url: https://username.github.io/my-project
 
 branding:
-  company: La Mia Azienda
+  company: My Company
   company_url: https://mycompany.com
 ```
 
-2. **Scrivi i contenuti** in Markdown nella cartella `content/`:
+2. **Write content** in Markdown in the `content/` folder:
 
 ```markdown
 ---
-title: La Mia Prima Pagina
-description: Questa è la mia prima pagina di documentazione
+title: My First Page
+description: This is my first documentation page
 ---
 
-# Benvenuto
+# Welcome
 
-Questo è il contenuto della mia pagina scritto in **Markdown**.
+This is my page content written in **Markdown**.
 ```
 
-3. **Genera il sito**:
+3. **Build the site**:
 
 ```bash
 npm run build
 ```
 
-4. **Anteprima locale**:
+4. **Preview locally**:
 
 ```bash
 npm run preview
 ```
 
-Il tuo sito è pronto in `docs/` per essere deployato su GitHub Pages!
+Your site is ready in `docs/` for deployment to GitHub Pages!
 
-## 📁 Struttura del Progetto
+## Project Structure
 
 ```
 chiron/
-├── chiron.config.yaml      # ⚙️ Configurazione principale
-├── content/                # 📝 File Markdown delle pagine
+├── chiron.config.yaml      # Main configuration
+├── content/                # Markdown page files
 │   ├── index.md
 │   ├── api-reference.md
 │   └── ...
-├── assets/                 # 🎨 Immagini, loghi, etc.
+├── assets/                 # Images, logos, etc.
 │   └── logo.png
-├── templates/              # 📄 Template HTML
+├── templates/              # HTML templates
 │   └── page.html
-├── builder/                # 🔧 Sistema di build
+├── builder/                # Build system
 │   ├── index.js
 │   ├── markdown-parser.js
 │   ├── template-engine.js
 │   └── generators/
-├── styles.css              # 💅 Stili CSS
-├── script.js               # ⚡ JavaScript
-└── docs/                   # 📦 Output (generato automaticamente)
+├── styles.css              # CSS styles
+├── script.js               # JavaScript
+└── docs/                   # Output (auto-generated)
 ```
 
-## 📝 Scrivere Contenuti
+## Writing Content
 
-### Frontmatter YAML
+### YAML Frontmatter
 
-Ogni file Markdown può avere metadati in frontmatter:
+Each Markdown file can have metadata in frontmatter:
 
 ```markdown
 ---
-title: Titolo della Pagina
-description: Descrizione per SEO
-author: Nome Autore
+title: Page Title
+description: Description for SEO
+author: Author Name
 date: 2025-01-01
 ---
 
-# Il contenuto inizia qui
+# Content starts here
 ```
 
-### Markdown Supportato
+### Supported Markdown
 
-Chiron supporta **GitHub Flavored Markdown** completo:
+Chiron supports full **GitHub Flavored Markdown**:
 
-- Headers con ID automatici
-- Code blocks con syntax highlighting
-- Tabelle responsive
-- Link esterni automatici
-- Immagini con lazy loading
-- Liste, blockquotes, e altro
+- Headers with automatic IDs
+- Code blocks with copy button
+- Responsive tables
+- External links
+- Images with lazy loading
+- Lists, blockquotes, and more
 
-### Esempio di Codice
+### Code Example
 
 ```javascript
-// I code blocks hanno il pulsante di copia automatico
+// Code blocks have automatic copy button
 function hello() {
   console.log('Hello, Chiron!');
 }
 ```
 
-### Tabelle
+### Tables
 
 | Feature | Status | Note |
 |---------|--------|------|
-| Markdown | ✅ | Supporto completo GFM |
-| YAML | ✅ | Configurazione semplice |
-| Build | ✅ | Automatico e veloce |
+| Markdown | Yes | Full GFM support |
+| YAML | Yes | Simple configuration |
+| Build | Yes | Fast and automatic |
 
-## ⚙️ Configurazione
+## Configuration
 
-### File `chiron.config.yaml`
+### `chiron.config.yaml` File
 
-Il file di configurazione controlla ogni aspetto del sito:
+The configuration file controls every aspect of the site:
 
 ```yaml
-# Informazioni Progetto
+# Project Information
 project:
   name: Chiron
   title: Chiron Documentation
   description: Modern documentation builder
-  language: it
+  language: en
   base_url: https://agilira.github.io/chiron
 
 # Branding
@@ -171,7 +171,7 @@ branding:
     primary: "#3b82f6"
     accent: "#10b981"
 
-# Navigazione
+# Navigation
 navigation:
   sidebar:
     - section: Getting Started
@@ -186,7 +186,6 @@ features:
   dark_mode: true
   code_copy: true
   cookie_consent: true
-  syntax_highlighting: true
 
 # Build
 build:
@@ -198,51 +197,51 @@ build:
     enabled: true
 ```
 
-Vedi il file completo per tutte le opzioni disponibili.
+See the full configuration file for all available options.
 
-## 🛠️ Comandi NPM
+## NPM Commands
 
 ```bash
-# Build del sito
+# Build the site
 npm run build
 
-# Watch mode (ricompila automaticamente)
+# Watch mode (auto-rebuild)
 npm run dev
 
-# Anteprima locale
+# Local preview
 npm run preview
 
-# Pulisci output
+# Clean output
 npm run clean
 ```
 
-## 🌐 Deploy su GitHub Pages
+## Deploy to GitHub Pages
 
-### Setup Automatico
+### Automatic Setup
 
-1. **Build del sito**:
+1. **Build the site**:
    ```bash
    npm run build
    ```
 
-2. **Commit e push**:
+2. **Commit and push**:
    ```bash
    git add docs/
    git commit -m "Build documentation"
    git push
    ```
 
-3. **Configura GitHub Pages**:
-   - Vai su Settings → Pages
+3. **Configure GitHub Pages**:
+   - Go to Settings → Pages
    - Source: `main` branch
    - Folder: `/docs`
-   - Salva
+   - Save
 
-Il tuo sito sarà live su `https://username.github.io/repository-name`
+Your site will be live at `https://username.github.io/repository-name`
 
-### GitHub Actions (Opzionale)
+### GitHub Actions (Optional)
 
-Crea `.github/workflows/build.yml` per build automatico:
+Create `.github/workflows/build.yml` for automatic builds:
 
 ```yaml
 name: Build Documentation
@@ -267,11 +266,11 @@ jobs:
           publish_dir: ./docs
 ```
 
-## 🎨 Personalizzazione
+## Customization
 
-### Template Personalizzati
+### Custom Templates
 
-Modifica `templates/page.html` per personalizzare il layout:
+Modify `templates/page.html` to customize the layout:
 
 ```html
 <!DOCTYPE html>
@@ -286,40 +285,40 @@ Modifica `templates/page.html` per personalizzare il layout:
 </html>
 ```
 
-### Variabili Disponibili
+### Available Variables
 
 - `{{PAGE_TITLE}}`, `{{PAGE_CONTENT}}`
 - `{{PROJECT_NAME}}`, `{{PROJECT_DESCRIPTION}}`
 - `{{GITHUB_URL}}`, `{{COMPANY_URL}}`
 - `{{NAVIGATION}}`, `{{BREADCRUMB}}`
-- E molte altre...
+- And many more...
 
-### Stili CSS
+### CSS Styles
 
-Modifica `styles.css` per personalizzare l'aspetto del sito.
+Modify `styles.css` to customize the site's appearance.
 
-## 🎯 Custom Pages (index.html & 404.html)
+## Custom Pages (index.html & 404.html)
 
-Chiron supporta pagine HTML personalizzate per `index.html` e `404.html`.
+Chiron supports custom HTML pages for `index.html` and `404.html`.
 
-### Come Funziona
+### How It Works
 
-Se crei un file `index.html` o `404.html` nella **root del progetto**, il builder lo userà al posto di generare la pagina dal Markdown:
+If you create an `index.html` or `404.html` file in the **project root**, the builder will use it instead of generating the page from Markdown:
 
 ```
 chiron/
-├── index.html          ← Custom homepage (opzionale)
-├── 404.html            ← Custom 404 page (opzionale)
+├── index.html          ← Custom homepage (optional)
+├── 404.html            ← Custom 404 page (optional)
 ├── content/
-│   ├── index.md        ← Ignorato se esiste index.html custom
+│   ├── index.md        ← Ignored if custom index.html exists
 │   └── ...
 └── chiron.config.yaml
 ```
 
-### Esempio
+### Example
 
 ```bash
-# Crea una homepage custom
+# Create a custom homepage
 echo '<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -339,37 +338,37 @@ npm run build
 
 Output:
 ```
-📄 Processing content files...
-  ✓ Generated: index.html (using custom HTML)  ← Custom!
+Processing content files...
+  ✓ Generated: index.html (using custom HTML)
   ✓ Generated: api-reference.html
   ✓ Generated: 404.html (default)
 ```
 
-**Nota**: La 404.html viene generata automaticamente se non esiste. Per maggiori dettagli, vedi [CUSTOM-PAGES.md](CUSTOM-PAGES.md).
+**Note**: The 404.html is automatically generated if it doesn't exist. For more details, see [CUSTOM-PAGES.md](CUSTOM-PAGES.md).
 
-## 🎨 Customization (custom.css & custom.js)
+## Customization (custom.css & custom.js)
 
-Chiron fornisce file dedicati per le tue personalizzazioni senza toccare i file core:
+Chiron provides dedicated files for your customizations without touching core files:
 
 ```
 chiron/
-├── styles.css      ← Chiron core (non modificare)
-├── custom.css      ← I tuoi stili personalizzati
-├── script.js       ← Chiron core (non modificare)
-├── custom.js       ← Il tuo JavaScript personalizzato
+├── styles.css      ← Chiron core (don't edit)
+├── custom.css      ← Your custom styles
+├── script.js       ← Chiron core (don't edit)
+├── custom.js       ← Your custom JavaScript
 └── ...
 ```
 
-### Esempio
+### Example
 
 **custom.css**:
 ```css
-/* Cambia i colori del brand */
+/* Change brand colors */
 :root {
   --primary-600: #8b5cf6;
 }
 
-/* Stili per pagine custom */
+/* Styles for custom pages */
 .hero-section {
   background: linear-gradient(135deg, #667eea, #764ba2);
 }
@@ -377,19 +376,19 @@ chiron/
 
 **custom.js**:
 ```javascript
-// Tracking eventi personalizzati
+// Custom event tracking
 document.addEventListener('DOMContentLoaded', () => {
   console.log('Custom script loaded!');
 });
 ```
 
-I file custom vengono caricati **dopo** i file core, quindi le tue regole hanno la precedenza.
+Custom files are loaded **after** core files, so your rules take precedence.
 
-Per maggiori dettagli, vedi [CUSTOMIZATION.md](CUSTOMIZATION.md).
+For more details, see [CUSTOMIZATION.md](CUSTOMIZATION.md).
 
-## 📚 Esempi
+## Examples
 
-### Sito Minimale
+### Minimal Site
 
 ```yaml
 # chiron.config.yaml
@@ -416,86 +415,87 @@ title: Home
 This is my documentation site.
 ```
 
-### Sito Completo
+### Complete Site
 
-Vedi `chiron.config.yaml` e `content/` per un esempio completo con:
-- Navigazione multi-livello
-- SEO completo
+See `chiron.config.yaml` and `content/` for a complete example with:
+- Multi-level navigation
+- Complete SEO
 - Dark mode
 - Cookie consent
-- Sitemap e robots.txt
+- Sitemap and robots.txt
 
-## 🔧 API Programmatica
+## Programmatic API
 
-Puoi usare Chiron anche programmaticamente:
+You can use Chiron programmatically:
 
 ```javascript
 const ChironBuilder = require('./builder');
 
 const builder = new ChironBuilder('chiron.config.yaml');
 
-// Build singolo
+// Single build
 await builder.build();
 
 // Watch mode
 builder.watch();
 ```
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
-### Errori di Build
+### Build Errors
 
-- Verifica la sintassi YAML in `chiron.config.yaml`
-- Controlla che tutti i file `.md` esistano in `content/`
-- Assicurati che i percorsi siano corretti
+- Check YAML syntax in `chiron.config.yaml`
+- Verify all `.md` files exist in `content/`
+- Ensure paths are correct
 
-### Pagine Mancanti
+### Missing Pages
 
-- Il file deve essere in `content/`
-- Deve essere referenziato in `navigation.sidebar`
-- Deve avere estensione `.md`
+- File must be in `content/`
+- Must be referenced in `navigation.sidebar`
+- Must have `.md` extension
 
-### Problemi di Stile
+### Style Issues
 
-- Verifica che `styles.css` sia nella root
-- Pulisci la cache del browser
-- Ricompila con `npm run clean && npm run build`
+- Verify `styles.css` is in root
+- Clear browser cache
+- Rebuild with `npm run clean && npm run build`
 
-## 📖 Documentazione Completa
+## Complete Documentation
 
-### Guide Principali
-- **[Guida Utente](docs/index.html)** - Guida completa all'uso
-- **[API Reference](docs/api-reference.html)** - Riferimento API completo
-- **[Esempi](examples/)** - Esempi pratici
+### Main Guides
+- **[User Guide](docs/index.html)** - Complete usage guide
+- **[API Reference](docs/api-reference.html)** - Complete API reference
+- **[Examples](examples/)** - Practical examples
 
-### Configurazione
-- **[Header Navigation](HEADER-NAVIGATION.md)** - Configurare la navigazione nell'header
-- **[Table of Contents](TABLE-OF-CONTENTS.md)** - Creare TOC manuali nelle pagine
-- **[Analytics Integration](ANALYTICS.md)** - Integrare Google Analytics e GTM
-- **[Custom Pages](CUSTOM-PAGES.md)** - Creare pagine HTML personalizzate
-- **[Customization](CUSTOMIZATION.md)** - Personalizzare stili e script
-- **[Feature Cards](FEATURE-CARDS.md)** - Creare feature cards con SVG
+### Configuration
+- **[Header Navigation](HEADER-NAVIGATION.md)** - Configure header navigation
+- **[Table of Contents](TABLE-OF-CONTENTS.md)** - Create manual TOC in pages
+- **[Analytics Integration](ANALYTICS.md)** - Integrate Google Analytics and GTM
+- **[Custom Pages](CUSTOM-PAGES.md)** - Create custom HTML pages
+- **[Customization](CUSTOMIZATION.md)** - Customize styles and scripts
+- **[Feature Cards](FEATURE-CARDS.md)** - Create feature cards with SVG
+- **[Accessibility](ACCESSIBILITY.md)** - Accessibility guide
 
-## 🤝 Contribuire
+## Contributing
 
-I contributi sono benvenuti! Per favore:
+Contributions are welcome! Please:
 
-1. Fai fork del progetto
-2. Crea un branch per la tua feature
-3. Commit delle modifiche
-4. Push al branch
-5. Apri una Pull Request
+1. Fork the project
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
 
-## 📄 Licenza
+## License
 
-Chiron è rilasciato sotto licenza [MIT](LICENSE).
+Chiron is released under the [MIT](LICENSE) license.
 
-## 🙏 Ringraziamenti
+## Acknowledgments
 
 - [Marked](https://marked.js.org/) - Markdown parser
-- [Prism.js](https://prismjs.com/) - Syntax highlighting
 - [js-yaml](https://github.com/nodeca/js-yaml) - YAML parser
+- [FlexSearch](https://github.com/nextapps-de/flexsearch) - Client-side search
 
 ---
 
-**Chiron v2.0** • Creato con ❤️ da [Agilira](https://github.com/agilira)
+**Chiron v2.0** • Created by [Agilira](https://github.com/agilira)

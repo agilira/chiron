@@ -1,6 +1,33 @@
 // Chiron Documentation Template JavaScript
 // Features: mobile sidebar, search, navigation, accessibility
 
+// Configuration Constants
+const CONFIG = {
+    SEARCH: {
+        MIN_QUERY_LENGTH: 2,
+        DEBOUNCE_DELAY: 200,
+        RATE_LIMIT_MS: 100,
+        MAX_RESULTS: 10,
+        FETCH_TIMEOUT: 10000,
+        MAX_FILE_SIZE: 10 * 1024 * 1024 // 10MB
+    },
+    UI: {
+        TOAST_DURATION: 3000,
+        TOAST_ANIMATION_DELAY: 100,
+        TOAST_FADE_OUT_DELAY: 300,
+        BLUR_DELAY: 200,
+        COOKIE_BANNER_DELAY: 1000,
+        WATCH_DEBOUNCE_DELAY: 300,
+        SCROLL_OFFSET: 20,
+        HEADER_SCROLL_OFFSET: 50,
+        TOC_SCROLL_OFFSET: 100,
+        SCROLL_TO_TOP_THRESHOLD: 300
+    },
+    CACHE: {
+        MAX_SIZE: 50
+    }
+};
+
 class DocumentationApp {
     constructor() {
         this.sidebar = document.getElementById('sidebar');
@@ -129,7 +156,11 @@ class DocumentationApp {
         let isDestroyed = false; // Flag to prevent operations after cleanup
         let abortController = null; // For canceling fetch requests
         let lastSearchTime = 0; // For rate limiting
-        const RATE_LIMIT_MS = 100; // Minimum time between searches (100ms)
+        const RATE_LIMIT_MS = CONFIG.SEARCH.RATE_LIMIT_MS;
+        const MIN_QUERY_LENGTH = CONFIG.SEARCH.MIN_QUERY_LENGTH;
+        const DEBOUNCE_DELAY = CONFIG.SEARCH.DEBOUNCE_DELAY;
+        const FETCH_TIMEOUT = CONFIG.SEARCH.FETCH_TIMEOUT;
+        const MAX_RESULTS = CONFIG.SEARCH.MAX_RESULTS;
         
         // Cleanup function to prevent memory leaks
         const cleanup = () => {
@@ -142,6 +173,9 @@ class DocumentationApp {
                 abortController.abort();
                 abortController = null;
             }
+            // Clear search data to free memory
+            searchData = null;
+            searchDataPromise = null;
         };
         
         // Register cleanup on page unload and navigation
@@ -162,8 +196,11 @@ class DocumentationApp {
             // Return cached data if available
             if (searchData) return searchData;
             
-            // Return pending promise if already loading
-            if (searchDataPromise) return searchDataPromise;
+            // Return pending promise if already loading (prevent race condition)
+            if (searchDataPromise) {
+                // Wait for the pending promise instead of creating a new one
+                return searchDataPromise;
+            }
             
             // Start loading and cache the promise
             searchDataPromise = (async () => {
@@ -171,10 +208,10 @@ class DocumentationApp {
                     // Create new AbortController for this request with timeout
                     abortController = new AbortController();
                     
-                    // Set timeout for fetch request (10 seconds)
+                    // Set timeout for fetch request
                     const timeoutId = setTimeout(() => {
                         abortController.abort();
-                    }, 10000);
+                    }, FETCH_TIMEOUT);
                     
                     const response = await fetch('search-index.json', {
                         signal: abortController.signal
@@ -262,7 +299,7 @@ class DocumentationApp {
             }
             
             // Sort by score
-            return results.sort((a, b) => b.score - a.score).slice(0, 10);
+            return results.sort((a, b) => b.score - a.score).slice(0, MAX_RESULTS);
         };
         
         // Highlight matches - SECURITY: Prevent XSS and regex injection
@@ -313,7 +350,7 @@ class DocumentationApp {
             // Check if destroyed
             if (isDestroyed) return;
             
-            if (!query || query.length < 2) {
+            if (!query || query.length < MIN_QUERY_LENGTH) {
                 searchResults.hidden = true;
                 searchResults.style.display = 'none';
                 searchResults.innerHTML = '';
@@ -385,7 +422,9 @@ class DocumentationApp {
             currentFocus = -1;
         };
         
-        // Debounce search with proper cleanup
+        // Debounce search with proper cleanup and race condition protection
+        let currentSearchId = 0; // Track search operations
+        
         searchInput.addEventListener('input', (e) => {
             // Clear any pending search
             if (searchTimeout) {
@@ -396,16 +435,23 @@ class DocumentationApp {
             const query = e.target.value.trim();
             
             // If query is empty or too short, clear immediately
-            if (query.length < 2) {
+            if (query.length < MIN_QUERY_LENGTH) {
+                currentSearchId++; // Invalidate any pending searches
                 performSearch(query); // Will clear the results
                 return;
             }
             
+            // Increment search ID to invalidate previous searches
+            const searchId = ++currentSearchId;
+            
             // Debounce actual search
             searchTimeout = setTimeout(() => {
-                searchTimeout = null; // Clear reference after execution
-                performSearch(query);
-            }, 200); // 200ms debounce delay
+                searchTimeout = null;
+                // Only perform search if this is still the current search
+                if (searchId === currentSearchId) {
+                    performSearch(query);
+                }
+            }, DEBOUNCE_DELAY);
         });
         
         // Load index on first focus
@@ -420,7 +466,7 @@ class DocumentationApp {
             setTimeout(() => {
                 searchResults.hidden = true;
                 searchResults.style.display = 'none';
-            }, 200);
+            }, CONFIG.UI.BLUR_DELAY);
         });
         
         // Keyboard navigation
@@ -470,85 +516,6 @@ class DocumentationApp {
         });
     }
 
-    createSearchResults() {
-        const resultsContainer = document.createElement('div');
-        resultsContainer.className = 'search-results';
-        resultsContainer.style.cssText = `
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border: 1px solid var(--gray-200);
-            border-top: none;
-            border-radius: 0 0 var(--border-radius) var(--border-radius);
-            box-shadow: var(--shadow-lg);
-            max-height: 400px;
-            overflow-y: auto;
-            z-index: 1000;
-            display: none;
-        `;
-        
-        this.searchInput.parentNode.appendChild(resultsContainer);
-        return resultsContainer;
-    }
-
-    performSearch(query, resultsContainer) {
-        // Search simulation - in a real implementation, this would be an API call
-        const mockResults = [
-            { title: 'Installation', url: '#installation', excerpt: 'Complete guide to install the libraries...' },
-            { title: 'Configuration', url: '#configuration', excerpt: 'How to configure the application settings...' },
-            { title: 'API Reference', url: '#api-reference', excerpt: 'Complete documentation of available APIs...' },
-            { title: 'Examples', url: '#examples', excerpt: 'Code examples to get started quickly...' }
-        ].filter(item => 
-            item.title.toLowerCase().includes(query.toLowerCase()) ||
-            item.excerpt.toLowerCase().includes(query.toLowerCase())
-        );
-
-        this.displaySearchResults(mockResults, resultsContainer);
-        this.showSearchResults();
-    }
-
-    displaySearchResults(results, container) {
-        if (results.length === 0) {
-            container.innerHTML = '<div class="search-no-results">No results found</div>';
-            return;
-        }
-
-        container.innerHTML = results.map(result => `
-            <div class="search-result-item">
-                <div class="search-result-title">${this.highlightQuery(result.title, this.searchInput.value)}</div>
-                <div class="search-result-excerpt">${result.excerpt}</div>
-            </div>
-        `).join('');
-
-        // Add event listeners to results
-        container.querySelectorAll('.search-result-item').forEach((item, index) => {
-            item.addEventListener('click', () => {
-                // In a real implementation, it would navigate to the page
-                console.log('Navigate to:', results[index].url);
-                this.hideSearchResults();
-                this.searchInput.value = '';
-            });
-        });
-    }
-
-    highlightQuery(text, query) {
-        if (!query) return text;
-        const regex = new RegExp(`(${query})`, 'gi');
-        return text.replace(regex, '<mark>$1</mark>');
-    }
-
-    showSearchResults() {
-        const results = document.querySelector('.search-results');
-        if (results) results.style.display = 'block';
-    }
-
-    hideSearchResults() {
-        const results = document.querySelector('.search-results');
-        if (results) results.style.display = 'none';
-    }
-
     // Navigation
     setupNavigation() {
         // Smooth scroll for internal links
@@ -560,7 +527,7 @@ class DocumentationApp {
                 
                 if (targetElement) {
                     const headerHeight = document.querySelector('.header').offsetHeight;
-                    const targetPosition = targetElement.offsetTop - headerHeight - 20;
+                    const targetPosition = targetElement.offsetTop - headerHeight - CONFIG.UI.SCROLL_OFFSET;
                     
                     window.scrollTo({
                         top: targetPosition,
@@ -575,7 +542,7 @@ class DocumentationApp {
 
         // Handle active state for navigation
         this.updateActiveNavigation();
-        window.addEventListener('scroll', this.throttle(() => {
+        window.addEventListener('scroll', this.debounce(() => {
             this.updateActiveNavigation();
         }, 100));
     }
@@ -590,7 +557,7 @@ class DocumentationApp {
             const rect = section.getBoundingClientRect();
             const headerHeight = document.querySelector('.header').offsetHeight;
             
-            if (rect.top <= headerHeight + 50 && rect.bottom > headerHeight + 50) {
+            if (rect.top <= headerHeight + CONFIG.UI.HEADER_SCROLL_OFFSET && rect.bottom > headerHeight + CONFIG.UI.HEADER_SCROLL_OFFSET) {
                 currentSection = section.id;
             }
         });
@@ -733,7 +700,7 @@ class DocumentationApp {
         }
 
         // Highlight current section in TOC
-        window.addEventListener('scroll', this.throttle(() => {
+        window.addEventListener('scroll', this.debounce(() => {
             this.updateTOCHighlight();
         }, 100));
     }
@@ -748,7 +715,7 @@ class DocumentationApp {
             const rect = section.getBoundingClientRect();
             const headerHeight = document.querySelector('.header').offsetHeight;
             
-            if (rect.top <= headerHeight + 100) {
+            if (rect.top <= headerHeight + CONFIG.UI.TOC_SCROLL_OFFSET) {
                 currentSection = section.id;
             }
         });
@@ -775,7 +742,7 @@ class DocumentationApp {
     }
 
     // Utility functions
-    throttle(func, wait) {
+    debounce(func, wait) {
         let timeout;
         return function executedFunction(...args) {
             const later = () => {
@@ -810,17 +777,17 @@ class DocumentationApp {
         // Animate in
         setTimeout(() => {
             toast.style.transform = 'translateX(0)';
-        }, 100);
+        }, CONFIG.UI.TOAST_ANIMATION_DELAY);
 
-        // Remove after 3 seconds
+        // Remove after duration
         setTimeout(() => {
             toast.style.transform = 'translateX(100%)';
             setTimeout(() => {
                 if (toast.parentNode) {
                     toast.parentNode.removeChild(toast);
                 }
-            }, 300);
-        }, 3000);
+            }, CONFIG.UI.TOAST_FADE_OUT_DELAY);
+        }, CONFIG.UI.TOAST_DURATION);
     }
 
     // Theme toggle functionality
@@ -947,7 +914,7 @@ class DocumentationApp {
             // Show banner after a brief delay
             setTimeout(() => {
                 cookieBanner.classList.add('show');
-            }, 1000);
+            }, CONFIG.UI.COOKIE_BANNER_DELAY);
         }
 
         // Handle acceptance
@@ -1053,7 +1020,7 @@ class DocumentationApp {
 
         // Show/hide button based on scroll position
         const toggleScrollButton = () => {
-            if (window.pageYOffset > 300) {
+            if (window.pageYOffset > CONFIG.UI.SCROLL_TO_TOP_THRESHOLD) {
                 scrollToTopBtn.classList.add('show');
             } else {
                 scrollToTopBtn.classList.remove('show');

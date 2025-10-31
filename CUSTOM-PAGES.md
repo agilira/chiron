@@ -1,32 +1,32 @@
 # Custom Pages - index.html & 404.html
 
-Chiron v2.0 supporta pagine HTML personalizzate per `index.html` e `404.html`.
+Chiron v2.0 supports custom HTML pages for `index.html` and `404.html`.
 
-## 🎯 Come Funziona
+## How It Works
 
-Se crei un file `index.html` o `404.html` nella **root del progetto**, il builder lo userà al posto di generare la pagina dal Markdown.
+If you create an `index.html` or `404.html` file in the **project root**, the builder will use it instead of generating the page from Markdown:
 
 ```
 chiron/
-├── index.html          ← Custom homepage (opzionale)
-├── 404.html            ← Custom 404 page (opzionale)
+├── index.html          ← Custom homepage (optional)
+├── 404.html            ← Custom 404 page (optional)
 ├── content/
-│   ├── index.md        ← Ignorato se esiste index.html custom
+│   ├── index.md        ← Ignored if custom index.html exists
 │   └── ...
 └── chiron.config.yaml
 ```
 
-## 📄 index.html Custom
+## Custom index.html
 
-### Quando Usarlo
+### When to Use It
 
-- Vuoi una homepage completamente personalizzata
-- Hai bisogno di layout speciali o animazioni
-- Vuoi integrare librerie esterne
+- You want a completely customized homepage
+- You need special layouts or animations
+- You want to integrate external libraries
 
-### Esempio
+### Example
 
-Crea `index.html` nella root:
+Create `index.html` in the root:
 
 ```html
 <!DOCTYPE html>
@@ -56,25 +56,25 @@ npm run build
 
 Output:
 ```
-📄 Processing content files...
-  ✓ Generated: index.html (using custom HTML)  ← Custom!
+Processing content files...
+  ✓ Generated: index.html (using custom HTML)
   ✓ Generated: api-reference.html
 ```
 
-## 🚫 404.html Custom
+## Custom 404.html
 
 ### Default Behavior
 
-Se **non** crei un `404.html` custom, Chiron genera automaticamente una pagina 404 con:
+If you **don't** create a custom `404.html`, Chiron automatically generates a 404 page with:
 
-- Design coerente con il resto del sito
-- Link alla homepage
-- Supporto dark mode
+- Design consistent with the rest of the site
+- Link to homepage
+- Dark mode support
 - Responsive
 
 ### Custom 404
 
-Crea `404.html` nella root per personalizzarla:
+Create `404.html` in the root to customize it:
 
 ```html
 <!DOCTYPE html>
@@ -82,13 +82,13 @@ Crea `404.html` nella root per personalizzarla:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Oops!</title>
+    <title>404 - Page Not Found</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div style="text-align: center; padding: 4rem 2rem;">
-        <h1 style="font-size: 8rem;">🤔</h1>
-        <h2>Hmm, this page doesn't exist</h2>
+        <h1 style="font-size: 8rem;">404</h1>
+        <h2>Oops! Page not found</h2>
         <p>Maybe you were looking for:</p>
         <ul style="list-style: none; padding: 0;">
             <li><a href="index.html">Homepage</a></li>
@@ -99,49 +99,49 @@ Crea `404.html` nella root per personalizzarla:
 </html>
 ```
 
-## 🔄 Workflow
+## Workflow
 
-### Opzione 1: Usa Markdown (Default)
+### Option 1: Use Markdown (Default)
 
 ```bash
-# Crea content/index.md
-# Build genera index.html automaticamente
+# Create content/index.md
+# Build generates index.html automatically
 npm run build
 ```
 
-### Opzione 2: Usa Custom HTML
+### Option 2: Use Custom HTML
 
 ```bash
-# Crea index.html nella root
-# Build usa il tuo HTML custom
+# Create index.html in root
+# Build uses your custom HTML
 npm run build
 ```
 
-### Opzione 3: Mix
+### Option 3: Mix
 
 ```bash
-# index.html custom nella root
-# Altre pagine in content/*.md
+# Custom index.html in root
+# Other pages in content/*.md
 npm run build
 ```
 
-## ⚙️ Configurazione GitHub Pages
+## GitHub Pages Configuration
 
-Per la 404 page su GitHub Pages, assicurati che `404.html` sia nella cartella `docs/`:
+For the 404 page on GitHub Pages, make sure `404.html` is in the `docs/` folder:
 
 ```yaml
 # chiron.config.yaml
 build:
-  output_dir: docs  # ← GitHub Pages legge da qui
+  output_dir: docs  # ← GitHub Pages reads from here
 ```
 
-GitHub Pages userà automaticamente `docs/404.html` per pagine non trovate.
+GitHub Pages will automatically use `docs/404.html` for pages not found.
 
-## 💡 Tips & Best Practices
+## Tips & Best Practices
 
-### 1. Mantieni Coerenza
+### 1. Maintain Consistency
 
-Se usi custom HTML, includi gli stessi asset:
+If you use custom HTML, include the same assets:
 
 ```html
 <link rel="stylesheet" href="styles.css">
@@ -150,7 +150,7 @@ Se usi custom HTML, includi gli stessi asset:
 
 ### 2. Dark Mode
 
-Per supportare il dark mode nel custom HTML:
+To support dark mode in custom HTML:
 
 ```html
 <html lang="en" data-theme="light">
@@ -158,17 +158,17 @@ Per supportare il dark mode nel custom HTML:
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Il tuo contenuto -->
+    <!-- Your content -->
     <script src="script.js"></script>
 </body>
 </html>
 ```
 
-Lo `script.js` gestisce automaticamente il toggle del tema.
+The `script.js` automatically handles theme toggling.
 
 ### 3. Navigation
 
-Includi link alle altre pagine:
+Include links to other pages:
 
 ```html
 <nav>
@@ -180,7 +180,7 @@ Includi link alle altre pagine:
 
 ### 4. SEO
 
-Aggiungi meta tags per SEO:
+Add meta tags for SEO:
 
 ```html
 <head>
@@ -191,11 +191,11 @@ Aggiungi meta tags per SEO:
 </head>
 ```
 
-## 🔍 Debugging
+## Debugging
 
-### Verifica Quale File Viene Usato
+### Verify Which File Is Used
 
-Controlla l'output del build:
+Check the build output:
 
 ```bash
 npm run build
@@ -203,15 +203,15 @@ npm run build
 
 Output:
 ```
-📄 Processing content files...
+Processing content files...
   ✓ Generated: index.html (using custom HTML)  ← Custom
-  ✓ Generated: api-reference.html              ← Da Markdown
-  ✓ Generated: 404.html (default)              ← Default generato
+  ✓ Generated: api-reference.html              ← From Markdown
+  ✓ Generated: 404.html (default)              ← Default generated
 ```
 
-### Forza Rebuild da Markdown
+### Force Rebuild from Markdown
 
-Se vuoi tornare al Markdown, rimuovi il file custom:
+If you want to go back to Markdown, remove the custom file:
 
 ```bash
 # Windows
@@ -226,13 +226,13 @@ npm run build
 
 Output:
 ```
-📄 Processing content files...
-  ✓ Generated: index.html  ← Ora da content/index.md
+Processing content files...
+  ✓ Generated: index.html  ← Now from content/index.md
 ```
 
-## 🎨 Esempi Avanzati
+## Advanced Examples
 
-### Landing Page Custom
+### Custom Landing Page
 
 ```html
 <!DOCTYPE html>
@@ -280,7 +280,7 @@ Output:
 </head>
 <body>
     <div class="hero">
-        <h1>🚀 My Awesome Project</h1>
+        <h1>My Awesome Project</h1>
         <p style="font-size: 1.5rem; color: var(--text-secondary);">
             The best documentation you'll ever read
         </p>
@@ -294,7 +294,7 @@ Output:
 </html>
 ```
 
-### 404 Divertente
+### Fun 404 Page
 
 ```html
 <!DOCTYPE html>
@@ -307,13 +307,13 @@ Output:
 <body>
     <div style="text-align: center; padding: 4rem 2rem;">
         <div style="font-size: 10rem; animation: float 3s ease-in-out infinite;">
-            🛸
+            404
         </div>
-        <h1 style="font-size: 4rem; margin: 1rem 0;">404</h1>
-        <h2>Houston, we have a problem</h2>
-        <p>This page has drifted into deep space.</p>
+        <h1 style="font-size: 4rem; margin: 1rem 0;">Lost in Space</h1>
+        <h2>This page has drifted away</h2>
+        <p>Let's get you back to safety.</p>
         <a href="index.html" style="display: inline-block; margin-top: 2rem; padding: 1rem 2rem; background: var(--primary-600); color: white; text-decoration: none; border-radius: 8px;">
-            Return to Earth 🌍
+            Return Home
         </a>
     </div>
     <style>
@@ -327,26 +327,26 @@ Output:
 </html>
 ```
 
-## 📚 Risorse
+## Resources
 
-- [Markdown Guide](GETTING-STARTED.md) - Per pagine normali
-- [Configuration](README.new.md) - Setup generale
-- [Templates](templates/page.html) - Template di riferimento
+- [Markdown Guide](GETTING-STARTED.md) - For normal pages
+- [Configuration](README.md) - General setup
+- [Templates](templates/page.html) - Reference template
 
-## ❓ FAQ
+## FAQ
 
-**Q: Posso personalizzare altre pagine oltre a index e 404?**  
-A: No, solo `index.html` e `404.html` possono essere custom. Altre pagine devono usare Markdown per mantenere coerenza.
+**Q: Can I customize other pages besides index and 404?**  
+A: No, only `index.html` and `404.html` can be custom. Other pages should use Markdown to maintain consistency.
 
-**Q: Il custom HTML supporta il dark mode?**  
-A: Sì, se includi `script.js` e usi le variabili CSS (`var(--text-primary)`, etc.).
+**Q: Does custom HTML support dark mode?**  
+A: Yes, if you include `script.js` and use CSS variables (`var(--text-primary)`, etc.).
 
-**Q: Posso usare template engine nel custom HTML?**  
-A: No, il custom HTML viene copiato così com'è. Se hai bisogno di templating, usa Markdown.
+**Q: Can I use template engines in custom HTML?**  
+A: No, custom HTML is copied as-is. If you need templating, use Markdown.
 
-**Q: Il sitemap include le pagine custom?**  
-A: Sì, il builder estrae il `<title>` dal custom HTML per il sitemap.
+**Q: Does the sitemap include custom pages?**  
+A: Yes, the builder extracts the `<title>` from custom HTML for the sitemap.
 
 ---
 
-**Nota**: Questa feature è pensata per dare flessibilità senza compromettere la semplicità del builder. Usa custom HTML solo quando necessario! 🎯
+**Note**: This feature is designed to give flexibility without compromising the builder's simplicity. Use custom HTML only when necessary!

@@ -2,7 +2,7 @@
 
 Chiron provides a safe and organized way to customize your documentation site without modifying core files.
 
-## 🎨 Custom Files
+## Custom Files
 
 Chiron includes two special files for your customizations:
 
@@ -10,12 +10,12 @@ Chiron includes two special files for your customizations:
 - **`custom.js`** - Your custom JavaScript
 
 These files are:
-- ✅ **Safe to edit** - Won't be overwritten by Chiron updates
-- ✅ **Automatically loaded** - No configuration needed
-- ✅ **Load order guaranteed** - Load AFTER core files, so your rules take precedence
-- ✅ **Version controlled** - Part of your project, not Chiron's core
+- **Safe to edit** - Won't be overwritten by Chiron updates
+- **Automatically loaded** - No configuration needed
+- **Load order guaranteed** - Load AFTER core files, so your rules take precedence
+- **Version controlled** - Part of your project, not Chiron's core
 
-## 📁 File Structure
+## File Structure
 
 ```
 chiron/
@@ -28,7 +28,7 @@ chiron/
 └── chiron.config.yaml
 ```
 
-## 🎨 Custom CSS
+## Custom CSS
 
 ### Load Order
 
@@ -131,7 +131,7 @@ Your `custom.css` loads **after** `styles.css`, so your rules override Chiron's 
 }
 ```
 
-## 🔧 Custom JavaScript
+## Custom JavaScript
 
 ### Load Order
 
@@ -298,14 +298,14 @@ Changes to `custom.css` and `custom.js` will trigger automatic rebuilds.
 
 ### 1. Don't Modify Core Files
 
-❌ **Don't do this:**
+**Don't do this:**
 ```bash
 # Editing core files
 code styles.css
 code script.js
 ```
 
-✅ **Do this instead:**
+**Do this instead:**
 ```bash
 # Use custom files
 code custom.css
@@ -314,14 +314,14 @@ code custom.js
 
 ### 2. Use CSS Variables
 
-❌ **Don't hardcode colors:**
+**Don't hardcode colors:**
 ```css
 .my-element {
   color: #3b82f6;
 }
 ```
 
-✅ **Use CSS variables:**
+**Use CSS variables:**
 ```css
 .my-element {
   color: var(--primary-600);
@@ -330,13 +330,13 @@ code custom.js
 
 ### 3. Namespace Your Classes
 
-❌ **Generic class names:**
+**Generic class names:**
 ```css
 .button { }
 .card { }
 ```
 
-✅ **Namespaced class names:**
+**Namespaced class names:**
 ```css
 .my-custom-button { }
 .my-custom-card { }
@@ -386,7 +386,7 @@ Always test your customizations in both themes:
 }
 ```
 
-## 🚀 Advanced Examples
+## Advanced Examples
 
 ### Custom Landing Page
 
@@ -457,7 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 ```
 
-## 📦 Deployment
+## Deployment
 
 Your custom files are automatically included in the build:
 
@@ -477,7 +477,7 @@ docs/
 
 Deploy the `docs/` folder to GitHub Pages, Netlify, or any static host.
 
-## 🔍 Debugging
+## Debugging
 
 ### Check if Custom Files are Loaded
 
@@ -498,7 +498,7 @@ console.log('Custom JS loaded:',
 2. Check "Styles" panel
 3. Your `custom.css` rules appear at the top (highest priority)
 
-## ❓ FAQ
+## FAQ
 
 **Q: What if I don't have custom.css or custom.js?**  
 A: The builder creates empty files automatically. No errors.
