@@ -1,7 +1,9 @@
 /**
- * Markdown Parser with Frontmatter Support
- * =========================================
- * Parses markdown files with YAML frontmatter and converts to HTML
+ * Chiron markdown parser
+ * 
+ * Copyright (c) 2025 AGILira - A. Giordano
+ * Series: an AGILira tool
+ * SPDX-License-Identifier: MPL-2.0
  */
 
 const matter = require('gray-matter');

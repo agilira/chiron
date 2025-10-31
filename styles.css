@@ -1,6 +1,6 @@
-/* Reset e variabili CSS */
+/* Reset & CSS Variables */
 :root {
-    /* Colori principali */
+    /* Primary colors */
     --primary-50: #eff6ff;
     --primary-100: #dbeafe;
     --primary-200: #bfdbfe;
@@ -12,7 +12,7 @@
     --primary-800: #1e40af;
     --primary-900: #1e3a8a;
 
-    /* Colori neutri */
+    /* Neutral colors */
     --gray-50: #f9fafb;
     --gray-100: #f3f4f6;
     --gray-200: #e5e7eb;
@@ -24,7 +24,7 @@
     --gray-800: #1f2937;
     --gray-900: #111827;
 
-    /* Colori semantici */
+    /* Semantic colors */
     --success-50: #ecfdf5;
     --success-500: #10b981;
     --warning-50: #fffbeb;
@@ -32,7 +32,7 @@
     --error-50: #fef2f2;
     --error-500: #ef4444;
 
-    /* Typography - Inter with system font fallbacks */
+    /* Typography - Inter with system font fallbacks (sans-serif) */
     --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     --font-size-2xs: 0.625rem;
     --font-size-xs: 0.75rem;
@@ -44,7 +44,7 @@
     --font-size-3xl: 1.875rem;
     --font-size-4xl: 2.25rem;
 
-    /* Spacing */
+    /* Spacing - 1rem = 16px */
     --space-1: 0.25rem;
     --space-2: 0.5rem;
     --space-3: 0.75rem;

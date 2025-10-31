@@ -1,6 +1,9 @@
 /**
- * @file Custom Error Classes for Chiron
- * @description Provides specific error types for better error handling
+ * Chiron errors
+ * 
+ * Copyright (c) 2025 AGILira - A. Giordano
+ * Series: an AGILira tool
+ * SPDX-License-Identifier: MPL-2.0
  */
 
 /**

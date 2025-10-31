@@ -3,8 +3,11 @@ const path = require('path');
 const { logger } = require('../logger');
 
 /**
- * File Utilities Module
- * Provides reusable filesystem operations
+ * Chiron file utilities
+ * 
+ * Copyright (c) 2025 AGILira - A. Giordano
+ * Series: an AGILira tool
+ * SPDX-License-Identifier: MPL-2.0
  */
 
 const fileLogger = logger.child('FileUtils');

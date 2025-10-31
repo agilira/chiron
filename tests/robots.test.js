@@ -16,7 +16,7 @@ describe('Robots Generator', () => {
     }
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     // Clean up with retry logic for Windows
     if (fs.existsSync(testOutputDir)) {
       try {
@@ -25,6 +25,10 @@ describe('Robots Generator', () => {
         // On Windows, files might be locked briefly - ignore errors
         console.warn('Could not clean up test directory:', err.message);
       }
+    }
+    // Give Windows time to release file handles
+    if (process.platform === 'win32') {
+      await new Promise(resolve => setTimeout(resolve, 50));
     }
   });
 

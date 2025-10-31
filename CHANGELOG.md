@@ -1,8 +1,9 @@
 # Changelog
 
-# Changelog
-
 All notable changes to Chiron will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [2.0.2] - 2025-10-30
 
@@ -51,12 +52,11 @@ All notable changes to Chiron will be documented in this file.
 
 ---
 
-# Changelog
+## [2.0.0] - 2025-01-20
 
-All notable changes to Chiron will be documented in this file.
+Initial release of Chiron v2.0 with modern architecture and improved features.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+---
 
 ## [Unreleased]
 

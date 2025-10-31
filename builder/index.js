@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
 /**
- * Chiron Documentation Builder
- * ============================
- * Generates static documentation sites from Markdown and YAML config
+ * Chiron documentation builder
+ * 
+ * Copyright (c) 2025 AGILira - A. Giordano
+ * Series: an AGILira tool
+ * SPDX-License-Identifier: MPL-2.0
  */
 
 const fs = require('fs');

@@ -1,7 +1,9 @@
 /**
- * Template Engine
- * ===============
- * Simple but powerful template engine for generating HTML pages
+ * Chiron template engine
+ * 
+ * Copyright (c) 2025 AGILira - A. Giordano
+ * Series: an AGILira tool
+ * SPDX-License-Identifier: MPL-2.0
  */
 
 const fs = require('fs');

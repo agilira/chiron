@@ -1,8 +1,11 @@
 const { ConfigurationError } = require('../errors');
 
 /**
- * Validation Utilities Module
- * Provides validation functions for configuration and data
+ * Chiron validation utilities
+ * 
+ * Copyright (c) 2025 AGILira - A. Giordano
+ * Series: an AGILira tool
+ * SPDX-License-Identifier: MPL-2.0
  */
 
 /**

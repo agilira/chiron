@@ -1,7 +1,13 @@
-// Chiron Documentation Template JavaScript
-// Features: mobile sidebar, search, navigation, accessibility
+/**
+ * Chiron SSG JavaScript App
+ * 
+ * Copyright (c) 2025 AGILira - A. Giordano
+ * Series: an AGILira tool
+ * SPDX-License-Identifier: MPL-2.0
+ */
 
 // Configuration Constants
+// Features: mobile sidebar, search, navigation, accessibility, code blocks, table of contents, keyboard navigation, theme toggle, cookie consent, sitemap generation, robots generation, developer tools, scroll to top
 const CONFIG = {
     SEARCH: {
         MIN_QUERY_LENGTH: 2,

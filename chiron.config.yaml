@@ -37,7 +37,7 @@ github:
   repo: chiron
   branch: main
   show_version: true
-  current_version: v1.0.0
+  current_version: v2.0.0
 
 # SEO & Social
 seo:

@@ -1,6 +1,9 @@
 /**
- * @file Logger Module
- * @description Provides structured logging with levels and formatting
+ * Chiron logger
+ * 
+ * Copyright (c) 2025 AGILira - A. Giordano
+ * Series: an AGILira tool
+ * SPDX-License-Identifier: MPL-2.0
  */
 
 /**

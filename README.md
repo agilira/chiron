@@ -1,10 +1,13 @@
-# Chiron v2.0 - Modern Documentation Builder
+# Chiron v2.0 - Static Site Generator for Documentation
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![Static Site Generator](https://img.shields.io/badge/SSG-Static%20Site-green.svg)](#)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
 [![Markdown](https://img.shields.io/badge/Markdown-GFM-blue.svg)](https://github.github.com/gfm/)
 
-**Chiron** is a modern documentation builder optimized for GitHub Pages. Write in Markdown, configure in YAML, get a professional site.
+**Chiron** is a static site generator for documentation. Markdown + YAML config → professional HTML docs with SEO, search, dark mode, and accessibility built-in.
+
+Zero runtime. Zero complexity. Just fast, beautiful docs.
 
 ## Key Features
 
