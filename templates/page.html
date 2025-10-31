@@ -18,6 +18,9 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="custom.css">
     
+    <!-- Syntax Highlighting - Light/Dark adaptive -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="(prefers-color-scheme: light)">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
     
     {{STRUCTURED_DATA}}
     {{ANALYTICS}}
@@ -144,10 +147,9 @@
     <div class="cookie-banner" id="cookieBanner" {{SHOW_COOKIE_BANNER}}>
         <div class="cookie-banner-content">
             <div class="cookie-banner-text">
-                <p>{{COOKIE_BANNER_TEXT}}</p>
+                <p>{{COOKIE_BANNER_TEXT}} <a href="cookie-policy.html" class="cookie-policy-inline-link">{{COOKIE_POLICY_LABEL}}</a>.</p>
             </div>
             <div class="cookie-banner-actions">
-                <a href="cookie-policy.html" class="cookie-policy-link">{{COOKIE_POLICY_LABEL}}</a>
                 <button type="button" class="cookie-accept-btn" id="cookieAcceptBtn">{{COOKIE_ACCEPT_LABEL}}</button>
                 <button type="button" class="cookie-decline-btn" id="cookieDeclineBtn">{{COOKIE_DECLINE_LABEL}}</button>
             </div>
@@ -166,6 +168,7 @@
     </button>
 
     <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="script.js"></script>
     <script src="custom.js"></script>
     

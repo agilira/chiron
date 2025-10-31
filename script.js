@@ -638,6 +638,47 @@ class DocumentationApp {
 
     // Code blocks - Use event delegation for better performance
     setupCodeBlocks() {
+        // Initialize highlight.js for syntax highlighting
+        if (typeof hljs !== 'undefined') {
+            // Configure highlight.js
+            hljs.configure({
+                ignoreUnescapedHTML: true,
+                languages: ['javascript', 'python', 'java', 'html', 'css', 'bash', 'sh', 'shell', 'json', 'yaml', 'yml', 'xml', 'sql', 'typescript', 'ts', 'php', 'ruby', 'go', 'rust', 'c', 'cpp', 'csharp', 'cs', 'plaintext', 'text']
+            });
+            
+            // Register language aliases
+            hljs.registerAliases('sh', {languageName: 'bash'});
+            hljs.registerAliases('shell', {languageName: 'bash'});
+            hljs.registerAliases('yml', {languageName: 'yaml'});
+            hljs.registerAliases('ts', {languageName: 'typescript'});
+            hljs.registerAliases('cs', {languageName: 'csharp'});
+            
+            // Languages to exclude from highlighting (keep plain)
+            const excludedLanguages = ['markdown', 'md', 'text', 'plaintext', 'txt'];
+            
+            // Highlight all code blocks
+            document.querySelectorAll('pre code').forEach((block) => {
+                // Get language from class
+                const classList = block.className.split(' ');
+                const langClass = classList.find(cls => cls.startsWith('language-'));
+                
+                if (langClass) {
+                    const lang = langClass.replace('language-', '');
+                    
+                    // Skip highlighting for excluded languages
+                    if (excludedLanguages.includes(lang.toLowerCase())) {
+                        block.className = `language-${lang} nohighlight`;
+                        return;
+                    }
+                    
+                    // Ensure the language is set correctly
+                    block.className = `language-${lang}`;
+                }
+                
+                hljs.highlightElement(block);
+            });
+        }
+
         // Single event listener using event delegation
         document.addEventListener('click', async (e) => {
             const button = e.target.closest('.code-copy');
@@ -866,6 +907,58 @@ class DocumentationApp {
         
         // Update logos based on theme
         this.updateLogosForTheme(theme);
+        
+        // Update highlight.js theme
+        this.updateHighlightTheme(theme);
+    }
+
+    // Update highlight.js theme dynamically
+    updateHighlightTheme(theme) {
+        // Remove existing highlight.js theme links
+        const existingLinks = document.querySelectorAll('link[href*="highlight.js"]');
+        existingLinks.forEach(link => {
+            if (link.media && link.media !== 'all') {
+                link.remove();
+            }
+        });
+
+        // Add the correct theme
+        const themeUrl = theme === 'dark' 
+            ? 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css'
+            : 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css';
+        
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = themeUrl;
+        document.head.appendChild(link);
+        
+        // Re-highlight all code blocks with new theme
+        if (typeof hljs !== 'undefined') {
+            const excludedLanguages = ['markdown', 'md', 'text', 'plaintext', 'txt'];
+            
+            document.querySelectorAll('pre code').forEach((block) => {
+                // Get original language class
+                const classList = block.className.split(' ');
+                const langClass = classList.find(cls => cls.startsWith('language-'));
+                
+                if (langClass) {
+                    const lang = langClass.replace('language-', '');
+                    
+                    // Skip re-highlighting for excluded languages
+                    if (excludedLanguages.includes(lang.toLowerCase())) {
+                        block.className = `language-${lang} nohighlight`;
+                        return;
+                    }
+                    
+                    block.className = langClass;
+                } else {
+                    block.className = '';
+                }
+                
+                // Re-highlight
+                hljs.highlightElement(block);
+            });
+        }
     }
 
     // Update logos based on current theme

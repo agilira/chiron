@@ -23,3 +23,13 @@
  */
 
 /* Your custom styles here */
+
+/* ===================================
+   Syntax Highlighting - Override backgrounds
+   =================================== */
+
+/* Force code blocks to use Chiron's backgrounds */
+pre code.hljs {
+    background: transparent !important;
+}
+

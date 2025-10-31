@@ -142,7 +142,7 @@ footer:
 
 # Cookie Consent
 cookies:
-  banner_text: "We use cookies to enhance your browsing experience and analyze our traffic. By clicking 'Accept', you consent to our use of cookies."
+  banner_text: "We use cookies to enhance your browsing experience and analyze our traffic. By clicking 'Accept', you consent to our"
   policy_label: Cookie Policy
   accept_label: Accept All
   decline_label: Decline
