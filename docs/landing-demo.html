@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chiron - Modern Documentation Builder</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="A beautiful, accessible documentation template that bridges the gap between README files and complex documentation sites">
+    <meta name="keywords" content="documentation template, chiron, accessibility, responsive design, modern UI, developer tools">
+    <meta name="author" content="Agilira">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://agilira.github.io/chiron/landing-demo.html">
+    <meta property="og:title" content="Chiron - Modern Documentation Builder">
+    <meta property="og:description" content="A beautiful, accessible documentation template that bridges the gap between README files and complex documentation sites">
+    <meta property="og:image" content="https://agilira.github.io/chiron/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Chiron Documentation Template">
+    <meta property="og:site_name" content="Chiron Documentation">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://agilira.github.io/chiron/landing-demo.html">
+    <meta name="twitter:title" content="Chiron - Modern Documentation Builder">
+    <meta name="twitter:description" content="A beautiful, accessible documentation template that bridges the gap between README files and complex documentation sites">
+    <meta name="twitter:image" content="https://agilira.github.io/chiron/og-image.png">
+    <meta name="twitter:site" content="@agilirax">
+    <meta name="twitter:creator" content="@agilirax">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://agilira.github.io/chiron/landing-demo.html">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="fonts.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="custom.css">
+    
+    <!-- Syntax Highlighting - Light/Dark adaptive -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="(prefers-color-scheme: light)">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Chiron",
+        "description": "A modern, accessible documentation template for microsites. Perfect when you need more than a README but less than a full documentation site.",
+        "applicationCategory": "DeveloperApplication",
+        "url": "https://agilira.github.io/chiron",
+        "author": {
+            "@type": "Organization",
+            "name": "Agilira",
+            "url": "https://github.com/agilira"
+        },
+        "codeRepository": "https://github.com/agilira/chiron",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        }
+    }
+    </script>
+    
+</head>
+<body class="landing-layout">
+    <!-- Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Header - Riusa struttura esistente con classi landing -->
+    <header class="header landing-header" role="banner">
+        <div class="header-container landing-header-container">
+            <div class="header-left landing-logo-section">
+                <a href="https://github.com/agilira" class="landing-logo-link" target="_blank" rel="noopener">
+                    <img src="assets/logo-black.png" alt="Chiron Logo" class="landing-logo-img logo-light" width="32" height="32" loading="eager">
+                    <img src="assets/logo-white.png" alt="Chiron Logo" class="landing-logo-img logo-dark" width="32" height="32" loading="eager">
+                    <span>Chiron</span>
+                </a>
+                <nav class="header-nav" aria-label="Main navigation">
+                    <a href="index.html">Documentation</a>
+                </nav>
+            </div>
+            <div class="header-right landing-actions">
+                <div class="header-actions">
+                    <a href="https://github.com/agilira/chiron" class="header-action-btn" target="_blank" rel="noopener" aria-label="View repository on GitHub">
+                        <svg width="20" height="20" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z" fill="currentColor"/>
+                        </svg>
+                    </a>
+                    <button type="button" class="header-action-btn theme-toggle" id="themeToggle" aria-label="Toggle dark mode" >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="theme-icon-light">
+                            <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="theme-icon-dark" style="display: none;">
+                            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="landing-main" id="main-content" role="main">
+        <div class="landing-content">
+            <div class="landing-content-container">
+                <div class="hero-section">
+
+<h1 id="chiron">Chiron</h1><h2 id="a-modern-documentation-builder">A Modern Documentation Builder</h2><p>Transform your Markdown files into beautiful, professional documentation websites with minimal configuration.</p>
+<div class="hero-cta">
+  <a href="index.html" class="btn-primary">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+    </svg>
+    Get Started
+  </a>
+  <a href="https://github.com/agilira/chiron" class="btn-secondary">
+    <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+    </svg>
+    View on GitHub
+  </a>
+</div>
+
+</div>
+
+<div class="landing-content-wrapper">
+
+<h2 id="why-chiron">Why Chiron?</h2><div class="feature-grid">
+  <div class="feature-card">
+    <div class="feature-icon">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+        <polyline points="10 9 9 9 8 9"/>
+      </svg>
+    </div>
+    <h3>Markdown-First</h3>
+    <p>Write your documentation in simple Markdown with YAML frontmatter. No complex setup, just write.</p>
+  </div>
+
+  <div class="feature-card">
+    <div class="feature-icon">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M12 1v6m0 6v6"/>
+        <path d="m4.93 4.93 4.24 4.24m5.66 5.66 4.24 4.24"/>
+        <path d="M1 12h6m6 0h6"/>
+        <path d="m4.93 19.07 4.24-4.24m5.66-5.66 4.24-4.24"/>
+      </svg>
+    </div>
+    <h3>Single Config File</h3>
+    <p>Everything controlled through one YAML file. Branding, navigation, SEO, analytics - all in one place.</p>
+  </div>
+
+  <div class="feature-card">
+    <div class="feature-icon">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+      </svg>
+    </div>
+    <h3>Beautiful by Default</h3>
+    <p>Modern design with built-in dark mode, responsive layout, and smooth animations out of the box.</p>
+  </div>
+
+  <div class="feature-card">
+    <div class="feature-icon">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87m-4-12a4 4 0 0 1 0 7.75"/>
+      </svg>
+    </div>
+    <h3>Accessibility First</h3>
+    <p>WCAG 2.2 AA compliant with keyboard navigation, ARIA labels, and screen reader support.</p>
+  </div>
+
+  <div class="feature-card">
+    <div class="feature-icon">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+      </svg>
+    </div>
+    <h3>GitHub Pages Ready</h3>
+    <p>Optimized for static hosting with sitemap, robots.txt, and perfect GitHub Pages integration.</p>
+  </div>
+
+  <div class="feature-card">
+    <div class="feature-icon">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="m21 21-4.35-4.35"/>
+      </svg>
+    </div>
+    <h3>SEO Optimized</h3>
+    <p>Complete meta tags, Open Graph, Twitter Cards, and JSON-LD structured data included.</p>
+  </div>
+</div>
+
+<hr>
+<h3 id="responsive-tables">Responsive Tables</h3><div class="table-wrapper">
+        <table>
+          <thead><tr>
+<th>Feature</th>
+<th>Support</th>
+<th>Notes</th>
+</tr>
+</thead>
+          <tbody><tr>
+<td>Markdown</td>
+<td>✅</td>
+<td>Full GFM support</td>
+</tr>
+<tr>
+<td>Dark Mode</td>
+<td>✅</td>
+<td>Auto-switching</td>
+</tr>
+<tr>
+<td>Search</td>
+<td>✅</td>
+<td>Client-side search</td>
+</tr>
+</tbody>
+        </table>
+      </div><h3 id="cookie-consent">Cookie Consent</h3><p>GDPR-compliant cookie consent banner with customizable text and buttons.</p>
+<hr>
+<h2 id="perfect-for">Perfect For</h2><ul>
+<li><strong>Open Source Projects</strong> - Beautiful docs for your GitHub projects</li>
+<li><strong>API Documentation</strong> - Clear, searchable API references</li>
+<li><strong>Product Documentation</strong> - User guides and tutorials</li>
+<li><strong>Knowledge Bases</strong> - Internal documentation and wikis</li>
+<li><strong>Personal Blogs</strong> - Simple, fast static blogs</li>
+</ul>
+<hr>
+<h2 id="built-with">Built With</h2><p>Chiron is built with modern web technologies:</p>
+<ul>
+<li><strong>Node.js</strong> - Build system</li>
+<li><strong>Marked</strong> - Markdown parsing</li>
+<li><strong>Highlight.js</strong> - Syntax highlighting</li>
+<li><strong>YAML</strong> - Configuration</li>
+<li>Pure <strong>HTML/CSS/JavaScript</strong> - No framework bloat</li>
+</ul>
+<hr>
+<h2 id="philosophy">Philosophy</h2><p>Like the wise centaur Chiron who transformed confusion into clarity with gentle guidance, this builder transforms scattered documentation into clear, accessible websites.</p>
+<p><strong>Simple</strong> - Markdown files + one YAML config<br><strong>Fast</strong> - Static HTML, no runtime dependencies<br><strong>Beautiful</strong> - Modern design that users love<br><strong>Accessible</strong> - Works for everyone  </p>
+<hr>
+<h2 id="get-started-today">Get Started Today</h2><div class="hero-cta">
+  <a href="index.html" class="btn-primary">Read the Docs</a>
+  <a href="https://github.com/agilira/chiron" class="btn-secondary">Star on GitHub</a>
+</div>
+
+</div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer landing-footer" role="contentinfo">
+        <div class="footer-container landing-footer-container">
+            <a href="https://github.com/agilira" target="_blank" rel="noopener" class="landing-footer-logo">
+                <img src="assets/logo-footer.png" alt="Chiron Logo" class="landing-footer-logo-img footer-logo-light" loading="lazy">
+                <img src="assets/logo-footer-white.png" alt="Chiron Logo" class="landing-footer-logo-img footer-logo-dark" loading="lazy">
+            </a>
+            
+            <nav class="landing-footer-links" aria-label="Footer navigation">
+                <a href="privacy-policy.html" class="footer-legal-link">Privacy Policy</a>
+                                    <a href="terms-of-service.html" class="footer-legal-link">Terms of Service</a>
+                                    <a href="cookie-policy.html" class="footer-legal-link">Cookie Policy</a>
+                <button type="button" class="cookie-consent-btn" id="cookieConsentBtn" >Manage Preferences</button>
+            </nav>
+            
+            <p class="footer-copyright landing-footer-copyright">
+                &copy; <span class="copyright-year">2025</span> Agilira. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Cookie Consent Banner -->
+    <div class="cookie-banner" id="cookieBanner" >
+        <div class="cookie-banner-content">
+            <div class="cookie-banner-text">
+                <p>We use cookies to enhance your browsing experience and analyze our traffic. By clicking &#039;Accept&#039;, you consent to our <a href="cookie-policy.html" class="cookie-policy-inline-link">Cookie Policy</a>.</p>
+            </div>
+            <div class="cookie-banner-actions">
+                <button type="button" class="cookie-accept-btn" id="cookieAcceptBtn">Accept All</button>
+                <button type="button" class="cookie-decline-btn" id="cookieDeclineBtn">Decline</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <button 
+        class="scroll-to-top" 
+        id="scrollToTop" 
+        aria-label="Scroll to top of page"
+        title="Scroll to top"
+        type="button"
+    >
+        ↑
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="script.js"></script>
+    <script src="custom.js"></script>
+    
+    <!-- Initialize app -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize DocumentationApp if available
+            if (typeof DocumentationApp !== 'undefined') {
+                window.documentationApp = new DocumentationApp();
+            }
+        });
+    </script>
+</body>
+</html>

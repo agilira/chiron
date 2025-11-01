@@ -167,6 +167,53 @@ features:
 
 This paragraph contains various inline elements: **bold**, *italic*, ***bold italic***, `code`, ~~strikethrough~~, and [links](index.html).
 
+## Info Boxes
+
+Info boxes are perfect for highlighting important information, warnings, tips, and more.
+
+<div class="info-box info-box-info">
+  <strong>Info</strong>
+  This is an informational message. Use this for general information or notes that don't require immediate action.
+</div>
+
+<div class="info-box info-box-warning">
+  <strong>Warning</strong>
+  This is a warning message. Use this to alert users about potential issues or important considerations.
+</div>
+
+<div class="info-box info-box-error">
+  <strong>Error</strong>
+  This is an error message. Use this for critical issues that need immediate attention or things that could break functionality.
+</div>
+
+<div class="info-box info-box-success">
+  <strong>Success</strong>
+  This is a success message. Use this to confirm successful operations or positive outcomes.
+</div>
+
+<div class="info-box info-box-tip">
+  <strong>Tip</strong>
+  This is a helpful tip. Use this for best practices, recommendations, or useful suggestions that can improve the user experience.
+</div>
+
+### Info Box with Code
+
+<div class="info-box info-box-info">
+  <strong>Configuration Tip</strong>
+  You can customize the theme by modifying the <code>chiron.config.yaml</code> file. Here's an example:
+  
+  <pre><code>theme:
+  primaryColor: "#2563eb"
+  darkMode: true</code></pre>
+</div>
+
+### Info Box with Links
+
+<div class="info-box info-box-warning">
+  <strong>Breaking Change</strong>
+  Version 2.0 introduces breaking changes. Please read the <a href="index.html">migration guide</a> before upgrading.
+</div>
+
 ## Diagrams
 
 > **Note**: Mermaid diagram support has been removed to improve page load performance. 
@@ -271,6 +318,117 @@ This is content under a level 5 heading.
 ###### Level 6 Heading
 
 This is content under a level 6 heading.
+
+## Blockquotes
+
+### Basic Quote
+
+> **Simplicity is the ultimate sophistication.**
+> 
+> A well-designed system should be easy to understand and use, without unnecessary complexity.
+
+### Quote with Citation
+
+> The best documentation is the one that doesn't need to exist, but when it does, it should be clear, concise, and helpful.
+> <cite>Documentation Best Practices</cite>
+
+### Quote with Author
+
+> Programs must be written for people to read, and only incidentally for machines to execute.
+> <footer>Harold Abelson, Structure and Interpretation of Computer Programs</footer>
+
+### Multi-paragraph Quote
+
+> First paragraph of the quote that contains important information about the topic at hand.
+> 
+> Second paragraph that elaborates on the first point and provides additional context.
+> 
+> Final paragraph with a conclusion or call to action.
+
+### Quote with Code
+
+> Always remember: `const` is better than `let`, and `let` is better than `var`. 
+> <cite>Modern JavaScript Best Practices</cite>
+
+### Info Quote
+
+<blockquote class="info">
+<p><strong>Info:</strong> You can use HTML directly in markdown files for advanced formatting options.</p>
+</blockquote>
+
+### Warning Quote
+
+<blockquote class="warning">
+<p><strong>Warning:</strong> This feature is experimental and may change in future versions. Use with caution in production environments.</p>
+</blockquote>
+
+### Error Quote
+
+<blockquote class="error">
+<p><strong>Error:</strong> Invalid configuration detected. Please check your <code>chiron.config.yaml</code> file for syntax errors.</p>
+</blockquote>
+
+### Success Quote
+
+<blockquote class="success">
+<p><strong>Success:</strong> Your documentation has been built and is ready for deployment!</p>
+</blockquote>
+
+## Badges
+
+### Basic Badges
+
+<span class="badge">Default</span>
+<span class="badge badge-info">Info</span>
+<span class="badge badge-success">Success</span>
+<span class="badge badge-warning">Warning</span>
+<span class="badge badge-error">Error</span>
+<span class="badge badge-primary">Primary</span>
+
+### Size Variants
+
+<span class="badge badge-sm badge-info">Small</span>
+<span class="badge badge-info">Normal</span>
+<span class="badge badge-lg badge-info">Large</span>
+
+### Outline Style
+
+<span class="badge badge-outline badge-info">Info</span>
+<span class="badge badge-outline badge-success">Success</span>
+<span class="badge badge-outline badge-warning">Warning</span>
+<span class="badge badge-outline badge-error">Error</span>
+
+### With Dot Indicator
+
+<span class="badge badge-dot badge-success">Active</span>
+<span class="badge badge-dot badge-warning">Pending</span>
+<span class="badge badge-dot badge-error">Failed</span>
+
+### In Headings
+
+### New Feature <span class="badge badge-success">v2.0</span>
+
+### Deprecated API <span class="badge badge-warning">Legacy</span>
+
+#### Coming Soon <span class="badge badge-info">Beta</span>
+
+### Badge Group
+
+<div class="badge-group">
+  <span class="badge badge-info">Node.js</span>
+  <span class="badge badge-success">v18+</span>
+  <span class="badge badge-primary">Stable</span>
+</div>
+
+### Use Cases
+
+**Version tags:** <span class="badge badge-sm badge-info">v2.1.0</span>
+
+**Status:** <span class="badge badge-dot badge-success">Online</span>
+
+**Breaking change:** <span class="badge badge-error">Breaking</span>
+
+**Experimental:** <span class="badge badge-outline badge-warning">Experimental</span>
 
 ## Mixed Content
 

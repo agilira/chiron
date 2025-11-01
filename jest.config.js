@@ -18,5 +18,11 @@ module.exports = {
     }
   },
   verbose: true,
-  transform: {}
+  // Transform ESM modules (marked v16+) to CommonJS for Jest
+  transform: {
+    '^.+\\.js$': 'babel-jest'
+  },
+  transformIgnorePatterns: [
+    'node_modules/(?!(marked)/)'
+  ]
 };

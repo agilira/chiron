@@ -1,0 +1,123 @@
+# Chiron Configuration Example for GitHub Actions
+# =================================================
+# Copy this entire folder structure to your repository as 'docs-src/'
+# and customize these settings for your project.
+
+# Project Information
+project:
+  name: My Project
+  title: My Project Documentation
+  description: Documentation for my awesome project
+  language: en
+  base_url: https://YOUR_USERNAME.github.io/YOUR_REPO  # ⚠️ Change this!
+
+# Branding
+branding:
+  company: Your Company
+  company_url: https://github.com/YOUR_USERNAME
+  tagline: Making things awesome
+  
+  # Logo paths (relative to assets folder)
+  # Place logo files in docs-src/assets/
+  logo:
+    light: logo-black.png      # Logo for light mode
+    dark: logo-white.png       # Logo for dark mode
+    alt: My Project Logo
+    footer_light: logo-footer.png
+    footer_dark: logo-footer-white.png
+  
+  colors:
+    primary: "#3b82f6"
+    primary_dark: "#2563eb"
+    accent: "#10b981"
+
+# GitHub Integration
+github:
+  owner: YOUR_USERNAME          # ⚠️ Change this!
+  repo: YOUR_REPO               # ⚠️ Change this!
+  branch: main
+  show_version: true
+  current_version: v1.0.0
+
+# SEO & Social
+seo:
+  keywords:
+    - documentation
+    - my project
+    - awesome tool
+  
+  opengraph:
+    site_name: My Project Documentation
+    type: website
+    locale: en_US
+    image: og-image.png         # Can be in root or assets/
+    image_width: 1200
+    image_height: 630
+    image_alt: My Project Documentation
+  
+  twitter:
+    card: summary_large_image
+    site: "@yourhandle"
+    creator: "@yourhandle"
+
+# Navigation Structure
+navigation:
+  sidebar:
+    - section: Getting Started
+      items:
+        - label: Overview
+          file: index.md
+        - label: Installation
+          file: installation.md
+    
+    - section: Resources
+      items:
+        - label: GitHub Repository
+          url: https://github.com/YOUR_USERNAME/YOUR_REPO
+          external: true
+
+# Features Toggle
+features:
+  search: true
+  code_copy: true
+  breadcrumbs: true
+  cookie_consent: true
+  dark_mode: true
+  print_styles: true
+  scroll_to_top: true
+
+# Footer Configuration
+footer:
+  copyright_holder: Your Company
+  legal_links:
+    - label: Privacy Policy
+      file: privacy-policy.md
+    - label: Terms of Service
+      file: terms-of-service.md
+
+# Build Configuration
+build:
+  output_dir: ../docs           # ⚠️ IMPORTANT: must be ../docs for GitHub Pages
+  content_dir: content
+  assets_dir: assets
+  templates_dir: templates
+  
+  # Files to copy as-is from docs-src/ root
+  # Favicons MUST be in root of docs-src/
+  # og-image.png can be in root OR assets/
+  # Note: robots.txt and sitemap.xml are auto-generated
+  static_files:
+    - favicon-*.png
+    - og-image.png
+  
+  # Generate sitemap
+  sitemap:
+    enabled: true
+    priority: 0.8
+    changefreq: weekly
+  
+  # Generate robots.txt
+  robots:
+    enabled: true
+    allow_all: true
+

@@ -54,8 +54,22 @@ class ChironBuilder {
    * @param {string} [configPath='chiron.config.yaml'] - Path to configuration file
    */
   constructor(configPath = 'chiron.config.yaml') {
-    this.rootDir = path.resolve(__dirname, '..');
-    this.configPath = path.join(this.rootDir, configPath);
+    // Try current working directory first (for GitHub Actions usage)
+    // Fallback to Chiron root directory (for local usage)
+    const cwdConfigPath = path.join(process.cwd(), configPath);
+    this.chironRootDir = path.resolve(__dirname, '..'); // Always save Chiron's directory
+    const defaultConfigPath = path.join(this.chironRootDir, configPath);
+    
+    if (fs.existsSync(cwdConfigPath)) {
+      // Config found in current directory - use it (GitHub Actions scenario)
+      this.rootDir = process.cwd();
+      this.configPath = cwdConfigPath;
+    } else {
+      // Config not in current directory - use default (local usage)
+      this.rootDir = this.chironRootDir;
+      this.configPath = defaultConfigPath;
+    }
+    
     this.config = null;
     this.markdownParser = new MarkdownParser();
     this.templateEngine = null;
@@ -80,7 +94,7 @@ class ChironBuilder {
    */
   init() {
     this.loadConfig();
-    this.templateEngine = new TemplateEngine(this.config, this.rootDir);
+    this.templateEngine = new TemplateEngine(this.config, this.rootDir, this.chironRootDir);
     
     // Ensure output directory exists
     const outputDir = path.join(this.rootDir, this.config.build.output_dir);
@@ -111,23 +125,6 @@ class ChironBuilder {
   }
 
   /**
-   * Check if a custom HTML file exists for this page
-   * Only index.html and 404.html can be overridden
-   * @param {string} filename - Name of the file to check (e.g., 'index.html')
-   * @returns {boolean} True if custom HTML exists
-   */
-  hasCustomHTML(filename) {
-    // Only allow custom HTML for specific files
-    const allowedCustomFiles = ['index.html', '404.html'];
-    if (!allowedCustomFiles.includes(filename)) {
-      return false;
-    }
-    
-    const customPath = path.join(this.rootDir, filename);
-    return fs.existsSync(customPath);
-  }
-
-  /**
    * Process a single markdown file and generate HTML
    * @param {Object} file - File object with filename, path, and outputName
    * @returns {Object|null} Page metadata for sitemap, or null on error
@@ -140,26 +137,7 @@ class ChironBuilder {
         file.outputName
       );
 
-      // Check if custom HTML exists (index.html or 404.html in root)
-      if (this.hasCustomHTML(file.outputName)) {
-        const customPath = path.join(this.rootDir, file.outputName);
-        const customHTML = fs.readFileSync(customPath, 'utf8');
-        fs.writeFileSync(outputPath, customHTML, 'utf8');
-        this.logger.info(`Generated: ${file.outputName} (using custom HTML)`);
-        
-        // Try to extract title from custom HTML for sitemap
-        const titleMatch = customHTML.match(/<title>(.*?)<\/title>/i);
-        const title = titleMatch ? titleMatch[1] : this.config.project.title;
-        
-        return {
-          url: file.outputName,
-          title,
-          description: this.config.project.description,
-          lastmod: new Date().toISOString().split('T')[0]
-        };
-      }
-
-      // Otherwise, process markdown normally
+      // Process markdown content
       const content = fs.readFileSync(file.path, 'utf8');
       const parsed = this.markdownParser.parse(content);
       
@@ -259,10 +237,14 @@ class ChironBuilder {
 
   /**
    * Copy static files (favicon, images, etc.)
+   * Supports searching in both root and assets directory for better flexibility
    */
   copyStaticFiles() {
     const outputDir = path.join(this.rootDir, this.config.build.output_dir);
+    const assetsDir = path.join(this.rootDir, this.config.build.assets_dir);
     const staticFiles = this.config.build.static_files || [];
+    let copiedCount = 0;
+    let notFoundFiles = [];
 
     for (const pattern of staticFiles) {
       // Simple glob pattern matching (supports * wildcard)
@@ -270,31 +252,64 @@ class ChironBuilder {
         const prefix = pattern.split('*')[0];
         const suffix = pattern.split('*')[1] || '';
         
-        const files = fs.readdirSync(this.rootDir)
-          .filter(f => f.startsWith(prefix) && f.endsWith(suffix));
+        // Check root directory for wildcard patterns
+        if (fs.existsSync(this.rootDir)) {
+          const files = fs.readdirSync(this.rootDir)
+            .filter(f => f.startsWith(prefix) && f.endsWith(suffix));
 
-        for (const file of files) {
-          const src = path.join(this.rootDir, file);
-          const dest = path.join(outputDir, file);
-          if (fs.existsSync(src)) {
-            fs.copyFileSync(src, dest);
+          for (const file of files) {
+            const src = path.join(this.rootDir, file);
+            const dest = path.join(outputDir, file);
+            if (fs.existsSync(src) && fs.statSync(src).isFile()) {
+              fs.copyFileSync(src, dest);
+              copiedCount++;
+            }
           }
         }
       } else {
-        const src = path.join(this.rootDir, pattern);
+        // Try root directory first
+        let src = path.join(this.rootDir, pattern);
         const dest = path.join(outputDir, pattern);
-        if (fs.existsSync(src)) {
+        let found = false;
+        
+        if (fs.existsSync(src) && fs.statSync(src).isFile()) {
           fs.copyFileSync(src, dest);
+          found = true;
+          copiedCount++;
+        } else {
+          // Try assets directory as fallback (for og-image.png, etc.)
+          const assetsPath = path.join(assetsDir, pattern);
+          if (fs.existsSync(assetsPath) && fs.statSync(assetsPath).isFile()) {
+            fs.copyFileSync(assetsPath, dest);
+            found = true;
+            copiedCount++;
+            this.logger.debug(`Found ${pattern} in assets directory, copied to root of output`);
+          }
+        }
+        
+        if (!found) {
+          notFoundFiles.push(pattern);
         }
       }
     }
 
-    this.logger.info('Static files copied');
+    // Log results
+    if (copiedCount > 0) {
+      this.logger.info(`Static files copied: ${copiedCount} file(s)`);
+    }
+    
+    if (notFoundFiles.length > 0) {
+      this.logger.warn(`Static files not found (will use placeholders if referenced):`, { 
+        files: notFoundFiles,
+        searchedIn: [this.rootDir, assetsDir]
+      });
+    }
   }
 
   /**
    * Copy CSS and JS files to output directory
    * Creates empty custom.css and custom.js if they don't exist
+   * Falls back to Chiron's files if not found in user directory
    * @returns {Promise<void>}
    * @throws {Error} If file copying fails
    */
@@ -308,14 +323,23 @@ class ChironBuilder {
     
     try {
       await Promise.allSettled(filesToCopy.map(async (file) => {
-        const src = path.join(this.rootDir, file);
+        let src = path.join(this.rootDir, file);
         const dest = path.join(outputDir, file);
         
         try {
+          // Try user's directory first
+          if (!fsSync.existsSync(src)) {
+            // Fallback to Chiron's directory (for all files)
+            const chironSrc = path.join(this.chironRootDir, file);
+            if (fsSync.existsSync(chironSrc)) {
+              src = chironSrc;
+            }
+          }
+          
           if (fsSync.existsSync(src)) {
             await fs.copyFile(src, dest);
           } else {
-            // Create empty custom files if they don't exist
+            // Create empty custom files if they don't exist anywhere
             if (file === 'custom.css' || file === 'custom.js') {
               await fs.writeFile(dest, '', 'utf8');
             } else {
@@ -343,7 +367,7 @@ class ChironBuilder {
   }
 
   /**
-   * Generate default 404 page if custom one doesn't exist
+   * Generate default 404 page
    */
   generate404() {
     const outputPath = path.join(
@@ -352,16 +376,7 @@ class ChironBuilder {
       '404.html'
     );
 
-    // Skip if custom 404.html exists in root
-    if (this.hasCustomHTML('404.html')) {
-      const customPath = path.join(this.rootDir, '404.html');
-      const customHTML = fs.readFileSync(customPath, 'utf8');
-      fs.writeFileSync(outputPath, customHTML, 'utf8');
-      this.logger.info('Generated: 404.html (using custom HTML)');
-      return;
-    }
-
-    // Generate default 404 page
+    // Generate 404 page using template
     const pageContext = {
       ...this.config,
       page: {
@@ -532,6 +547,11 @@ class ChironBuilder {
    */
   watch() {
     this.logger.info('Watching for changes...');
+    
+    // Initialize config if not already loaded
+    if (!this.config) {
+      this.init();
+    }
     
     const chokidar = require('chokidar');
     const contentDir = path.join(this.rootDir, this.config.build.content_dir);

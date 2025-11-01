@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="{{PAGE_LANG}}" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{PAGE_TITLE}}</title>
+    {{META_TAGS}}
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="fonts.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="custom.css">
+    
+    <!-- Syntax Highlighting - Light/Dark adaptive -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="(prefers-color-scheme: light)">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
+    
+    {{STRUCTURED_DATA}}
+    {{ANALYTICS}}
+</head>
+<body class="landing-layout">
+    <!-- Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Header - Riusa struttura esistente con classi landing -->
+    <header class="header landing-header" role="banner">
+        <div class="header-container landing-header-container">
+            <div class="header-left landing-logo-section">
+                <a href="{{COMPANY_URL}}" class="landing-logo-link" target="_blank" rel="noopener">
+                    <img src="{{LOGO_LIGHT}}" alt="{{LOGO_ALT}}" class="landing-logo-img logo-light" width="32" height="32" loading="eager">
+                    <img src="{{LOGO_DARK}}" alt="{{LOGO_ALT}}" class="landing-logo-img logo-dark" width="32" height="32" loading="eager">
+                    <span>{{PROJECT_NAME}}</span>
+                </a>
+                <nav class="header-nav" aria-label="Main navigation">
+                    {{HEADER_NAV}}
+                </nav>
+            </div>
+            <div class="header-right landing-actions">
+                <div class="header-actions">
+                    <a href="{{GITHUB_URL}}" class="header-action-btn" target="_blank" rel="noopener" aria-label="View repository on GitHub">
+                        <svg width="20" height="20" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z" fill="currentColor"/>
+                        </svg>
+                    </a>
+                    <button type="button" class="header-action-btn theme-toggle" id="themeToggle" aria-label="Toggle dark mode" {{SHOW_THEME_TOGGLE}}>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="theme-icon-light">
+                            <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="theme-icon-dark" style="display: none;">
+                            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="landing-main" id="main-content" role="main">
+        <div class="landing-content">
+            <div class="landing-content-container">
+                {{PAGE_CONTENT}}
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer landing-footer" role="contentinfo">
+        <div class="footer-container landing-footer-container">
+            <a href="{{COMPANY_URL}}" target="_blank" rel="noopener" class="landing-footer-logo">
+                <img src="{{LOGO_FOOTER_LIGHT}}" alt="{{LOGO_ALT}}" class="landing-footer-logo-img footer-logo-light" loading="lazy">
+                <img src="{{LOGO_FOOTER_DARK}}" alt="{{LOGO_ALT}}" class="landing-footer-logo-img footer-logo-dark" loading="lazy">
+            </a>
+            
+            <nav class="landing-footer-links" aria-label="Footer navigation">
+                {{FOOTER_LEGAL_LINKS}}
+                <button type="button" class="cookie-consent-btn" id="cookieConsentBtn" {{SHOW_COOKIE_BANNER}}>{{COOKIE_MANAGE_LABEL}}</button>
+            </nav>
+            
+            <p class="footer-copyright landing-footer-copyright">
+                &copy; <span class="copyright-year">{{COPYRIGHT_YEAR}}</span> {{COPYRIGHT_HOLDER}}. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Cookie Consent Banner -->
+    <div class="cookie-banner" id="cookieBanner" {{SHOW_COOKIE_BANNER}}>
+        <div class="cookie-banner-content">
+            <div class="cookie-banner-text">
+                <p>{{COOKIE_BANNER_TEXT}} <a href="cookie-policy.html" class="cookie-policy-inline-link">{{COOKIE_POLICY_LABEL}}</a>.</p>
+            </div>
+            <div class="cookie-banner-actions">
+                <button type="button" class="cookie-accept-btn" id="cookieAcceptBtn">{{COOKIE_ACCEPT_LABEL}}</button>
+                <button type="button" class="cookie-decline-btn" id="cookieDeclineBtn">{{COOKIE_DECLINE_LABEL}}</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <button 
+        class="scroll-to-top" 
+        id="scrollToTop" 
+        aria-label="Scroll to top of page"
+        title="Scroll to top"
+        type="button"
+    >
+        ↑
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="script.js"></script>
+    <script src="custom.js"></script>
+    
+    <!-- Initialize app -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize DocumentationApp if available
+            if (typeof DocumentationApp !== 'undefined') {
+                window.documentationApp = new DocumentationApp();
+            }
+        });
+    </script>
+</body>
+</html>

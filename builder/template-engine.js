@@ -16,9 +16,10 @@ const TEMPLATE_CONFIG = {
 };
 
 class TemplateEngine {
-  constructor(config, rootDir) {
+  constructor(config, rootDir, chironRootDir = null) {
     this.config = config;
     this.rootDir = rootDir;
+    this.chironRootDir = chironRootDir || rootDir; // Fallback to rootDir if not provided
     this.templateCache = {};
     this.cacheMaxSize = TEMPLATE_CONFIG.CACHE_MAX_SIZE;
     this.cacheKeys = []; // Track insertion order for LRU
@@ -96,14 +97,24 @@ class TemplateEngine {
       return this.templateCache[templateName];
     }
 
-    const templatePath = path.join(
+    // Try user's directory first, then fallback to Chiron's directory
+    let templatePath = path.join(
       this.rootDir,
       this.config.build.templates_dir,
       templateName
     );
 
     if (!fs.existsSync(templatePath)) {
-      throw new Error(`Template not found: ${templatePath}`);
+      // Fallback to Chiron's templates directory
+      templatePath = path.join(
+        this.chironRootDir,
+        this.config.build.templates_dir,
+        templateName
+      );
+      
+      if (!fs.existsSync(templatePath)) {
+        throw new Error(`Template not found: ${templateName} (checked both ${this.rootDir} and ${this.chironRootDir})`);
+      }
     }
 
     const template = fs.readFileSync(templatePath, 'utf8');
@@ -403,7 +414,38 @@ class TemplateEngine {
    * @returns {string} Fully rendered HTML page
    */
   render(context) {
-    const template = this.loadTemplate('page.html');
+    // Use custom template from frontmatter, fallback to default page.html
+    const templateName = context.page.template || 'page.html';
+    
+    // Validate template name to prevent path traversal attacks
+    if (templateName.includes('..') || templateName.includes('/') || templateName.includes('\\')) {
+      this.logger.warn('Invalid template name, using default', { template: templateName });
+      const template = this.loadTemplate('page.html');
+      return this.renderTemplate(template, context);
+    }
+    
+    try {
+      const template = this.loadTemplate(templateName);
+      this.logger.debug('Using template', { template: templateName });
+      return this.renderTemplate(template, context);
+    } catch (error) {
+      // Fallback to page.html if custom template not found
+      this.logger.warn('Template not found, falling back to page.html', { 
+        template: templateName, 
+        error: error.message 
+      });
+      const template = this.loadTemplate('page.html');
+      return this.renderTemplate(template, context);
+    }
+  }
+
+  /**
+   * Process template and replace all placeholders
+   * @param {string} template - Template HTML content
+   * @param {Object} context - Page context with config and page data
+   * @returns {string} Fully rendered HTML page
+   */
+  renderTemplate(template, context) {
     const { project, branding, github, features, cookies } = this.config;
 
     // Build replacements map

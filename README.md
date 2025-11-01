@@ -1,4 +1,4 @@
-# Chiron v2.0 - Static Site Generator for Documentation
+# Chiron - Static Site Generator for Documentation
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![Static Site Generator](https://img.shields.io/badge/SSG-Static%20Site-green.svg)](#)
@@ -13,6 +13,7 @@ Zero runtime. Zero complexity. Just fast, beautiful docs.
 
 - **Markdown-First**: Write documentation in Markdown with YAML frontmatter
 - **YAML Configuration**: Single `chiron.config.yaml` file for everything
+- **Multiple Templates**: Use different layouts for landing pages, docs, and custom pages
 - **Automatic Build**: Generates HTML, sitemap.xml, and robots.txt automatically
 - **Modern Design**: Clean, responsive interface
 - **Accessibility**: WCAG 2.2 AA compliant
@@ -25,7 +26,16 @@ Zero runtime. Zero complexity. Just fast, beautiful docs.
 
 ## Quick Start
 
-### Installation
+You can use Chiron in two ways:
+
+1. **GitHub Actions (Recommended)** - No installation needed, automatic builds and deployment
+2. **Local Installation** - Build on your machine
+
+### Option 1: Using GitHub Actions (No Installation)
+
+Skip to [Using Chiron with GitHub Actions](#using-chiron-with-github-actions-no-installation-required) section below.
+
+### Option 2: Local Installation
 
 ```bash
 # Clone the repository
@@ -36,7 +46,7 @@ cd chiron
 npm install
 ```
 
-### Basic Usage
+### Basic Usage (Local)
 
 1. **Configure your project** in `chiron.config.yaml`:
 
@@ -78,6 +88,119 @@ npm run preview
 ```
 
 Your site is ready in `docs/` for deployment to GitHub Pages!
+
+## Using Chiron with GitHub Actions (No Installation Required)
+
+You can use Chiron **without installing Node.js** by using GitHub Actions. The workflow will automatically build and deploy your documentation.
+
+### Setup Steps
+
+1. **Copy the workflow template** to your repository:
+   ```bash
+   cp .github/workflows/build-docs.yml.example .github/workflows/build-docs.yml
+   ```
+   Or manually create `.github/workflows/build-docs.yml` and copy the content from [build-docs.yml.example](.github/workflows/build-docs.yml.example).
+
+2. **Create `docs-src/` folder** in your repository root:
+   ```
+   your-project/
+   ├── docs-src/
+   │   ├── chiron.config.yaml
+   │   └── content/
+   │       └── index.md
+   ├── .github/
+   │   └── workflows/
+   │       └── build-docs.yml
+   └── docs/  (auto-generated)
+   ```
+
+3. **Configure `docs-src/chiron.config.yaml`**:
+   ```yaml
+   project:
+     name: My Project
+     base_url: https://YOUR_USERNAME.github.io/YOUR_REPO
+   
+   build:
+     output_dir: ../docs  # <--- IMPORTANT: must be ../docs for GitHub Pages
+     content_dir: content
+   
+   navigation:
+     sidebar:
+       - label: Home
+         file: index.md
+   ```
+   
+   See [examples/docs-src-example/chiron.config.yaml](examples/docs-src-example/chiron.config.yaml) for a minimal example.
+
+4. **Add your content** in `docs-src/content/` as Markdown files.
+
+5. **Push to GitHub** - The workflow will automatically:
+   - Download Chiron
+   - Install dependencies
+   - Build your documentation
+   - Deploy to GitHub Pages
+
+### How It Works
+
+- The workflow runs when files in `docs-src/` change
+- Chiron is downloaded to `.chiron-builder/` (temporary, auto-cleaned)
+- Your config and content are read from `docs-src/`
+- Built site is generated in `docs/` (ready for GitHub Pages)
+- Templates, CSS, and JS are automatically included (no need to copy them)
+
+### File Structure for docs-src/
+
+Here's the complete structure for GitHub Actions deployment:
+
+```
+your-repo/
+├── docs-src/                      # Your documentation source
+│   ├── chiron.config.yaml         # ✅ Required - Configuration
+│   ├── content/                   # ✅ Required - Markdown files
+│   │   ├── index.md
+│   │   └── ...
+│   │
+│   ├── assets/                    # ⚠️ Optional - Images & branding
+│   │   ├── logo-black.png         #    (referenced in config)
+│   │   ├── logo-white.png
+│   │   ├── logo-footer.png
+│   │   └── og-image.png           #    ✨ Can be here OR in root
+│   │
+│   ├── favicon-16.png             # ⚠️ Optional - Favicons
+│   ├── favicon-32.png             #    (MUST be in root of docs-src/)
+│   ├── favicon-180.png
+│   ├── favicon-192.png
+│   ├── favicon-512.png
+│   │
+│   ├── og-image.png               # ⚠️ Optional - OG image
+│   │                              #    (can be here OR in assets/)
+│   │
+│   ├── custom.css                 # ⚠️ Optional - Custom styles
+│   ├── custom.js                  # ⚠️ Optional - Custom JavaScript
+│   ├── index.html                 # ⚠️ Optional - Custom homepage
+│   ├── 404.html                   # ⚠️ Optional - Custom 404 page
+│   └── templates/                 # ⚠️ Optional - Custom templates
+│       └── page.html
+│
+├── .github/workflows/
+│   └── build-docs.yml             # Workflow file
+└── docs/                          # 🤖 Auto-generated (don't edit)
+```
+
+**Important Notes:**
+- **Favicons**: Must be in root of `docs-src/` (not in `assets/`)
+- **OG Image**: Can be in root OR `assets/` (builder checks both)
+- **Logos**: Should be in `assets/` (referenced in `chiron.config.yaml`)
+- **Custom files**: If not present, Chiron uses its built-in versions
+
+### Optional Customizations
+
+**Everything is optional except `chiron.config.yaml` and `content/`!**
+
+If these files don't exist in `docs-src/`, Chiron automatically uses its built-in versions:
+- `styles.css`, `fonts.css`, `script.js` - Core files from Chiron
+- `custom.css`, `custom.js` - Created as empty files if missing
+- `templates/page.html` - Default template from Chiron
 
 ## Project Structure
 

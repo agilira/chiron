@@ -87,7 +87,8 @@ author: Test Author
       const result = parser.parse(input);
 
       // The ID should be sanitized to remove script tags
-      expect(result.html).toContain('id="test-alertxss"');
+      // Updated: our optimized regex now converts sequences to single hyphen
+      expect(result.html).toContain('id="test-alert-xss"');
       // Marked by default doesn't escape inline HTML in headings,
       // but our ID generation removes dangerous characters
       expect(result.html).toContain('id=');

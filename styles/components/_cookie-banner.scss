@@ -1,0 +1,115 @@
+// ============================================
+// Cookie Banner Component
+// ============================================
+
+@use '../abstracts/mixins' as *;
+
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 1px solid var(--gray-200);
+    box-shadow: 0 -4px 6px -1px rgb(0 0 0 / 0.1);
+    z-index: 1000;
+    transform: translateY(100%);
+    transition: transform var(--transition-normal);
+    
+    &.show {
+        transform: translateY(0);
+    }
+}
+
+.cookie-banner-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--space-4) var(--space-6);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    
+    @include mobile {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--space-3);
+    }
+}
+
+.cookie-banner-text {
+    flex: 1;
+    
+    p {
+        margin: 0;
+        font-size: var(--font-size-sm);
+        color: var(--gray-700);
+        line-height: 1.5;
+    }
+}
+
+.cookie-policy-inline-link {
+    color: var(--primary-600);
+    text-decoration: underline;
+    font-weight: 500;
+    transition: color var(--transition-fast);
+    
+    &:hover {
+        color: var(--primary-700);
+    }
+}
+
+.cookie-banner-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-shrink: 0;
+    
+    @include mobile {
+        flex-direction: column;
+        width: 100%;
+    }
+}
+
+// Cookie table for cookie policy page
+.cookie-table {
+    margin: var(--space-4) 0;
+    overflow-x: auto;
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border: 1px solid var(--gray-200);
+        border-radius: var(--border-radius);
+        overflow: hidden;
+    }
+    
+    th,
+    td {
+        padding: var(--space-3) var(--space-4);
+        text-align: left;
+        border-bottom: 1px solid var(--gray-200);
+    }
+    
+    th {
+        background: var(--gray-50);
+        font-weight: 600;
+        color: var(--gray-900);
+        font-size: var(--font-size-sm);
+    }
+    
+    td {
+        font-size: var(--font-size-sm);
+        color: var(--gray-700);
+    }
+    
+    tr:last-child th,
+    tr:last-child td {
+        border-bottom: none;
+    }
+    
+    tr:hover {
+        background: var(--gray-50);
+    }
+}

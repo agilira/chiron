@@ -3,8 +3,12 @@ node_modules/
 package-lock.json
 
 # Build output
-docs/
 docs-api/
+
+# Test directories
+test-docs-src/
+test-external/
+test-output/
 
 # Editor directories and files
 .vscode/

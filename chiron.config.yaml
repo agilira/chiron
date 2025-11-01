@@ -84,6 +84,8 @@ navigation:
         - label: Overview
           file: index.md
           active: true
+        - label: Landing Demo
+          file: landing-demo.md
         - label: API Reference
           file: api-reference.md
         - label: UI Showcase
@@ -156,10 +158,10 @@ build:
   templates_dir: templates
   
   # Files to copy as-is
+  # Note: robots.txt and sitemap.xml are auto-generated, don't include them here
   static_files:
     - favicon-*.png
     - og-image.png
-    - robots.txt
   
   # Generate sitemap
   sitemap:

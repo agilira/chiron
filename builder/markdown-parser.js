@@ -35,20 +35,22 @@ class MarkdownParser {
     const renderer = new marked.Renderer();
 
     // Generate IDs for headings with improved security and duplicate handling
-    renderer.heading = (text, level) => {
-      // Sanitize text to prevent XSS - remove all HTML tags first
-      const sanitizedText = text.replace(/<[^>]*>/g, '');
+    renderer.heading = ({ text, depth }) => {
+      // In marked v16+, text is already a string (not HTML)
+      // But we still sanitize for extra safety
+      const sanitizedText = String(text).replace(/<[^>]*>/g, '');
       
       // SECURITY: Generate safe ID - only alphanumeric, spaces, and hyphens
+      // Optimized: combine multiple replace operations
       const baseId = sanitizedText
         .toLowerCase()
         .normalize('NFD') // Normalize unicode characters
         .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
-        .replace(/[^a-z0-9\s-]/g, '') // Remove all non-alphanumeric except spaces and hyphens
-        .replace(/\s+/g, '-') // Replace spaces with hyphens
-        .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
-        .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
+        .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric sequences with single hyphen
+        .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
         .substring(0, PARSER_CONFIG.MAX_ID_LENGTH); // Limit ID length
+      
+      const level = depth; // depth is the heading level in v16
       
       // Handle duplicate IDs
       let finalId = baseId || `heading-${level}-${Math.random().toString(36).substr(2, 9)}`;
@@ -66,11 +68,10 @@ class MarkdownParser {
     };
 
     // Add target="_blank" and rel="noopener" to external links
-    const originalLinkRenderer = renderer.link.bind(renderer);
-    renderer.link = (href, title, text) => {
+    renderer.link = ({ href, title, text, tokens }) => {
       // Validate href to prevent javascript: protocol injection
       if (!href || typeof href !== 'string') {
-        return text;
+        return text || '';
       }
       
       // Block dangerous protocols
@@ -79,18 +80,41 @@ class MarkdownParser {
       
       if (dangerousProtocols.some(proto => lowerHref.startsWith(proto))) {
         this.logger.warn('Blocked dangerous link protocol', { href });
-        return text;
+        return text || '';
       }
       
-      const html = originalLinkRenderer(href, title, text);
-      if (href.startsWith('http://') || href.startsWith('https://')) {
-        return html.replace('<a', '<a target="_blank" rel="noopener noreferrer"');
-      }
-      return html;
+      // Build link HTML manually
+      const titleAttr = title ? ` title="${this.escapeHtml(title)}"` : '';
+      const externalAttrs = (href.startsWith('http://') || href.startsWith('https://')) 
+        ? ' target="_blank" rel="noopener noreferrer"' 
+        : '';
+      
+      return `<a href="${this.escapeHtml(href)}"${titleAttr}${externalAttrs}>${text}</a>`;
     };
 
-    // Wrap tables in responsive container
-    renderer.table = (header, body) => {
+    // Wrap tables in responsive container  
+    renderer.table = (token) => {
+      // In marked v16+, we need to manually render header and rows
+      // Use the Renderer.parser to parse inline tokens
+      const parser = new marked.Parser();
+      
+      let header = '<tr>\n';
+      for (const cell of token.header) {
+        const content = parser.parseInline(cell.tokens || []);
+        header += `<th>${content}</th>\n`;
+      }
+      header += '</tr>\n';
+
+      let body = '';
+      for (const row of token.rows) {
+        body += '<tr>\n';
+        for (const cell of row) {
+          const content = parser.parseInline(cell.tokens || []);
+          body += `<td>${content}</td>\n`;
+        }
+        body += '</tr>\n';
+      }
+
       return `<div class="table-wrapper">
         <table>
           <thead>${header}</thead>
@@ -99,15 +123,17 @@ class MarkdownParser {
       </div>`;
     };
 
+
+
     // Add copy button to code blocks
-    renderer.code = (code, language) => {
-      const lang = language || 'text';
+    renderer.code = ({ text, lang }) => {
+      const language = lang || 'text';
       // Trim to remove leading/trailing newlines
-      const trimmedCode = code.trim();
+      const trimmedCode = String(text).trim();
       const escapedCode = this.escapeHtml(trimmedCode);
 
       // Validate language string to prevent XSS
-      const safeLang = this.escapeHtml(lang.replace(/[^a-zA-Z0-9\-_]/g, ''));
+      const safeLang = this.escapeHtml(language.replace(/[^a-zA-Z0-9\-_]/g, ''));
 
       // Note: No data-code attribute needed - JavaScript reads directly from <code> element
       return `<div class="code-block"><div class="code-header"><span class="code-language">${safeLang}</span><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>Copy</button></div><pre><code class="language-${safeLang}">${escapedCode}</code></pre></div>`;

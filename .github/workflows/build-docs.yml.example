@@ -1,0 +1,53 @@
+name: Build Documentation with Chiron
+
+on:
+  push:
+    branches:
+      - main  # Or your main branch
+    paths:
+      - 'docs-src/**'  # Only run when files in 'docs-src/' change
+  workflow_dispatch:  # Allows manual execution
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Required for GitHub Pages deployment
+    
+    steps:
+      # 1. Checkout user's repository (contains 'docs-src/')
+      - name: Checkout User Repo
+        uses: actions/checkout@v4
+
+      # 2. Download Chiron to a temporary folder
+      - name: Download Chiron Builder
+        uses: actions/checkout@v4
+        with:
+          repository: agilira/chiron
+          path: .chiron-builder
+
+      # 3. Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+          cache-dependency-path: '.chiron-builder/package-lock.json'
+
+      # 4. Install Chiron dependencies
+      - name: Install Chiron Dependencies
+        run: npm ci --prefix ./.chiron-builder
+
+      # 5. Build documentation (from docs-src folder)
+      - name: Build Documentation
+        run: |
+          cd docs-src
+          node ../.chiron-builder/builder/index.js
+
+      # 6. Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs  # The 'docs/' folder in the root
+

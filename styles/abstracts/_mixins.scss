@@ -1,0 +1,76 @@
+// ============================================
+// Mixins
+// ============================================
+
+// Dark Mode Mixin
+@mixin dark-mode {
+    [data-theme="dark"] & {
+        @content;
+    }
+}
+
+// Responsive Breakpoints
+@mixin mobile {
+    @media (max-width: 480px) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media (max-width: 768px) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media (max-width: 1024px) {
+        @content;
+    }
+}
+
+// Focus Visible
+@mixin focus-visible {
+    &:focus-visible {
+        outline: 2px solid var(--primary-500);
+        outline-offset: 2px;
+        @content;
+    }
+}
+
+// Hover with transition
+@mixin hover-transition($property: all, $duration: var(--transition-fast)) {
+    transition: $property $duration;
+    
+    &:hover {
+        @content;
+    }
+}
+
+// Truncate text
+@mixin truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+// Multi-line truncate
+@mixin line-clamp($lines: 2) {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+// Card base
+@mixin card-base {
+    background: white;
+    border: 1px solid var(--border-primary);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    
+    @include dark-mode {
+        background: var(--bg-secondary);
+        border-color: var(--border-primary);
+    }
+}

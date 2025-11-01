@@ -4,8 +4,10 @@
   "description": "Static site generator for documentation",
   "main": "builder/index.js",
   "scripts": {
-    "build": "node builder/index.js",
-    "dev": "node builder/index.js --watch",
+    "build:css": "sass styles/main.scss styles.css --style compressed --no-source-map",
+    "watch:css": "sass styles/main.scss styles.css --watch",
+    "build": "npm run build:css && node builder/index.js",
+    "dev": "npm run watch:css & node builder/index.js --watch",
     "preview": "npx serve docs",
     "clean": "node -e \"require('fs').rmSync('docs', {recursive: true, force: true})\"",
     "test": "jest",
@@ -25,17 +27,22 @@
   "author": "Agilira",
   "license": "MIT",
   "dependencies": {
+    "@babel/core": "^7.28.5",
+    "@babel/preset-env": "^7.28.5",
+    "babel-jest": "^30.2.0",
     "flexsearch": "^0.8.212",
     "gray-matter": "^4.0.3",
     "js-yaml": "^4.1.0",
-    "marked": "^11.1.1"
+    "marked": "^16.4.1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.38.0",
     "@types/jest": "^30.0.0",
-    "chokidar": "^3.5.3",
+    "chokidar": "^4.0.3",
     "docdash": "^2.0.2",
     "eslint": "^9.38.0",
     "jest": "^30.2.0",
-    "jsdoc": "^4.0.5"
+    "jsdoc": "^4.0.5",
+    "sass": "^1.93.3"
   }
 }

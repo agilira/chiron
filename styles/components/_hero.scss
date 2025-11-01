@@ -1,0 +1,87 @@
+// ============================================
+// Hero Section Component
+// ============================================
+
+@use '../abstracts/mixins' as *;
+
+.hero-section {
+    text-align: center;
+    padding: 5rem 2rem;
+    width: 100%;
+    background-image: 
+        linear-gradient(135deg, rgba(79, 70, 229, 0.15) 0%, rgba(99, 102, 241, 0.2) 100%),
+        url('assets/bg.svg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    h1,
+    h2,
+    p {
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+        font-weight: 400;
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+    }
+    
+    p {
+        font-size: 1.125rem;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto 2rem;
+    }
+    
+    @include tablet {
+        padding: 3rem 0;
+        
+        > * {
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+        
+        h1 {
+            font-size: 2rem;
+        }
+        
+        h2 {
+            font-size: 1.25rem;
+        }
+    }
+}
+
+.hero-demo {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--border-radius-lg);
+    padding: 1.5rem;
+    text-align: left;
+    max-width: 600px;
+    margin: 2rem auto;
+    box-shadow: var(--shadow-md);
+    
+    pre {
+        margin: 0;
+        background: transparent;
+        padding: 0;
+        border: none;
+        font-size: 0.9rem;
+    }
+    
+    code {
+        color: var(--text-primary);
+        font-family: 'Courier New', monospace;
+    }
+}
