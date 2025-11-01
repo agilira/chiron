@@ -20,7 +20,7 @@
     display: block;
     @include card-base;
     padding: var(--space-6);
-    border-bottom: 2px solid var(--gray-300);
+    border-bottom: 2px solid var(--neutral-300);
     transition: all var(--transition-normal);
     text-decoration: none;
     color: inherit;
@@ -28,26 +28,26 @@
     h3 {
         font-size: var(--font-size-lg);
         font-weight: 600;
-        color: var(--text-primary);
+        color: var(--color-text-primary);
         margin-bottom: var(--space-3);
         margin-top: 0;
         transition: color var(--transition-fast);
     }
     
     p {
-        color: var(--text-secondary);
+        color: var(--color-text-secondary);
         margin-bottom: 0;
     }
     
     @include dark-mode {
-        border-bottom-color: var(--border-secondary);
+        border-bottom-color: var(--color-border-secondary);
         
         h3 {
-            color: var(--text-primary);
+            color: var(--color-text-primary);
         }
         
         p {
-            color: var(--text-secondary);
+            color: var(--color-text-secondary);
         }
     }
 }
@@ -55,41 +55,41 @@
 a.feature-card {
     &:hover,
     &:focus {
-        border-color: var(--primary-400);
+        border-color: var(--color-accent);
         box-shadow: var(--shadow-md);
         text-decoration: none;
         color: inherit;
         
         h3 {
-            color: var(--primary-600);
+            color: var(--color-accent);
         }
         
         .feature-icon {
-            background: var(--primary-100);
-            color: var(--primary-700);
+            background: var(--neutral-100);
+            color: var(--color-accent-hover);
         }
         
         @include dark-mode {
-            border-color: var(--primary-600);
-            background: var(--bg-tertiary);
+            border-color: var(--color-accent);
+            background: var(--color-bg-tertiary);
             
             h3 {
-                color: var(--primary-400);
+                color: var(--color-accent);
             }
             
             .feature-icon {
-                background: var(--primary-800);
-                color: var(--primary-300);
+                background: var(--neutral-800);
+                color: var(--neutral-300);
             }
         }
     }
     
     @include focus-visible {
-        outline: 2px solid var(--primary-600);
+        outline: 2px solid var(--color-accent);
         outline-offset: 2px;
         
         @include dark-mode {
-            outline-color: var(--primary-400);
+            outline-color: var(--color-accent);
         }
     }
 }
@@ -100,8 +100,8 @@ a.feature-card {
     justify-content: center;
     width: 48px;
     height: 48px;
-    background: var(--primary-50);
-    color: var(--primary-600);
+    background: var(--neutral-50);
+    color: var(--color-accent);
     border-radius: var(--border-radius);
     margin-bottom: var(--space-4);
     transition: all var(--transition-fast);
@@ -117,7 +117,7 @@ a.feature-card {
     }
     
     @include dark-mode {
-        background: var(--primary-900);
-        color: var(--primary-400);
+        background: var(--neutral-900);
+        color: var(--color-accent);
     }
 }

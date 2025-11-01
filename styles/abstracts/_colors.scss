@@ -1,0 +1,140 @@
+// ============================================
+// Color System
+// ============================================
+// Neutral base palette for default theme
+// Users can override these for custom branding
+
+:root {
+    // ========================================
+    // Base Neutral Palette (Grayscale)
+    // ========================================
+    // Light mode: white → dark gray
+    // Dark mode: black → light gray
+    
+    --neutral-50: #f9fafb;
+    --neutral-100: #f3f4f6;
+    --neutral-200: #e5e7eb;
+    --neutral-300: #d1d5db;
+    --neutral-400: #9ca3af;
+    --neutral-500: #6b7280;
+    --neutral-600: #4b5563;
+    --neutral-700: #374151;
+    --neutral-800: #1f2937;
+    --neutral-900: #111827;
+    --neutral-950: #030712;
+    --neutral-1000: #000000; // Pure black for dark mode header/sidebar
+
+    // ========================================
+    // Semantic Status Colors
+    // ========================================
+    // Used ONLY for status indicators (success, warning, error, info)
+    // Not for general UI elements
+    
+    // Success (Green)
+    --success-50: #ecfdf5;
+    --success-100: #d1fae5;
+    --success-200: #a7f3d0;
+    --success-300: #6ee7b7;
+    --success-400: #34d399;
+    --success-500: #10b981;
+    --success-600: #059669;
+    --success-700: #047857;
+    --success-800: #065f46;
+    --success-900: #064e3b;
+
+    // Warning (Amber/Orange)
+    --warning-50: #fffbeb;
+    --warning-100: #fef3c7;
+    --warning-200: #fde68a;
+    --warning-300: #fcd34d;
+    --warning-400: #fbbf24;
+    --warning-500: #f59e0b;
+    --warning-600: #d97706;
+    --warning-700: #b45309;
+    --warning-800: #92400e;
+    --warning-900: #78350f;
+
+    // Error (Red)
+    --error-50: #fef2f2;
+    --error-100: #fee2e2;
+    --error-200: #fecaca;
+    --error-300: #fca5a5;
+    --error-400: #f87171;
+    --error-500: #ef4444;
+    --error-600: #dc2626;
+    --error-700: #b91c1c;
+    --error-800: #991b1b;
+    --error-900: #7f1d1d;
+
+    // Info (Blue) - ONLY for informational messages
+    --info-50: #eff6ff;
+    --info-100: #dbeafe;
+    --info-200: #bfdbfe;
+    --info-300: #93c5fd;
+    --info-400: #60a5fa;
+    --info-500: #3b82f6;
+    --info-600: #2563eb;
+    --info-700: #1d4ed8;
+    --info-800: #1e40af;
+    --info-900: #1e3a8a;
+
+    // ========================================
+    // Functional Colors (Derived from Neutral)
+    // ========================================
+    // These are used throughout the UI for interactive elements
+    // Users can customize these for branding
+    
+    // Interactive elements (links, buttons, active states)
+    --color-accent: var(--neutral-900);
+    --color-accent-hover: var(--neutral-700);
+    --color-accent-active: var(--neutral-950);
+    
+    // Focus states (accessibility)
+    --color-focus: var(--neutral-700);
+    --color-focus-ring: var(--neutral-500);
+    
+    // Backgrounds
+    --color-bg-primary: #ffffff;
+    --color-bg-secondary: var(--neutral-50);
+    --color-bg-tertiary: var(--neutral-100);
+    --color-bg-elevated: #ffffff;
+    
+    // Text
+    --color-text-primary: var(--neutral-900);
+    --color-text-secondary: var(--neutral-600);
+    --color-text-tertiary: var(--neutral-400);
+    --color-text-inverse: #ffffff;
+    
+    // Borders
+    --color-border-primary: var(--neutral-200);
+    --color-border-secondary: var(--neutral-300);
+    --color-border-focus: var(--neutral-500);
+}
+
+// ========================================
+// Dark Mode Overrides
+// ========================================
+[data-theme="dark"] {
+    // Invert functional colors for dark mode
+    --color-accent: var(--neutral-50);
+    --color-accent-hover: var(--neutral-300);
+    --color-accent-active: #ffffff;
+    
+    --color-focus: var(--neutral-300);
+    --color-focus-ring: var(--neutral-400);
+    
+    // Pure black for header/sidebar, dark gray for content
+    --color-bg-primary: var(--neutral-900);    // Content background (#111827)
+    --color-bg-secondary: var(--neutral-1000); // Header/Sidebar (pure black #000000)
+    --color-bg-tertiary: var(--neutral-800);   // Tertiary elements
+    --color-bg-elevated: var(--neutral-1000);  // Cards/elevated (pure black #000000)
+    
+    --color-text-primary: var(--neutral-100);
+    --color-text-secondary: var(--neutral-300);
+    --color-text-tertiary: var(--neutral-400);
+    --color-text-inverse: var(--neutral-900);
+    
+    --color-border-primary: var(--neutral-700);
+    --color-border-secondary: var(--neutral-600);
+    --color-border-focus: var(--neutral-400);
+}

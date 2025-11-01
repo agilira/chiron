@@ -20,12 +20,12 @@
     transition: all 0.2s ease;
     
     // Default (neutral/gray)
-    background: var(--gray-100);
-    color: var(--gray-700);
+    background: var(--neutral-100);
+    color: var(--neutral-700);
     
     @include dark-mode {
-        background: var(--gray-800);
-        color: var(--gray-300);
+        background: var(--neutral-800);
+        color: var(--neutral-300);
     }
 }
 
@@ -72,12 +72,12 @@
 }
 
 .badge-primary {
-    background: var(--primary-100);
-    color: var(--primary-700);
+    background: var(--neutral-100);
+    color: var(--color-accent-hover);
     
     @include dark-mode {
         background: rgba(37, 99, 235, 0.2);
-        color: var(--primary-400);
+        color: var(--color-accent);
     }
 }
 

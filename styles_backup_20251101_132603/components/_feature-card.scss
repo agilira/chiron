@@ -1,0 +1,123 @@
+// ============================================
+// Feature Card Component
+// ============================================
+
+@use '../abstracts/mixins' as *;
+
+// Feature grid - uses grid utilities with specific spacing
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-6);
+    margin: var(--space-8) 0;
+    
+    @include tablet {
+        gap: var(--space-4);
+    }
+}
+
+.feature-card {
+    display: block;
+    @include card-base;
+    padding: var(--space-6);
+    border-bottom: 2px solid var(--gray-300);
+    transition: all var(--transition-normal);
+    text-decoration: none;
+    color: inherit;
+    
+    h3 {
+        font-size: var(--font-size-lg);
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: var(--space-3);
+        margin-top: 0;
+        transition: color var(--transition-fast);
+    }
+    
+    p {
+        color: var(--text-secondary);
+        margin-bottom: 0;
+    }
+    
+    @include dark-mode {
+        border-bottom-color: var(--border-secondary);
+        
+        h3 {
+            color: var(--text-primary);
+        }
+        
+        p {
+            color: var(--text-secondary);
+        }
+    }
+}
+
+a.feature-card {
+    &:hover,
+    &:focus {
+        border-color: var(--primary-400);
+        box-shadow: var(--shadow-md);
+        text-decoration: none;
+        color: inherit;
+        
+        h3 {
+            color: var(--primary-600);
+        }
+        
+        .feature-icon {
+            background: var(--primary-100);
+            color: var(--primary-700);
+        }
+        
+        @include dark-mode {
+            border-color: var(--primary-600);
+            background: var(--bg-tertiary);
+            
+            h3 {
+                color: var(--primary-400);
+            }
+            
+            .feature-icon {
+                background: var(--primary-800);
+                color: var(--primary-300);
+            }
+        }
+    }
+    
+    @include focus-visible {
+        outline: 2px solid var(--primary-600);
+        outline-offset: 2px;
+        
+        @include dark-mode {
+            outline-color: var(--primary-400);
+        }
+    }
+}
+
+.feature-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: var(--primary-50);
+    color: var(--primary-600);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--space-4);
+    transition: all var(--transition-fast);
+    
+    svg {
+        width: 24px;
+        height: 24px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+    
+    @include dark-mode {
+        background: var(--primary-900);
+        color: var(--primary-400);
+    }
+}

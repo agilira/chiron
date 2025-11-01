@@ -7,18 +7,18 @@
 .sidebar {
     width: var(--sidebar-width);
     background: white;
-    border-right: 1px solid var(--gray-200);
+    border-right: 1px solid var(--neutral-200);
     position: fixed;
     left: 0;
     top: var(--header-height);
-    bottom: 0;
+    height: calc(100vh - var(--header-height));
     overflow-y: auto;
     z-index: 50;
     transition: transform var(--transition-normal);
     
     @include dark-mode {
-        background: var(--bg-secondary);
-        border-right-color: var(--border-primary);
+        background: var(--color-bg-secondary);
+        border-right-color: var(--color-border-primary);
     }
     
     @include tablet {
@@ -34,7 +34,7 @@
 .sidebar-header {
     display: none;
     padding: var(--space-4);
-    border-bottom: 1px solid var(--gray-200);
+    border-bottom: 1px solid var(--neutral-200);
     
     @include tablet {
         display: block;
@@ -56,14 +56,14 @@
 .nav-section-title {
     font-size: var(--font-size-xs);
     font-weight: 600;
-    color: var(--gray-500);
+    color: var(--neutral-500);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     padding: 0 var(--space-6) var(--space-2);
     margin-bottom: var(--space-2);
     
     @include dark-mode {
-        color: var(--text-primary);
+        color: var(--color-text-primary);
     }
 }
 
@@ -74,31 +74,31 @@
 .nav-item {
     display: block;
     padding: var(--space-2) var(--space-6);
-    color: var(--gray-600);
+    color: var(--neutral-600);
     text-decoration: none;
     font-size: var(--font-size-sm);
     transition: all var(--transition-fast);
     border-right: 2px solid transparent;
     
     &:hover {
-        color: var(--primary-600);
-        background: var(--primary-50);
+        color: var(--color-accent);
+        background: var(--neutral-50);
     }
     
     &.active {
-        color: var(--primary-600);
-        background: var(--primary-50);
-        border-right-color: var(--primary-500);
+        color: var(--color-accent);
+        background: var(--neutral-50);
+        border-right-color: var(--color-accent);
         font-weight: 500;
     }
     
     @include dark-mode {
-        color: var(--text-secondary);
+        color: var(--color-text-secondary);
         
         &:hover,
         &.active {
-            color: var(--primary-400);
-            background: var(--bg-secondary);
+            color: var(--color-accent);
+            background: var(--color-bg-secondary);
         }
     }
 }

@@ -29,32 +29,32 @@
 }
 
 .breadcrumb-item {
-    color: var(--gray-600);
+    color: var(--neutral-600);
     white-space: nowrap;
     
     a {
-        color: var(--gray-600);
+        color: var(--neutral-600);
         text-decoration: none;
         
         &:hover {
-            color: var(--primary-600);
+            color: var(--color-accent);
         }
         
         @include dark-mode {
-            color: var(--text-secondary);
+            color: var(--color-text-secondary);
             
             &:hover {
-                color: var(--primary-400);
+                color: var(--color-accent);
             }
         }
     }
     
     &.current {
-        color: var(--gray-900);
+        color: var(--neutral-900);
         font-weight: 500;
         
         @include dark-mode {
-            color: var(--text-primary);
+            color: var(--color-text-primary);
         }
     }
     
@@ -64,14 +64,14 @@
     }
     
     @include dark-mode {
-        color: var(--text-secondary);
+        color: var(--color-text-secondary);
     }
 }
 
 .breadcrumb-separator {
-    color: var(--gray-600);
+    color: var(--neutral-600);
     
     @include dark-mode {
-        color: var(--text-tertiary);
+        color: var(--color-text-tertiary);
     }
 }

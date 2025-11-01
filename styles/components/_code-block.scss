@@ -108,13 +108,13 @@
     
     @include dark-mode {
         color: #9ca3af;
-        background: var(--bg-tertiary);
-        border-color: var(--border-primary);
+        background: var(--color-bg-tertiary);
+        border-color: var(--color-border-primary);
         
         &:hover {
             background: #374151;
             color: #f3f4f6;
-            border-color: var(--border-secondary);
+            border-color: var(--color-border-secondary);
         }
     }
 }

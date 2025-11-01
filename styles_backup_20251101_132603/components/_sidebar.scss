@@ -1,0 +1,129 @@
+// ============================================
+// Sidebar Component
+// ============================================
+
+@use '../abstracts/mixins' as *;
+
+.sidebar {
+    width: var(--sidebar-width);
+    background: white;
+    border-right: 1px solid var(--gray-200);
+    position: fixed;
+    left: 0;
+    top: var(--header-height);
+    bottom: 0;
+    overflow-y: auto;
+    z-index: 50;
+    transition: transform var(--transition-normal);
+    
+    @include dark-mode {
+        background: var(--bg-secondary);
+        border-right-color: var(--border-primary);
+    }
+    
+    @include tablet {
+        transform: translateX(-100%);
+        z-index: 50;
+        
+        &.open {
+            transform: translateX(0);
+        }
+    }
+}
+
+.sidebar-header {
+    display: none;
+    padding: var(--space-4);
+    border-bottom: 1px solid var(--gray-200);
+    
+    @include tablet {
+        display: block;
+    }
+}
+
+.sidebar-nav {
+    padding: var(--space-6) 0;
+}
+
+.nav-section {
+    margin-bottom: var(--space-8);
+    
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.nav-section-title {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0 var(--space-6) var(--space-2);
+    margin-bottom: var(--space-2);
+    
+    @include dark-mode {
+        color: var(--text-primary);
+    }
+}
+
+.nav-list {
+    list-style: none;
+}
+
+.nav-item {
+    display: block;
+    padding: var(--space-2) var(--space-6);
+    color: var(--gray-600);
+    text-decoration: none;
+    font-size: var(--font-size-sm);
+    transition: all var(--transition-fast);
+    border-right: 2px solid transparent;
+    
+    &:hover {
+        color: var(--primary-600);
+        background: var(--primary-50);
+    }
+    
+    &.active {
+        color: var(--primary-600);
+        background: var(--primary-50);
+        border-right-color: var(--primary-500);
+        font-weight: 500;
+    }
+    
+    @include dark-mode {
+        color: var(--text-secondary);
+        
+        &:hover,
+        &.active {
+            color: var(--primary-400);
+            background: var(--bg-secondary);
+        }
+    }
+}
+
+// Mobile Overlay
+.mobile-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 40;
+    pointer-events: none;
+    
+    &.open {
+        display: block;
+        pointer-events: auto;
+    }
+    
+    @include tablet {
+        &.open {
+            display: block;
+            pointer-events: auto;
+        }
+    }
+}

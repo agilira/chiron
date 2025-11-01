@@ -21,7 +21,7 @@
     align-items: center;
     gap: 0.5rem;
     text-decoration: none;
-    color: var(--text-primary);
+    color: var(--color-text-primary);
     font-weight: 600;
     font-size: 1.125rem;
     transition: opacity 0.2s;
@@ -38,7 +38,7 @@
 }
 
 .landing-content {
-    background: var(--bg-primary);
+    background: var(--color-bg-primary);
     padding: 0;
 }
 
@@ -79,7 +79,7 @@
     align-items: center;
     gap: 0.5rem;
     text-decoration: none;
-    color: var(--text-primary);
+    color: var(--color-text-primary);
     font-weight: 600;
     font-size: 1.125rem;
 }
@@ -98,7 +98,7 @@
 }
 
 .landing-footer-link {
-    color: var(--text-secondary);
+    color: var(--color-text-secondary);
     text-decoration: none;
     transition: color 0.2s;
     background: none;
@@ -109,6 +109,6 @@
     padding: 0;
     
     &:hover {
-        color: var(--primary-600);
+        color: var(--color-accent);
     }
 }

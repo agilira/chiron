@@ -8,10 +8,10 @@
     position: relative;
     margin: var(--space-6) 0;
     padding: var(--space-4) var(--space-6);
-    border-left: 4px solid var(--primary-600);
-    background: var(--bg-tertiary);
+    border-left: 4px solid var(--color-accent);
+    background: var(--color-bg-tertiary);
     font-style: italic;
-    color: var(--text-secondary);
+    color: var(--color-text-secondary);
     
     // Remove default margins from nested elements
     > *:first-child {
@@ -26,7 +26,7 @@
     p {
         font-size: var(--font-size-lg);
         line-height: var(--line-height-relaxed);
-        color: var(--text-primary);
+        color: var(--color-text-primary);
         margin-bottom: var(--space-3);
     }
     
@@ -36,7 +36,7 @@
         display: block;
         font-style: normal;
         font-size: var(--font-size-sm);
-        color: var(--text-secondary);
+        color: var(--color-text-secondary);
         margin-top: var(--space-3);
         
         &::before {
@@ -46,18 +46,18 @@
     
     // Links in quotes
     a {
-        color: var(--primary-600);
+        color: var(--color-accent);
         font-weight: 500;
         
         &:hover {
-            color: var(--primary-700);
+            color: var(--color-accent-hover);
         }
         
         @include dark-mode {
-            color: var(--primary-400);
+            color: var(--color-accent);
             
             &:hover {
-                color: var(--primary-300);
+                color: var(--neutral-300);
             }
         }
     }
@@ -75,8 +75,8 @@
     }
     
     @include dark-mode {
-        background: var(--bg-tertiary);
-        border-left-color: var(--primary-400);
+        background: var(--color-bg-tertiary);
+        border-left-color: var(--color-accent);
     }
     
     @include mobile {

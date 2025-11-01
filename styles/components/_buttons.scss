@@ -22,18 +22,18 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.875rem 2rem;
-    background: var(--primary-600);
+    background: var(--color-accent);
     color: #ffffff !important;
     text-decoration: none;
     border-radius: var(--border-radius);
     font-weight: 600;
     font-size: 1.125rem;
     transition: all var(--transition-fast);
-    border: 2px solid var(--primary-600);
+    border: 2px solid var(--color-accent);
     
     &:hover {
-        background: var(--primary-700);
-        border-color: var(--primary-700);
+        background: var(--color-accent-hover);
+        border-color: var(--color-accent-hover);
         box-shadow: var(--shadow-md);
         color: #ffffff !important;
     }
@@ -50,18 +50,18 @@
     gap: 0.5rem;
     padding: 0.875rem 2rem;
     background: transparent;
-    color: var(--text-primary);
+    color: var(--color-text-primary);
     text-decoration: none;
     border-radius: var(--border-radius);
     font-weight: 600;
     font-size: 1.125rem;
     transition: all var(--transition-fast);
-    border: 2px solid var(--gray-400);
+    border: 2px solid var(--neutral-400);
     
     &:hover {
-        background: var(--bg-secondary);
-        border-color: var(--gray-600);
-        color: var(--text-primary);
+        background: var(--color-bg-secondary);
+        border-color: var(--neutral-600);
+        color: var(--color-text-primary);
     }
     
     @include tablet {
@@ -71,9 +71,9 @@
 }
 
 .cookie-consent-btn {
-    background: var(--primary-100);
-    color: var(--primary-700);
-    border: 1px solid var(--primary-200);
+    background: var(--neutral-100);
+    color: var(--neutral-700);
+    border: 1px solid var(--neutral-200);
     border-radius: var(--border-radius);
     padding: var(--space-1) var(--space-2);
     font-size: var(--font-size-xs);
@@ -81,28 +81,28 @@
     transition: all var(--transition-fast);
     
     &:hover {
-        background: var(--primary-200);
-        color: var(--primary-800);
+        background: var(--neutral-200);
+        color: var(--neutral-800);
     }
     
     @include dark-mode {
-        background: var(--bg-tertiary);
-        color: var(--primary-400);
-        border-color: var(--border-secondary);
+        background: var(--color-bg-tertiary);
+        color: var(--color-text-secondary);
+        border-color: var(--color-border-secondary);
         
         &:hover {
-            background: var(--border-secondary);
-            color: var(--primary-300);
-            border-color: var(--primary-600);
+            background: var(--color-border-secondary);
+            color: var(--color-text-primary);
+            border-color: var(--color-border-focus);
         }
     }
 }
 
 .sitemap-generate-btn,
 .robots-generate-btn {
-    background: var(--gray-100);
-    color: var(--gray-700);
-    border: 1px solid var(--gray-300);
+    background: var(--neutral-100);
+    color: var(--neutral-700);
+    border: 1px solid var(--neutral-300);
     border-radius: var(--border-radius);
     padding: var(--space-1) var(--space-2);
     font-size: var(--font-size-xs);
@@ -111,20 +111,20 @@
     margin-left: var(--space-2);
     
     &:hover {
-        background: var(--gray-200);
-        color: var(--gray-800);
-        border-color: var(--gray-400);
+        background: var(--neutral-200);
+        color: var(--neutral-800);
+        border-color: var(--neutral-400);
     }
     
     @include dark-mode {
-        background: var(--bg-tertiary);
-        color: var(--text-secondary);
-        border-color: var(--border-primary);
+        background: var(--color-bg-tertiary);
+        color: var(--color-text-secondary);
+        border-color: var(--color-border-primary);
         
         &:hover {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            border-color: var(--border-secondary);
+            background: var(--color-bg-secondary);
+            color: var(--color-text-primary);
+            border-color: var(--color-border-secondary);
         }
     }
 }
@@ -154,11 +154,11 @@
 
 .scroll-to-top {
     position: fixed;
-    bottom: 20px;
+    bottom: 60px;
     right: 20px;
     width: 44px;
     height: 44px;
-    background: var(--primary-600);
+    background: var(--color-accent);
     color: white;
     border: none;
     border-radius: 50%;
@@ -180,12 +180,12 @@
     }
     
     &:hover {
-        background: var(--primary-700);
+        background: var(--color-accent-hover);
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
     }
     
     @include focus-visible {
-        outline: 2px solid var(--primary-400);
+        outline: 2px solid var(--color-focus);
         outline-offset: 2px;
     }
     
@@ -194,7 +194,7 @@
     }
     
     @include tablet {
-        bottom: 15px;
+        bottom: 60px;
         right: 15px;
         width: 44px;
         height: 44px;
@@ -206,11 +206,9 @@
     }
     
     @include dark-mode {
-        background: var(--primary-500);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         
         &:hover {
-            background: var(--primary-400);
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
         }
     }

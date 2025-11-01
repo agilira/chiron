@@ -14,15 +14,15 @@
   
   // Individual accordion item
   &-item {
-    border: 1px solid var(--border-secondary);
+    border: 1px solid var(--color-border-secondary);
     border-radius: var(--border-radius);
     margin-bottom: var(--space-3);
     overflow: hidden;
-    background: var(--bg-primary);
+    background: var(--color-bg-primary);
     transition: all 0.2s ease;
 
     &:hover {
-      border-color: var(--gray-400);
+      border-color: var(--neutral-400);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
@@ -40,7 +40,7 @@
     padding: var(--space-4) var(--space-5);
     font-size: var(--font-size-base);
     font-weight: var(--font-weight-normal);
-    color: var(--text-primary);
+    color: var(--color-text-primary);
     cursor: pointer;
     user-select: none;
     list-style: none; // Remove default marker
@@ -61,7 +61,7 @@
       svg {
         width: 100%;
         height: 100%;
-        stroke: var(--text-secondary);
+        stroke: var(--color-text-secondary);
         stroke-width: 2;
         stroke-linecap: round;
         stroke-linejoin: round;
@@ -75,7 +75,7 @@
     padding: 0 var(--space-5) var(--space-4);
     font-size: var(--font-size-base);
     line-height: var(--line-height-relaxed);
-    color: var(--text-secondary);
+    color: var(--color-text-secondary);
     animation: accordion-slide-down 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     > *:first-child {
@@ -110,7 +110,7 @@ details.accordion-item[open] {
     &:last-child {
       border-bottom-left-radius: var(--border-radius);
       border-bottom-right-radius: var(--border-radius);
-      border-bottom: 1px solid var(--border-secondary);
+      border-bottom: 1px solid var(--color-border-secondary);
     }
   }
 }
@@ -118,10 +118,10 @@ details.accordion-item[open] {
 // Variant: Bordered (more prominent borders)
 .accordion-bordered {
   .accordion-item {
-    border: 2px solid var(--border-secondary);
+    border: 2px solid var(--color-border-secondary);
 
     &:hover {
-      border-color: var(--primary-500);
+      border-color: var(--color-accent);
     }
   }
 }
@@ -134,16 +134,16 @@ details.accordion-item[open] {
   }
 
   .accordion-header {
-    background-color: var(--bg-tertiary);
+    background-color: var(--color-bg-tertiary);
     border-radius: var(--border-radius);
 
     &:hover {
-      background-color: var(--bg-secondary);
+      background-color: var(--color-bg-secondary);
     }
   }
 
   details[open] .accordion-header {
-    background-color: var(--primary-500);
+    background-color: var(--color-accent);
     color: white;
 
     .accordion-header-icon svg {

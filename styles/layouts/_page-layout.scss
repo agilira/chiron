@@ -7,7 +7,6 @@
 .layout {
     display: flex;
     margin-top: var(--header-height);
-    min-height: calc(100vh - var(--header-height));
     
     @include tablet {
         display: block !important;
@@ -18,12 +17,14 @@
 .main-content {
     flex: 1;
     margin-left: var(--sidebar-width);
-    background: var(--gray-50);
+    background: var(--neutral-50);
+    padding-bottom: var(--space-8);
     
     @include tablet {
         margin-left: 0 !important;
         width: 100% !important;
         padding: 0 !important;
+        padding-bottom: var(--space-8) !important;
     }
     
     @include mobile {
@@ -32,7 +33,7 @@
     }
     
     @include dark-mode {
-        background: var(--bg-primary);
+        background: var(--color-bg-primary);
     }
 }
 
@@ -68,12 +69,12 @@
     h4,
     h5,
     h6 {
-        color: var(--text-primary);
+        color: var(--color-text-primary);
     }
     
     p,
     li {
-        color: var(--text-secondary);
+        color: var(--color-text-secondary);
     }
     
     @include dark-mode {
@@ -82,12 +83,12 @@
         h4,
         h5,
         h6 {
-            color: var(--text-primary);
+            color: var(--color-text-primary);
         }
         
         p,
         li {
-            color: var(--text-secondary);
+            color: var(--color-text-secondary);
         }
     }
 }
@@ -97,7 +98,7 @@
     position: sticky;
     top: calc(var(--header-height) + var(--space-6));
     background: white;
-    border: 1px solid var(--gray-200);
+    border: 1px solid var(--neutral-200);
     border-radius: var(--border-radius);
     padding: var(--space-6);
     margin-top: var(--space-8);
@@ -105,7 +106,7 @@
     h3 {
         font-size: var(--font-size-lg);
         font-weight: 600;
-        color: var(--gray-900);
+        color: var(--neutral-900);
         margin-bottom: var(--space-4);
         margin-top: 0;
     }
@@ -116,11 +117,11 @@
     }
     
     @include dark-mode {
-        background: var(--bg-secondary);
-        border-color: var(--border-primary);
+        background: var(--color-bg-secondary);
+        border-color: var(--color-border-primary);
         
         h3 {
-            color: var(--text-primary);
+            color: var(--color-text-primary);
         }
     }
 }
@@ -130,21 +131,21 @@
     transition: opacity 0.2s ease;
     
     a {
-        color: var(--gray-600);
+        color: var(--neutral-600);
         text-decoration: none;
         padding: var(--space-1) 0;
         display: block;
         transition: color var(--transition-fast);
         
         &:hover {
-            color: var(--primary-600);
+            color: var(--color-accent);
         }
         
         @include dark-mode {
-            color: var(--text-secondary);
+            color: var(--color-text-secondary);
             
             &:hover {
-                color: var(--primary-400);
+                color: var(--color-accent);
             }
         }
     }
