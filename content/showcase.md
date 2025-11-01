@@ -494,6 +494,68 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor i
 
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
+## Accordions
+
+### Basic Accordion
+
+<details>
+<summary>What is Chiron?</summary>
+
+Chiron is a modern static site generator specifically designed for creating beautiful documentation websites. It combines the simplicity of Markdown with powerful templating and theming capabilities.
+
+</details>
+
+<details>
+<summary>How do I get started?</summary>
+
+Getting started is easy:
+
+1. Install Chiron via npm: `npm install -g chiron-ssg`
+2. Create a new project directory
+3. Add your content in Markdown files
+4. Run `chiron build` to generate your site
+
+</details>
+
+<details open>
+<summary>Can I customize the theme?</summary>
+
+Absolutely! Chiron supports custom CSS, custom JavaScript, and full template customization. You can override any aspect of the default theme to match your brand.
+
+</details>
+
+### Accordion Group (consecutive items)
+
+<details>
+<summary>Installation</summary>
+
+Install Chiron globally using npm or yarn.
+
+</details>
+
+<details>
+<summary>Configuration</summary>
+
+Configure your site using the `chiron.config.yaml` file.
+
+</details>
+
+<details>
+<summary>Deployment</summary>
+
+Deploy to any static hosting provider like GitHub Pages, Netlify, or Vercel.
+
+</details>
+
+### Single Item
+
+<details>
+<summary>What languages are supported?</summary>
+
+Chiron supports syntax highlighting for over 100 programming languages including JavaScript, TypeScript, Python, Go, Rust, and many more.
+
+</details>
+
 ---
 
 **Note**: This showcase demonstrates all available UI elements. Use this as a reference when creating your documentation.

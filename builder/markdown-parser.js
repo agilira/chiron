@@ -143,6 +143,71 @@ class MarkdownParser {
   }
 
   /**
+   * Process HTML to add accordion classes to <details> elements
+   */
+  processAccordions(html) {
+    // First pass: Add classes to details/summary elements
+    let processed = html.replace(
+      /<details(\s+open)?>/gi,
+      (match, openAttr) => `<details class="accordion-item"${openAttr || ''}>`
+    );
+
+    // Add header wrapper and icon to summary
+    processed = processed.replace(
+      /<summary>([\s\S]*?)<\/summary>/gi,
+      (match, content) => {
+        // Check if content already has the header structure
+        if (content.includes('accordion-header-icon')) {
+          return match; // Already processed
+        }
+        return `<summary class="accordion-header">${content.trim()}<span class="accordion-header-icon"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></span></summary>`;
+      }
+    );
+
+    // Wrap content after summary in accordion-content div
+    processed = processed.replace(
+      /(<\/summary>)([\s\S]*?)(<\/details>)/gi,
+      (match, closeSummary, content, closeDetails) => {
+        // Check if content already wrapped
+        if (content.includes('accordion-content')) {
+          return match;
+        }
+        const trimmedContent = content.trim();
+        if (!trimmedContent) {
+          return match;
+        }
+        return `${closeSummary}<div class="accordion-content">${trimmedContent}</div>${closeDetails}`;
+      }
+    );
+
+    // Second pass: Wrap consecutive <details> in accordion container
+    // Match sequences of details elements
+    processed = processed.replace(
+      /(<details class="accordion-item"[\s\S]*?<\/details>\s*)+/gi,
+      (match) => {
+        // Count how many details elements
+        const detailsCount = (match.match(/<details/gi) || []).length;
+        
+        // If already wrapped in accordion div, skip
+        if (match.includes('<div class="accordion')) {
+          return match;
+        }
+
+        // Wrap single or multiple details in accordion container
+        if (detailsCount > 1) {
+          // Multiple items - use accordion-group
+          return `<div class="accordion accordion-group">\n${match}</div>\n`;
+        } else {
+          // Single item - use basic accordion
+          return `<div class="accordion">\n${match}</div>\n`;
+        }
+      }
+    );
+
+    return processed;
+  }
+
+  /**
    * Escape HTML for data attributes
    */
   escapeHtml(text) {
@@ -179,7 +244,10 @@ class MarkdownParser {
       const { data: frontmatter, content: markdown } = matter(content);
 
       // Convert markdown to HTML
-      const html = marked.parse(markdown);
+      let html = marked.parse(markdown);
+
+      // Post-process: Add accordion styling
+      html = this.processAccordions(html);
 
       return {
         frontmatter: frontmatter || {},
