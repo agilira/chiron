@@ -2,6 +2,7 @@
 title: API Reference
 description: Complete API reference for Chiron documentation builder
 keywords: api, configuration, yaml, chiron, builder
+sidebar: api
 ---
 
 # API Reference

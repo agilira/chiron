@@ -216,34 +216,11 @@
     }
 }
 
-// Sidebar toggle (mobile)
-.sidebar-toggle {
-    display: none;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border: none;
-    background: none;
-    color: var(--neutral-600);
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: background-color var(--transition-fast);
-    margin-left: var(--space-3);
-    
-    &:hover {
-        background: var(--neutral-100);
-    }
-}
-
 // Mobile only utility
 .mobile-only {
     display: none;
-}
-
-@include tablet {
-    .sidebar-toggle,
-    .mobile-only {
+    
+    @include tablet {
         display: flex;
     }
 }

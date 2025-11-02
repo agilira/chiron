@@ -41,6 +41,56 @@
     }
 }
 
+// Mobile Header Navigation (shown only on mobile in sidebar)
+.mobile-header-nav {
+    display: none;
+    padding: var(--space-6) 0;
+    border-bottom: 2px solid var(--neutral-200);
+    margin-bottom: var(--space-4);
+    
+    @include tablet {
+        display: block;
+    }
+    
+    @include dark-mode {
+        border-bottom-color: var(--color-border-primary);
+    }
+    
+    // Style the links similar to sidebar items
+    a {
+        display: block;
+        padding: var(--space-3) var(--space-6);
+        color: var(--neutral-700);
+        text-decoration: none;
+        font-size: var(--font-size-base);
+        font-weight: 500;
+        transition: all var(--transition-fast);
+        border-left: 3px solid transparent;
+        
+        &:hover {
+            color: var(--color-accent);
+            background: var(--neutral-50);
+            border-left-color: var(--color-accent);
+        }
+        
+        &.active {
+            color: var(--color-accent);
+            background: var(--neutral-50);
+            border-left-color: var(--color-accent);
+        }
+        
+        @include dark-mode {
+            color: var(--color-text-primary);
+            
+            &:hover,
+            &.active {
+                color: var(--color-accent);
+                background: var(--color-bg-secondary);
+            }
+        }
+    }
+}
+
 .sidebar-nav {
     padding: var(--space-6) 0;
 }

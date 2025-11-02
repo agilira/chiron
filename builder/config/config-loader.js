@@ -74,7 +74,7 @@ function validateConfig(config) {
     'build.output_dir',
     'build.content_dir',
     'build.templates_dir',
-    'navigation.sidebar'
+    'navigation.sidebars'
   ];
   
   validateRequiredFields(config, requiredFields);
@@ -211,12 +211,24 @@ function validateNavigationConfig(navigation) {
     throw new ConfigurationError('navigation configuration is required');
   }
 
-  // Validate sidebar
-  validateArray(navigation.sidebar, 'navigation.sidebar');
-  
-  // Validate each navigation item
-  for (let i = 0; i < navigation.sidebar.length; i++) {
-    validateNavigationItem(navigation.sidebar[i], `navigation.sidebar[${i}]`);
+  // Validate sidebars object
+  if (!navigation.sidebars || typeof navigation.sidebars !== 'object') {
+    throw new ConfigurationError('navigation.sidebars must be an object with at least one sidebar');
+  }
+
+  // Ensure at least 'default' sidebar exists
+  if (!navigation.sidebars.default) {
+    throw new ConfigurationError('navigation.sidebars must have at least a "default" sidebar');
+  }
+
+  // Validate each sidebar
+  for (const [sidebarName, sidebarItems] of Object.entries(navigation.sidebars)) {
+    validateArray(sidebarItems, `navigation.sidebars.${sidebarName}`);
+    
+    // Validate each navigation item in this sidebar
+    for (let i = 0; i < sidebarItems.length; i++) {
+      validateNavigationItem(sidebarItems[i], `navigation.sidebars.${sidebarName}[${i}]`);
+    }
   }
 }
 

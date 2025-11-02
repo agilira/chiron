@@ -77,38 +77,50 @@ navigation:
     - label: Documentation
       url: index.html
   
-  # Sidebar navigation
-  sidebar:
-    - section: Getting Started
-      items:
-        - label: Overview
-          file: index.md
-          active: true
-        - label: Landing Demo
-          file: landing-demo.md
-        - label: API Reference
-          file: api-reference.md
-        - label: UI Showcase
-          file: showcase.md
+  # Sidebars - Define multiple sidebars for different sections
+  # Each page can specify which sidebar to use in its frontmatter with 'sidebar: name'
+  # If not specified, 'default' sidebar is used
+  sidebars:
+    default:
+      - section: Getting Started
+        items:
+          - label: Overview
+            file: index.md
+            active: true
+          - label: Landing Demo
+            file: landing-demo.md
+          - label: API Reference
+            file: api-reference.md
+          - label: UI Showcase
+            file: showcase.md
+      
+      - section: Legal
+        items:
+          - label: Privacy Policy
+            file: privacy-policy.md
+          - label: Terms of Service
+            file: terms-of-service.md
+          - label: Cookie Policy
+            file: cookie-policy.md
+      
+      - section: Resources
+        items:
+          - label: GitHub Repository
+            url: https://github.com/agilira/chiron
+            external: true
+          - label: Changelog
+            file: CHANGELOG.md
+          - label: Accessibility Guide
+            file: ACCESSIBILITY.md
     
-    - section: Legal
-      items:
-        - label: Privacy Policy
-          file: privacy-policy.md
-        - label: Terms of Service
-          file: terms-of-service.md
-        - label: Cookie Policy
-          file: cookie-policy.md
-    
-    - section: Resources
-      items:
-        - label: GitHub Repository
-          url: https://github.com/agilira/chiron
-          external: true
-        - label: Changelog
-          file: CHANGELOG.md
-        - label: Accessibility Guide
-          file: ACCESSIBILITY.md
+    # Example: API-specific sidebar
+    api:
+      - section: API Documentation
+        items:
+          - label: API Reference
+            file: api-reference.md
+          - label: Overview
+            file: index.md
   
   # Breadcrumb configuration
   breadcrumb:

@@ -31,6 +31,24 @@
     }
 }
 
+// Mobile menu for landing pages
+.landing-mobile-menu {
+    // Override sidebar positioning for landing
+    top: var(--header-height);
+    
+    // Remove sidebar navigation padding since we only have header nav
+    .sidebar-nav {
+        display: none;
+    }
+    
+    // Adjust mobile header nav for landing
+    .mobile-header-nav {
+        padding: var(--space-6) 0;
+        margin-bottom: 0;
+        border-bottom: none;
+    }
+}
+
 .landing-main {
     flex: 1;
     display: flex;

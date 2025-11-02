@@ -188,6 +188,51 @@ class TemplateEngine {
   }
 
   /**
+   * Render sidebar based on page context
+   * Selects the appropriate sidebar from config based on page frontmatter
+   * @param {Object} context - Page context
+   * @returns {string} Rendered HTML for sidebar navigation
+   */
+  renderSidebar(context) {
+    // Get sidebar name from page frontmatter, default to 'default'
+    const sidebarName = context.page?.sidebar || 'default';
+    
+    this.logger.debug(`Rendering sidebar for page`, {
+      page: context.page?.filename,
+      requestedSidebar: sidebarName,
+      hasPageSidebar: !!context.page?.sidebar,
+      availableSidebars: Object.keys(this.config.navigation?.sidebars || {})
+    });
+    
+    // Get the sidebar items from config
+    const sidebarItems = this.config.navigation.sidebars?.[sidebarName];
+    
+    if (!sidebarItems) {
+      this.logger.warn(`Sidebar '${sidebarName}' not found in config, falling back to 'default'`, {
+        page: context.page?.filename,
+        requestedSidebar: sidebarName
+      });
+      
+      // Fallback to default sidebar
+      const defaultSidebar = this.config.navigation.sidebars?.default;
+      if (!defaultSidebar) {
+        this.logger.error('No default sidebar found in configuration');
+        return '';
+      }
+      
+      return this.renderNavigation(defaultSidebar, context);
+    }
+    
+    this.logger.debug(`Using sidebar '${sidebarName}' for page`, {
+      page: context.page?.filename,
+      sidebar: sidebarName,
+      sectionsCount: sidebarItems.length
+    });
+    
+    return this.renderNavigation(sidebarItems, context);
+  }
+
+  /**
    * Render header navigation
    */
   renderHeaderNav() {
@@ -475,7 +520,7 @@ class TemplateEngine {
       
       // Navigation (already rendered as HTML, safe)
       '{{HEADER_NAV}}': this.renderHeaderNav(),
-      '{{NAVIGATION}}': this.renderNavigation(this.config.navigation.sidebar, context),
+      '{{NAVIGATION}}': this.renderSidebar(context),
       '{{BREADCRUMB}}': this.renderBreadcrumb(context),
       
       // Content (HTML from Markdown parser, trusted)
