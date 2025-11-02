@@ -1,13 +1,13 @@
 {
   "name": "chiron",
-  "version": "2.3.0",
-  "description": "Static site generator for documentation with custom templates, nested structure, and pagination",
+  "version": "2.0.0",
+  "description": "Static site generator for documentation",
   "main": "builder/index.js",
   "scripts": {
-    "build:css": "sass styles/main.scss styles.css --style compressed",
+    "build:css": "sass styles/main.scss styles.css --style compressed --no-source-map",
     "watch:css": "sass styles/main.scss styles.css --watch",
     "build": "npm run build:css && node builder/index.js",
-    "dev": "node builder/dev-server.js",
+    "dev": "npm run watch:css & node builder/index.js --watch",
     "preview": "npx serve docs",
     "clean": "node -e \"require('fs').rmSync('docs', {recursive: true, force: true})\"",
     "test": "jest",
@@ -33,8 +33,7 @@
     "flexsearch": "^0.8.212",
     "gray-matter": "^4.0.3",
     "js-yaml": "^4.1.0",
-    "marked": "^16.4.1",
-    "p-limit": "^3.1.0"
+    "marked": "^16.4.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",

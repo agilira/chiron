@@ -18,8 +18,7 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: 'lts/*'
-        # Temporarily disabled cache to force clean install
-        # cache: 'npm'
+        cache: 'npm'
     
     - name: Install dependencies
       run: npm ci
