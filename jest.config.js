@@ -1,5 +1,6 @@
 module.exports = {
   testEnvironment: 'node',
+  cache: false,
   cacheDirectory: '.jest-cache',
   clearMocks: true,
   coverageDirectory: 'coverage',
