@@ -11,6 +11,7 @@ const path = require('path');
 const matter = require('gray-matter');
 const { marked } = require('marked');
 const { logger } = require('./logger');
+const pLimit = require('p-limit');
 
 // Search Indexer Configuration Constants
 const INDEXER_CONFIG = {
@@ -20,7 +21,8 @@ const INDEXER_CONFIG = {
   MAX_DESCRIPTION_LENGTH: 500,         // Maximum description length
   MAX_CONTENT_LENGTH: 5000,            // Maximum content length to index
   MAX_HEADINGS: 50,                    // Maximum number of headings
-  MAX_KEYWORDS: 20                     // Maximum keywords per page
+  MAX_KEYWORDS: 20,                    // Maximum keywords per page
+  CONCURRENCY_LIMIT: 50                // Process max 50 files concurrently
 };
 
 /**
@@ -65,8 +67,9 @@ class SearchIndexer {
 
   /**
    * Index a single markdown file
+   * Uses early exit strategy to prevent memory issues with large files
    */
-  indexFile(file) {
+  async indexFile(file) {
     // Input validation
     if (!file || typeof file !== 'string') {
       this.logger.error('Invalid file parameter', { file });
@@ -82,7 +85,7 @@ class SearchIndexer {
         return;
       }
 
-      // Check file size
+      // Check file size BEFORE reading
       const stats = fs.statSync(filePath);
       const MAX_FILE_SIZE = INDEXER_CONFIG.MAX_FILE_SIZE;
       
@@ -91,14 +94,38 @@ class SearchIndexer {
         return;
       }
 
-      const content = fs.readFileSync(filePath, 'utf8');
+      // ENHANCED MEMORY MANAGEMENT: Read with size limit
+      let content = fs.readFileSync(filePath, 'utf8');
+      
+      // Early exit if content exceeds practical limit for indexing
+      // This prevents memory issues during markdown parsing
+      const PRACTICAL_LIMIT = Math.min(MAX_FILE_SIZE, INDEXER_CONFIG.MAX_CONTENT_LENGTH * 3);
+      if (content.length > PRACTICAL_LIMIT) {
+        this.logger.warn('Content too large for effective indexing, truncating', { 
+          file, 
+          originalSize: content.length, 
+          truncatedTo: PRACTICAL_LIMIT 
+        });
+        content = content.substring(0, PRACTICAL_LIMIT);
+      }
+
       const { data: frontmatter, content: markdown } = matter(content);
       
-      // Convert markdown to HTML
+      // Convert markdown to HTML (with truncated content if necessary)
       const html = marked(markdown);
       
-      // Extract text content
-      const textContent = this.stripHtml(html);
+      // Extract text content with limit
+      let textContent = this.stripHtml(html);
+      
+      // EARLY EXIT: Stop processing if we already have enough content
+      if (textContent.length > INDEXER_CONFIG.MAX_CONTENT_LENGTH) {
+        this.logger.debug('Truncating indexed content for search performance', { 
+          file,
+          originalLength: textContent.length,
+          truncatedTo: INDEXER_CONFIG.MAX_CONTENT_LENGTH
+        });
+        textContent = textContent.substring(0, INDEXER_CONFIG.MAX_CONTENT_LENGTH);
+      }
       
       // Extract headings
       const headings = this.extractHeadings(html);
@@ -114,7 +141,7 @@ class SearchIndexer {
         title,
         description,
         url,
-        content: textContent.substring(0, INDEXER_CONFIG.MAX_CONTENT_LENGTH),
+        content: textContent,
         headings: headings.slice(0, INDEXER_CONFIG.MAX_HEADINGS),
         keywords: Array.isArray(frontmatter.keywords) 
           ? frontmatter.keywords.slice(0, INDEXER_CONFIG.MAX_KEYWORDS) 
@@ -129,9 +156,9 @@ class SearchIndexer {
   }
 
   /**
-   * Generate search index from all markdown files
+   * Generate search index from all markdown files with rate limiting
    */
-  generate() {
+  async generate() {
     const contentDir = path.join(this.rootDir, this.config.build.content_dir);
     
     if (!fs.existsSync(contentDir)) {
@@ -150,10 +177,15 @@ class SearchIndexer {
       files.splice(MAX_FILES);
     }
 
-    // Index each file
-    for (const file of files) {
-      this.indexFile(file);
-    }
+    // RATE LIMITING: Process files with concurrency limit to prevent memory spikes
+    const limit = pLimit(INDEXER_CONFIG.CONCURRENCY_LIMIT);
+    this.logger.debug('Indexing files with concurrency control', {
+      totalFiles: files.length,
+      concurrencyLimit: INDEXER_CONFIG.CONCURRENCY_LIMIT
+    });
+
+    // Index files with controlled concurrency
+    await Promise.all(files.map(file => limit(() => this.indexFile(file))));
 
     this.logger.info('Search index generated', { indexedPages: this.index.length });
   }

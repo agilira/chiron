@@ -1,6 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 const { logger } = require('../logger');
+const fsPromises = require('fs').promises;
+
+// AbortController is a global in Node.js 15+
+/* global AbortController */
 
 /**
  * Chiron file utilities
@@ -168,6 +172,150 @@ function getStats(filePath) {
   }
 }
 
+/**
+ * Convert file system path to URL path (always uses forward slashes)
+ * Ensures consistent URL generation across Windows and Unix systems
+ * @param {string} filePath - File system path (may contain backslashes on Windows)
+ * @returns {string} URL path with forward slashes
+ * @example
+ * // Windows: content\api\index.md -> content/api/index.md
+ * // Unix: content/api/index.md -> content/api/index.md
+ */
+function toUrlPath(filePath) {
+  if (!filePath || typeof filePath !== 'string') {
+    return '';
+  }
+  // Normalize path separators to forward slashes for URLs
+  return filePath.replace(/\\/g, '/');
+}
+
+/**
+ * Convert markdown file path to HTML URL path
+ * @param {string} mdPath - Markdown file path
+ * @returns {string} HTML URL path
+ * @example
+ * // content\guide.md -> content/guide.html
+ */
+function mdToHtmlPath(mdPath) {
+  if (!mdPath || typeof mdPath !== 'string') {
+    return '';
+  }
+  return toUrlPath(mdPath.replace('.md', '.html'));
+}
+
+/**
+ * Read file with timeout support (async)
+ * @param {string} filePath - Path to file
+ * @param {Object} options - Options object
+ * @param {string} options.encoding - File encoding (default: 'utf8')
+ * @param {number} options.timeout - Timeout in milliseconds (default: 5000)
+ * @returns {Promise<string>} File contents
+ * @throws {Error} If file cannot be read or timeout occurs
+ */
+async function readFileWithTimeout(filePath, options = {}) {
+  const { encoding = 'utf8', timeout = 5000 } = options;
+  
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeout);
+  
+  try {
+    const content = await fsPromises.readFile(filePath, { 
+      encoding, 
+      signal: controller.signal 
+    });
+    clearTimeout(timeoutId);
+    fileLogger.debug('File read successfully', { filePath, size: content.length });
+    return content;
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error.name === 'AbortError') {
+      const timeoutError = new Error(`File read timeout after ${timeout}ms: ${filePath}`);
+      fileLogger.error('File read timeout', { filePath, timeout });
+      throw timeoutError;
+    }
+    fileLogger.error('Failed to read file', { filePath, error: error.message });
+    throw new Error(`Cannot read file ${filePath}: ${error.message}`);
+  }
+}
+
+/**
+ * Write file with timeout support (async)
+ * @param {string} filePath - Path to file
+ * @param {string} content - Content to write
+ * @param {Object} options - Options object
+ * @param {string} options.encoding - File encoding (default: 'utf8')
+ * @param {number} options.timeout - Timeout in milliseconds (default: 5000)
+ * @throws {Error} If file cannot be written or timeout occurs
+ */
+async function writeFileWithTimeout(filePath, content, options = {}) {
+  const { encoding = 'utf8', timeout = 5000 } = options;
+  
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeout);
+  
+  try {
+    const dirPath = path.dirname(filePath);
+    ensureDir(dirPath);
+    
+    await fsPromises.writeFile(filePath, content, { 
+      encoding, 
+      signal: controller.signal 
+    });
+    clearTimeout(timeoutId);
+    fileLogger.debug('File written successfully', { filePath, size: content.length });
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error.name === 'AbortError') {
+      const timeoutError = new Error(`File write timeout after ${timeout}ms: ${filePath}`);
+      fileLogger.error('File write timeout', { filePath, timeout });
+      throw timeoutError;
+    }
+    fileLogger.error('Failed to write file', { filePath, error: error.message });
+    throw new Error(`Cannot write file ${filePath}: ${error.message}`);
+  }
+}
+
+/**
+ * Copy file with timeout support (async)
+ * @param {string} src - Source file path
+ * @param {string} dest - Destination file path
+ * @param {Object} options - Options object
+ * @param {number} options.timeout - Timeout in milliseconds (default: 5000)
+ * @throws {Error} If copy fails or timeout occurs
+ */
+async function copyFileWithTimeout(src, dest, options = {}) {
+  const { timeout = 5000 } = options;
+  
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeout);
+  
+  try {
+    const destDir = path.dirname(dest);
+    ensureDir(destDir);
+    
+    // Node.js copyFile doesn't support signal yet, so we wrap it in a race
+    await Promise.race([
+      fsPromises.copyFile(src, dest),
+      new Promise((_, reject) => {
+        controller.signal.addEventListener('abort', () => {
+          reject(new Error('AbortError'));
+        });
+      })
+    ]);
+    clearTimeout(timeoutId);
+    fileLogger.debug('File copied successfully', { src, dest });
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error.message === 'AbortError') {
+      const timeoutError = new Error(`File copy timeout after ${timeout}ms: ${src} -> ${dest}`);
+      fileLogger.error('File copy timeout', { src, dest, timeout });
+      throw timeoutError;
+    }
+    fileLogger.error('Failed to copy file', { src, dest, error: error.message });
+    throw new Error(`Cannot copy file ${src} to ${dest}: ${error.message}`);
+  }
+}
+
 module.exports = {
   ensureDir,
   copyFile,
@@ -176,5 +324,11 @@ module.exports = {
   writeFile,
   getFilesByExtension,
   exists,
-  getStats
+  getStats,
+  toUrlPath,
+  mdToHtmlPath,
+  // Async versions with timeout
+  readFileWithTimeout,
+  writeFileWithTimeout,
+  copyFileWithTimeout
 };

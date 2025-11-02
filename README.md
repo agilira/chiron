@@ -13,8 +13,12 @@ Zero runtime. Zero complexity. Just fast, beautiful docs.
 
 - **Markdown-First**: Write documentation in Markdown with YAML frontmatter
 - **YAML Configuration**: Single `chiron.config.yaml` file for everything
+- **Nested Structure (Subpages)**: Organize content in subdirectories for complex projects
+- **Pagination (Prev/Next)**: Automatic sequential navigation between pages
+- **Custom Templates**: Create custom page layouts with complete HTML control
 - **Multiple Templates**: Use different layouts for landing pages, docs, and custom pages
 - **Automatic Build**: Generates HTML, sitemap.xml, and robots.txt automatically
+- **Smart Breadcrumbs**: Hierarchical navigation with automatic directory detection
 - **Modern Design**: Clean, responsive interface
 - **Accessibility**: WCAG 2.2 AA compliant
 - **Dark Mode**: Native support for dark theme
@@ -210,6 +214,13 @@ chiron/
 ├── content/                # Markdown page files
 │   ├── index.md
 │   ├── api-reference.md
+│   ├── plugins/            # Subpages (nested structure)
+│   │   ├── index.md
+│   │   ├── auth/
+│   │   │   ├── index.md
+│   │   │   └── api-reference.md
+│   │   └── cache/
+│   │       └── index.md
 │   └── ...
 ├── assets/                 # Images, logos, etc.
 │   └── logo.png
@@ -223,7 +234,77 @@ chiron/
 ├── styles.css              # CSS styles
 ├── script.js               # JavaScript
 └── docs/                   # Output (auto-generated)
+    ├── index.html
+    ├── plugins/            # Preserves directory structure
+    │   ├── index.html
+    │   ├── auth/
+    │   │   ├── index.html
+    │   │   └── api-reference.html
+    │   └── cache/
+    │       └── index.html
+    └── ...
 ```
+
+## Nested Structure (Subpages)
+
+Chiron supports organizing content in subdirectories for complex documentation:
+
+### Directory Structure
+
+```
+content/
+├── index.md                    # Root page
+├── getting-started.md          # Root level page
+└── plugins/                    # Subdirectory
+    ├── index.md               # Plugins overview
+    ├── auth/
+    │   ├── index.md           # Auth plugin main page
+    │   ├── api-reference.md   # Auth API docs
+    │   └── guide.md           # Auth configuration guide
+    └── cache/
+        ├── index.md           # Cache plugin main page
+        └── api-reference.md   # Cache API docs
+```
+
+### Navigation Configuration
+
+Reference nested files in your `chiron.config.yaml`:
+
+```yaml
+navigation:
+  sidebars:
+    default:
+      - section: Plugins
+        items:
+          - label: Plugins Overview
+            file: plugins/index.md
+          - label: Auth Plugin
+            file: plugins/auth/index.md
+          - label: Auth API Reference
+            file: plugins/auth/api-reference.md
+          - label: Cache Plugin
+            file: plugins/cache/index.md
+```
+
+### Smart Breadcrumbs
+
+Breadcrumbs automatically reflect the directory hierarchy:
+
+- **With index.md**: Directory becomes a clickable link
+  - `Documentation / Plugins / Auth / API Reference`
+  - "Plugins" links to `plugins/index.html` (if `plugins/index.md` exists)
+  - "Auth" links to `plugins/auth/index.html` (if `plugins/auth/index.md` exists)
+
+- **Without index.md**: Directory shown as text only
+  - `Documentation / Plugins / Auth / API Reference`
+  - "Plugins" is just text (if `plugins/index.md` doesn't exist)
+
+### Benefits
+
+- **Organized**: Group related documentation logically
+- **Scalable**: Perfect for projects with plugins, modules, or multiple components
+- **SEO-Friendly**: Clean URLs like `/plugins/auth/api-reference.html`
+- **Automatic**: Links and paths calculated automatically
 
 ## Writing Content
 
@@ -328,18 +409,107 @@ See the full configuration file for all available options.
 ## NPM Commands
 
 ```bash
-# Build the site
-npm run build
-
-# Watch mode (auto-rebuild)
+# Development with hot reload (auto-rebuild on file changes)
 npm run dev
 
-# Local preview
+# Build the site (production)
+npm run build
+
+# Build CSS only (with source maps for debugging)
+npm run build:css
+
+# Watch CSS changes
+npm run watch:css
+
+# Local preview (serves docs/ folder)
 npm run preview
 
 # Clean output
 npm run clean
+
+# Run tests
+npm test
+
+# Lint code
+npm run lint
 ```
+
+## Development Mode
+
+Chiron includes a powerful development server with hot reload:
+
+```bash
+npm run dev
+```
+
+### Features
+
+The development server automatically watches and rebuilds when you change:
+
+- **Content**: `content/**/*.md` - Your Markdown documentation files
+- **Templates**: `templates/**/*.html` - Default templates
+- **Custom Templates**: `custom-templates/**/*.html` - Your custom page layouts
+- **Configuration**: `chiron.config.yaml` - Site configuration
+- **Styles**: `styles/**/*.scss` - SCSS stylesheets
+- **Custom Styles**: `custom.css` - Your custom CSS
+- **Custom Scripts**: `custom.js` - Your custom JavaScript
+
+### How It Works
+
+1. **Initial Build**: Runs a full build when started
+2. **File Watching**: Monitors all source files for changes
+3. **Debounced Rebuild**: Waits 300ms after last change to avoid multiple builds
+4. **Smart Rebuild**: 
+   - If styles change → rebuilds CSS + site
+   - If other files change → rebuilds site only
+5. **Colored Output**: Shows what changed and build status
+
+### Example Session
+
+```bash
+$ npm run dev
+
+ℹ Chiron Development Server
+ℹ Starting...
+
+[INFO] Building Chiron documentation site...
+[INFO] Build completed successfully in 0.16s
+✓ Development server ready!
+
+👁  Watching for changes...
+ℹ Preview: npm run preview
+
+# Edit content/index.md
+👁  changed content: content\index.md
+ℹ Rebuilding...
+[INFO] Build completed successfully in 0.14s
+✓ Rebuild complete!
+
+# Edit styles/main.scss  
+👁  changed style: styles\main.scss
+ℹ Rebuilding...
+✓ CSS compiled
+[INFO] Build completed successfully in 0.15s
+✓ Rebuild complete!
+```
+
+### CSS Source Maps
+
+CSS is built with source maps enabled for easier debugging:
+
+- **File**: `styles.css.map` (automatically generated)
+- **Usage**: Browser DevTools show original SCSS files
+- **Location**: Map files link to `styles/` directory structure
+
+### Preview Your Changes
+
+While `npm run dev` watches for changes, in another terminal run:
+
+```bash
+npm run preview
+```
+
+This starts a local server at `http://localhost:3000` to view your docs.
 
 ## Deploy to GitHub Pages
 
@@ -594,6 +764,10 @@ builder.watch();
 - **[Examples](examples/)** - Practical examples
 
 ### Configuration
+- **[Nested Structure (Subpages)](SUBPAGES.md)** - Organize content in subdirectories
+- **[Pagination (Prev/Next)](PAGINATION.md)** - Sequential page navigation
+- **[Custom Templates](CUSTOM-TEMPLATES.md)** - Create custom page layouts
+- **[Sidebar Navigation](SIDEBAR.md)** - Configure multiple sidebars
 - **[Header Navigation](HEADER-NAVIGATION.md)** - Configure header navigation
 - **[Table of Contents](TABLE-OF-CONTENTS.md)** - Create manual TOC in pages
 - **[Analytics Integration](ANALYTICS.md)** - Integrate Google Analytics and GTM

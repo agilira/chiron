@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "generated": "2025-11-02T06:01:02.310Z",
-  "totalPages": 7,
+  "generated": "2025-11-02T11:53:12.656Z",
+  "totalPages": 8,
   "pages": [
     {
       "id": "api-reference",
@@ -88,6 +88,22 @@
         "Contact",
         "No Tracking",
         "Summary"
+      ],
+      "keywords": []
+    },
+    {
+      "id": "custom-template-test",
+      "title": "Custom Template Test",
+      "description": "Testing the custom template system",
+      "url": "custom-template-test.html",
+      "content": "Custom Template Test Page This page uses a custom template from custom-templates/example-custom.html . Features Custom header layout Custom footer All Chiron placeholders work PATH_TO_ROOT for subpages support How It Works Template specified in frontmatter: template: example-custom.html Chiron searches in custom-templates/ first Falls back to default templates if not found Test Content Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Code Block javascript Copy console.log(&#039;Custom template works!&#039;); List Item 1 Item 2 Item 3 This demonstrates that all Markdown features work with custom templates.",
+      "headings": [
+        "Custom Template Test Page",
+        "Features",
+        "How It Works",
+        "Test Content",
+        "Code Block",
+        "List"
       ],
       "keywords": []
     },
@@ -179,7 +195,7 @@
     {
       "id": "showcase",
       "title": "UI Showcase",
-      "description": "Showcase of all UI elements and components available in Chiron",
+      "description": "Visual showcase of all UI components and styles available in Chiron",
       "url": "showcase.html",
       "content": "UI Showcase This page demonstrates all the UI elements and components available in Chiron documentation. Typography Headings Heading 1 Heading 2 Heading 3 Heading 4 Heading 5 Heading 6 Paragraphs This is a regular paragraph with some bold text , italic text , and bold italic text . You can also use inline code within paragraphs. Here&#39;s a second paragraph with a link to the homepage and an external link . Lists Unordered List First item Second item Nested item 1 Nested item 2 Deeply nested item Third item Ordered List First step Second step Sub-step A Sub-step B Third step Task List Completed task Pending task Another pending task Code Blocks JavaScript javascript Copy function greet(name) { console.log(`Hello, ${name}!`); return `Welcome to Chiron`; } const result = greet(&#039;Developer&#039;); console.log(result); TypeScript typescript Copy interface User { id: number; name: string; email: string; } function createUser(data: User): User { return { ...data, id: Date.now() }; } Bash bash Copy # Install dependencies npm install # Run development server npm run dev # Build for production npm run build YAML yaml Copy project: name: Chiron version: 2.0.0 features: - markdown - yaml - mermaid JSON json Copy { &quot;name&quot;: &quot;chiron&quot;, &quot;version&quot;: &quot;2.0.0&quot;, &quot;description&quot;: &quot;Modern documentation builder&quot;, &quot;keywords&quot;: [&quot;documentation&quot;, &quot;markdown&quot;, &quot;static-site&quot;] } Tables Basic Table Feature Supported Notes Markdown ✅ Yes Full GFM support YAML Config ✅ Yes Single config file Dark Mode ✅ Yes Auto-switching Mermaid ✅ Yes Diagrams support SEO ✅ Yes Complete meta tags Complex Table Language Syntax Highlighting Line Numbers Copy Button JavaScript ✅ ✅ ✅ TypeScript ✅ ✅ ✅ Python ✅ ✅ ✅ Bash ✅ ✅ ✅ CSS ✅ ✅ ✅ Blockquotes This is a simple blockquote. Note : This is an important note with bold text . It can span multiple paragraphs. Warning : This is a warning message. Horizontal Rules Links Internal link External link Link with title Images Inline Elements This paragraph contains various inline elements: bold , italic , bold italic , code , strikethrough , and links . Info Boxes Info boxes are perfect for highlighting important information, warnings, tips, and more. Info This is an informational message. Use this for general information or notes that don't require immediate action. Warning This is a warning message. Use this to alert users about potential issues or important considerations. Error This is an error message. Use this for critical issues that need immediate attention or things that could break functionality. Success This is a success message. Use this to confirm successful operations or positive outcomes. Tip This is a helpful tip. Use this for best practices, recommendations, or useful suggestions that can improve the user experience. Info Box with Code Configuration Tip You can customize the theme by modifying the chiron.config.yaml file. Here's an example: theme: primaryColor: \"#2563eb\" darkMode: true Info Box with Links Breaking Change Version 2.0 introduces breaking changes. Please read the migration guide before upgrading. Diagrams Note : Mermaid diagram support has been removed to improve page load performance. For diagrams, we recommend using external tools like: Excalidraw - Hand-drawn style diagrams draw.io - Professional diagrams PlantUML - Text-based UML diagrams Export as PNG/SVG and include them as images in your documentation. Feature Cards Markdown First Write documentation in simple Markdown with frontmatter support. YAML Config Single configuration file for all settings. Modern Design Clean, responsive interface with dark mode support. Code Highlighting Beautiful syntax highlighting with Prism.js for all major languages. Mermaid Diagrams Create flowcharts, sequence diagrams, and more with Mermaid. GitHub Pages Ready Optimized output for seamless deployment to GitHub Pages. Nested Content Level 3 Heading This is content under a level 3 heading. Level 4 Heading This is content under a level 4 heading. Level 5 Heading This is content under a level 5 heading. Level 6 Heading This is content under a level 6 heading. Blockquotes Basic Quote Simplicity is the ultimate sophistication. A well-designed system should be easy to understand and use, without unnecessary complexity. Quote with Citation The best documentation is the one that doesn&#39;t need to exist, but when it does, it should be clear, concise, and helpful. Documentation Best Practices Quote with Author Programs must be written for people to read, and only incidentally for machines to execute. Harold Abelson, Structure and Interpretation of Computer Programs Multi-paragraph Quote First paragraph of the quote that contains important information about the topic at hand. Second paragraph that elaborates on the first point and provides additional context. Final paragraph with a conclusion or call to action. Quote with Code Always remember: const is better t",
       "headings": [

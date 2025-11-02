@@ -37,7 +37,7 @@ github:
   repo: chiron
   branch: main
   show_version: true
-  current_version: v2.0.0
+  current_version: v2.3.0
 
 # SEO & Social
 seo:
@@ -70,6 +70,13 @@ analytics:
 
 # Navigation Structure
 navigation:
+  # Pagination Configuration (Previous/Next links)
+  # Global default for all pages
+  # Can be overridden at sidebar level or page level (frontmatter)
+  # See PAGINATION.md for full documentation
+  pagination:
+    enabled: false  # Default: disabled (opt-in per sidebar or page)
+  
   # Header navigation (top bar)
   # Add multiple links, use 'external: true' for external links
   # See HEADER-NAVIGATION.md for full documentation
@@ -80,6 +87,12 @@ navigation:
   # Sidebars - Define multiple sidebars for different sections
   # Each page can specify which sidebar to use in its frontmatter with 'sidebar: name'
   # If not specified, 'default' sidebar is used
+  # Sidebar-specific pagination settings
+  # Override global default for specific sidebars
+  sidebar_pagination:
+    default: false  # Disabled for default sidebar (reference docs, legal pages)
+    plugins: true   # Enabled for plugins sidebar (sequential documentation)
+  
   sidebars:
     default:
       - section: Getting Started
@@ -94,6 +107,23 @@ navigation:
             file: api-reference.md
           - label: UI Showcase
             file: showcase.md
+      
+      - section: Plugins
+        collapsible: true
+        defaultOpen: true
+        items:
+          - label: Plugins Overview
+            file: plugins/index.md
+          - label: Authentication Plugin
+            file: plugins/auth/index.md
+          - label: Auth API Reference
+            file: plugins/auth/api-reference.md
+          - label: Auth Configuration
+            file: plugins/auth/guide.md
+          - label: Cache Plugin
+            file: plugins/cache/index.md
+          - label: Cache API Reference
+            file: plugins/cache/api-reference.md
       
       - section: Legal
         collapsible: true
@@ -127,6 +157,24 @@ navigation:
             file: api-reference.md
           - label: Overview
             file: index.md
+    
+    # Plugins sidebar (with pagination enabled)
+    plugins:
+      - section: Plugins Documentation
+        collapsible: false
+        items:
+          - label: Plugins Overview
+            file: plugins/index.md
+          - label: Authentication Plugin
+            file: plugins/auth/index.md
+          - label: Auth API Reference
+            file: plugins/auth/api-reference.md
+          - label: Auth Configuration
+            file: plugins/auth/guide.md
+          - label: Cache Plugin
+            file: plugins/cache/index.md
+          - label: Cache API Reference
+            file: plugins/cache/api-reference.md
   
   # Breadcrumb configuration
   breadcrumb:
@@ -174,6 +222,11 @@ build:
   content_dir: content
   assets_dir: assets
   templates_dir: templates
+  
+  # Custom templates directory (optional)
+  # Templates in this folder take precedence over default templates
+  # See CUSTOM-TEMPLATES.md for details
+  custom_templates_dir: custom-templates
   
   # Files to copy as-is
   # Note: robots.txt and sitemap.xml are auto-generated, don't include them here

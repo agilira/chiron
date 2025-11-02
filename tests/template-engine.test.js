@@ -259,6 +259,7 @@ describe('TemplateEngine', () => {
     it('should cache templates', () => {
       // Mock filesystem
       const originalReadFileSync = fs.readFileSync;
+      const originalStatSync = fs.statSync;
       let readCount = 0;
       
       fs.readFileSync = jest.fn((filepath, encoding) => {
@@ -270,6 +271,11 @@ describe('TemplateEngine', () => {
       });
 
       fs.existsSync = jest.fn(() => true);
+      
+      // Mock statSync to return consistent mtime for cache test
+      fs.statSync = jest.fn(() => ({
+        mtimeMs: 1234567890000 // Fixed timestamp for consistent caching
+      }));
 
       const template1 = engine.loadTemplate('page.html');
       const template2 = engine.loadTemplate('page.html');
@@ -279,6 +285,7 @@ describe('TemplateEngine', () => {
 
       // Restore
       fs.readFileSync = originalReadFileSync;
+      fs.statSync = originalStatSync;
     });
   });
 });

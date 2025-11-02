@@ -1,6 +1,7 @@
 ---
 title: UI Showcase
-description: Showcase of all UI elements and components available in Chiron
+description: Visual showcase of all UI components and styles available in Chiron
+pagination: true
 ---
 
 # UI Showcase

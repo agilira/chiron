@@ -18,7 +18,7 @@ const { generateRobots } = require('./generators/robots');
 const { logger } = require('./logger');
 const { ParseError } = require('./errors');
 const { loadConfig } = require('./config/config-loader');
-const { copyDirRecursive, ensureDir } = require('./utils/file-utils');
+const { copyDirRecursive, ensureDir, toUrlPath, mdToHtmlPath, copyFileWithTimeout, writeFileWithTimeout } = require('./utils/file-utils');
 
 // Build Configuration Constants
 const BUILD_CONFIG = {
@@ -102,8 +102,17 @@ class ChironBuilder {
   }
 
   /**
-   * Get all markdown files from content directory
-   * @returns {Array<Object>} Array of file objects with filename, path, and outputName
+   * Get all markdown files from content directory (recursively)
+   * Supports nested directory structure for subpages (e.g., plugins/auth/api.md)
+   * 
+   * @returns {Array<Object>} Array of file objects with:
+   *   - filename: Base filename (e.g., 'api.md')
+   *   - path: Absolute path to source file
+   *   - relativePath: Path relative to content dir (e.g., 'plugins/auth/api.md')
+   *   - outputName: Output HTML path preserving directory structure (e.g., 'plugins/auth/api.html')
+   *   - depth: Nesting depth for calculating relative paths (0 for root files)
+   * 
+   * @throws {Error} If maximum depth exceeded or directory traversal detected
    */
   getContentFiles() {
     const contentDir = path.join(this.rootDir, this.config.build.content_dir);
@@ -113,20 +122,126 @@ class ChironBuilder {
       return [];
     }
 
-    const files = fs.readdirSync(contentDir)
-      .filter(file => file.endsWith('.md'))
-      .map(file => ({
-        filename: file,
-        path: path.join(contentDir, file),
-        outputName: file.replace('.md', '.html')
-      }));
+    const files = [];
+    const maxDepth = BUILD_CONFIG.MAX_DEPTH;
+    
+    /**
+     * Recursively scan directory for markdown files
+     * @param {string} dir - Current directory to scan
+     * @param {string} relativePath - Path relative to content root
+     * @param {number} currentDepth - Current recursion depth
+     */
+    const scanDirectory = (dir, relativePath = '', currentDepth = 0) => {
+      // SECURITY: Prevent infinite recursion and directory traversal attacks
+      if (currentDepth > maxDepth) {
+        const error = new Error(`Maximum directory depth (${maxDepth}) exceeded at: ${relativePath}`);
+        this.logger.error('Directory depth limit exceeded', { 
+          path: relativePath, 
+          maxDepth,
+          currentDepth 
+        });
+        throw error;
+      }
+      
+      // SECURITY: Validate directory path to prevent traversal attacks
+      const resolvedDir = path.resolve(dir);
+      const resolvedContentDir = path.resolve(contentDir);
+      if (!resolvedDir.startsWith(resolvedContentDir)) {
+        const error = new Error(`Directory traversal detected: ${dir}`);
+        this.logger.error('Security: Directory traversal attempt blocked', { 
+          attemptedPath: dir,
+          contentDir: resolvedContentDir
+        });
+        throw error;
+      }
+
+      let entries;
+      try {
+        entries = fs.readdirSync(dir, { withFileTypes: true });
+      } catch (error) {
+        this.logger.error('Failed to read directory', { 
+          path: dir, 
+          relativePath,
+          error: error.message 
+        });
+        // Don't throw, just skip this directory
+        return;
+      }
+
+      for (const entry of entries) {
+        // SECURITY: Validate entry name to prevent path injection
+        if (entry.name.includes('..') || entry.name.includes('\0')) {
+          this.logger.warn('Skipping suspicious filename', { 
+            filename: entry.name,
+            path: relativePath 
+          });
+          continue;
+        }
+
+        const fullPath = path.join(dir, entry.name);
+        const relPath = relativePath ? path.join(relativePath, entry.name) : entry.name;
+
+        try {
+          if (entry.isDirectory()) {
+            // Recursively scan subdirectory
+            this.logger.debug('Scanning subdirectory', { 
+              path: relPath, 
+              depth: currentDepth + 1 
+            });
+            scanDirectory(fullPath, relPath, currentDepth + 1);
+          } else if (entry.isFile() && entry.name.endsWith('.md')) {
+            // Calculate depth for PATH_TO_ROOT calculation
+            // Depth is number of directory separators in relative path
+            const depth = relPath.split(path.sep).length - 1;
+            
+            // Add markdown file to list
+            files.push({
+              filename: entry.name,
+              path: fullPath,
+              relativePath: relPath,
+              outputName: relPath.replace(/\.md$/, '.html'),
+              depth
+            });
+            
+            this.logger.debug('Found markdown file', { 
+              file: relPath, 
+              depth,
+              outputName: relPath.replace(/\.md$/, '.html')
+            });
+          }
+          // Skip non-markdown files and symbolic links silently
+        } catch (error) {
+          this.logger.warn('Error processing entry', { 
+            entry: entry.name,
+            path: relPath,
+            error: error.message 
+          });
+          // Continue processing other files
+        }
+      }
+    };
+
+    // Start recursive scan from content directory
+    try {
+      this.logger.debug('Starting recursive content scan', { contentDir });
+      scanDirectory(contentDir);
+      this.logger.info(`Found ${files.length} markdown file(s) across ${new Set(files.map(f => path.dirname(f.relativePath))).size} director(ies)`);
+    } catch (error) {
+      this.logger.error('Failed to scan content directory', { 
+        contentDir,
+        error: error.message 
+      });
+      throw error;
+    }
 
     return files;
   }
 
   /**
    * Process a single markdown file and generate HTML
-   * @param {Object} file - File object with filename, path, and outputName
+   * Supports nested directory structure (subpages)
+   * 
+   * @param {Object} file - File object with filename, path, outputName, relativePath, and depth
    * @returns {Object|null} Page metadata for sitemap, or null on error
    */
   processMarkdownFile(file) {
@@ -137,19 +252,28 @@ class ChironBuilder {
         file.outputName
       );
 
+      // IMPORTANT: Ensure output directory exists for nested paths
+      // This prevents ENOENT errors when writing to subdirectories
+      const outputDir = path.dirname(outputPath);
+      ensureDir(outputDir);
+
       // Process markdown content
       const content = fs.readFileSync(file.path, 'utf8');
       const parsed = this.markdownParser.parse(content);
       
       // Determine if this is the active page for navigation
+      // Must handle both flat and nested paths (e.g., 'api.md' and 'plugins/auth/api.md')
       const isActive = (navItem) => {
         if (navItem.file) {
-          return navItem.file.replace('.md', '.html') === file.outputName;
+          // Normalize paths for comparison (handle both forward and back slashes)
+          const navPath = mdToHtmlPath(navItem.file);
+          const filePath = toUrlPath(file.outputName);
+          return navPath === filePath;
         }
         return false;
       };
 
-      // Build page context
+      // Build page context with depth for PATH_TO_ROOT calculation
       const pageContext = {
         ...this.config,
         page: {
@@ -157,20 +281,26 @@ class ChironBuilder {
           description: parsed.frontmatter.description || this.config.project.description,
           content: parsed.html,
           filename: file.outputName,
+          relativePath: file.relativePath || file.filename,
+          depth: file.depth || 0, // Critical for PATH_TO_ROOT calculation
           ...parsed.frontmatter
         },
         isActive
       };
 
-      // Render HTML
+      // Render HTML with template engine
       const html = this.templateEngine.render(pageContext);
 
-      // Write output file
+      // Write output file (directory already ensured above)
       fs.writeFileSync(outputPath, html, 'utf8');
+      
+      // Log with relative path for better readability
       this.logger.info(`Generated: ${file.outputName}`);
 
+      // Return metadata for sitemap generation
+      // IMPORTANT: Normalize path separators to forward slashes for web compatibility
       return {
-        url: file.outputName,
+        url: toUrlPath(file.outputName),
         title: pageContext.page.title,
         description: pageContext.page.description,
         lastmod: new Date().toISOString().split('T')[0]
@@ -310,19 +440,21 @@ class ChironBuilder {
    * Copy CSS and JS files to output directory
    * Creates empty custom.css and custom.js if they don't exist
    * Falls back to Chiron's files if not found in user directory
+   * Uses timeout to prevent hanging on locked files
    * @returns {Promise<void>}
    * @throws {Error} If file copying fails
    */
   async copyScripts() {
-    const fs = require('fs').promises;
     const fsSync = require('fs');
     const outputDir = path.join(this.rootDir, this.config.build.output_dir);
     
     // Copy main CSS and JS in parallel
     const filesToCopy = ['fonts.css', 'styles.css', 'script.js', 'custom.css', 'custom.js'];
+    const FILE_TIMEOUT = 5000; // 5 second timeout per file
     
     try {
-      await Promise.allSettled(filesToCopy.map(async (file) => {
+      // Execute all file operations in parallel
+      const results = await Promise.allSettled(filesToCopy.map(async (file) => {
         let src = path.join(this.rootDir, file);
         const dest = path.join(outputDir, file);
         
@@ -337,13 +469,18 @@ class ChironBuilder {
           }
           
           if (fsSync.existsSync(src)) {
-            await fs.copyFile(src, dest);
+            // Use timeout-protected copy
+            await copyFileWithTimeout(src, dest, { timeout: FILE_TIMEOUT });
+            return { success: true, file };
           } else {
             // Create empty custom files if they don't exist anywhere
             if (file === 'custom.css' || file === 'custom.js') {
-              await fs.writeFile(dest, '', 'utf8');
+              // Use timeout-protected write
+              await writeFileWithTimeout(dest, '', { timeout: FILE_TIMEOUT });
+              return { success: true, file, created: true };
             } else {
               this.logger.warn('File not found', { file });
+              return { success: false, file, error: 'File not found' };
             }
           }
         } catch (err) {
@@ -352,10 +489,37 @@ class ChironBuilder {
             file,
             error: `Failed to process: ${err.message}`
           });
+          // Re-throw to mark as rejected
+          throw err;
         }
       }));
 
-      this.logger.info('Scripts and styles copied');
+      // Check for critical failures (rejected promises)
+      const failures = results.filter(r => r.status === 'rejected');
+      const criticalFiles = ['styles.css', 'script.js']; // Files essential for site functionality
+      const criticalFailures = failures.filter(f => 
+        f.reason && criticalFiles.some(cf => f.reason.message?.includes(cf))
+      );
+
+      if (criticalFailures.length > 0) {
+        const errorMsg = `Failed to copy ${criticalFailures.length} critical file(s)`;
+        this.logger.error(errorMsg, { 
+          files: criticalFailures.map(f => f.reason?.message || 'Unknown') 
+        });
+        
+        // In production or strict mode, fail the build for critical files
+        if (process.env.NODE_ENV === 'production') {
+          throw new Error(`${errorMsg}: ${criticalFailures.map(f => f.reason?.message).join(', ')}`);
+        }
+      } else if (failures.length > 0) {
+        // Non-critical failures: log but continue
+        this.logger.warn(`${failures.length} non-critical file(s) failed to copy`, {
+          files: failures.map(f => f.reason?.message || 'Unknown')
+        });
+      }
+
+      const successCount = results.filter(r => r.status === 'fulfilled').length;
+      this.logger.info(`Scripts and styles copied: ${successCount}/${filesToCopy.length} successful`);
     } catch (error) {
       this.logger.error('Failed to copy scripts', { error: error.message });
       this.buildErrors.push({
@@ -501,7 +665,7 @@ class ChironBuilder {
       this.logger.info('Generating search index...');
       try {
         const searchIndexer = new SearchIndexer(this.config, this.rootDir);
-        searchIndexer.generate();
+        await searchIndexer.generate();
         searchIndexer.save();
       } catch (error) {
         this.logger.error('Error generating search index', { error: error.message });

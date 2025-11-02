@@ -95,9 +95,25 @@ author: Test Author
     });
 
     it('should throw error for non-string input', () => {
+      // Number input
       expect(() => parser.parse(123)).toThrow('Content must be a string');
-      expect(() => parser.parse(null)).toThrow('Content must be a string');
-      expect(() => parser.parse(undefined)).toThrow('Content must be a string');
+      
+      // Null input - now has more specific error message
+      expect(() => parser.parse(null)).toThrow('Content cannot be null or undefined');
+      
+      // Undefined input - now has more specific error message
+      expect(() => parser.parse(undefined)).toThrow('Content cannot be null or undefined');
+    });
+
+    it('should handle Buffer input by converting to string', () => {
+      // Test that Buffer objects are properly converted
+      const content = '# Hello World\n\nThis is a test.';
+      const buffer = Buffer.from(content, 'utf8');
+      
+      const result = parser.parse(buffer);
+      
+      expect(result.html).toContain('<h1 id="hello-world">Hello World</h1>');
+      expect(result.html).toContain('<p>This is a test.</p>');
     });
 
     it('should handle empty content', () => {
