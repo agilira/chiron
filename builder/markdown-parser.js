@@ -228,15 +228,37 @@ class MarkdownParser {
     // Reset used IDs for each new document
     this.usedIds.clear();
     
-    // Input validation
-    if (typeof content !== 'string') {
-      throw new Error('Content must be a string');
+    // ENHANCED INPUT VALIDATION
+    // 1. Check for null/undefined
+    if (content === null || content === undefined) {
+      throw new Error('Content cannot be null or undefined');
     }
 
-    // Check content size to prevent DoS
+    // 2. Handle Buffer objects (convert to string)
+    if (Buffer.isBuffer(content)) {
+      this.logger.debug('Converting Buffer to string');
+      content = content.toString('utf8');
+    }
+
+    // 3. Ensure content is a string
+    if (typeof content !== 'string') {
+      throw new Error(`Content must be a string, received ${typeof content}`);
+    }
+
+    // 4. Check content size to prevent DoS
     const MAX_CONTENT_SIZE = PARSER_CONFIG.MAX_CONTENT_SIZE;
     if (content.length > MAX_CONTENT_SIZE) {
       throw new Error(`Content too large: ${content.length} bytes (max ${MAX_CONTENT_SIZE})`);
+    }
+
+    // 5. Validate content is not just whitespace
+    if (content.trim().length === 0) {
+      this.logger.warn('Empty or whitespace-only content provided');
+      return {
+        frontmatter: {},
+        html: '',
+        markdown: ''
+      };
     }
 
     try {
