@@ -261,7 +261,6 @@ describe('TemplateEngine', () => {
       const originalReadFileSync = fs.readFileSync;
       const originalStatSync = fs.statSync;
       let readCount = 0;
-      const mockMtime = new Date('2025-01-01');
       
       fs.readFileSync = jest.fn((filepath, encoding) => {
         if (filepath.includes('page.html')) {
@@ -273,12 +272,10 @@ describe('TemplateEngine', () => {
 
       fs.existsSync = jest.fn(() => true);
       
-      fs.statSync = jest.fn((filepath) => {
-        if (filepath.includes('page.html')) {
-          return { mtime: mockMtime };
-        }
-        return originalStatSync(filepath);
-      });
+      // Mock statSync to return consistent mtime for cache test
+      fs.statSync = jest.fn(() => ({
+        mtimeMs: 1234567890000 // Fixed timestamp for consistent caching
+      }));
 
       const template1 = engine.loadTemplate('page.html');
       const template2 = engine.loadTemplate('page.html');
