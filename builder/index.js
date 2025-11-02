@@ -244,7 +244,7 @@ class ChironBuilder {
     const assetsDir = path.join(this.rootDir, this.config.build.assets_dir);
     const staticFiles = this.config.build.static_files || [];
     let copiedCount = 0;
-    let notFoundFiles = [];
+    const notFoundFiles = [];
 
     for (const pattern of staticFiles) {
       // Simple glob pattern matching (supports * wildcard)
@@ -268,7 +268,7 @@ class ChironBuilder {
         }
       } else {
         // Try root directory first
-        let src = path.join(this.rootDir, pattern);
+        const src = path.join(this.rootDir, pattern);
         const dest = path.join(outputDir, pattern);
         let found = false;
         

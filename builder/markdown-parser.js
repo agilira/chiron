@@ -68,7 +68,7 @@ class MarkdownParser {
     };
 
     // Add target="_blank" and rel="noopener" to external links
-    renderer.link = ({ href, title, text, tokens }) => {
+    renderer.link = ({ href, title, text, tokens: _tokens }) => {
       // Validate href to prevent javascript: protocol injection
       if (!href || typeof href !== 'string') {
         return text || '';
