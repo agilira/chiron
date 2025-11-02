@@ -259,7 +259,9 @@ describe('TemplateEngine', () => {
     it('should cache templates', () => {
       // Mock filesystem
       const originalReadFileSync = fs.readFileSync;
+      const originalStatSync = fs.statSync;
       let readCount = 0;
+      const mockMtime = new Date('2025-01-01');
       
       fs.readFileSync = jest.fn((filepath, encoding) => {
         if (filepath.includes('page.html')) {
@@ -270,6 +272,13 @@ describe('TemplateEngine', () => {
       });
 
       fs.existsSync = jest.fn(() => true);
+      
+      fs.statSync = jest.fn((filepath) => {
+        if (filepath.includes('page.html')) {
+          return { mtime: mockMtime };
+        }
+        return originalStatSync(filepath);
+      });
 
       const template1 = engine.loadTemplate('page.html');
       const template2 = engine.loadTemplate('page.html');
@@ -279,6 +288,7 @@ describe('TemplateEngine', () => {
 
       // Restore
       fs.readFileSync = originalReadFileSync;
+      fs.statSync = originalStatSync;
     });
   });
 });

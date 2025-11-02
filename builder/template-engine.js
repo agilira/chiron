@@ -9,6 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const { logger } = require('./logger');
+const { toUrlPath, mdToHtmlPath } = require('./utils/file-utils');
 
 // Template Engine Configuration Constants
 const TEMPLATE_CONFIG = {
@@ -81,64 +82,240 @@ class TemplateEngine {
 
   /**
    * Load template file from disk with LRU caching
+   * Supports custom templates with precedence: custom-templates/ > templates/
+   * 
    * @param {string} templateName - Name of template file (e.g., 'page.html')
    * @returns {string} Template content
-   * @throws {Error} If template file not found
+   * @throws {Error} If template file not found or invalid
+   * 
+   * @example
+   * // Search order:
+   * // 1. custom-templates/page.html (user custom)
+   * // 2. templates/page.html (project templates)
+   * // 3. templates/page.html (Chiron default)
    */
   loadTemplate(templateName) {
-    // Return from cache if exists
-    if (this.templateCache[templateName]) {
-      // Move to end (most recently used)
-      const index = this.cacheKeys.indexOf(templateName);
-      if (index > -1) {
-        this.cacheKeys.splice(index, 1);
-        this.cacheKeys.push(templateName);
-      }
-      return this.templateCache[templateName];
+    // SECURITY: Validate template name to prevent directory traversal
+    // Only allow alphanumeric, hyphens, underscores, and .html extension
+    if (!templateName || typeof templateName !== 'string') {
+      throw new Error('Template name must be a non-empty string');
+    }
+    
+    // Prevent directory traversal attacks
+    if (templateName.includes('..') || 
+        templateName.includes('/') || 
+        templateName.includes('\\') ||
+        templateName.includes('\0')) {
+      this.logger.error('Invalid template name detected', { 
+        templateName,
+        reason: 'directory_traversal_attempt' 
+      });
+      throw new Error(`Invalid template name: ${templateName}`);
+    }
+    
+    // Validate file extension
+    if (!templateName.endsWith('.html')) {
+      this.logger.warn('Template name should end with .html', { templateName });
     }
 
-    // Try user's directory first, then fallback to Chiron's directory
-    let templatePath = path.join(
+    // Determine template file path (to check mtime)
+    let templatePath;
+    const customTemplatesDir = this.config.build.custom_templates_dir || 'custom-templates';
+    const customTemplatePath = path.join(this.rootDir, customTemplatesDir, templateName);
+    
+    if (fs.existsSync(customTemplatePath)) {
+      templatePath = customTemplatePath;
+    } else {
+      const projectTemplatePath = path.join(
+        this.rootDir,
+        this.config.build.templates_dir,
+        templateName
+      );
+      if (fs.existsSync(projectTemplatePath)) {
+        templatePath = projectTemplatePath;
+      } else {
+        templatePath = path.join(
+          this.chironRootDir,
+          this.config.build.templates_dir,
+          templateName
+        );
+      }
+    }
+    
+    // Check cache with mtime validation
+    if (this.templateCache[templateName]) {
+      const cachedEntry = this.templateCache[templateName];
+      
+      // Validate cache freshness by comparing mtime
+      if (fs.existsSync(templatePath)) {
+        try {
+          const stats = fs.statSync(templatePath);
+          const currentMtime = stats.mtimeMs;
+          
+          // If file hasn't been modified, return cached version
+          if (cachedEntry.mtime === currentMtime) {
+            // Move to end (most recently used) for LRU
+            const index = this.cacheKeys.indexOf(templateName);
+            if (index > -1) {
+              this.cacheKeys.splice(index, 1);
+              this.cacheKeys.push(templateName);
+            }
+            this.logger.debug('Template loaded from cache', { templateName });
+            return cachedEntry.content;
+          } else {
+            // Template modified, invalidate cache
+            this.logger.debug('Template cache invalidated (file modified)', {
+              templateName,
+              oldMtime: cachedEntry.mtime,
+              newMtime: currentMtime
+            });
+            delete this.templateCache[templateName];
+            const index = this.cacheKeys.indexOf(templateName);
+            if (index > -1) {
+              this.cacheKeys.splice(index, 1);
+            }
+          }
+        } catch (err) {
+          // If mtime check fails, invalidate cache
+          this.logger.warn('Failed to check template mtime, invalidating cache', {
+            templateName,
+            error: err.message
+          });
+          delete this.templateCache[templateName];
+          const index = this.cacheKeys.indexOf(templateName);
+          if (index > -1) {
+            this.cacheKeys.splice(index, 1);
+          }
+        }
+      }
+    }
+
+    // PRECEDENCE LEVEL 1: Custom templates directory (highest priority)
+    // User can override any default template or create new ones
+    if (fs.existsSync(customTemplatePath)) {
+      this.logger.info('Using custom template', { 
+        templateName,
+        path: customTemplatePath,
+        source: 'custom'
+      });
+      
+      const template = fs.readFileSync(customTemplatePath, 'utf8');
+      try {
+        const stats = fs.statSync(customTemplatePath);
+        this.cacheTemplate(templateName, template, stats.mtimeMs);
+      } catch {
+        // Fallback for test environments or edge cases
+        this.cacheTemplate(templateName, template, Date.now());
+      }
+      return template;
+    }
+
+    // PRECEDENCE LEVEL 2: Project templates directory
+    // Templates in user's project (if different from Chiron root)
+    const projectPath = path.join(
       this.rootDir,
       this.config.build.templates_dir,
       templateName
     );
 
-    if (!fs.existsSync(templatePath)) {
-      // Fallback to Chiron's templates directory
-      templatePath = path.join(
-        this.chironRootDir,
-        this.config.build.templates_dir,
-        templateName
-      );
+    if (fs.existsSync(projectPath)) {
+      this.logger.debug('Using project template', { 
+        templateName,
+        path: projectPath,
+        source: 'project'
+      });
       
-      if (!fs.existsSync(templatePath)) {
-        throw new Error(`Template not found: ${templateName} (checked both ${this.rootDir} and ${this.chironRootDir})`);
+      const template = fs.readFileSync(projectPath, 'utf8');
+      try {
+        const stats = fs.statSync(projectPath);
+        this.cacheTemplate(templateName, template, stats.mtimeMs);
+      } catch {
+        this.cacheTemplate(templateName, template, Date.now());
       }
+      return template;
     }
 
-    const template = fs.readFileSync(templatePath, 'utf8');
+    // PRECEDENCE LEVEL 3: Chiron default templates (fallback)
+    const defaultPath = path.join(
+      this.chironRootDir,
+      this.config.build.templates_dir,
+      templateName
+    );
     
+    if (fs.existsSync(defaultPath)) {
+      this.logger.debug('Using default template', { 
+        templateName,
+        path: defaultPath,
+        source: 'default'
+      });
+      
+      const template = fs.readFileSync(defaultPath, 'utf8');
+      try {
+        const stats = fs.statSync(defaultPath);
+        this.cacheTemplate(templateName, template, stats.mtimeMs);
+      } catch {
+        this.cacheTemplate(templateName, template, Date.now());
+      }
+      return template;
+    }
+
+    // Template not found in any location
+    this.logger.error('Template not found', {
+      templateName,
+      searchedPaths: [
+        customTemplatePath,
+        path.join(this.rootDir, this.config.build.templates_dir, templateName),
+        path.join(this.chironRootDir, this.config.build.templates_dir, templateName)
+      ]
+    });
+    
+    throw new Error(
+      `Template not found: ${templateName}\n` +
+      `Searched in:\n` +
+      `  1. ${customTemplatePath} (custom)\n` +
+      `  2. ${this.rootDir}/${this.config.build.templates_dir}/ (project)\n` +
+      `  3. ${this.chironRootDir}/${this.config.build.templates_dir}/ (default)`
+    );
+  }
+
+  /**
+   * Cache template with LRU eviction and mtime tracking
+   * @private
+   * @param {string} templateName - Template name
+   * @param {string} template - Template content
+   * @param {number} mtime - File modification time in milliseconds
+   */
+  cacheTemplate(templateName, template, mtime) {
     // Implement LRU cache eviction
     if (this.cacheKeys.length >= this.cacheMaxSize) {
       const oldestKey = this.cacheKeys.shift();
       delete this.templateCache[oldestKey];
+      this.logger.debug('Evicted template from cache', { template: oldestKey });
     }
     
-    // Add to cache
-    this.templateCache[templateName] = template;
+    // Add to cache with mtime for invalidation
+    this.templateCache[templateName] = {
+      content: template,
+      mtime
+    };
     this.cacheKeys.push(templateName);
     
-    return template;
+    this.logger.debug('Template cached', { 
+      templateName,
+      cacheSize: this.cacheKeys.length,
+      maxSize: this.cacheMaxSize,
+      mtime
+    });
   }
 
   /**
    * Render navigation items recursively
    * @param {Array<Object>} items - Navigation items from config
    * @param {Object} context - Page context with isActive function
+   * @param {string} pathToRoot - Relative path to root for subpages support
    * @returns {string} Rendered HTML for navigation
    */
-  renderNavigation(items, context) {
+  renderNavigation(items, context, pathToRoot = './') {
     if (!Array.isArray(items)) {
       this.logger.warn('Navigation items must be an array');
       return '';
@@ -168,9 +345,15 @@ class TemplateEngine {
             return '';
           }
 
-          const url = subItem.file 
-            ? this.escapeHtml(subItem.file.replace('.md', '.html'))
-            : this.sanitizeUrl(subItem.url || '#');
+          // IMPORTANT: For file links, prepend PATH_TO_ROOT for subpages support
+          // External URLs remain unchanged
+          let url;
+          if (subItem.file) {
+            const htmlFile = mdToHtmlPath(subItem.file);
+            url = pathToRoot + htmlFile;
+          } else {
+            url = this.sanitizeUrl(subItem.url || '#');
+          }
           
           const label = this.escapeHtml(subItem.label || 'Untitled');
           const isActive = context.isActive(subItem);
@@ -216,9 +399,10 @@ class TemplateEngine {
    * Render sidebar based on page context
    * Selects the appropriate sidebar from config based on page frontmatter
    * @param {Object} context - Page context
+   * @param {string} pathToRoot - Relative path to root for subpages support
    * @returns {string} Rendered HTML for sidebar navigation
    */
-  renderSidebar(context) {
+  renderSidebar(context, pathToRoot = './') {
     // Get sidebar name from page frontmatter, default to 'default'
     const sidebarName = context.page?.sidebar || 'default';
     
@@ -226,7 +410,8 @@ class TemplateEngine {
       page: context.page?.filename,
       requestedSidebar: sidebarName,
       hasPageSidebar: !!context.page?.sidebar,
-      availableSidebars: Object.keys(this.config.navigation?.sidebars || {})
+      availableSidebars: Object.keys(this.config.navigation?.sidebars || {}),
+      pathToRoot
     });
     
     // Get the sidebar items from config
@@ -245,7 +430,7 @@ class TemplateEngine {
         return '';
       }
       
-      return this.renderNavigation(defaultSidebar, context);
+      return this.renderNavigation(defaultSidebar, context, pathToRoot);
     }
     
     this.logger.debug(`Using sidebar '${sidebarName}' for page`, {
@@ -254,7 +439,7 @@ class TemplateEngine {
       sectionsCount: sidebarItems.length
     });
     
-    return this.renderNavigation(sidebarItems, context);
+    return this.renderNavigation(sidebarItems, context, pathToRoot);
   }
 
   /**
@@ -281,9 +466,12 @@ class TemplateEngine {
   }
 
   /**
-   * Render breadcrumb
+   * Render breadcrumb with hierarchical path for subpages
+   * @param {Object} context - Page context
+   * @param {string} pathToRoot - Relative path to root for subpages support
+   * @returns {string} Rendered breadcrumb HTML
    */
-  renderBreadcrumb(context) {
+  renderBreadcrumb(context, pathToRoot = './') {
     if (!this.config.navigation?.breadcrumb?.enabled) {
       return '';
     }
@@ -291,8 +479,8 @@ class TemplateEngine {
     const breadcrumbItems = this.config.navigation.breadcrumb.items || [];
     const isHomepage = context.page.filename === 'index.html';
     
-    // Build breadcrumb items HTML with proper escaping
-    const itemsHtml = breadcrumbItems.map(item => {
+    // Build external breadcrumb items HTML (e.g., Company, Project)
+    const externalItemsHtml = breadcrumbItems.map(item => {
       if (!item || typeof item !== 'object') {
         return '';
       }
@@ -305,26 +493,340 @@ class TemplateEngine {
                         <li class="breadcrumb-separator">/</li>`;
     }).join('\n                        ');
     
-    // For homepage: "Breadcrumb Items / Documentation"
+    // For homepage: "External Items / Documentation"
     if (isHomepage) {
       return `<nav class="breadcrumb" aria-label="Breadcrumb">
                     <ol class="breadcrumb-list">
-                        ${itemsHtml}
+                        ${externalItemsHtml}
                         <li class="breadcrumb-item current" aria-current="page">Documentation</li>
                     </ol>
                 </nav>`;
     }
     
-    // For other pages: "Breadcrumb Items / Documentation / Page Title"
+    // For subpages: Build hierarchical path from relativePath
+    // Example: "plugins/auth/api-reference.html" → ["plugins", "auth", "api-reference.html"]
+    const relativePath = context.page.relativePath || context.page.filename;
+    const pathParts = toUrlPath(relativePath).split('/');
+    
+    // Build hierarchical breadcrumb items
+    let hierarchyHtml = '';
+    
+    // Always start with "Documentation" link to root
+    hierarchyHtml += `<li class="breadcrumb-item"><a href="${pathToRoot}index.html">Documentation</a></li>
+                        <li class="breadcrumb-separator">/</li>`;
+    
+    // Add intermediate directories as breadcrumb items
+    // SMART BREADCRUMB: Only create links if index.html exists in that directory
+    // For "plugins/auth/api-reference.html":
+    // - "Plugins" → link to plugins/index.html (only if file exists)
+    // - "Auth" → link to plugins/auth/index.html (only if file exists)
+    // - "API Reference" → current page (no link)
+    if (pathParts.length > 1) {
+      let accumulatedPath = '';
+      
+      for (let i = 0; i < pathParts.length - 1; i++) {
+        const part = pathParts[i];
+        accumulatedPath += (i > 0 ? '/' : '') + part;
+        
+        // Capitalize and format directory name for display
+        const displayName = part
+          .split('-')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+        
+        // Check if index.md exists in this directory (in content source)
+        // We check the source, not the output, because files are being built
+        const fs = require('fs');
+        const path = require('path');
+        const contentDir = path.join(this.rootDir, this.config.build.content_dir);
+        const dirIndexMdPath = path.join(contentDir, accumulatedPath, 'index.md');
+        const indexExists = fs.existsSync(dirIndexMdPath);
+        
+        // Only create link if index.html exists, otherwise just show text
+        if (indexExists) {
+          const dirIndexPath = `${pathToRoot}${accumulatedPath}/index.html`;
+          hierarchyHtml += `<li class="breadcrumb-item"><a href="${dirIndexPath}">${this.escapeHtml(displayName)}</a></li>
+                        <li class="breadcrumb-separator">/</li>`;
+        } else {
+          // No link, just text
+          hierarchyHtml += `<li class="breadcrumb-item">${this.escapeHtml(displayName)}</li>
+                        <li class="breadcrumb-separator">/</li>`;
+        }
+      }
+    }
+    
+    // Add current page title as final breadcrumb item (no link)
     const pageTitle = this.escapeHtml(context.page.title || 'Untitled');
+    hierarchyHtml += `<li class="breadcrumb-item current" aria-current="page">${pageTitle}</li>`;
+    
     return `<nav class="breadcrumb" aria-label="Breadcrumb">
                     <ol class="breadcrumb-list">
-                        ${itemsHtml}
-                        <li class="breadcrumb-item"><a href="index.html">Documentation</a></li>
-                        <li class="breadcrumb-separator">/</li>
-                        <li class="breadcrumb-item current" aria-current="page">${pageTitle}</li>
+                        ${externalItemsHtml}
+                        ${hierarchyHtml}
                     </ol>
                 </nav>`;
+  }
+
+  /**
+   * Determine if pagination should be shown for a page
+   * Uses 3-level precedence: Frontmatter > Sidebar Config > Global Default
+   * 
+   * @param {Object} context - Page context
+   * @returns {boolean} True if pagination should be displayed
+   * 
+   * @example
+   * // Frontmatter override (highest priority)
+   * pagination: true  // Always show
+   * pagination: false // Never show
+   * 
+   * // Sidebar config (medium priority)
+   * sidebars:
+   *   tutorial:
+   *     pagination: true
+   * 
+   * // Global default (lowest priority)
+   * navigation:
+   *   pagination:
+   *     enabled: false
+   */
+  shouldShowPagination(context) {
+    const { page } = context;
+    
+    // LEVEL 1: Frontmatter override (highest priority)
+    // Explicit true/false in page frontmatter takes absolute precedence
+    if (page.pagination !== undefined) {
+      const isEnabled = page.pagination === true;
+      this.logger.debug('Pagination controlled by frontmatter', {
+        page: page.filename,
+        enabled: isEnabled,
+        source: 'frontmatter'
+      });
+      return isEnabled;
+    }
+    
+    // LEVEL 2: Sidebar configuration (medium priority)
+    // Check if the sidebar this page belongs to has pagination enabled
+    // Uses navigation.sidebar_pagination map for cleaner YAML structure
+    const sidebarName = page.sidebar || 'default';
+    const sidebarPaginationConfig = this.config.navigation?.sidebar_pagination;
+    
+    if (sidebarPaginationConfig && sidebarPaginationConfig[sidebarName] !== undefined) {
+      const isEnabled = sidebarPaginationConfig[sidebarName] === true;
+      this.logger.debug('Pagination controlled by sidebar config', {
+        page: page.filename,
+        sidebar: sidebarName,
+        enabled: isEnabled,
+        source: 'sidebar_pagination'
+      });
+      return isEnabled;
+    }
+    
+    // LEVEL 3: Global default (lowest priority)
+    // Fall back to global navigation.pagination.enabled setting
+    const globalEnabled = this.config.navigation?.pagination?.enabled === true;
+    this.logger.debug('Pagination controlled by global default', {
+      page: page.filename,
+      enabled: globalEnabled,
+      source: 'global'
+    });
+    
+    return globalEnabled;
+  }
+
+  /**
+   * Calculate previous and next pages for pagination
+   * Based on sidebar navigation order with support for frontmatter override
+   * @param {Object} context - Page context
+   * @param {string} pathToRoot - Relative path to root
+   * @returns {Object} Object with prev and next page info
+   */
+  calculatePrevNext(context, pathToRoot = './') {
+    const { page } = context;
+    
+    // Check for manual override in frontmatter
+    if (page.prev !== undefined || page.next !== undefined) {
+      const result = {};
+      
+      if (page.prev) {
+        // Convert .md to .html and prepend pathToRoot
+        const prevFile = mdToHtmlPath(page.prev);
+        result.prev = {
+          url: pathToRoot + prevFile,
+          title: page.prevTitle || 'Previous' // Optional custom title
+        };
+      }
+      
+      if (page.next) {
+        // Convert .md to .html and prepend pathToRoot
+        const nextFile = mdToHtmlPath(page.next);
+        result.next = {
+          url: pathToRoot + nextFile,
+          title: page.nextTitle || 'Next' // Optional custom title
+        };
+      }
+      
+      return result;
+    }
+    
+    // Automatic calculation from sidebar order
+    // Get the sidebar configuration for this page
+    const sidebarName = page.sidebar || 'default';
+    const sidebar = this.config.navigation?.sidebars?.[sidebarName];
+    
+    if (!sidebar || !Array.isArray(sidebar)) {
+      return {}; // No sidebar, no pagination
+    }
+    
+    // Flatten sidebar structure to get ordered list of pages
+    const flatPages = this.flattenSidebarPages(sidebar);
+    
+    // Find current page index
+    const currentFile = page.relativePath || page.filename;
+    const currentIndex = flatPages.findIndex(item => {
+      if (!item.file) {
+        return false;
+      }
+      // Normalize paths for comparison
+      const itemFile = toUrlPath(item.file);
+      const currentNormalized = toUrlPath(currentFile);
+      return itemFile === currentNormalized;
+    });
+    
+    if (currentIndex === -1) {
+      // Current page not found in sidebar
+      return {};
+    }
+    
+    const result = {};
+    
+    // Get previous page
+    if (currentIndex > 0) {
+      const prevItem = flatPages[currentIndex - 1];
+      if (prevItem && prevItem.file) {
+        const prevFile = mdToHtmlPath(prevItem.file);
+        result.prev = {
+          url: pathToRoot + prevFile,
+          title: prevItem.label || 'Previous'
+        };
+      }
+    }
+    
+    // Get next page
+    if (currentIndex < flatPages.length - 1) {
+      const nextItem = flatPages[currentIndex + 1];
+      if (nextItem && nextItem.file) {
+        const nextFile = mdToHtmlPath(nextItem.file);
+        result.next = {
+          url: pathToRoot + nextFile,
+          title: nextItem.label || 'Next'
+        };
+      }
+    }
+    
+    return result;
+  }
+
+  /**
+   * Flatten sidebar structure to ordered list of pages
+   * Skips external links and section headers
+   * @param {Array} sidebar - Sidebar configuration
+   * @returns {Array} Flat array of page items with file and label
+   */
+  flattenSidebarPages(sidebar) {
+    const pages = [];
+    
+    for (const item of sidebar) {
+      if (!item || typeof item !== 'object') {
+        continue;
+      }
+      
+      // If it's a section, process its items
+      if (item.section && Array.isArray(item.items)) {
+        for (const subItem of item.items) {
+          if (!subItem || typeof subItem !== 'object') {
+            continue;
+          }
+          
+          // Only include items with file property (skip external links)
+          if (subItem.file) {
+            pages.push({
+              file: subItem.file,
+              label: subItem.label || 'Untitled'
+            });
+          }
+        }
+      }
+      // If it's a direct item (no section)
+      else if (item.file) {
+        pages.push({
+          file: item.file,
+          label: item.label || 'Untitled'
+        });
+      }
+    }
+    
+    return pages;
+  }
+
+  /**
+   * Render pagination navigation (prev/next links)
+   * Respects 3-level configuration: Frontmatter > Sidebar > Global
+   * 
+   * @param {Object} context - Page context
+   * @param {string} pathToRoot - Relative path to root
+   * @returns {string} Rendered pagination HTML or empty string if disabled
+   */
+  renderPagination(context, pathToRoot = './') {
+    // SECURITY & CONTROL: Check if pagination is enabled for this page
+    // Uses 3-level precedence system for maximum flexibility
+    if (!this.shouldShowPagination(context)) {
+      this.logger.debug('Pagination disabled for page', {
+        page: context.page.filename
+      });
+      return '';
+    }
+    
+    // Calculate prev/next pages
+    const pagination = this.calculatePrevNext(context, pathToRoot);
+    
+    // If no prev/next links available, return empty
+    // This can happen if page is first AND last in sidebar
+    if (!pagination.prev && !pagination.next) {
+      this.logger.debug('No pagination links available', {
+        page: context.page.filename,
+        reason: 'first_and_last_or_not_in_sidebar'
+      });
+      return '';
+    }
+    
+    const prevHtml = pagination.prev
+      ? `<a href="${pagination.prev.url}" class="pagination-link pagination-prev" rel="prev">
+                    <svg class="pagination-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    <div class="pagination-text">
+                        <span class="pagination-label">Previous</span>
+                        <span class="pagination-title">${this.escapeHtml(pagination.prev.title)}</span>
+                    </div>
+                </a>`
+      : '<div class="pagination-spacer"></div>';
+    
+    const nextHtml = pagination.next
+      ? `<a href="${pagination.next.url}" class="pagination-link pagination-next" rel="next">
+                    <div class="pagination-text">
+                        <span class="pagination-label">Next</span>
+                        <span class="pagination-title">${this.escapeHtml(pagination.next.title)}</span>
+                    </div>
+                    <svg class="pagination-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </a>`
+      : '<div class="pagination-spacer"></div>';
+    
+    return `<nav class="pagination" aria-label="Page navigation">
+                ${prevHtml}
+                ${nextHtml}
+            </nav>`;
   }
 
   /**
@@ -416,8 +918,10 @@ class TemplateEngine {
 
   /**
    * Render footer legal links
+   * @param {string} pathToRoot - Relative path to root for subpages support
+   * @returns {string} Rendered footer links HTML
    */
-  renderFooterLinks() {
+  renderFooterLinks(pathToRoot = './') {
     const legalLinks = this.config.footer?.legal_links || [];
     
     if (!Array.isArray(legalLinks)) {
@@ -429,9 +933,14 @@ class TemplateEngine {
         return '';
       }
 
-      const url = link.file 
-        ? this.escapeHtml(link.file.replace('.md', '.html'))
-        : this.sanitizeUrl(link.url || '#');
+      // IMPORTANT: For file links, prepend PATH_TO_ROOT for subpages support
+      let url;
+      if (link.file) {
+        const htmlFile = mdToHtmlPath(link.file);
+        url = pathToRoot + htmlFile;
+      } else {
+        url = this.sanitizeUrl(link.url || '#');
+      }
       const label = this.escapeHtml(link.label || 'Untitled');
       
       return `<a href="${url}" class="footer-legal-link">${label}</a>`;
@@ -510,6 +1019,48 @@ class TemplateEngine {
   }
 
   /**
+   * Calculate PATH_TO_ROOT based on page depth
+   * This is critical for subpages to correctly reference assets, CSS, JS, etc.
+   * 
+   * @param {number} depth - Nesting depth of the page (0 for root, 1 for one level deep, etc.)
+   * @returns {string} Relative path to root (e.g., './', '../', '../../')
+   * 
+   * @example
+   * calculatePathToRoot(0) // returns './'
+   * calculatePathToRoot(1) // returns '../'
+   * calculatePathToRoot(2) // returns '../../'
+   */
+  calculatePathToRoot(depth) {
+    // Validate depth is a non-negative number
+    if (typeof depth !== 'number' || depth < 0 || !Number.isInteger(depth)) {
+      this.logger.warn('Invalid depth for PATH_TO_ROOT calculation, defaulting to 0', { 
+        depth,
+        type: typeof depth 
+      });
+      depth = 0;
+    }
+
+    // Root level pages (depth 0) use './'
+    if (depth === 0) {
+      return './';
+    }
+
+    // Nested pages use '../' repeated depth times
+    // depth 1: '../'
+    // depth 2: '../../'
+    // depth 3: '../../../'
+    const pathToRoot = '../'.repeat(depth);
+    
+    this.logger.debug('Calculated PATH_TO_ROOT', { 
+      depth, 
+      pathToRoot,
+      segments: depth 
+    });
+
+    return pathToRoot;
+  }
+
+  /**
    * Process template and replace all placeholders
    * @param {string} template - Template HTML content
    * @param {Object} context - Page context with config and page data
@@ -518,8 +1069,24 @@ class TemplateEngine {
   renderTemplate(template, context) {
     const { project, branding, github, features, cookies } = this.config;
 
+    // CRITICAL: Calculate PATH_TO_ROOT for subpages support
+    // This allows nested pages to correctly reference root-level assets
+    const pageDepth = context.page.depth || 0;
+    const pathToRoot = this.calculatePathToRoot(pageDepth);
+    
+    this.logger.debug('Rendering template', {
+      page: context.page.filename,
+      depth: pageDepth,
+      pathToRoot,
+      template: context.page.template || 'page.html'
+    });
+
     // Build replacements map
     const replacements = {
+      // CRITICAL: PATH_TO_ROOT for subpages support
+      // This must be first so it can be used in other replacements
+      '{{PATH_TO_ROOT}}': pathToRoot,
+      
       // Meta (escape user content for safety)
       '{{PAGE_TITLE}}': this.escapeHtml(context.page.title),
       '{{PAGE_LANG}}': project.language,
@@ -528,15 +1095,20 @@ class TemplateEngine {
       '{{ANALYTICS}}': this.renderAnalytics(),
       
       // Branding (escape user-provided strings)
+      // IMPORTANT: All asset paths now use PATH_TO_ROOT for subpages compatibility
       '{{PROJECT_NAME}}': this.escapeHtml(project.name),
       '{{PROJECT_DESCRIPTION}}': this.escapeHtml(project.description),
       '{{COMPANY_NAME}}': this.escapeHtml(branding.company),
       '{{COMPANY_URL}}': branding.company_url,
-      '{{LOGO_LIGHT}}': path.posix.join('assets', branding.logo.light),
-      '{{LOGO_DARK}}': path.posix.join('assets', branding.logo.dark),
+      '{{LOGO_LIGHT}}': pathToRoot + path.posix.join('assets', branding.logo.light),
+      '{{LOGO_DARK}}': pathToRoot + path.posix.join('assets', branding.logo.dark),
       '{{LOGO_ALT}}': this.escapeHtml(branding.logo.alt),
-      '{{LOGO_FOOTER_LIGHT}}': path.posix.join('assets', branding.logo.footer_light),
-      '{{LOGO_FOOTER_DARK}}': path.posix.join('assets', branding.logo.footer_dark),
+      '{{LOGO_FOOTER_LIGHT}}': pathToRoot + path.posix.join('assets', branding.logo.footer_light),
+      '{{LOGO_FOOTER_DARK}}': pathToRoot + path.posix.join('assets', branding.logo.footer_dark),
+      '{{LOGO_LIGHT_PATH}}': path.posix.join('assets', branding.logo.light),
+      '{{LOGO_DARK_PATH}}': path.posix.join('assets', branding.logo.dark),
+      '{{LOGO_FOOTER_LIGHT_PATH}}': path.posix.join('assets', branding.logo.footer_light),
+      '{{LOGO_FOOTER_DARK_PATH}}': path.posix.join('assets', branding.logo.footer_dark),
       
       // GitHub (validate these are safe)
       '{{GITHUB_OWNER}}': this.escapeHtml(github.owner),
@@ -544,9 +1116,11 @@ class TemplateEngine {
       '{{GITHUB_URL}}': `https://github.com/${this.escapeHtml(github.owner)}/${this.escapeHtml(github.repo)}`,
       
       // Navigation (already rendered as HTML, safe)
+      // IMPORTANT: Pass pathToRoot to all navigation rendering methods
       '{{HEADER_NAV}}': this.renderHeaderNav(),
-      '{{NAVIGATION}}': this.renderSidebar(context),
-      '{{BREADCRUMB}}': this.renderBreadcrumb(context),
+      '{{NAVIGATION}}': this.renderSidebar(context, pathToRoot),
+      '{{BREADCRUMB}}': this.renderBreadcrumb(context, pathToRoot),
+      '{{PAGINATION}}': this.renderPagination(context, pathToRoot),
       
       // Content (HTML from Markdown parser, trusted)
       '{{PAGE_CONTENT}}': context.page.content,
@@ -554,7 +1128,7 @@ class TemplateEngine {
       // Footer
       '{{COPYRIGHT_HOLDER}}': this.escapeHtml(this.config.footer.copyright_holder),
       '{{COPYRIGHT_YEAR}}': new Date().getFullYear(),
-      '{{FOOTER_LEGAL_LINKS}}': this.renderFooterLinks(),
+      '{{FOOTER_LEGAL_LINKS}}': this.renderFooterLinks(pathToRoot),
       
       // Cookie consent (escape user text)
       '{{COOKIE_BANNER_TEXT}}': this.escapeHtml(cookies.banner_text),

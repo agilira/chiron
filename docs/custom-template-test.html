@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Template Test - Chiron</title>
+    
+    <!-- Meta Tags -->
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Testing the custom template system">
+    <meta name="keywords" content="documentation template, chiron, accessibility, responsive design, modern UI, developer tools">
+    <meta name="author" content="Agilira">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://agilira.github.io/chiron/custom-template-test.html">
+    <meta property="og:title" content="Custom Template Test">
+    <meta property="og:description" content="Testing the custom template system">
+    <meta property="og:image" content="https://agilira.github.io/chiron/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Chiron Documentation Template">
+    <meta property="og:site_name" content="Chiron Documentation">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://agilira.github.io/chiron/custom-template-test.html">
+    <meta name="twitter:title" content="Custom Template Test">
+    <meta name="twitter:description" content="Testing the custom template system">
+    <meta name="twitter:image" content="https://agilira.github.io/chiron/og-image.png">
+    <meta name="twitter:site" content="@agilirax">
+    <meta name="twitter:creator" content="@agilirax">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://agilira.github.io/chiron/custom-template-test.html">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Chiron",
+        "description": "A modern, accessible documentation template for microsites. Perfect when you need more than a README but less than a full documentation site.",
+        "applicationCategory": "DeveloperApplication",
+        "url": "https://agilira.github.io/chiron",
+        "author": {
+            "@type": "Organization",
+            "name": "Agilira",
+            "url": "https://github.com/agilira"
+        },
+        "codeRepository": "https://github.com/agilira/chiron",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        }
+    }
+    </script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="./styles.css">
+    
+    <!-- Analytics -->
+    
+</head>
+<body class="custom-template-example">
+    <!-- Custom Header -->
+    <header class="custom-header">
+        <div class="container">
+            <h1>Chiron</h1>
+            <p class="tagline">Custom Template Example</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="custom-main">
+        <div class="container">
+            <article class="custom-article">
+                <h1 class="page-title">Custom Template Test</h1>
+                
+                <!-- Page Content from Markdown -->
+                <div class="content">
+                    <h1 id="custom-template-test-page">Custom Template Test Page</h1><p>This page uses a <strong>custom template</strong> from <code>custom-templates/example-custom.html</code>.</p>
+<h2 id="features">Features</h2><ul>
+<li>Custom header layout</li>
+<li>Custom footer</li>
+<li>All Chiron placeholders work</li>
+<li>PATH_TO_ROOT for subpages support</li>
+</ul>
+<h2 id="how-it-works">How It Works</h2><ol>
+<li>Template specified in frontmatter: <code>template: example-custom.html</code></li>
+<li>Chiron searches in <code>custom-templates/</code> first</li>
+<li>Falls back to default templates if not found</li>
+</ol>
+<h2 id="test-content">Test Content</h2><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+<h3 id="code-block">Code Block</h3><div class="code-block"><div class="code-header"><span class="code-language">javascript</span><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>Copy</button></div><pre><code class="language-javascript">console.log(&#039;Custom template works!&#039;);</code></pre></div><h3 id="list">List</h3><ul>
+<li>Item 1</li>
+<li>Item 2</li>
+<li>Item 3</li>
+</ul>
+<p>This demonstrates that all Markdown features work with custom templates.</p>
+
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <!-- Custom Footer -->
+    <footer class="custom-footer">
+        <div class="container">
+            <p>&copy; 2025 Agilira</p>
+            <p>This page uses a custom template!</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="./script.js"></script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+/**
+ * Pagination Component
+ * ====================
+ * Previous/Next navigation links at the bottom of pages
+ * Provides sequential navigation through documentation
+ */
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border);
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+.pagination-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-bg-secondary);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  flex: 1;
+  max-width: 48%;
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
+
+  &:hover {
+    border-color: var(--color-primary);
+    background: var(--color-bg-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  &:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.pagination-prev {
+  justify-content: flex-start;
+
+  .pagination-text {
+    text-align: left;
+  }
+}
+
+.pagination-next {
+  justify-content: flex-end;
+
+  .pagination-text {
+    text-align: right;
+  }
+}
+
+.pagination-icon {
+  flex-shrink: 0;
+  color: var(--color-primary);
+  transition: transform 0.2s ease;
+
+  .pagination-link:hover & {
+    transform: translateX(0);
+  }
+
+  .pagination-prev:hover & {
+    transform: translateX(-4px);
+  }
+
+  .pagination-next:hover & {
+    transform: translateX(4px);
+  }
+}
+
+.pagination-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0; // Allow text truncation
+}
+
+.pagination-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pagination-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  .pagination-link:hover & {
+    color: var(--color-primary);
+  }
+}
+
+.pagination-spacer {
+  flex: 1;
+  max-width: 48%;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+/**
+ * Dark Mode Adjustments
+ */
+[data-theme="dark"] {
+  .pagination-link {
+    background: var(--color-bg-tertiary);
+
+    &:hover {
+      background: var(--color-bg-secondary);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+
+/**
+ * Print Styles
+ */
+@media print {
+  .pagination {
+    display: none;
+  }
+}
+
+/**
+ * Accessibility Enhancements
+ */
+@media (prefers-reduced-motion: reduce) {
+  .pagination-link {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+
+  .pagination-icon {
+    transition: none;
+
+    .pagination-link:hover & {
+      transform: none;
+    }
+  }
+}
+
+/**
+ * High Contrast Mode
+ */
+@media (prefers-contrast: high) {
+  .pagination-link {
+    border-width: 2px;
+
+    &:focus {
+      outline-width: 3px;
+    }
+  }
+}

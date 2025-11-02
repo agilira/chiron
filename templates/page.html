@@ -7,16 +7,16 @@
     {{META_TAGS}}
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{PATH_TO_ROOT}}favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{PATH_TO_ROOT}}favicon-16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{PATH_TO_ROOT}}favicon-180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{PATH_TO_ROOT}}favicon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="{{PATH_TO_ROOT}}favicon-512.png">
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="fonts.css">
-    <link rel="stylesheet" href="styles.css?v=20251101-v3">
-    <link rel="stylesheet" href="custom.css">
+    <link rel="stylesheet" href="{{PATH_TO_ROOT}}fonts.css">
+    <link rel="stylesheet" href="{{PATH_TO_ROOT}}styles.css?v=20251101-v3">
+    <link rel="stylesheet" href="{{PATH_TO_ROOT}}custom.css">
     
     <!-- Syntax Highlighting - Light/Dark adaptive -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="(prefers-color-scheme: light)">
@@ -113,6 +113,9 @@
                 <div class="content">
                     {{PAGE_CONTENT}}
                 </div>
+
+                <!-- Pagination (Previous/Next) -->
+                {{PAGINATION}}
             </div>
         </main>
     </div>
@@ -147,7 +150,7 @@
     <div class="cookie-banner" id="cookieBanner" {{SHOW_COOKIE_BANNER}}>
         <div class="cookie-banner-content">
             <div class="cookie-banner-text">
-                <p>{{COOKIE_BANNER_TEXT}} <a href="cookie-policy.html" class="cookie-policy-inline-link">{{COOKIE_POLICY_LABEL}}</a>.</p>
+                <p>{{COOKIE_BANNER_TEXT}} <a href="{{PATH_TO_ROOT}}cookie-policy.html" class="cookie-policy-inline-link">{{COOKIE_POLICY_LABEL}}</a>.</p>
             </div>
             <div class="cookie-banner-actions">
                 <button type="button" class="cookie-accept-btn" id="cookieAcceptBtn">{{COOKIE_ACCEPT_LABEL}}</button>
@@ -169,8 +172,8 @@
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="script.js"></script>
-    <script src="custom.js"></script>
+    <script src="{{PATH_TO_ROOT}}script.js"></script>
+    <script src="{{PATH_TO_ROOT}}custom.js"></script>
     
     <!-- Initialize app -->
     <script>

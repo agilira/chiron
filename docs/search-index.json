@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "generated": "2025-11-02T06:01:02.310Z",
-  "totalPages": 7,
+  "generated": "2025-11-02T12:50:52.308Z",
+  "totalPages": 8,
   "pages": [
     {
       "id": "api-reference",
@@ -88,6 +88,22 @@
         "Contact",
         "No Tracking",
         "Summary"
+      ],
+      "keywords": []
+    },
+    {
+      "id": "custom-template-test",
+      "title": "Custom Template Test",
+      "description": "Testing the custom template system",
+      "url": "custom-template-test.html",
+      "content": "Custom Template Test Page This page uses a custom template from custom-templates/example-custom.html . Features Custom header layout Custom footer All Chiron placeholders work PATH_TO_ROOT for subpages support How It Works Template specified in frontmatter: template: example-custom.html Chiron searches in custom-templates/ first Falls back to default templates if not found Test Content Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Code Block javascript Copy console.log(&#039;Custom template works!&#039;); List Item 1 Item 2 Item 3 This demonstrates that all Markdown features work with custom templates.",
+      "headings": [
+        "Custom Template Test Page",
+        "Features",
+        "How It Works",
+        "Test Content",
+        "Code Block",
+        "List"
       ],
       "keywords": []
     },
