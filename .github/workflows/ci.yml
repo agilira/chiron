@@ -18,7 +18,9 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: 'lts/*'
-        cache: 'npm'
+        # Cache disabled to prevent stale babel config references
+        # TODO: Re-enable after CI stabilizes
+        # cache: 'npm'
     
     - name: Install dependencies
       run: npm ci
