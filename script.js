@@ -47,6 +47,7 @@ class DocumentationApp {
 
     init() {
         this.setupMobileSidebar();
+        this.setupCollapsibleSections();
         this.setupSearch();
         this.setupNavigation();
         this.setupAccessibility();
@@ -142,6 +143,70 @@ class DocumentationApp {
                 this.sidebar.classList.remove('open');
                 this.mobileOverlay.classList.remove('open');
                 document.body.style.overflow = '';
+            }
+        });
+    }
+
+    // Collapsible sidebar sections
+    setupCollapsibleSections() {
+        const collapsibleButtons = document.querySelectorAll('.nav-section-title.collapsible');
+        
+        if (!collapsibleButtons.length) return;
+
+        collapsibleButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const section = button.closest('.nav-section');
+                if (!section) return;
+
+                // Toggle expanded state
+                const isExpanded = section.classList.contains('expanded');
+                section.classList.toggle('expanded');
+
+                // Update ARIA
+                button.setAttribute('aria-expanded', !isExpanded);
+
+                // Save state to localStorage (optional)
+                const sectionTitle = button.textContent.trim();
+                try {
+                    const stateKey = `sidebar-section-${sectionTitle}`;
+                    localStorage.setItem(stateKey, !isExpanded ? 'open' : 'closed');
+                } catch (e) {
+                    // Ignore localStorage errors (private browsing, etc.)
+                }
+            });
+        });
+
+        // Restore state from localStorage on page load
+        this.restoreCollapsibleSectionsState();
+    }
+
+    // Restore collapsible sections state from localStorage
+    restoreCollapsibleSectionsState() {
+        const collapsibleButtons = document.querySelectorAll('.nav-section-title.collapsible');
+        
+        collapsibleButtons.forEach(button => {
+            const sectionTitle = button.textContent.trim();
+            const stateKey = `sidebar-section-${sectionTitle}`;
+            
+            try {
+                const savedState = localStorage.getItem(stateKey);
+                
+                if (savedState) {
+                    const section = button.closest('.nav-section');
+                    const shouldBeOpen = savedState === 'open';
+                    const isCurrentlyOpen = section.classList.contains('expanded');
+
+                    // Only update if state differs
+                    if (shouldBeOpen !== isCurrentlyOpen) {
+                        section.classList.toggle('expanded', shouldBeOpen);
+                        button.setAttribute('aria-expanded', shouldBeOpen);
+                    }
+                }
+            } catch (e) {
+                // Ignore localStorage errors
             }
         });
     }

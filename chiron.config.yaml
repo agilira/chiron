@@ -83,6 +83,7 @@ navigation:
   sidebars:
     default:
       - section: Getting Started
+        collapsible: false  # Always visible
         items:
           - label: Overview
             file: index.md
@@ -95,6 +96,8 @@ navigation:
             file: showcase.md
       
       - section: Legal
+        collapsible: true
+        defaultOpen: false  # Collapsed by default
         items:
           - label: Privacy Policy
             file: privacy-policy.md
@@ -104,6 +107,8 @@ navigation:
             file: cookie-policy.md
       
       - section: Resources
+        collapsible: true
+        defaultOpen: true  # Expanded by default
         items:
           - label: GitHub Repository
             url: https://github.com/agilira/chiron
@@ -116,6 +121,7 @@ navigation:
     # Example: API-specific sidebar
     api:
       - section: API Documentation
+        collapsible: false
         items:
           - label: API Reference
             file: api-reference.md

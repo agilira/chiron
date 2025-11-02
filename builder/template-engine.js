@@ -157,6 +157,11 @@ class TemplateEngine {
           return '';
         }
 
+        // Check if section is collapsible
+        const isCollapsible = item.collapsible === true;
+        const defaultOpen = item.defaultOpen !== false; // Default to true if not specified
+        const isExpanded = isCollapsible ? defaultOpen : true; // Non-collapsible sections are always expanded
+        
         // Render section with items
         const itemsHtml = item.items.map(subItem => {
           if (!subItem || typeof subItem !== 'object') {
@@ -176,12 +181,32 @@ class TemplateEngine {
         }).join('\n                        ');
 
         const sectionTitle = this.escapeHtml(item.section);
-        return `<div class="nav-section">
+        
+        // Generate collapsible header if needed
+        if (isCollapsible) {
+          const expandedClass = isExpanded ? ' expanded' : '';
+          const ariaExpanded = isExpanded ? 'true' : 'false';
+          
+          return `<div class="nav-section${expandedClass}">
+                    <button type="button" class="nav-section-title collapsible" aria-expanded="${ariaExpanded}">
+                        ${sectionTitle}
+                        <svg class="nav-section-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <ul class="nav-list">
+                        ${itemsHtml}
+                    </ul>
+                </div>`;
+        } else {
+          // Non-collapsible section (original format)
+          return `<div class="nav-section">
                     <div class="nav-section-title">${sectionTitle}</div>
                     <ul class="nav-list">
                         ${itemsHtml}
                     </ul>
                 </div>`;
+        }
       }
       return '';
     }).join('\n                ');

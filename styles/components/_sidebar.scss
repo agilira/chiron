@@ -115,6 +115,55 @@
     @include dark-mode {
         color: var(--color-text-primary);
     }
+    
+    // Collapsible section title (button)
+    &.collapsible {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: none;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+        transition: color var(--transition-fast);
+        
+        &:hover {
+            color: var(--color-accent);
+            
+            @include dark-mode {
+                color: var(--color-accent);
+            }
+        }
+        
+        &:focus-visible {
+            outline: 2px solid var(--color-accent);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+    }
+}
+
+// Collapsible section icon (chevron)
+.nav-section-icon {
+    flex-shrink: 0;
+    margin-left: var(--space-2);
+    transition: transform var(--transition-fast);
+    color: currentColor;
+    
+    .nav-section.expanded & {
+        transform: rotate(0deg);
+    }
+    
+    .nav-section:not(.expanded) & {
+        transform: rotate(-90deg);
+    }
+}
+
+// Hide nav list when collapsible section is collapsed
+// Only applies to sections with collapsible button
+.nav-section:has(.nav-section-title.collapsible):not(.expanded) .nav-list {
+    display: none;
 }
 
 .nav-list {
