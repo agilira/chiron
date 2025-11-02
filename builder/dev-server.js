@@ -11,7 +11,6 @@
 
 const chokidar = require('chokidar');
 const path = require('path');
-const fs = require('fs');
 const { spawn } = require('child_process');
 
 // Colors for terminal output
@@ -74,7 +73,7 @@ class DevServer {
 
     // Watch content files (markdown)
     const contentWatcher = chokidar.watch(contentPath, {
-      ignored: /(^|[\/\\])\../, // ignore dotfiles
+      ignored: /(^|[/\\])\../, // ignore dotfiles
       persistent: true,
       ignoreInitial: true
     });
@@ -86,7 +85,7 @@ class DevServer {
 
     // Watch template files
     const templateWatcher = chokidar.watch([templatesPath, customTemplatesPath], {
-      ignored: /(^|[\/\\])\../,
+      ignored: /(^|[/\\])\../,
       persistent: true,
       ignoreInitial: true
     });
@@ -106,7 +105,7 @@ class DevServer {
 
     // Watch styles
     const stylesWatcher = chokidar.watch([stylesPath, customCssPath], {
-      ignored: /(^|[\/\\])\../,
+      ignored: /(^|[/\\])\../,
       persistent: true,
       ignoreInitial: true
     });
