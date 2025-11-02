@@ -409,13 +409,10 @@ See the full configuration file for all available options.
 ## NPM Commands
 
 ```bash
-# Development with hot reload (auto-rebuild on file changes)
-npm run dev
-
 # Build the site (production)
 npm run build
 
-# Build CSS only (with source maps for debugging)
+# Build CSS only
 npm run build:css
 
 # Watch CSS changes
@@ -434,76 +431,9 @@ npm test
 npm run lint
 ```
 
-## Development Mode
+## Preview Mode
 
-Chiron includes a powerful development server with hot reload:
-
-```bash
-npm run dev
-```
-
-### Features
-
-The development server automatically watches and rebuilds when you change:
-
-- **Content**: `content/**/*.md` - Your Markdown documentation files
-- **Templates**: `templates/**/*.html` - Default templates
-- **Custom Templates**: `custom-templates/**/*.html` - Your custom page layouts
-- **Configuration**: `chiron.config.yaml` - Site configuration
-- **Styles**: `styles/**/*.scss` - SCSS stylesheets
-- **Custom Styles**: `custom.css` - Your custom CSS
-- **Custom Scripts**: `custom.js` - Your custom JavaScript
-
-### How It Works
-
-1. **Initial Build**: Runs a full build when started
-2. **File Watching**: Monitors all source files for changes
-3. **Debounced Rebuild**: Waits 300ms after last change to avoid multiple builds
-4. **Smart Rebuild**: 
-   - If styles change → rebuilds CSS + site
-   - If other files change → rebuilds site only
-5. **Colored Output**: Shows what changed and build status
-
-### Example Session
-
-```bash
-$ npm run dev
-
-ℹ Chiron Development Server
-ℹ Starting...
-
-[INFO] Building Chiron documentation site...
-[INFO] Build completed successfully in 0.16s
-✓ Development server ready!
-
-👁  Watching for changes...
-ℹ Preview: npm run preview
-
-# Edit content/index.md
-👁  changed content: content\index.md
-ℹ Rebuilding...
-[INFO] Build completed successfully in 0.14s
-✓ Rebuild complete!
-
-# Edit styles/main.scss  
-👁  changed style: styles\main.scss
-ℹ Rebuilding...
-✓ CSS compiled
-[INFO] Build completed successfully in 0.15s
-✓ Rebuild complete!
-```
-
-### CSS Source Maps
-
-CSS is built with source maps enabled for easier debugging:
-
-- **File**: `styles.css.map` (automatically generated)
-- **Usage**: Browser DevTools show original SCSS files
-- **Location**: Map files link to `styles/` directory structure
-
-### Preview Your Changes
-
-While `npm run dev` watches for changes, in another terminal run:
+After building, you can preview the generated site locally:
 
 ```bash
 npm run preview

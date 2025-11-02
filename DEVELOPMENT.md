@@ -4,167 +4,28 @@ This guide covers development features, workflows, and best practices for workin
 
 ## Table of Contents
 
-- [Development Server](#development-server)
-- [Hot Reload](#hot-reload)
-- [CSS Source Maps](#css-source-maps)
+- [Build Commands](#build-commands)
 - [File Watching](#file-watching)
 - [Build Performance](#build-performance)
 - [Debugging](#debugging)
 - [Testing](#testing)
 
-## Development Server
-
-Chiron includes a development server with automatic file watching and hot reload.
+## Build Commands
 
 ### Quick Start
 
 ```bash
-# Terminal 1: Start dev server with hot reload
-npm run dev
+# Build the site
+npm run build
 
-# Terminal 2: Preview the site
+# Build CSS only
+npm run build:css
+
+# Watch CSS for changes
+npm run watch:css
+
+# Preview the built site
 npm run preview
-```
-
-The dev server will:
-1. Run an initial build
-2. Watch for file changes
-3. Automatically rebuild when files change
-4. Show colored output with change details
-
-### What Gets Watched
-
-The development server monitors these directories:
-
-| Path | Description | Trigger |
-|------|-------------|---------|
-| `content/**/*.md` | Documentation files | Full rebuild |
-| `templates/**/*.html` | Default templates | Full rebuild |
-| `custom-templates/**/*.html` | Custom templates | Full rebuild |
-| `chiron.config.yaml` | Configuration | Full rebuild |
-| `styles/**/*.scss` | SCSS stylesheets | CSS build + full rebuild |
-| `custom.css` | Custom styles | CSS build + full rebuild |
-| `custom.js` | Custom JavaScript | Full rebuild |
-
-### Debouncing
-
-Changes are **debounced** (300ms delay) to prevent multiple rapid rebuilds when:
-- Saving multiple files quickly
-- Using auto-save features
-- Running batch operations
-
-Example:
-```
-File saved at 10:00:00.000
-File saved at 10:00:00.100  ← Resets timer
-File saved at 10:00:00.200  ← Resets timer
-Build starts at 10:00:00.500  ← 300ms after last change
-```
-
-## Hot Reload
-
-### How It Works
-
-1. **File Change Detected**: Chokidar detects file modification
-2. **Change Queued**: Change added to build queue
-3. **Debounce Timer**: Waits 300ms for additional changes
-4. **Rebuild Triggered**: Runs appropriate build command
-5. **Output Display**: Shows build result with colored status
-
-### Colored Output
-
-The dev server uses colored output for better readability:
-
-- 🔵 **Info** (cyan): General information
-- 🟢 **Success** (green): Successful operations
-- 🟡 **Warning** (yellow): Non-critical issues
-- 🔴 **Error** (red): Build failures
-- 👁 **Watch** (blue): File change notifications
-
-### Example Output
-
-```bash
-ℹ Chiron Development Server
-ℹ Starting...
-
-✓ Development server ready!
-👁  Watching for changes...
-ℹ Preview: npm run preview
-
-# After editing a file:
-👁  changed content: content\api-reference.md
-ℹ Rebuilding...
-[INFO] Build completed successfully in 0.14s
-✓ Rebuild complete!
-```
-
-## CSS Source Maps
-
-Chiron generates CSS source maps for easier debugging.
-
-### Enabling Source Maps
-
-Source maps are **enabled by default** in both development and production builds:
-
-```json
-{
-  "scripts": {
-    "build:css": "sass styles/main.scss styles.css --style compressed"
-  }
-}
-```
-
-### Using Source Maps
-
-1. **Build the CSS**:
-   ```bash
-   npm run build:css
-   ```
-
-2. **Inspect in DevTools**:
-   - Open browser DevTools (F12)
-   - Go to Sources/Debugger tab
-   - CSS rules show original SCSS file names
-   - Click to view original source
-
-### Example
-
-Instead of seeing:
-```
-styles.css:1
-  .header { ... }
-```
-
-You'll see:
-```
-styles/layouts/_header.scss:15
-  .header { ... }
-```
-
-### File Structure
-
-```
-chiron/
-├── styles/
-│   ├── main.scss           ← Source
-│   ├── abstracts/
-│   ├── base/
-│   ├── components/
-│   └── layouts/
-├── styles.css              ← Compiled (compressed)
-└── styles.css.map          ← Source map (auto-generated)
-```
-
-### Disabling Source Maps
-
-If you need to disable source maps (not recommended):
-
-```json
-{
-  "scripts": {
-    "build:css": "sass styles/main.scss styles.css --style compressed --no-source-map"
-  }
-}
 ```
 
 ## File Watching
