@@ -2,12 +2,12 @@
 
 Chiron provides a safe and organized way to customize your documentation site without modifying core files.
 
-## Custom Files
+## Quick Start
 
-Chiron includes two special files for your customizations:
+Chiron provides two simple files for customization:
 
-- **`custom.css`** - Your custom styles
-- **`custom.js`** - Your custom JavaScript
+- **`custom-templates/custom.css`** - Your custom styles
+- **`custom-templates/custom.js`** - Your custom JavaScript
 
 These files are:
 - **Safe to edit** - Won't be overwritten by Chiron updates
@@ -18,14 +18,16 @@ These files are:
 ## File Structure
 
 ```
-chiron/
-├── styles.css          ← Chiron core styles (don't edit)
-├── custom.css          ← Your custom styles (edit freely!)
-├── script.js           ← Chiron core scripts (don't edit)
-├── custom.js           ← Your custom scripts (edit freely!)
-├── index.html          ← Custom homepage (optional)
-├── 404.html            ← Custom 404 page (optional)
-└── chiron.config.yaml
+```
+your-project/
+├── content/
+├── custom-templates/
+│   ├── custom.css      ← Your custom styles (edit freely!)
+│   ├── custom.js       ← Your custom scripts (edit freely!)
+│   └── example-custom.html
+├── chiron.config.yaml
+└── package.json
+```
 ```
 
 ## Custom CSS
@@ -35,11 +37,11 @@ chiron/
 ```html
 <head>
   <link rel="stylesheet" href="styles.css">      <!-- Chiron core -->
-  <link rel="stylesheet" href="custom.css">      <!-- Your styles -->
+  <link rel="stylesheet" href="custom.css">      <!-- Your styles from custom-templates/ -->
 </head>
 ```
 
-Your `custom.css` loads **after** `styles.css`, so your rules override Chiron's defaults.
+Your `custom-templates/custom.css` loads **after** `styles.css`, so your rules override Chiron's defaults.
 
 ### Examples
 

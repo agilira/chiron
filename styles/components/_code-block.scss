@@ -213,3 +213,11 @@
         padding: var(--space-2) 0 !important;
     }
 }
+
+// ============================================
+// Syntax Highlighting Override
+// Force highlight.js to use Chiron's backgrounds
+// ============================================
+pre code.hljs {
+    background: transparent !important;
+}

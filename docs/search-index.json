@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "generated": "2025-11-02T12:50:52.308Z",
-  "totalPages": 8,
+  "generated": "2025-11-03T00:53:50.206Z",
+  "totalPages": 11,
   "pages": [
     {
       "id": "api-reference",
@@ -108,6 +108,74 @@
       "keywords": []
     },
     {
+      "id": "external-scripts-demo",
+      "title": "External Scripts Demo",
+      "description": "Demonstration of external JavaScript libraries integration",
+      "url": "external-scripts-demo.html",
+      "content": "External Scripts Demo This page demonstrates Chiron&#39;s external scripts feature with three types of scripts : 🎨 Presets - Curated libraries like Mermaid and Chart.js 🏠 Self-hosted - Your own scripts (automatically allowed) 🌐 Custom CDN - External scripts from configured domains Security Model Overview Chiron uses a three-tier security model for external scripts: ✅ Self-Hosted Scripts (Always Allowed) Scripts in your site are automatically whitelisted - no configuration needed! yaml Copy external_scripts: - assets/my-script.js # ✅ Auto-allowed - ./custom/widget.js # ✅ Auto-allowed ✅ Default CDN Allowlist Pre-approved CDNs work out of the box: jsdelivr.net, unpkg.com, cdnjs.cloudflare.com, esm.sh, skypack.dev ⚙️ Custom CDN Configuration Need other CDNs? Add to chiron.config.yaml : yaml Copy security: allowed_cdn_domains: - my-cdn.com Mermaid Diagrams Mermaid enables you to create diagrams and visualizations using simple text syntax. Flowchart Example graph TD A[Start] --> B{Is it working?} B -->|Yes| C[Great!] B -->|No| D[Check console] C --> E[Use in docs] D --> F[Fix issue] F --> B Sequence Diagram sequenceDiagram participant User participant Browser participant CDN participant Chiron User->>Browser: Open page Browser->>Chiron: Request HTML Chiron->>Browser: HTML with {{EXTERNAL_SCRIPTS}} Browser->>CDN: Load Mermaid.js CDN->>Browser: Mermaid.js Browser->>Browser: Initialize Mermaid Browser->>Browser: Render diagrams Browser->>User: Display page Architecture Diagram graph LR subgraph \"Frontend\" A[HTML Pages] B[Custom CSS] C[Custom JS] end subgraph \"Chiron Builder\" D[Markdown Parser] E[Template Engine] F[Search Indexer] end subgraph \"External Libraries\" G[Mermaid] H[Chart.js] I[Custom CDN Scripts] end D --> E E --> A A --> G A --> H A --> I Chart.js Integration Chart.js is loaded on this page and ready to use. Here&#39;s how you would create a chart: html Copy &lt;canvas id=&quot;myChart&quot; width=&quot;400&quot; height=&quot;200&quot;&gt;&lt;/canvas&gt; &lt;script&gt; document.addEventListener(&#039;DOMContentLoaded&#039;, () =&gt; { const ctx = document.getElementById(&#039;myChart&#039;).getContext(&#039;2d&#039;); new Chart(ctx, { type: &#039;bar&#039;, data: { labels: [&#039;Red&#039;, &#039;Blue&#039;, &#039;Yellow&#039;, &#039;Green&#039;, &#039;Purple&#039;, &#039;Orange&#039;], datasets: [{ label: &#039;# of Votes&#039;, data: [12, 19, 3, 5, 2, 3], backgroundColor: [ &#039;rgba(255, 99, 132, 0.2)&#039;, &#039;rgba(54, 162, 235, 0.2)&#039;, &#039;rgba(255, 206, 86, 0.2)&#039;, &#039;rgba(75, 192, 192, 0.2)&#039;, &#039;rgba(153, 102, 255, 0.2)&#039;, &#039;rgba(255, 159, 64, 0.2)&#039; ], borderColor: [ &#039;rgba(255, 99, 132, 1)&#039;, &#039;rgba(54, 162, 235, 1)&#039;, &#039;rgba(255, 206, 86, 1)&#039;, &#039;rgba(75, 192, 192, 1)&#039;, &#039;rgba(153, 102, 255, 1)&#039;, &#039;rgba(255, 159, 64, 1)&#039; ], borderWidth: 1 }] }, options: { scales: { y: { beginAtZero: true } } } }); }); &lt;/script&gt; How It Works Frontmatter Configuration : Add external_scripts array to your page&#39;s frontmatter Named Presets : Use convenient preset names like mermaid , chartjs , d3 , etc. Custom URLs : Or specify full URLs from trusted CDNs Automatic Loading : Scripts are loaded in the correct order Opt-in : Only pages that need them load external scripts Available Presets Preset Description Use Case mermaid Diagrams and flowcharts Documentation, architecture chartjs Simple charts Data visualization d3 Advanced visualizations Complex data graphics mathjax Math notation Scientific docs, equations katex Fast math rendering Mathematical content threejs 3D graphics Interactive 3D demos prismjs Syntax highlighting Code examples Frontmatter Examples Example 1: Presets Only yaml Copy --- title: Diagrams Page external_scripts: - mermaid - chartjs --- Example 2: Mixed Sources yaml Copy --- title: Advanced Dashboard external_scripts: # Preset library - chartjs # Self-hosted (automatically allowed, no config needed) - assets/dashboard-init.js - ./js/custom-widgets.js # Custom CDN (requires chiron.config.yaml setup) - https://my-cdn.com/analytics.js --- Example 3: Self-Hosted Only yaml Copy --- title: Custom Features external_scripts: - assets/my-library.js # ✅ Automatically allowed - scripts/custom-init.js # ✅ Automatically allowed - /js/widgets.mjs # ✅ Automatically allowed --- Why self-hosted scripts are always allowed: If you&#39;re uploading a script to your site, you control it. No security configuration needed! Configuration Example To use scripts from custom CDN domains, add them to your chiron.config.yaml : yaml Copy # chiron.config.yaml project: name: My Documentation base_url: https://docs.example.com # Security: Allow additional CDN domains security: # Default allowed: jsdelivr, unpkg, cdnjs, esm.sh, skypack # Add your trusted domains here: allowed_cdn_domains: - fonts.googleapis.com - cdn.mycompany.com - static.example.net Then use them in your pages: yaml Copy external_scripts: - https://cdn.mycompan",
+      "headings": [
+        "External Scripts Demo",
+        "Security Model Overview",
+        "✅ Self-Hosted Scripts (Always Allowed)",
+        "✅ Default CDN Allowlist",
+        "⚙️ Custom CDN Configuration",
+        "Mermaid Diagrams",
+        "Flowchart Example",
+        "Sequence Diagram",
+        "Architecture Diagram",
+        "Chart.js Integration",
+        "How It Works",
+        "Available Presets",
+        "Frontmatter Examples",
+        "Example 1: Presets Only",
+        "Example 2: Mixed Sources",
+        "Example 3: Self-Hosted Only",
+        "Configuration Example",
+        "Security & Best Practices",
+        "What Gets Validated?",
+        "Build Log Examples",
+        "Security Tips",
+        "Performance Considerations",
+        "See Also"
+      ],
+      "keywords": []
+    },
+    {
+      "id": "grid-demo",
+      "title": "Grid System Demo",
+      "description": "Live examples of the 12-column grid system",
+      "url": "grid-demo.html",
+      "content": "Grid System Demo Chiron uses a flexible 12-column grid system for responsive layouts. Basic Examples Equal Columns col-6 50% width col-6 50% width Three Columns col-4 33.33% col-4 33.33% col-4 33.33% Four Columns col-3 col-3 col-3 col-3 Asymmetric Layouts Sidebar Layout (2:1 ratio) Main Content col-8 - 66.66% width This is the main content area, perfect for articles, documentation, or primary content. Sidebar col-4 - 33.33% width Navigation Related links Ads 7-5 Split col-7 - 58.33% width col-5 - 41.66% width All Column Sizes 1 col-11 2 col-10 3 col-9 4 col-8 5 col-7 6 col-6 Gap Utilities Default Gap Default Gap 1.5rem Small Gap Small Gap 0.5rem Large Gap Large Gap 4rem Responsive Grid Resize your browser to see the grid adapt! Desktop: 3/12 Tablet: 4/8 Mobile: Full Desktop: 3/12 Tablet: 4/8 Mobile: Full Desktop: 3/12 Tablet: 4/8 Mobile: Full Desktop: 3/12 Tablet: 4/8 Mobile: Full Complex Layout Example Hero Section Full width (col-12) ⚡ Fast Lightning-fast static HTML generation 🎨 Beautiful Professional design out of the box 📱 Responsive Works perfectly on all devices Article Content This is the main content area (col-8). Perfect for blog posts, documentation, or any primary content. The 12-column grid gives you maximum flexibility for any layout you need. Related Links Grid System Guide Responsive Design Layout Examples Documentation For complete documentation, see GRID-SYSTEM.md . Quick Reference html Copy &lt;!-- 12-column grid --&gt; &lt;div class=&quot;grid&quot;&gt; &lt;div class=&quot;col-8&quot;&gt;Main (66.66%)&lt;/div&gt; &lt;div class=&quot;col-4&quot;&gt;Sidebar (33.33%)&lt;/div&gt; &lt;/div&gt; &lt;!-- Responsive --&gt; &lt;div class=&quot;grid&quot;&gt; &lt;div class=&quot;col-4 col-md-4 col-sm-4&quot;&gt; Desktop: 4/12, Tablet: 4/8, Mobile: Full &lt;/div&gt; &lt;/div&gt; &lt;!-- Simple shortcuts --&gt; &lt;div class=&quot;grid-3&quot;&gt; &lt;div&gt;Equal&lt;/div&gt; &lt;div&gt;Width&lt;/div&gt; &lt;div&gt;Columns&lt;/div&gt; &lt;/div&gt;",
+      "headings": [
+        "Grid System Demo",
+        "Basic Examples",
+        "Equal Columns",
+        "Three Columns",
+        "Four Columns",
+        "Asymmetric Layouts",
+        "Sidebar Layout (2:1 ratio)",
+        "Main Content",
+        "Sidebar",
+        "7-5 Split",
+        "All Column Sizes",
+        "Gap Utilities",
+        "Default Gap",
+        "Small Gap",
+        "Large Gap",
+        "Responsive Grid",
+        "Complex Layout Example",
+        "Hero Section",
+        "⚡ Fast",
+        "🎨 Beautiful",
+        "📱 Responsive",
+        "Article Content",
+        "Related Links",
+        "Documentation",
+        "Quick Reference"
+      ],
+      "keywords": []
+    },
+    {
       "id": "index",
       "title": "Chiron - README on Steroids",
       "description": "A modern, accessible documentation template for microsites. Perfect when you need more than a README but less than a full documentation site.",
@@ -193,9 +261,31 @@
       "keywords": []
     },
     {
+      "id": "react-demo",
+      "title": "Interactive API Demo",
+      "description": "Live API explorer showing React integration in a static Chiron site",
+      "url": "react-demo.html",
+      "content": "Interactive API Explorer Live Demo : Test API endpoints directly in your browser with this React-powered interactive tool. This page demonstrates how Chiron enables rich interactivity where needed while keeping the rest of your documentation fast and lightweight. How It Works This interactive API explorer is a real React application running on this page only. 1. External Scripts Loading In the page&#39;s frontmatter, we declare the libraries we need: yaml Copy external_scripts: - https://unpkg.com/react@18/umd/react.production.min.js - https://unpkg.com/react-dom@18/umd/react-dom.production.min.js - assets/react-api-explorer.js # Self-hosted app (auto-whitelisted!) 2. React Powers Interactivity The API explorer includes: Dynamic endpoint selection Live parameter input Async API calls (mocked for demo) Real-time response rendering Loading states &amp; timing 3. Other Pages Stay Fast Navigate to any other page in this documentation: No React loaded No unnecessary JavaScript Pure HTML/CSS Instant loading Real-World Use Cases This approach is perfect for: API Documentation - Interactive testing tools (like this!) Configuration Generators - Build complex configs with forms Component Showcases - Live prop editing and previews Code Playgrounds - Try code directly in docs Data Visualizations - Charts only where needed The Code The API explorer uses React state management: javascript Copy const [selectedEndpoint, setSelectedEndpoint] = useState(&#039;getUser&#039;); const [response, setResponse] = useState(null); const [loading, setLoading] = useState(false); const handleRequest = async (e) =&gt; { e.preventDefault(); setLoading(true); // Simulate API call const data = await fetchAPI(selectedEndpoint); setResponse(data); setLoading(false); }; Why React.createElement ? No build step needed! This runs directly in the browser using React&#39;s UMD builds. Performance Comparison Metric This Page (with React) Other Pages (pure HTML) JavaScript ~130 KB (React + App) ~15 KB (Chiron core) Load Time ~200ms ~50ms Interactive Full React app Fast navigation Use Case Rich interactions Fast content delivery Security Notice how the self-hosted script ( assets/react-api-explorer.js ) works without any configuration: yaml Copy external_scripts: - assets/react-api-explorer.js # Automatically allowed! Why? If you&#39;re hosting a script on your own site, you control it. Chiron&#39;s security model trusts self-hosted files by default. For external CDN scripts (like React from unpkg.com), Chiron validates against a list of trusted domains. Try It Yourself Select an endpoint - Choose from GET /api/users, /api/config, or /api/search Enter parameters - Fill in the required values (e.g., user ID) Send request - Click &quot;Send Request&quot; and see the response Check timing - Notice the response time and status Navigate away - Click any other doc page and see instant loading The Point This demo proves you can have: Rich interactivity where you need it (API testing) Blazing speed everywhere else (pure HTML) Simple integration (just add to frontmatter) No build complexity (optional - use if you want) That&#39;s the Chiron philosophy: Use what you need, where you need it. See Also External Scripts Documentation - Mermaid, Chart.js, and more Custom Templates - Full page customization Performance - Why speed matters",
+      "headings": [
+        "Interactive API Explorer",
+        "How It Works",
+        "1. External Scripts Loading",
+        "2. React Powers Interactivity",
+        "3. Other Pages Stay Fast",
+        "Real-World Use Cases",
+        "The Code",
+        "Performance Comparison",
+        "Security",
+        "Try It Yourself",
+        "The Point",
+        "See Also"
+      ],
+      "keywords": []
+    },
+    {
       "id": "showcase",
       "title": "UI Showcase",
-      "description": "Showcase of all UI elements and components available in Chiron",
+      "description": "Visual showcase of all UI components and styles available in Chiron",
       "url": "showcase.html",
       "content": "UI Showcase This page demonstrates all the UI elements and components available in Chiron documentation. Typography Headings Heading 1 Heading 2 Heading 3 Heading 4 Heading 5 Heading 6 Paragraphs This is a regular paragraph with some bold text , italic text , and bold italic text . You can also use inline code within paragraphs. Here&#39;s a second paragraph with a link to the homepage and an external link . Lists Unordered List First item Second item Nested item 1 Nested item 2 Deeply nested item Third item Ordered List First step Second step Sub-step A Sub-step B Third step Task List Completed task Pending task Another pending task Code Blocks JavaScript javascript Copy function greet(name) { console.log(`Hello, ${name}!`); return `Welcome to Chiron`; } const result = greet(&#039;Developer&#039;); console.log(result); TypeScript typescript Copy interface User { id: number; name: string; email: string; } function createUser(data: User): User { return { ...data, id: Date.now() }; } Bash bash Copy # Install dependencies npm install # Run development server npm run dev # Build for production npm run build YAML yaml Copy project: name: Chiron version: 2.0.0 features: - markdown - yaml - mermaid JSON json Copy { &quot;name&quot;: &quot;chiron&quot;, &quot;version&quot;: &quot;2.0.0&quot;, &quot;description&quot;: &quot;Modern documentation builder&quot;, &quot;keywords&quot;: [&quot;documentation&quot;, &quot;markdown&quot;, &quot;static-site&quot;] } Tables Basic Table Feature Supported Notes Markdown ✅ Yes Full GFM support YAML Config ✅ Yes Single config file Dark Mode ✅ Yes Auto-switching Mermaid ✅ Yes Diagrams support SEO ✅ Yes Complete meta tags Complex Table Language Syntax Highlighting Line Numbers Copy Button JavaScript ✅ ✅ ✅ TypeScript ✅ ✅ ✅ Python ✅ ✅ ✅ Bash ✅ ✅ ✅ CSS ✅ ✅ ✅ Blockquotes This is a simple blockquote. Note : This is an important note with bold text . It can span multiple paragraphs. Warning : This is a warning message. Horizontal Rules Links Internal link External link Link with title Images Inline Elements This paragraph contains various inline elements: bold , italic , bold italic , code , strikethrough , and links . Info Boxes Info boxes are perfect for highlighting important information, warnings, tips, and more. Info This is an informational message. Use this for general information or notes that don't require immediate action. Warning This is a warning message. Use this to alert users about potential issues or important considerations. Error This is an error message. Use this for critical issues that need immediate attention or things that could break functionality. Success This is a success message. Use this to confirm successful operations or positive outcomes. Tip This is a helpful tip. Use this for best practices, recommendations, or useful suggestions that can improve the user experience. Info Box with Code Configuration Tip You can customize the theme by modifying the chiron.config.yaml file. Here's an example: theme: primaryColor: \"#2563eb\" darkMode: true Info Box with Links Breaking Change Version 2.0 introduces breaking changes. Please read the migration guide before upgrading. Diagrams Note : Mermaid diagram support has been removed to improve page load performance. For diagrams, we recommend using external tools like: Excalidraw - Hand-drawn style diagrams draw.io - Professional diagrams PlantUML - Text-based UML diagrams Export as PNG/SVG and include them as images in your documentation. Feature Cards Markdown First Write documentation in simple Markdown with frontmatter support. YAML Config Single configuration file for all settings. Modern Design Clean, responsive interface with dark mode support. Code Highlighting Beautiful syntax highlighting with Prism.js for all major languages. Mermaid Diagrams Create flowcharts, sequence diagrams, and more with Mermaid. GitHub Pages Ready Optimized output for seamless deployment to GitHub Pages. Nested Content Level 3 Heading This is content under a level 3 heading. Level 4 Heading This is content under a level 4 heading. Level 5 Heading This is content under a level 5 heading. Level 6 Heading This is content under a level 6 heading. Blockquotes Basic Quote Simplicity is the ultimate sophistication. A well-designed system should be easy to understand and use, without unnecessary complexity. Quote with Citation The best documentation is the one that doesn&#39;t need to exist, but when it does, it should be clear, concise, and helpful. Documentation Best Practices Quote with Author Programs must be written for people to read, and only incidentally for machines to execute. Harold Abelson, Structure and Interpretation of Computer Programs Multi-paragraph Quote First paragraph of the quote that contains important information about the topic at hand. Second paragraph that elaborates on the first point and provides additional context. Final paragraph with a conclusion or call to action. Quote with Code Always remember: const is better t",
       "headings": [

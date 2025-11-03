@@ -89,6 +89,7 @@ Create a new `.html` file in `custom-templates/`:
     {{STRUCTURED_DATA}}
     
     <!-- Styles -->
+    <link rel="stylesheet" href="{{PATH_TO_ROOT}}fonts.css">{{ADOBE_FONTS}}
     <link rel="stylesheet" href="{{PATH_TO_ROOT}}styles.css">
     
     <!-- Analytics -->
@@ -158,7 +159,9 @@ Chiron will use `custom-templates/product-landing.html` for `product.html`.
 | `{{PAGE_DESCRIPTION}}` | Page description | `"Page description"` |
 | `{{META_TAGS}}` | Complete meta tags (SEO, OG, Twitter) | Full HTML |
 | `{{STRUCTURED_DATA}}` | JSON-LD structured data | `<script type="application/ld+json">...</script>` |
+| `{{ADOBE_FONTS}}` | Adobe Fonts stylesheet link (opt-in) | `<link>` or empty |
 | `{{ANALYTICS}}` | Analytics scripts (GA4, GTM) | `<script>...</script>` |
+| `{{EXTERNAL_SCRIPTS}}` | External JavaScript libraries (opt-in) | `<script>...</script>` |
 
 ### Branding
 
@@ -244,6 +247,7 @@ Chiron will use `custom-templates/product-landing.html` for `product.html`.
 <head>
     <title>{{PAGE_TITLE}}</title>
     {{META_TAGS}}
+    <link rel="stylesheet" href="{{PATH_TO_ROOT}}fonts.css">{{ADOBE_FONTS}}
     <link rel="stylesheet" href="{{PATH_TO_ROOT}}styles.css">
 </head>
 <body class="landing-page">
@@ -277,6 +281,7 @@ Chiron will use `custom-templates/product-landing.html` for `product.html`.
     <!-- Keep all default head content -->
     <title>{{PAGE_TITLE}}</title>
     {{META_TAGS}}
+    <link rel="stylesheet" href="{{PATH_TO_ROOT}}fonts.css">{{ADOBE_FONTS}}
     <link rel="stylesheet" href="{{PATH_TO_ROOT}}styles.css">
 </head>
 <body>
@@ -320,6 +325,7 @@ Chiron will use `custom-templates/product-landing.html` for `product.html`.
 <head>
     <title>{{PAGE_TITLE}}</title>
     {{META_TAGS}}
+    <link rel="stylesheet" href="{{PATH_TO_ROOT}}fonts.css">{{ADOBE_FONTS}}
     <link rel="stylesheet" href="{{PATH_TO_ROOT}}styles.css">
     <style>
         .portfolio-grid {
@@ -354,6 +360,7 @@ Chiron will use `custom-templates/product-landing.html` for `product.html`.
 <head>
     <title>{{PAGE_TITLE}}</title>
     {{META_TAGS}}
+    <link rel="stylesheet" href="{{PATH_TO_ROOT}}fonts.css">{{ADOBE_FONTS}}
     <link rel="stylesheet" href="{{PATH_TO_ROOT}}styles.css">
 </head>
 <body class="api-reference">

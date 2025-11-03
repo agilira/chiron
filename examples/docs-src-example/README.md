@@ -82,11 +82,11 @@ Everything else is optional and will use Chiron's defaults!
 - `og-image.png` - Can be in root OR in assets/ ✨
 
 ### Optional - Customization
-- `custom.css` - Your custom styles
-- `custom.js` - Your custom JavaScript
+- `custom-templates/custom.css` - Your custom styles
+- `custom-templates/custom.js` - Your custom JavaScript
+- `custom-templates/*.html` - Custom templates
 - `index.html` - Custom homepage (overrides index.md)
 - `404.html` - Custom 404 page
-- `templates/page.html` - Custom page template
 
 ## Testing Locally
 

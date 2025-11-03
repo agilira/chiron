@@ -1,6 +1,7 @@
 ---
 title: UI Showcase
 description: Visual showcase of all UI components and styles available in Chiron
+template: page-with-toc.html
 pagination: true
 ---
 

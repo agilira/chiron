@@ -8,8 +8,15 @@ project:
   name: Chiron
   title: Chiron - README on Steroids
   description: A modern, accessible documentation template for microsites. Perfect when you need more than a README but less than a full documentation site.
-  language: it
   base_url: https://agilira.github.io/chiron
+
+# Language & Internationalization
+language:
+  locale: it  # en, it, fr (more languages: see I18N.md)
+  # Optional: Override specific UI strings
+  # strings:
+  #   search_placeholder: "Cerca nella documentazione..."
+  #   theme_toggle: "Cambia tema"
 
 # Branding
 branding:
@@ -103,6 +110,8 @@ navigation:
             active: true
           - label: Landing Demo
             file: landing-demo.md
+          - label: React Demo
+            file: react-demo.md
           - label: API Reference
             file: api-reference.md
           - label: UI Showcase
@@ -215,6 +224,48 @@ cookies:
   accept_label: Accept All
   decline_label: Decline
   manage_label: Manage Preferences
+
+# Font Configuration
+# =================
+# Self-hosted Google Fonts via Fontsource
+# Fonts are downloaded at build time for better privacy, performance, and GDPR compliance
+#
+# Three scenarios supported:
+# 1. No config (default): Uses Manrope (heading) + Work Sans (body)
+# 2. Single font: Applied to both heading and body
+# 3. Two fonts: Separate fonts for headings and body text
+# 4. Adobe Fonts: Add adobe_project_id to use premium Adobe Fonts via CDN
+#
+# Examples:
+# fonts:
+#   heading: Manrope
+#   body: Work Sans
+#
+# OR for single font:
+# fonts:
+#   heading: Roboto
+#
+# OR with Adobe Fonts:
+# fonts:
+#   heading: Manrope
+#   body: Work Sans
+#   adobe_project_id: abc123xyz
+#
+# OR leave empty for defaults:
+# fonts: {}
+fonts:
+  heading: Manrope
+  body: Work Sans
+  # adobe_project_id: abc123xyz  # Optional: Add your Adobe Fonts Web Project ID
+
+# Security Configuration
+security:
+  # External scripts: Additional allowed CDN domains for custom scripts
+  # Default allowed: jsdelivr.net, unpkg.com, cdnjs.cloudflare.com, esm.sh, skypack.dev
+  # Add your own trusted CDN domains here (without protocol)
+  allowed_cdn_domains: []
+    # - example-cdn.com
+    # - my-custom-cdn.net
 
 # Build Configuration
 build:

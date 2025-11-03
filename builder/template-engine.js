@@ -10,6 +10,8 @@ const fs = require('fs');
 const path = require('path');
 const { logger } = require('./logger');
 const { toUrlPath, mdToHtmlPath } = require('./utils/file-utils');
+const { renderExternalScripts } = require('./utils/external-scripts');
+const i18n = require('./i18n/i18n-loader');
 
 // Template Engine Configuration Constants
 const TEMPLATE_CONFIG = {
@@ -948,6 +950,95 @@ class TemplateEngine {
   }
 
   /**
+   * Render Table of Contents (TOC) from page headings
+   * Automatically generates a hierarchical navigation menu from page structure
+   * 
+   * @param {Object} context - Page context with toc array
+   * @returns {string} Rendered TOC HTML or empty string if no headings
+   * 
+   * @example
+   * // TOC array structure:
+   * [
+   *   { level: 2, text: 'Introduction', id: 'introduction' },
+   *   { level: 3, text: 'Getting Started', id: 'getting-started' },
+   *   { level: 2, text: 'API Reference', id: 'api-reference' }
+   * ]
+   */
+  renderTableOfContents(context) {
+    const toc = context.page?.toc || [];
+    
+    // No headings found
+    if (!Array.isArray(toc) || toc.length === 0) {
+      this.logger.debug('No TOC entries for page', {
+        page: context.page?.filename
+      });
+      return '';
+    }
+    
+    // Filter TOC to only show h2 (main sections only)
+    // h1 is the page title, h2 are the main sections
+    // Excluding h3+ to keep TOC clean and focused
+    const filteredToc = toc.filter(item => item.level === 2);
+    
+    if (filteredToc.length === 0) {
+      this.logger.debug('No h2 headings for TOC', {
+        page: context.page?.filename,
+        totalHeadings: toc.length
+      });
+      return '';
+    }
+    
+    // Build nested TOC HTML
+    let html = '<nav class="toc-nav" aria-label="Table of contents">\n';
+    html += '  <h2 class="toc-title">On This Page</h2>\n';
+    html += '  <ul class="toc-list">\n';
+    
+    for (const item of filteredToc) {
+      const safeText = this.escapeHtml(item.text);
+      const safeId = this.escapeHtml(item.id);
+      const levelClass = `toc-level-${item.level}`;
+      
+      html += `    <li class="toc-item ${levelClass}">\n`;
+      html += `      <a href="#${safeId}" class="toc-link">${safeText}</a>\n`;
+      html += '    </li>\n';
+    }
+    
+    html += '  </ul>\n';
+    html += '</nav>';
+    
+    this.logger.debug('TOC rendered', {
+      page: context.page?.filename,
+      entries: filteredToc.length,
+      levels: [...new Set(filteredToc.map(i => i.level))]
+    });
+    
+    return html;
+  }
+
+  /**
+   * Render Adobe Fonts stylesheet link (opt-in)
+   * Only activates if adobe_project_id is provided in fonts config
+   */
+  renderAdobeFonts() {
+    // Only inject if explicitly configured
+    if (!this.config.fonts || !this.config.fonts.adobe_project_id) {
+      return '';
+    }
+
+    const projectId = this.config.fonts.adobe_project_id;
+    
+    // Validate project ID format (alphanumeric only)
+    if (!/^[a-zA-Z0-9]+$/.test(projectId)) {
+      this.logger.warn('Invalid Adobe Fonts project ID format (must be alphanumeric)', { projectId });
+      return '';
+    }
+
+    return `
+    <!-- Adobe Fonts -->
+    <link rel="stylesheet" href="https://use.typekit.net/${projectId}.css">`;
+  }
+
+  /**
    * Render analytics scripts (Google Analytics, GTM, etc.)
    */
   renderAnalytics() {
@@ -988,11 +1079,28 @@ class TemplateEngine {
   }
 
   /**
-   * Main render function - processes template and replaces all placeholders
-   * @param {Object} context - Page context with config and page data
-   * @returns {string} Fully rendered HTML page
+   * Render external scripts (opt-in via frontmatter)
+   * Supports named presets (mermaid, chartjs, etc.) and custom URLs
+   * @param {Object} page - Page object with frontmatter
+   * @returns {string} HTML for external scripts
    */
-  render(context) {
+  renderExternalScripts(page) {
+    // Check if page has external_scripts in frontmatter
+    if (!page.external_scripts || !Array.isArray(page.external_scripts)) {
+      return '';
+    }
+
+    // Render external scripts with config for CDN validation
+    return renderExternalScripts(page.external_scripts, this.config, this.logger);
+  }
+
+  /**
+   * Render a page with the given context
+   * 
+   * @param {Object} context - Page context with config and page data
+   * @returns {Promise<string>} Fully rendered HTML page
+   */
+  async render(context) {
     // Use custom template from frontmatter, fallback to default page.html
     const templateName = context.page.template || 'page.html';
     
@@ -1000,13 +1108,13 @@ class TemplateEngine {
     if (templateName.includes('..') || templateName.includes('/') || templateName.includes('\\')) {
       this.logger.warn('Invalid template name, using default', { template: templateName });
       const template = this.loadTemplate('page.html');
-      return this.renderTemplate(template, context);
+      return await this.renderTemplate(template, context);
     }
     
     try {
       const template = this.loadTemplate(templateName);
       this.logger.debug('Using template', { template: templateName });
-      return this.renderTemplate(template, context);
+      return await this.renderTemplate(template, context);
     } catch (error) {
       // Fallback to page.html if custom template not found
       this.logger.warn('Template not found, falling back to page.html', { 
@@ -1014,7 +1122,7 @@ class TemplateEngine {
         error: error.message 
       });
       const template = this.loadTemplate('page.html');
-      return this.renderTemplate(template, context);
+      return await this.renderTemplate(template, context);
     }
   }
 
@@ -1064,9 +1172,9 @@ class TemplateEngine {
    * Process template and replace all placeholders
    * @param {string} template - Template HTML content
    * @param {Object} context - Page context with config and page data
-   * @returns {string} Fully rendered HTML page
+   * @returns {Promise<string>} Fully rendered HTML page
    */
-  renderTemplate(template, context) {
+  async renderTemplate(template, context) {
     const { project, branding, github, features, cookies } = this.config;
 
     // CRITICAL: Calculate PATH_TO_ROOT for subpages support
@@ -1081,6 +1189,13 @@ class TemplateEngine {
       template: context.page.template || 'page.html'
     });
 
+    // Get i18n strings (ensure loaded)
+    await i18n.ensureLoaded();
+    const locale = this.config.language?.locale || project.language || 'en';
+    const customStrings = this.config.language?.strings || {};
+    const i18nPlaceholders = i18n.getPlaceholders(locale, customStrings);
+    const i18nClientConfig = i18n.generateClientConfig(locale, customStrings);
+
     // Build replacements map
     const replacements = {
       // CRITICAL: PATH_TO_ROOT for subpages support
@@ -1089,10 +1204,12 @@ class TemplateEngine {
       
       // Meta (escape user content for safety)
       '{{PAGE_TITLE}}': this.escapeHtml(context.page.title),
-      '{{PAGE_LANG}}': project.language,
+      '{{PAGE_LANG}}': locale,
       '{{META_TAGS}}': this.renderMetaTags(context),
       '{{STRUCTURED_DATA}}': this.renderStructuredData(context),
+      '{{ADOBE_FONTS}}': this.renderAdobeFonts(),
       '{{ANALYTICS}}': this.renderAnalytics(),
+      '{{EXTERNAL_SCRIPTS}}': this.renderExternalScripts(context.page),
       
       // Branding (escape user-provided strings)
       // IMPORTANT: All asset paths now use PATH_TO_ROOT for subpages compatibility
@@ -1121,6 +1238,7 @@ class TemplateEngine {
       '{{NAVIGATION}}': this.renderSidebar(context, pathToRoot),
       '{{BREADCRUMB}}': this.renderBreadcrumb(context, pathToRoot),
       '{{PAGINATION}}': this.renderPagination(context, pathToRoot),
+      '{{TABLE_OF_CONTENTS}}': this.renderTableOfContents(context),
       
       // Content (HTML from Markdown parser, trusted)
       '{{PAGE_CONTENT}}': context.page.content,
@@ -1139,7 +1257,11 @@ class TemplateEngine {
       
       // Features
       '{{SHOW_THEME_TOGGLE}}': features.dark_mode ? '' : 'style="display:none"',
-      '{{SHOW_COOKIE_BANNER}}': features.cookie_consent ? '' : 'style="display:none"'
+      '{{SHOW_COOKIE_BANNER}}': features.cookie_consent ? '' : 'style="display:none"',
+      
+      // i18n - Internationalization strings
+      ...i18nPlaceholders,
+      '{{I18N_CLIENT_CONFIG}}': i18nClientConfig
     };
 
     // Replace all placeholders

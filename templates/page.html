@@ -14,7 +14,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="{{PATH_TO_ROOT}}favicon-512.png">
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="{{PATH_TO_ROOT}}fonts.css">
+    <link rel="stylesheet" href="{{PATH_TO_ROOT}}fonts.css">{{ADOBE_FONTS}}
     <link rel="stylesheet" href="{{PATH_TO_ROOT}}styles.css?v=20251101-v3">
     <link rel="stylesheet" href="{{PATH_TO_ROOT}}custom.css">
     
@@ -172,6 +172,12 @@
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
+    <!-- i18n Configuration -->
+    <script>
+{{I18N_CLIENT_CONFIG}}
+    </script>
+    
     <script src="{{PATH_TO_ROOT}}script.js"></script>
     <script src="{{PATH_TO_ROOT}}custom.js"></script>
     
@@ -184,5 +190,6 @@
             }
         });
     </script>
+    {{EXTERNAL_SCRIPTS}}
 </body>
 </html>

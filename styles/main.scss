@@ -20,6 +20,7 @@
 @use 'components/accordion';
 @use 'components/header';
 @use 'components/sidebar';
+@use 'components/toc-sidebar';
 @use 'components/search';
 @use 'components/breadcrumb';
 @use 'components/pagination';
@@ -33,6 +34,8 @@
 @use 'components/hero';
 @use 'components/blockquote';
 @use 'components/badge';
+@use 'components/forms';
+@use 'components/grid';
 
 // 5. Layouts
 @use 'layouts/page-layout';

@@ -6,6 +6,10 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
+// i18n Helper - Get translated string with fallback
+const i18n = window.CHIRON_I18N || {};
+const t = (key, fallback = '') => i18n[key] || fallback;
+
 // Configuration Constants
 // Features: mobile sidebar, search, navigation, accessibility, code blocks, table of contents, keyboard navigation, theme toggle, cookie consent, sitemap generation, robots generation, developer tools, scroll to top
 const CONFIG = {
@@ -325,8 +329,8 @@ class DocumentationApp {
                     
                     if (!isDestroyed && searchResults && error.name !== 'AbortError') {
                         const errorMessage = error.name === 'AbortError' 
-                            ? 'Search request timeout' 
-                            : 'Search unavailable';
+                            ? t('search_timeout', 'Search request timeout')
+                            : t('search_error', 'Search unavailable');
                         searchResults.innerHTML = `<div class="search-no-results">${errorMessage}</div>`;
                         searchResults.hidden = false;
                     }
@@ -443,7 +447,7 @@ class DocumentationApp {
             
             // Load data if not available
             if (!searchData) {
-                searchResults.innerHTML = '<div class="search-loading">Loading...</div>';
+                searchResults.innerHTML = `<div class="search-loading">${t('search_loading', 'Loading...')}</div>`;
                 searchResults.hidden = false;
                 searchInput.setAttribute('aria-expanded', 'true');
                 
@@ -473,7 +477,7 @@ class DocumentationApp {
             }
             
             if (results.length === 0) {
-                searchResults.innerHTML = '<div class="search-no-results">No results found</div>';
+                searchResults.innerHTML = `<div class="search-no-results">${t('search_no_results', 'No results found')}</div>`;
                 searchResults.hidden = false;
                 searchResults.style.display = 'block';
                 return;
@@ -684,7 +688,7 @@ class DocumentationApp {
         }
 
         if (this.searchInput) {
-            this.searchInput.setAttribute('aria-label', 'Search documentation');
+            this.searchInput.setAttribute('aria-label', t('aria_search', 'Search documentation'));
         }
 
         // Focus management

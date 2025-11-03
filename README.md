@@ -22,6 +22,7 @@ Zero runtime. Zero complexity. Just fast, beautiful docs.
 - **Modern Design**: Clean, responsive interface
 - **Accessibility**: WCAG 2.2 AA compliant
 - **Dark Mode**: Native support for dark theme
+- **Internationalization**: Built-in i18n for UI strings (English, Italian, French + custom)
 - **SEO Optimized**: Complete meta tags, Open Graph, Schema.org
 - **GitHub Pages Ready**: Output optimized for static hosting
 - **Custom Pages**: Support for custom `index.html` and `404.html`

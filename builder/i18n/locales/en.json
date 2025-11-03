@@ -1,0 +1,42 @@
+{
+  "locale": "en",
+  "name": "English",
+  "strings": {
+    "search_placeholder": "Search documentation...",
+    "search_no_results": "No results found",
+    "search_loading": "Loading...",
+    "search_error": "Search unavailable",
+    "search_timeout": "Search request timeout",
+    
+    "theme_toggle": "Toggle dark mode",
+    "theme_light": "Light mode",
+    "theme_dark": "Dark mode",
+    
+    "nav_previous": "Previous",
+    "nav_next": "Next",
+    "nav_home": "Home",
+    "nav_menu": "Menu",
+    "nav_close": "Close",
+    "nav_expand": "Expand",
+    "nav_collapse": "Collapse",
+    
+    "cookie_message": "This website uses cookies to ensure you get the best experience.",
+    "cookie_accept": "Accept",
+    "cookie_decline": "Decline",
+    "cookie_learn_more": "Learn more",
+    
+    "aria_search": "Search documentation",
+    "aria_menu": "Navigation menu",
+    "aria_theme": "Toggle dark mode",
+    "aria_close": "Close",
+    "aria_expand": "Expand section",
+    "aria_collapse": "Collapse section",
+    
+    "error_404_title": "Page Not Found",
+    "error_404_message": "The page you're looking for doesn't exist.",
+    "error_404_home": "Go to homepage",
+    
+    "toc_title": "On this page",
+    "breadcrumb_home": "Home"
+  }
+}

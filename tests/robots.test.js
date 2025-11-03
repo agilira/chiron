@@ -2,38 +2,43 @@
  * @file Tests for Robots.txt Generator
  */
 
-const fs = require('fs');
+const fs = require('fs').promises;
+const fsSync = require('fs');
 const path = require('path');
 const { generateRobots } = require('../builder/generators/robots');
 
 describe('Robots Generator', () => {
-  const testOutputDir = path.join(__dirname, 'temp-output');
+  // Use unique directory for each test to avoid conflicts
+  let testOutputDir;
+  let testRootDir;
   
-  beforeEach(() => {
+  beforeEach(async () => {
+    // Create unique directory for this test using timestamp + random
+    const uniqueId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    testRootDir = path.join(__dirname, `temp-test-${uniqueId}`);
+    testOutputDir = path.join(testRootDir, 'temp-output');
+    
     // Create temporary output directory
-    if (!fs.existsSync(testOutputDir)) {
-      fs.mkdirSync(testOutputDir, { recursive: true });
-    }
+    await fs.mkdir(testOutputDir, { recursive: true });
   });
 
   afterEach(async () => {
-    // Clean up with retry logic for Windows
-    if (fs.existsSync(testOutputDir)) {
+    // Longer delay to ensure all file handles are closed on Windows
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    // Clean up test root directory with retries
+    if (fsSync.existsSync(testRootDir)) {
       try {
-        fs.rmSync(testOutputDir, { recursive: true, force: true });
-      } catch (err) {
-        // On Windows, files might be locked briefly - ignore errors
-        console.warn('Could not clean up test directory:', err.message);
+        await fs.rm(testRootDir, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 });
+      } catch (error) {
+        // If cleanup fails, log but don't fail the test
+        console.warn(`Failed to cleanup ${testRootDir}:`, error.message);
       }
-    }
-    // Give Windows time to release file handles
-    if (process.platform === 'win32') {
-      await new Promise(resolve => setTimeout(resolve, 50));
     }
   });
 
   describe('generateRobots()', () => {
-    it('should generate robots.txt with allow all', () => {
+    it('should generate robots.txt with allow all', async () => {
       const config = {
         project: {
           name: 'Test Project',
@@ -50,19 +55,22 @@ describe('Robots Generator', () => {
         }
       };
 
-      generateRobots(config, __dirname);
+      // Now properly awaited
+      await generateRobots(config, testRootDir);
 
       const robotsPath = path.join(testOutputDir, 'robots.txt');
-      expect(fs.existsSync(robotsPath)).toBe(true);
+      
+      // File is guaranteed to be on disk thanks to fsync
+      expect(fsSync.existsSync(robotsPath)).toBe(true);
 
-      const content = fs.readFileSync(robotsPath, 'utf8');
+      const content = await fs.readFile(robotsPath, 'utf8');
       expect(content).toContain('User-agent: *');
       expect(content).toContain('Allow: /');
       expect(content).toContain('Sitemap: https://example.com/sitemap.xml');
       expect(content).toContain('# Robots.txt for Test Project');
     });
 
-    it('should generate robots.txt with disallow all', () => {
+    it('should generate robots.txt with disallow all', async () => {
       const config = {
         project: {
           name: 'Test Project',
@@ -79,16 +87,16 @@ describe('Robots Generator', () => {
         }
       };
 
-      generateRobots(config, __dirname);
+      await generateRobots(config, testRootDir);
 
       const robotsPath = path.join(testOutputDir, 'robots.txt');
-      const content = fs.readFileSync(robotsPath, 'utf8');
+      const content = await fs.readFile(robotsPath, 'utf8');
       
       expect(content).toContain('Disallow: /');
       expect(content).not.toContain('Sitemap:');
     });
 
-    it('should remove trailing slash from base_url', () => {
+    it('should remove trailing slash from base_url', async () => {
       const config = {
         project: {
           name: 'Test',
@@ -101,16 +109,16 @@ describe('Robots Generator', () => {
         }
       };
 
-      generateRobots(config, __dirname);
+      await generateRobots(config, testRootDir);
 
       const robotsPath = path.join(testOutputDir, 'robots.txt');
-      const content = fs.readFileSync(robotsPath, 'utf8');
+      const content = await fs.readFile(robotsPath, 'utf8');
       
       expect(content).toContain('https://example.com/sitemap.xml');
       expect(content).not.toContain('https://example.com//sitemap.xml');
     });
 
-    it('should not include sitemap if disabled', () => {
+    it('should not include sitemap if disabled', async () => {
       const config = {
         project: {
           name: 'Test',
@@ -123,10 +131,10 @@ describe('Robots Generator', () => {
         }
       };
 
-      generateRobots(config, __dirname);
+      await generateRobots(config, testRootDir);
 
       const robotsPath = path.join(testOutputDir, 'robots.txt');
-      const content = fs.readFileSync(robotsPath, 'utf8');
+      const content = await fs.readFile(robotsPath, 'utf8');
       
       expect(content).not.toContain('Sitemap:');
     });

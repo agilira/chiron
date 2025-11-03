@@ -1,0 +1,205 @@
+/**
+ * Table of Contents (TOC) Sidebar
+ * 
+ * Right sidebar for automatic page navigation
+ * Displays h2 and h3 headings with smooth scroll
+ * Sticky positioning with active state tracking
+ */
+
+// ============================================================================
+// TOC Sidebar Container
+// ============================================================================
+
+.toc-sidebar {
+  display: none; // Hidden by default, shown only in .layout-with-toc
+  width: 240px;
+  padding: var(--space-6) var(--space-4);
+  background: var(--bg-secondary);
+  border-left: 1px solid var(--border-primary);
+  overflow-y: auto;
+  height: calc(100vh - var(--header-height));
+  position: sticky;
+  top: var(--header-height);
+  
+  // Smooth scrolling for overflow
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 3px;
+    
+    &:hover {
+      background: var(--scrollbar-thumb-hover);
+    }
+  }
+}
+
+// Show TOC sidebar in double-sidebar layout
+.layout-with-toc .toc-sidebar {
+  display: block;
+}
+
+// ============================================================================
+// TOC Navigation
+// ============================================================================
+
+.toc-nav {
+  position: relative;
+}
+
+.toc-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-4) 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+// ============================================================================
+// TOC Items
+// ============================================================================
+
+.toc-item {
+  margin: 0;
+  
+  // H2 items (level 2)
+  &.toc-level-2 {
+    margin-bottom: var(--space-2);
+  }
+  
+  // H3 items (level 3) - indented
+  &.toc-level-3 {
+    padding-left: var(--space-4);
+    margin-bottom: var(--space-1);
+  }
+}
+
+.toc-link {
+  display: block;
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  
+  // Hover state
+  &:hover {
+    color: var(--text-primary);
+    background: var(--bg-tertiary);
+    border-left-color: var(--primary-400);
+  }
+  
+  // Active state (when heading is in viewport)
+  &.active {
+    color: var(--primary-600);
+    background: var(--primary-50);
+    border-left-color: var(--primary-600);
+    font-weight: 500;
+    
+    [data-theme="dark"] & {
+      background: var(--primary-900);
+      color: var(--primary-400);
+      border-left-color: var(--primary-500);
+    }
+  }
+  
+  // Focus state (keyboard navigation)
+  &:focus-visible {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
+  }
+}
+
+// ============================================================================
+// Responsive Behavior
+// ============================================================================
+
+// Tablet: Hide TOC sidebar
+@media (max-width: 1200px) {
+  .toc-sidebar {
+    display: none !important;
+  }
+  
+  // Adjust main content to full width
+  .layout-with-toc .main-content {
+    margin-right: 0;
+  }
+}
+
+// Mobile: Completely hidden
+@media (max-width: 768px) {
+  .toc-sidebar {
+    display: none !important;
+  }
+}
+
+// ============================================================================
+// Layout Adjustments for Double Sidebar
+// ============================================================================
+
+.layout-with-toc {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr 240px;
+  gap: 0;
+  
+  .main-content {
+    margin-right: 0; // Remove margin since TOC is in grid
+  }
+}
+
+// Responsive grid adjustments
+@media (max-width: 1200px) {
+  .layout-with-toc {
+    grid-template-columns: var(--sidebar-width) 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .layout-with-toc {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ============================================================================
+// Empty State
+// ============================================================================
+
+// When no TOC entries exist
+.toc-sidebar:empty::before {
+  content: "No headings found";
+  display: block;
+  padding: var(--space-4);
+  color: var(--text-tertiary);
+  font-size: 0.875rem;
+  font-style: italic;
+  text-align: center;
+}
+
+// ============================================================================
+// Print Styles
+// ============================================================================
+
+@media print {
+  .toc-sidebar {
+    display: none;
+  }
+}

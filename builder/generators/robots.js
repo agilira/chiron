@@ -4,15 +4,30 @@
  * Generates robots.txt for search engine crawlers
  */
 
+const fs = require('fs').promises;
 const path = require('path');
-const { writeFile } = require('../utils/file-utils');
 
 /**
- * Generate robots.txt
+ * Ensure directory exists (async)
+ * @param {string} dirPath - Directory path
+ */
+async function ensureDir(dirPath) {
+  try {
+    await fs.mkdir(dirPath, { recursive: true });
+  } catch (error) {
+    if (error.code !== 'EEXIST') {
+      throw error;
+    }
+  }
+}
+
+/**
+ * Generate robots.txt (async for reliable file operations)
  * @param {object} config - Site configuration
  * @param {string} rootDir - Root directory path
+ * @returns {Promise<void>}
  */
-function generateRobots(config, rootDir) {
+async function generateRobots(config, rootDir) {
   const baseUrl = config.project.base_url.replace(/\/$/, '');
   const allowAll = config.build.robots.allow_all !== false;
 
@@ -39,8 +54,18 @@ Sitemap: ${baseUrl}/sitemap.xml
 
   const outputPath = path.join(rootDir, config.build.output_dir, 'robots.txt');
   
-  // Write file (automatically creates directory if needed)
-  writeFile(outputPath, robots);
+  // Ensure directory exists
+  await ensureDir(path.dirname(outputPath));
+  
+  // Write file asynchronously with explicit flush
+  const fileHandle = await fs.open(outputPath, 'w');
+  try {
+    await fileHandle.writeFile(robots, 'utf8');
+    // Explicitly sync to disk (critical for Windows)
+    await fileHandle.sync();
+  } finally {
+    await fileHandle.close();
+  }
 }
 
 module.exports = { generateRobots };

@@ -45,10 +45,10 @@ chokidar.watch(['templates/**/*.html', 'custom-templates/**/*.html'])
 chokidar.watch('chiron.config.yaml')
 
 // Styles
-chokidar.watch(['styles/**/*.scss', 'custom.css'])
+chokidar.watch(['styles/**/*.scss', 'custom-templates/custom.css'])
 
 // Scripts
-chokidar.watch('custom.js')
+chokidar.watch('custom-templates/custom.js')
 ```
 
 ### Ignored Files
@@ -306,10 +306,11 @@ chiron/
 ├── content/              # Documentation (user-editable)
 │   ├── index.md
 │   └── ...
-├── custom-templates/     # Custom layouts (user-editable)
-│   └── landing.html
-├── custom.css            # Custom styles (user-editable)
-├── custom.js             # Custom scripts (user-editable)
+├── custom-templates/     # Custom code (user-editable)
+│   ├── custom.css        # Custom styles
+│   ├── custom.js         # Custom scripts
+│   ├── example-custom.html
+│   └── README.md
 ├── builder/              # Core system (don't edit)
 │   ├── index.js
 │   └── ...

@@ -19,6 +19,7 @@ const { logger } = require('./logger');
 const { ParseError } = require('./errors');
 const { loadConfig } = require('./config/config-loader');
 const { copyDirRecursive, ensureDir, toUrlPath, mdToHtmlPath, copyFileWithTimeout, writeFileWithTimeout } = require('./utils/file-utils');
+const FontDownloader = require('./utils/font-downloader');
 
 // Build Configuration Constants
 const BUILD_CONFIG = {
@@ -242,9 +243,9 @@ class ChironBuilder {
    * Supports nested directory structure (subpages)
    * 
    * @param {Object} file - File object with filename, path, outputName, relativePath, and depth
-   * @returns {Object|null} Page metadata for sitemap, or null on error
+   * @returns {Promise<Object|null>} Page metadata for sitemap, or null on error
    */
-  processMarkdownFile(file) {
+  async processMarkdownFile(file) {
     try {
       const outputPath = path.join(
         this.rootDir,
@@ -283,13 +284,14 @@ class ChironBuilder {
           filename: file.outputName,
           relativePath: file.relativePath || file.filename,
           depth: file.depth || 0, // Critical for PATH_TO_ROOT calculation
+          toc: parsed.toc || [], // Table of contents entries
           ...parsed.frontmatter
         },
         isActive
       };
 
       // Render HTML with template engine
-      const html = this.templateEngine.render(pageContext);
+      const html = await this.templateEngine.render(pageContext);
 
       // Write output file (directory already ensured above)
       fs.writeFileSync(outputPath, html, 'utf8');
@@ -438,7 +440,7 @@ class ChironBuilder {
 
   /**
    * Copy CSS and JS files to output directory
-   * Creates empty custom.css and custom.js if they don't exist
+   * Creates empty custom.css and custom.js in custom-templates/ if they don't exist
    * Falls back to Chiron's files if not found in user directory
    * Uses timeout to prevent hanging on locked files
    * @returns {Promise<void>}
@@ -447,6 +449,7 @@ class ChironBuilder {
   async copyScripts() {
     const fsSync = require('fs');
     const outputDir = path.join(this.rootDir, this.config.build.output_dir);
+    const customTemplatesDir = path.join(this.rootDir, this.config.build.custom_templates_dir || 'custom-templates');
     
     // Copy main CSS and JS in parallel
     const filesToCopy = ['fonts.css', 'styles.css', 'script.js', 'custom.css', 'custom.js'];
@@ -455,13 +458,21 @@ class ChironBuilder {
     try {
       // Execute all file operations in parallel
       const results = await Promise.allSettled(filesToCopy.map(async (file) => {
-        let src = path.join(this.rootDir, file);
+        let src;
         const dest = path.join(outputDir, file);
         
         try {
-          // Try user's directory first
+          // Custom files are in custom-templates/
+          if (file === 'custom.css' || file === 'custom.js') {
+            src = path.join(customTemplatesDir, file);
+          } else {
+            // Other files are in root
+            src = path.join(this.rootDir, file);
+          }
+          
+          // Try user's file first
           if (!fsSync.existsSync(src)) {
-            // Fallback to Chiron's directory (for all files)
+            // Fallback to Chiron's directory (for non-custom files)
             const chironSrc = path.join(this.chironRootDir, file);
             if (fsSync.existsSync(chironSrc)) {
               src = chironSrc;
@@ -533,7 +544,7 @@ class ChironBuilder {
   /**
    * Generate default 404 page
    */
-  generate404() {
+  async generate404() {
     const outputPath = path.join(
       this.rootDir,
       this.config.build.output_dir,
@@ -559,7 +570,7 @@ class ChironBuilder {
       isActive: () => false
     };
 
-    const html = this.templateEngine.render(pageContext);
+    const html = await this.templateEngine.render(pageContext);
     fs.writeFileSync(outputPath, html, 'utf8');
     this.logger.info('Generated: 404.html (default)');
   }
@@ -607,7 +618,7 @@ class ChironBuilder {
 
     // Generate 404 page (wrapped in try-catch)
     try {
-      this.generate404();
+      await this.generate404();
     } catch (error) {
       this.logger.error('Error generating 404 page', { error: error.message });
       this.buildErrors.push({ file: '404.html', error: error.message });
@@ -636,6 +647,19 @@ class ChironBuilder {
       this.buildErrors.push({ file: 'scripts', error: error.message });
     }
 
+    // Download and setup fonts (after copyScripts to overwrite default fonts.css)
+    this.logger.info('Setting up fonts...');
+    try {
+      const fontDownloader = new FontDownloader(
+        this.config,
+        path.join(this.rootDir, this.config.build.output_dir)
+      );
+      await fontDownloader.build();
+    } catch (error) {
+      this.logger.error('Error setting up fonts', { error: error.message });
+      this.buildErrors.push({ file: 'fonts', error: error.message });
+    }
+
     // Generate sitemap
     if (this.config.build.sitemap?.enabled) {
       this.logger.info('Generating sitemap...');
@@ -648,11 +672,11 @@ class ChironBuilder {
       }
     }
 
-    // Generate robots.txt
+    // Generate robots.txt (async for reliable file operations)
     if (this.config.build.robots?.enabled) {
       this.logger.info('Generating robots.txt...');
       try {
-        generateRobots(this.config, this.rootDir);
+        await generateRobots(this.config, this.rootDir);
         this.logger.info('Robots.txt generated');
       } catch (error) {
         this.logger.error('Error generating robots.txt', { error: error.message });

@@ -1,14 +1,125 @@
 # Table of Contents (TOC)
 
-Chiron supports **manual** Table of Contents (TOC) directly in Markdown. This approach is simple, flexible, and requires no configuration.
+Chiron supports **automatic** Table of Contents (TOC) with a dedicated sidebar template. Perfect for long documentation pages with multiple sections.
 
-## How It Works
+## Automatic TOC (Recommended)
+
+### How It Works
+
+Chiron automatically generates a Table of Contents from your page's H2 headings and displays it in a sticky right sidebar.
+
+**Features:**
+- ✅ **Automatic generation** - No manual maintenance required
+- ✅ **Sticky sidebar** - Always visible while scrolling
+- ✅ **Responsive** - Hides on tablet/mobile for better UX
+- ✅ **Active tracking** - Highlights current section (coming soon)
+- ✅ **H2 only** - Clean, focused navigation without clutter
+
+### Usage
+
+Add `template: page-with-toc.html` to your page's frontmatter:
+
+```markdown
+---
+title: My Long Documentation Page
+description: A comprehensive guide with many sections
+template: page-with-toc.html
+---
+
+# My Long Documentation Page
+
+## Introduction
+Content here...
+
+## Getting Started
+More content...
+
+## Advanced Topics
+Even more content...
+```
+
+The TOC will automatically include:
+- Introduction
+- Getting Started
+- Advanced Topics
+
+**Note:** Only H2 headings (`##`) are included in the TOC. H3+ are excluded to keep the navigation clean and focused.
+
+### Layout
+
+The `page-with-toc.html` template uses a three-column layout:
+
+```
+┌─────────────────────────────────────────────────────┐
+│                    HEADER                           │
+├──────────┬────────────────────┬────────────────────┤
+│   LEFT   │                    │      RIGHT         │
+│ SIDEBAR  │   MAIN CONTENT     │    SIDEBAR         │
+│  (NAV)   │                    │     (TOC)          │
+│          │                    │  [sticky scroll]   │
+├──────────┴────────────────────┴────────────────────┤
+│                   FOOTER                            │
+└─────────────────────────────────────────────────────┘
+```
+
+**Responsive behavior:**
+- **Desktop (>1200px):** Three columns with TOC sidebar
+- **Tablet (768-1200px):** Two columns, TOC hidden
+- **Mobile (<768px):** Single column, TOC hidden
+
+### When to Use
+
+Use the automatic TOC template for:
+
+✅ **Long documentation pages** (>5 sections)
+✅ **API references** with multiple endpoints
+✅ **Tutorials** with sequential steps
+✅ **Guides** with multiple topics
+
+**Don't use for:**
+❌ Short pages (<5 sections)
+❌ Landing pages
+❌ Simple "getting started" pages
+
+---
+
+## Manual TOC (Alternative)
+
+If you prefer full control, you can still create manual TOCs directly in Markdown.
+
+### How It Works
 
 1. **Automatic heading IDs**: Each heading (`## Title`) automatically gets an ID (`id="title"`)
 2. **Internal links**: Use standard Markdown syntax `[Text](#id)`
 3. **Smooth scroll**: script.js automatically handles smooth scrolling
 
-## Basic Example
+### When to Use
+
+Use the automatic TOC template for:
+
+✅ **Long documentation pages** (>5 sections)
+✅ **API references** with multiple endpoints
+✅ **Tutorials** with sequential steps
+✅ **Guides** with multiple topics
+
+**Don't use for:**
+❌ Short pages (<5 sections)
+❌ Landing pages
+❌ Simple "getting started" pages
+
+---
+
+## Manual TOC (Alternative)
+
+If you prefer full control, you can still create manual TOCs directly in Markdown.
+
+### How It Works
+
+1. **Automatic heading IDs**: Each heading (`## Title`) automatically gets an ID (`id="title"`)
+2. **Internal links**: Use standard Markdown syntax `[Text](#id)`
+3. **Smooth scroll**: script.js automatically handles smooth scrolling
+
+### Basic Example
 
 ```markdown
 ---
@@ -230,10 +341,81 @@ document.querySelectorAll('h2, h3, h4').forEach(h => {
 - **Flexibility**: Can customize text and structure
 - **Simplicity**: No configuration needed
 - **Portability**: Works on GitHub too
-- **Performance**: No extra JavaScript
 
 **Disadvantages:**
 - Must update manually if you change headings
+- Takes up space in your content
+
+**Recommendation:** Use the **automatic TOC template** (`page-with-toc.html`) for most cases. Only use manual TOC for special layouts or short pages.
+
+---
+
+## Comparison
+
+| Feature | Automatic TOC | Manual TOC |
+|---------|---------------|------------|
+| **Setup** | Add `template: page-with-toc.html` | Write links manually |
+| **Maintenance** | Zero - updates automatically | High - manual updates needed |
+| **Appearance** | Dedicated sidebar | Inline in content |
+| **Responsive** | Hides on mobile | Always visible |
+| **Best for** | Long pages (>5 sections) | Short pages, special layouts |
+
+---
+
+## Advanced: Customizing Automatic TOC
+
+### Change Heading Levels
+
+By default, the TOC shows only H2 headings. To include H3:
+
+Edit `builder/template-engine.js`:
+
+```javascript
+// Find this line (around line 975):
+const filteredToc = toc.filter(item => item.level === 2);
+
+// Change to include H3:
+const filteredToc = toc.filter(item => item.level >= 2 && item.level <= 3);
+```
+
+Then rebuild:
+```bash
+npm run build
+```
+
+### Custom TOC Title
+
+The TOC title is "On This Page". To change it, edit `templates/page-with-toc.html`:
+
+```html
+<h2 class="toc-title">On This Page</h2>
+<!-- Change to: -->
+<h2 class="toc-title">Contents</h2>
+```
+
+### Style the TOC
+
+Add to `custom.css`:
+
+```css
+/* Change TOC background */
+.toc-sidebar {
+  background: var(--bg-primary);
+}
+
+/* Change TOC link colors */
+.toc-link {
+  color: var(--primary-700);
+}
+
+/* Active link style */
+.toc-link.active {
+  color: var(--primary-900);
+  font-weight: 700;
+}
+```
+
+---
 
 ## Predefined Styles
 
@@ -243,11 +425,14 @@ Chiron already includes styles for lists and links. The TOC automatically inheri
 - Dark mode support
 - Responsive design
 
+---
+
 ## See Also
 
+- [Templates Guide](./TEMPLATES.md) - Learn about template selection
+- [Customization Guide](./CUSTOMIZATION.md) - Style customization
 - [Markdown Guide](https://www.markdownguide.org/extended-syntax/#heading-ids)
 - [GitHub Flavored Markdown](https://github.github.com/gfm/)
-- [Customization Guide](./CUSTOMIZATION.md)
 
 ---
 

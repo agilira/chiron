@@ -6,7 +6,7 @@
     <title>UI Showcase</title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Showcase of all UI elements and components available in Chiron">
+    <meta name="description" content="Visual showcase of all UI components and styles available in Chiron">
     <meta name="keywords" content="documentation template, chiron, accessibility, responsive design, modern UI, developer tools">
     <meta name="author" content="Agilira">
     
@@ -14,7 +14,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://agilira.github.io/chiron/showcase.html">
     <meta property="og:title" content="UI Showcase">
-    <meta property="og:description" content="Showcase of all UI elements and components available in Chiron">
+    <meta property="og:description" content="Visual showcase of all UI components and styles available in Chiron">
     <meta property="og:image" content="https://agilira.github.io/chiron/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -26,7 +26,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://agilira.github.io/chiron/showcase.html">
     <meta name="twitter:title" content="UI Showcase">
-    <meta name="twitter:description" content="Showcase of all UI elements and components available in Chiron">
+    <meta name="twitter:description" content="Visual showcase of all UI components and styles available in Chiron">
     <meta name="twitter:image" content="https://agilira.github.io/chiron/og-image.png">
     <meta name="twitter:site" content="@agilirax">
     <meta name="twitter:creator" content="@agilirax">
@@ -73,7 +73,7 @@
     </script>
     
 </head>
-<body>
+<body class="has-toc">
     <!-- Skip Link -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
@@ -137,9 +137,9 @@
         </div>
     </header>
 
-    <!-- Main Layout -->
-    <div class="layout">
-        <!-- Sidebar -->
+    <!-- Main Layout with Double Sidebar -->
+    <div class="layout layout-with-toc">
+        <!-- Left Sidebar (Navigation) -->
         <aside class="sidebar" id="sidebar" role="complementary" aria-label="Sidebar">
             <!-- Mobile Header Navigation -->
             <nav class="mobile-header-nav" aria-label="Main navigation (mobile)">
@@ -153,6 +153,7 @@
                     <ul class="nav-list">
                         <li><a href="./index.html" class="nav-item">Overview</a></li>
                         <li><a href="./landing-demo.html" class="nav-item">Landing Demo</a></li>
+                        <li><a href="./react-demo.html" class="nav-item">React Demo</a></li>
                         <li><a href="./api-reference.html" class="nav-item">API Reference</a></li>
                         <li><a href="./showcase.html" class="nav-item active">UI Showcase</a></li>
                     </ul>
@@ -615,9 +616,112 @@ features:
                 </div>
 
                 <!-- Pagination (Previous/Next) -->
-                
+                <nav class="pagination" aria-label="Page navigation">
+                <a href="./api-reference.html" class="pagination-link pagination-prev" rel="prev">
+                    <svg class="pagination-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    <div class="pagination-text">
+                        <span class="pagination-label">Previous</span>
+                        <span class="pagination-title">API Reference</span>
+                    </div>
+                </a>
+                <a href="./plugins/index.html" class="pagination-link pagination-next" rel="next">
+                    <div class="pagination-text">
+                        <span class="pagination-label">Next</span>
+                        <span class="pagination-title">Plugins Overview</span>
+                    </div>
+                    <svg class="pagination-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </a>
+            </nav>
             </div>
         </main>
+
+        <!-- Right Sidebar (Table of Contents) -->
+        <aside class="toc-sidebar" id="tocSidebar" role="complementary" aria-label="Table of contents">
+            <nav class="toc-nav" aria-label="Table of contents">
+  <h2 class="toc-title">On This Page</h2>
+  <ul class="toc-list">
+    <li class="toc-item toc-level-2">
+      <a href="#typography" class="toc-link">Typography</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#heading-2" class="toc-link">Heading 2</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#lists" class="toc-link">Lists</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#code-blocks" class="toc-link">Code Blocks</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#tables" class="toc-link">Tables</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#blockquotes" class="toc-link">Blockquotes</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#horizontal-rules" class="toc-link">Horizontal Rules</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#links" class="toc-link">Links</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#images" class="toc-link">Images</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#inline-elements" class="toc-link">Inline Elements</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#info-boxes" class="toc-link">Info Boxes</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#diagrams" class="toc-link">Diagrams</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#feature-cards" class="toc-link">Feature Cards</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#nested-content" class="toc-link">Nested Content</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#blockquotes-1" class="toc-link">Blockquotes</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#badges" class="toc-link">Badges</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#mixed-content" class="toc-link">Mixed Content</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#keyboard-shortcuts" class="toc-link">Keyboard Shortcuts</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#abbreviations" class="toc-link">Abbreviations</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#definition-lists" class="toc-link">Definition Lists</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#footnotes" class="toc-link">Footnotes</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#emojis" class="toc-link">Emojis</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#special-characters" class="toc-link">Special Characters</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#long-content-test" class="toc-link">Long Content Test</a>
+    </li>
+    <li class="toc-item toc-level-2">
+      <a href="#accordions" class="toc-link">Accordions</a>
+    </li>
+  </ul>
+</nav>
+        </aside>
     </div>
 
     <!-- Footer -->
@@ -674,6 +778,45 @@ features:
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
+    <!-- i18n Configuration -->
+    <script>
+// i18n Configuration
+window.CHIRON_I18N = {
+  "search_placeholder": "Cerca nella documentazione...",
+  "search_no_results": "Nessun risultato trovato",
+  "search_loading": "Caricamento...",
+  "search_error": "Ricerca non disponibile",
+  "search_timeout": "Timeout richiesta di ricerca",
+  "theme_toggle": "Cambia tema",
+  "theme_light": "Tema chiaro",
+  "theme_dark": "Tema scuro",
+  "nav_previous": "Precedente",
+  "nav_next": "Successivo",
+  "nav_home": "Home",
+  "nav_menu": "Menu",
+  "nav_close": "Chiudi",
+  "nav_expand": "Espandi",
+  "nav_collapse": "Riduci",
+  "cookie_message": "Questo sito utilizza i cookie per garantirti la migliore esperienza.",
+  "cookie_accept": "Accetta",
+  "cookie_decline": "Rifiuta",
+  "cookie_learn_more": "Maggiori informazioni",
+  "aria_search": "Cerca nella documentazione",
+  "aria_menu": "Menu di navigazione",
+  "aria_theme": "Cambia tema",
+  "aria_close": "Chiudi",
+  "aria_expand": "Espandi sezione",
+  "aria_collapse": "Riduci sezione",
+  "error_404_title": "Pagina Non Trovata",
+  "error_404_message": "La pagina che stai cercando non esiste.",
+  "error_404_home": "Vai alla homepage",
+  "toc_title": "In questa pagina",
+  "breadcrumb_home": "Home"
+};
+window.CHIRON_LOCALE = 'it';
+    </script>
+    
     <script src="./script.js"></script>
     <script src="./custom.js"></script>
     
@@ -686,5 +829,6 @@ features:
             }
         });
     </script>
+    
 </body>
 </html>

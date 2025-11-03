@@ -49,6 +49,47 @@ description: Standard documentation layout
 ---
 ```
 
+### `page-with-toc.html`
+
+A three-column layout with automatic Table of Contents in a right sidebar. Perfect for long documentation pages with multiple sections.
+
+**Features:**
+- Left sidebar: Navigation
+- Center: Main content
+- Right sidebar: Auto-generated TOC from H2 headings
+- Sticky TOC sidebar (scrolls with page)
+- Responsive (TOC hidden on tablet/mobile)
+
+**Best for:**
+- Long documentation pages (>5 sections)
+- API references with multiple endpoints
+- Step-by-step tutorials
+- Comprehensive guides
+
+**Usage:**
+```markdown
+---
+title: Complete API Reference
+description: Detailed API documentation
+template: page-with-toc.html
+---
+
+# API Reference
+
+## Authentication
+Content about authentication...
+
+## Users API
+Content about users...
+
+## Products API
+Content about products...
+```
+
+**Note:** Only H2 headings (`##`) appear in the TOC. H3+ are excluded for clarity.
+
+**Learn more:** See [Table of Contents Guide](./TABLE-OF-CONTENTS.md)
+
 ### `landing.html`
 
 A clean, marketing-focused template inspired by GitHub CLI. Features:
@@ -110,7 +151,9 @@ All templates have access to the same placeholder variables. Here are the most i
 - `{{PAGE_LANG}}` - Language code (from config)
 - `{{META_TAGS}}` - Complete SEO meta tags
 - `{{STRUCTURED_DATA}}` - JSON-LD structured data
+- `{{ADOBE_FONTS}}` - Adobe Fonts stylesheet link (opt-in, see FONTS.md)
 - `{{ANALYTICS}}` - Analytics scripts (GA, GTM)
+- `{{EXTERNAL_SCRIPTS}}` - External JavaScript libraries (opt-in, see EXTERNAL-SCRIPTS.md)
 
 #### Branding
 - `{{PROJECT_NAME}}` - Project name
@@ -132,6 +175,8 @@ All templates have access to the same placeholder variables. Here are the most i
 - `{{HEADER_NAV}}` - Header navigation items
 - `{{NAVIGATION}}` - Sidebar navigation
 - `{{BREADCRUMB}}` - Breadcrumb navigation
+- `{{PAGINATION}}` - Previous/Next page links
+- `{{TABLE_OF_CONTENTS}}` - Auto-generated TOC (only in page-with-toc.html)
 
 #### Content
 - `{{PAGE_CONTENT}}` - Rendered Markdown content
@@ -165,7 +210,7 @@ Here's a minimal custom template:
     <title>{{PAGE_TITLE}}</title>
     {{META_TAGS}}
     
-    <link rel="stylesheet" href="fonts.css">
+    <link rel="stylesheet" href="fonts.css">{{ADOBE_FONTS}}
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="custom.css">
     
@@ -186,6 +231,8 @@ Here's a minimal custom template:
     </footer>
     
     <script src="script.js"></script>
+    <script src="custom.js"></script>
+    {{EXTERNAL_SCRIPTS}}
 </body>
 </html>
 ```

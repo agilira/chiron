@@ -20,6 +20,7 @@ class MarkdownParser {
   constructor() {
     // Track generated IDs to prevent duplicates
     this.usedIds = new Set();
+    this.toc = []; // Table of Contents entries
     this.logger = logger.child('MarkdownParser');
     
     // Configure marked options
@@ -62,6 +63,13 @@ class MarkdownParser {
       }
       
       this.usedIds.add(finalId);
+      
+      // Build TOC entry (collect all headings for table of contents)
+      this.toc.push({
+        level,
+        text: sanitizedText,
+        id: finalId
+      });
       
       // Note: text already contains properly escaped HTML from marked
       return `<h${level} id="${finalId}">${text}</h${level}>`;
@@ -227,6 +235,7 @@ class MarkdownParser {
   parse(content) {
     // Reset used IDs for each new document
     this.usedIds.clear();
+    this.toc = []; // Reset TOC for each document
     
     // ENHANCED INPUT VALIDATION
     // 1. Check for null/undefined
@@ -274,42 +283,13 @@ class MarkdownParser {
       return {
         frontmatter: frontmatter || {},
         html,
-        markdown
+        markdown,
+        toc: this.toc // Return generated table of contents
       };
     } catch (error) {
       this.logger.error('Error parsing markdown', { error: error.message, stack: error.stack });
       throw new Error(`Failed to parse markdown: ${error.message}`);
     }
-  }
-
-  /**
-   * Extract table of contents from markdown
-   * @param {string} markdown - Markdown content
-   * @returns {array} - Array of headings
-   */
-  extractTOC(markdown) {
-    const headings = [];
-    const lines = markdown.split('\n');
-
-    for (const line of lines) {
-      const match = line.match(/^(#{1,6})\s+(.+)$/);
-      if (match) {
-        const level = match[1].length;
-        const text = match[2];
-        const id = text
-          .toLowerCase()
-          .replace(/[^\w\s-]/g, '')
-          .replace(/\s+/g, '-');
-
-        headings.push({
-          level,
-          text,
-          id
-        });
-      }
-    }
-
-    return headings;
   }
 }
 

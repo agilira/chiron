@@ -6,6 +6,7 @@
 
 .page-title,
 .subpage-title {
+    font-family: var(--font-heading, var(--font-family));
     font-size: var(--font-size-4xl);
     font-weight: 700;
     color: var(--color-text-primary);
@@ -29,6 +30,7 @@
     position: relative;
     
     h2 {
+        font-family: var(--font-heading, var(--font-family));
         font-size: var(--font-size-2xl);
         font-weight: 600;
         color: var(--color-text-primary);
@@ -42,6 +44,7 @@
     }
     
     h3 {
+        font-family: var(--font-heading, var(--font-family));
         font-size: var(--font-size-xl);
         font-weight: 600;
         color: var(--color-text-primary);
@@ -58,6 +61,7 @@
     h4,
     h5,
     h6 {
+        font-family: var(--font-heading, var(--font-family));
         font-size: var(--font-size-lg);
         font-weight: 600;
         color: var(--color-text-primary);

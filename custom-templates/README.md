@@ -1,6 +1,9 @@
 # Custom Templates
 
-This folder contains custom templates that override or extend the default Chiron templates.
+This folder contains:
+- **Custom HTML templates** that override or extend the default Chiron templates
+- **`custom.css`** - Your global CSS overrides
+- **`custom.js`** - Your global JavaScript extensions
 
 ## How It Works
 
@@ -84,6 +87,15 @@ All Chiron placeholders work in custom templates:
 See `example-custom.html` for a complete example.
 
 ## Best Practices
+
+### Custom Styles and Scripts
+
+- **`custom.css`**: Add your global CSS overrides here (loads after `styles.css`)
+- **`custom.js`**: Add your global JavaScript here (loads after `script.js`)
+
+These files are automatically copied to your output directory during build.
+
+### Custom Templates
 
 1. **Start from existing template**: Copy a default template as base
 2. **Use PATH_TO_ROOT**: Always use `{{PATH_TO_ROOT}}` for assets/links

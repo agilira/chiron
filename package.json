@@ -37,6 +37,10 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",
+    "@fontsource/manrope": "^5.2.8",
+    "@fontsource/poppins": "^5.2.7",
+    "@fontsource/roboto": "^5.2.8",
+    "@fontsource/work-sans": "^5.2.8",
     "@types/jest": "^30.0.0",
     "chokidar": "^4.0.3",
     "docdash": "^2.0.2",

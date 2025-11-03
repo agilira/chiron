@@ -5,6 +5,44 @@ All notable changes to Chiron will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **Internationalization (i18n) System**: Built-in support for UI string translation
+  - **3 Languages Built-in**: English, Italian, French
+  - **40+ Translatable Strings**: Search, navigation, errors, accessibility labels
+  - **Custom String Overrides**: Override any string per-site via config
+  - **Async Locale Loading**: Non-blocking, parallel file loading with `fs.promises`
+  - **Client-Side i18n**: JavaScript helper `t()` for dynamic strings
+  - **Automatic Injection**: i18n config injected in all templates
+  - **Fallback System**: Graceful fallback to English if locale not found
+
+- **12-Column Grid System**: Professional grid layout system
+  - **Responsive Breakpoints**: Desktop (12), Tablet (8), Mobile (4), XS (1)
+  - **Column Spans**: `.col-1` through `.col-12` with responsive variants
+  - **Gap Utilities**: `.grid--gap-sm` through `.grid--gap-xl`
+  - **Alignment Utilities**: Start, center, end, stretch for items and content
+  - **Row Spans**: Support for vertical spanning
+  - **Simple Shortcuts**: `.grid-2`, `.grid-3`, etc. for quick layouts
+  - **Auto-fit Grid**: Responsive without media queries
+
+### Configuration
+
+- **Language Settings**: `language.locale` and `language.strings` in config
+- **i18n Documentation**: Complete guide in `I18N.md`
+- **Grid Documentation**: Complete guide in `GRID-SYSTEM.md`
+
+### Technical Details
+
+- Refactored i18n-loader to use async/await with `fs.promises`
+- Made `TemplateEngine.render()` and `renderTemplate()` async
+- Updated `Builder.processMarkdownFile()` and `generate404()` to async
+- Separated grid system into dedicated `_grid.scss` component
+- Added `ensureLoaded()` method for i18n initialization
+
+---
+
 ## [2.3.0] - 2025-11-02
 
 ### Added

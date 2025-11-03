@@ -128,34 +128,34 @@ author: Test Author
     });
   });
 
-  describe('extractTOC()', () => {
-    it('should extract table of contents from markdown', () => {
+  describe('Automatic TOC Generation', () => {
+    it('should automatically generate table of contents during parsing', () => {
       const markdown = `# Title 1
 ## Title 2
 ### Title 3
 ## Another Title 2`;
 
-      const toc = parser.extractTOC(markdown);
+      const result = parser.parse(markdown);
 
-      expect(toc).toHaveLength(4);
-      expect(toc[0]).toEqual({ level: 1, text: 'Title 1', id: 'title-1' });
-      expect(toc[1]).toEqual({ level: 2, text: 'Title 2', id: 'title-2' });
-      expect(toc[2]).toEqual({ level: 3, text: 'Title 3', id: 'title-3' });
-      expect(toc[3]).toEqual({ level: 2, text: 'Another Title 2', id: 'another-title-2' });
+      expect(result.toc).toHaveLength(4);
+      expect(result.toc[0]).toEqual({ level: 1, text: 'Title 1', id: 'title-1' });
+      expect(result.toc[1]).toEqual({ level: 2, text: 'Title 2', id: 'title-2' });
+      expect(result.toc[2]).toEqual({ level: 3, text: 'Title 3', id: 'title-3' });
+      expect(result.toc[3]).toEqual({ level: 2, text: 'Another Title 2', id: 'another-title-2' });
     });
 
-    it('should return empty array for markdown without headings', () => {
+    it('should return empty TOC array for markdown without headings', () => {
       const markdown = 'Just some text without headings.';
-      const toc = parser.extractTOC(markdown);
+      const result = parser.parse(markdown);
 
-      expect(toc).toEqual([]);
+      expect(result.toc).toEqual([]);
     });
 
-    it('should handle special characters in headings', () => {
+    it('should handle special characters in heading IDs', () => {
       const markdown = '# Hello, World! 123';
-      const toc = parser.extractTOC(markdown);
+      const result = parser.parse(markdown);
 
-      expect(toc[0].id).toBe('hello-world-123');
+      expect(result.toc[0].id).toBe('hello-world-123');
     });
   });
 

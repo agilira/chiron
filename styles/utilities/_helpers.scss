@@ -54,3 +54,77 @@
         gap: var(--space-2);
     }
 }
+
+// ============================================
+// Alignment Utilities
+// ============================================
+
+// Text alignment
+.text-left {
+    text-align: left !important;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.text-right {
+    text-align: right !important;
+}
+
+.text-justify {
+    text-align: justify !important;
+}
+
+// Flexbox alignment utilities
+.align-left {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.align-center {
+    display: flex;
+    justify-content: center;
+}
+
+.align-right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.align-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+.align-around {
+    display: flex;
+    justify-content: space-around;
+}
+
+// Self alignment (for flex items)
+.self-start {
+    align-self: flex-start !important;
+}
+
+.self-center {
+    align-self: center !important;
+}
+
+.self-end {
+    align-self: flex-end !important;
+}
+
+// Margin auto utilities
+.mx-auto {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.ml-auto {
+    margin-left: auto !important;
+}
+
+.mr-auto {
+    margin-right: auto !important;
+}
