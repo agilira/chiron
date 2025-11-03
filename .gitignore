@@ -8,6 +8,8 @@ docs-api/
 test-docs-src/
 test-external/
 test-output/
+tests/temp-output/
+tests/temp-config/
 
 # Problematic tests (CI babel cache issues - keep for local testing only)
 tests/path-calculation.test.js
