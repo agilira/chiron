@@ -5,6 +5,8 @@ All notable changes to Chiron will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+**Current Status**: Pre-release (v0.x.x) - API may change before v1.0.0
+
 ## [Unreleased]
 
 ### Added
@@ -18,6 +20,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Automatic Injection**: i18n config injected in all templates
   - **Fallback System**: Graceful fallback to English if locale not found
 
+- **External Scripts Manager**: Secure CDN script management
+  - **7 Presets**: Mermaid, Chart.js, D3, MathJax, KaTeX, Three.js, Prism
+  - **CDN Security**: Whitelist-based CDN validation (jsDelivr, unpkg, cdnjs, etc.)
+  - **Self-hosted Support**: Local script files allowed
+  - **Deduplication**: Automatic script deduplication
+  - **ES Modules**: Support for modern ES module scripts
+
+- **Font Downloader System**: Automatic web font management
+  - **Auto-download**: Downloads fonts from @fontsource packages
+  - **CSS Generation**: Generates optimized fonts.css automatically
+  - **Subset Support**: Latin, Cyrillic, Greek, Vietnamese subsets
+  - **Weight Selection**: Configurable font weights
+  - **Cleanup**: Removes old fonts on rebuild
+
 - **12-Column Grid System**: Professional grid layout system
   - **Responsive Breakpoints**: Desktop (12), Tablet (8), Mobile (4), XS (1)
   - **Column Spans**: `.col-1` through `.col-12` with responsive variants
@@ -27,11 +43,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Simple Shortcuts**: `.grid-2`, `.grid-3`, etc. for quick layouts
   - **Auto-fit Grid**: Responsive without media queries
 
+- **Form Styling System**: Beautiful form components
+  - **Input Types**: Text, email, password, number, date, tel
+  - **Textarea**: Multi-line input with auto-resize
+  - **Select**: Dropdown select with custom styling
+  - **Checkbox & Radio**: Styled form controls
+  - **Form Groups**: Label + input combinations
+  - **Validation States**: Success, error, warning states
+  - **Help Text**: Support text for form fields
+
 ### Configuration
 
 - **Language Settings**: `language.locale` and `language.strings` in config
+- **External Scripts**: `external_scripts` array in frontmatter
+- **Font Settings**: `branding.fonts.heading` and `branding.fonts.body` in config
 - **i18n Documentation**: Complete guide in `I18N.md`
 - **Grid Documentation**: Complete guide in `GRID-SYSTEM.md`
+- **Forms Documentation**: Complete guide in `FORMS.md`
+- **Fonts Documentation**: Complete guide in `FONTS.md`
+- **External Scripts Documentation**: Complete guide in `EXTERNAL-SCRIPTS.md`
 
 ### Technical Details
 
@@ -39,11 +69,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Made `TemplateEngine.render()` and `renderTemplate()` async
 - Updated `Builder.processMarkdownFile()` and `generate404()` to async
 - Separated grid system into dedicated `_grid.scss` component
+- Separated form system into dedicated `_forms.scss` component
 - Added `ensureLoaded()` method for i18n initialization
+- Fixed ESLint issues in i18n-loader.js and index.js
+
+### Fixed
+
+- Removed unused `fsSync` variable in i18n-loader.js
+- Removed unused `i18n` import in index.js
+- Fixed `hasOwnProperty` usage with `Object.prototype.hasOwnProperty.call()`
 
 ---
 
-## [2.3.0] - 2025-11-02
+## [0.6.0] - 2025-11-02
 
 ### Added
 
@@ -92,7 +130,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Path resolution validation
 - Detailed error logging for security events
 
-## [2.2.0] - 2025-11-02
+## [0.5.0] - 2025-11-02
 
 ### Added
 
@@ -139,7 +177,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved discoverability of related content
 - Better learning flow for tutorials and guides
 
-## [2.1.0] - 2025-11-02
+## [0.4.0] - 2025-11-02
 
 ### Added
 
@@ -184,7 +222,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Path validation to prevent directory traversal (`..`, `\0`)
 - Resolved path verification to ensure files stay within content directory
 
-## [2.0.0] - 2025-11-01
+## [0.3.0] - 2025-11-01
 
 ### Added
 
