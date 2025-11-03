@@ -48,5 +48,9 @@
     "jest": "^30.2.0",
     "jsdoc": "^4.0.5",
     "sass": "^1.93.3"
+  },
+  "overrides": {
+    "glob": "^10.4.5",
+    "inflight": "npm:@npmcli/fs@^3.1.0"
   }
 }
