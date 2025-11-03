@@ -21,13 +21,7 @@ module.exports = {
   // Transform ESM modules (marked v16+) to CommonJS for Jest
   transform: {
     '^.+\\.js$': ['babel-jest', {
-      presets: [
-        ['@babel/preset-env', {
-          targets: {
-            node: 'current'
-          }
-        }]
-      ]
+      configFile: './babel.config.js'
     }]
   },
   transformIgnorePatterns: [
