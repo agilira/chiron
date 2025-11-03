@@ -228,6 +228,85 @@ class MarkdownParser {
   }
 
   /**
+   * Process tab containers in markdown
+   * Syntax: :::tabs ... ::tab{title="..."} ... :::
+   * @param {string} markdown - Markdown content
+   * @returns {string} - Markdown with tabs converted to HTML
+   */
+  processTabs(markdown) {
+    // Generate unique ID for this tab group
+    const generateTabId = () => `tab-${Math.random().toString(36).substr(2, 9)}`;
+    
+    // Match :::tabs ... ::: blocks
+    const tabsRegex = /:::tabs\s*\n([\s\S]*?)\n:::/g;
+    
+    return markdown.replace(tabsRegex, (match, content) => {
+      const groupId = generateTabId();
+      
+      // Parse individual tabs: ::tab{title="..."} content
+      const tabRegex = /::tab\{title="([^"]+)"\}\s*\n([\s\S]*?)(?=\n::tab\{|$)/g;
+      const tabs = [];
+      let tabMatch;
+      
+      while ((tabMatch = tabRegex.exec(content)) !== null) {
+        tabs.push({
+          title: this.escapeHtml(tabMatch[1]),
+          content: tabMatch[2].trim()
+        });
+      }
+      
+      if (tabs.length === 0) {
+        this.logger.warn('Empty tabs container found');
+        return '';
+      }
+      
+      // Generate tab HTML with placeholders for content
+      let html = `<div class="tabs-container" data-tabs-id="${groupId}">\n`;
+      
+      // Tab buttons
+      html += '  <div class="tabs-header" role="tablist">\n';
+      tabs.forEach((tab, index) => {
+        const tabId = `${groupId}-tab-${index}`;
+        const panelId = `${groupId}-panel-${index}`;
+        const isActive = index === 0 ? 'true' : 'false';
+        const activeClass = index === 0 ? ' active' : '';
+        
+        html += `    <button class="tab-button${activeClass}" role="tab" `;
+        html += `id="${tabId}" `;
+        html += `aria-selected="${isActive}" `;
+        html += `aria-controls="${panelId}" `;
+        html += `tabindex="${index === 0 ? '0' : '-1'}">\n`;
+        html += `      ${tab.title}\n`;
+        html += '    </button>\n';
+      });
+      html += '  </div>\n';
+      
+      // Tab panels - parse each tab's markdown content separately
+      tabs.forEach((tab, index) => {
+        const tabId = `${groupId}-tab-${index}`;
+        const panelId = `${groupId}-panel-${index}`;
+        const isActive = index === 0;
+        const activeClass = isActive ? ' active' : '';
+        const hiddenAttr = isActive ? '' : ' hidden=""';
+        
+        html += `  <div class="tab-panel${activeClass}" role="tabpanel" `;
+        html += `id="${panelId}" `;
+        html += `aria-labelledby="${tabId}"${hiddenAttr}>\n`;
+        
+        // Parse the tab content as markdown
+        const parsedContent = marked.parse(tab.content).trim();
+        html += parsedContent;
+        
+        html += '\n  </div>\n';
+      });
+      
+      html += '</div>\n';
+      
+      return html;
+    });
+  }
+
+  /**
    * Parse markdown file with frontmatter
    * @param {string} content - Raw markdown content
    * @returns {object} - Parsed frontmatter and HTML
@@ -274,8 +353,23 @@ class MarkdownParser {
       // Parse frontmatter
       const { data: frontmatter, content: markdown } = matter(content);
 
-      // Convert markdown to HTML
-      let html = marked.parse(markdown);
+      // Pre-process: Extract tabs and replace with HTML comment placeholders
+      const tabsPlaceholders = [];
+      const markdownWithPlaceholders = markdown.replace(/:::tabs\s*\n[\s\S]*?\n:::/g, (match) => {
+        const placeholder = `<!--TAB_PLACEHOLDER_${tabsPlaceholders.length}-->`;
+        tabsPlaceholders.push(match);
+        return placeholder;
+      });
+
+      // Convert markdown to HTML (tabs are still placeholders)
+      let html = marked.parse(markdownWithPlaceholders);
+
+      // Now process tabs and replace placeholders with actual HTML
+      tabsPlaceholders.forEach((tabBlock, index) => {
+        const placeholder = `<!--TAB_PLACEHOLDER_${index}-->`;
+        const tabHtml = this.processTabs(tabBlock);
+        html = html.replace(placeholder, tabHtml);
+      });
 
       // Post-process: Add accordion styling
       html = this.processAccordions(html);

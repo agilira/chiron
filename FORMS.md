@@ -1,6 +1,6 @@
 # Form Elements
 
-Chiron includes comprehensive styling for all form elements, inspired by the **Hashicorp Design System**. Form styles are automatically applied to standard HTML form elements with clean, professional, and accessible design.
+Chiron includes comprehensive styling for all form elements. Form styles are automatically applied to standard HTML form elements with clean, professional, and accessible design.
 
 ## Design Principles
 

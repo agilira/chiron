@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "generated": "2025-11-03T01:11:59.554Z",
-  "totalPages": 11,
+  "generated": "2025-11-03T01:41:19.278Z",
+  "totalPages": 12,
   "pages": [
     {
       "id": "api-reference",
@@ -339,6 +339,36 @@
         "Quote with Author",
         "Multi-paragraph Quote",
         "Quote with Code"
+      ],
+      "keywords": []
+    },
+    {
+      "id": "tabs-demo",
+      "title": "Tabs Component Demo",
+      "description": "Interactive tab component for code examples and multi-content display",
+      "url": "tabs-demo.html",
+      "content": "Tabs Component The tabs component provides an accessible, responsive interface for displaying multiple related content sections in a compact space. Perfect for code examples, configuration options, or any multi-view content. Features ✅ Accessible - Full ARIA support and keyboard navigation ✅ Responsive - Horizontal scroll on mobile, full layout on desktop ✅ Keyboard Navigation - Arrow keys, Home, End support ✅ Print-Friendly - Shows all tabs when printing ✅ Dark Mode - Automatic theme support ✅ Lightweight - Pure JavaScript, no dependencies Basic Example Here&#39;s a simple example showing code snippets in different languages: :::tabs ::tab{title=&quot;JavaScript&quot;} javascript Copy // Hello World in JavaScript console.log(&#039;Hello, World!&#039;); function greet(name) { return `Hello, ${name}!`; } greet(&#039;Chiron&#039;); ::tab{title=&quot;Python&quot;} python Copy # Hello World in Python print(&#039;Hello, World!&#039;) def greet(name): return f&#039;Hello, {name}!&#039; greet(&#039;Chiron&#039;) ::tab{title=&quot;Go&quot;} go Copy // Hello World in Go package main import &quot;fmt&quot; func main() { fmt.Println(&quot;Hello, World!&quot;) } func greet(name string) string { return fmt.Sprintf(&quot;Hello, %s!&quot;, name) } ::tab{title=&quot;Rust&quot;} rust Copy // Hello World in Rust fn main() { println!(&quot;Hello, World!&quot;); } fn greet(name: &amp;str) -&gt; String { format!(&quot;Hello, {}!&quot;, name) } ::: Installation Instructions You can use tabs for multi-step installation guides: :::tabs ::tab{title=&quot;npm&quot;} bash Copy # Install via npm npm install chiron --save-dev # Run the build npm run build ::tab{title=&quot;yarn&quot;} bash Copy # Install via yarn yarn add chiron --dev # Run the build yarn build ::tab{title=&quot;pnpm&quot;} bash Copy # Install via pnpm pnpm add -D chiron # Run the build pnpm build ::: Configuration Examples Show different configuration formats: :::tabs ::tab{title=&quot;YAML&quot;} yaml Copy # chiron.config.yaml project: name: My Documentation base_url: https://example.com build: output_dir: docs clean_output: true theme: primary_color: &#039;#007bff&#039; ::tab{title=&quot;JSON&quot;} json Copy { &quot;project&quot;: { &quot;name&quot;: &quot;My Documentation&quot;, &quot;base_url&quot;: &quot;https://example.com&quot; }, &quot;build&quot;: { &quot;output_dir&quot;: &quot;docs&quot;, &quot;clean_output&quot;: true }, &quot;theme&quot;: { &quot;primary_color&quot;: &quot;#007bff&quot; } } ::tab{title=&quot;JavaScript&quot;} javascript Copy // chiron.config.js module.exports = { project: { name: &#039;My Documentation&#039;, base_url: &#039;https://example.com&#039; }, build: { output_dir: &#039;docs&#039;, clean_output: true }, theme: { primary_color: &#039;#007bff&#039; } }; ::: Platform-Specific Commands Tabs work great for platform-specific instructions: :::tabs ::tab{title=&quot;Windows&quot;} powershell Copy # Windows PowerShell $env:NODE_ENV=&quot;production&quot; npm run build # Check if build succeeded if ($LASTEXITCODE -eq 0) { Write-Host &quot;Build successful!&quot; -ForegroundColor Green } ::tab{title=&quot;macOS&quot;} bash Copy # macOS / Linux Bash export NODE_ENV=production npm run build # Check if build succeeded if [ $? -eq 0 ]; then echo &quot;Build successful!&quot; fi ::tab{title=&quot;Linux&quot;} bash Copy # Linux Bash export NODE_ENV=production npm run build # Alternative: one-liner NODE_ENV=production npm run build ::: Framework Examples Compare implementations across frameworks: :::tabs ::tab{title=&quot;React&quot;} jsx Copy import React, { useState } from &#039;react&#039;; function Counter() { const [count, setCount] = useState(0); return ( &lt;div&gt; &lt;p&gt;Count: {count}&lt;/p&gt; &lt;button onClick={() =&gt; setCount(count + 1)}&gt; Increment &lt;/button&gt; &lt;/div&gt; ); } export default Counter; ::tab{title=&quot;Vue&quot;} vue Copy &lt;template&gt; &lt;div&gt; &lt;p&gt;Count: {{ count }}&lt;/p&gt; &lt;button @click=&quot;count++&quot;&gt; Increment &lt;/button&gt; &lt;/div&gt; &lt;/template&gt; &lt;script&gt; export default { data() { return { count: 0 } } } &lt;/script&gt; ::tab{title=&quot;Svelte&quot;} svelte Copy &lt;script&gt; let count = 0; &lt;/script&gt; &lt;div&gt; &lt;p&gt;Count: {count}&lt;/p&gt; &lt;button on:click={() =&gt; count++}&gt; Increment &lt;/button&gt; &lt;/div&gt; ::: Syntax Use the following syntax to create tabs in your markdown: markdown Copy :::tabs ::tab{title=&quot;Tab 1&quot;} Content for tab 1 ::tab{title=&quot;Tab 2&quot;} Content for tab 2 ::tab{title=&quot;Tab 3&quot;} Content for tab 3 ::: Guidelines Best Practices Limit tab count - Keep to 3-6 tabs for best UX Consistent content - Similar content length across tabs Clear labels - Short, descriptive tab titles Mobile-friendly - Test horizontal scrolling on small screens Accessibility The tab component follows WCAG 2.1 Level AA guidelines: Keyboard Navigation - Full keyboard support (Arrow keys, Home, End) Screen Readers - Proper",
+      "headings": [
+        "Tabs Component",
+        "Features",
+        "Basic Example",
+        "Installation Instructions",
+        "Configuration Examples",
+        "Platform-Specific Commands",
+        "Framework Examples",
+        "Syntax",
+        "Guidelines",
+        "Best Practices",
+        "Accessibility",
+        "When to Use Tabs",
+        "Technical Details",
+        "HTML Structure",
+        "Keyboard Shortcuts",
+        "Browser Support",
+        "Styling",
+        "Future Enhancements",
+        "Examples in Documentation",
+        "Questions?"
       ],
       "keywords": []
     },

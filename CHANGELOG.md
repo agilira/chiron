@@ -11,6 +11,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Tabs Component**: Accessible, responsive tab interface for multi-content display
+  - **Markdown Syntax**: Simple `:::tabs` and `::tab{title="..."}` syntax
+  - **Full Accessibility**: WCAG 2.1 Level AA with ARIA roles and labels
+  - **Keyboard Navigation**: Arrow keys, Home, End for complete keyboard control
+  - **Responsive Design**: Horizontal scroll on mobile, full layout on desktop
+  - **Print-Friendly**: Shows all tabs when printing with labels
+  - **Dark Mode Support**: Automatic theme adaptation
+  - **Smooth Animations**: GPU-accelerated fade-in transitions
+  - **Smart Parsing**: HTML comment placeholder system prevents double-parsing
+  - See [TABS.md](TABS.md) for complete documentation
+
 - **Internationalization (i18n) System**: Built-in support for UI string translation
   - **3 Languages Built-in**: English, Italian, French
   - **40+ Translatable Strings**: Search, navigation, errors, accessibility labels

@@ -64,6 +64,7 @@ class DocumentationApp {
         this.setupRobotsGeneration();
         this.setupDeveloperTools();
         this.setupScrollToTop();
+        this.setupTabs();
     }
 
     // Sidebar mobile
@@ -1226,6 +1227,77 @@ class DocumentationApp {
 
         // Initial state
         toggleScrollButton();
+    }
+
+    // Tabs Component - Accessible tab interface
+    setupTabs() {
+        const tabContainers = document.querySelectorAll('.tabs-container');
+        if (tabContainers.length === 0) return;
+
+        tabContainers.forEach(container => {
+            const tabButtons = container.querySelectorAll('.tab-button');
+            const tabPanels = container.querySelectorAll('.tab-panel');
+
+            if (tabButtons.length === 0 || tabPanels.length === 0) return;
+
+            // Switch to a specific tab
+            const switchTab = (index) => {
+                // Deactivate all tabs
+                tabButtons.forEach((btn, i) => {
+                    const isActive = i === index;
+                    btn.classList.toggle('active', isActive);
+                    btn.setAttribute('aria-selected', isActive.toString());
+                    btn.setAttribute('tabindex', isActive ? '0' : '-1');
+                });
+
+                // Show only the active panel
+                tabPanels.forEach((panel, i) => {
+                    if (i === index) {
+                        panel.classList.add('active');
+                        panel.removeAttribute('hidden');
+                    } else {
+                        panel.classList.remove('active');
+                        panel.setAttribute('hidden', '');
+                    }
+                });
+            };
+
+            // Click handler
+            tabButtons.forEach((button, index) => {
+                button.addEventListener('click', () => {
+                    switchTab(index);
+                });
+
+                // Keyboard navigation (Arrow keys)
+                button.addEventListener('keydown', (e) => {
+                    let newIndex = -1;
+
+                    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        newIndex = (index + 1) % tabButtons.length;
+                    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        newIndex = (index - 1 + tabButtons.length) % tabButtons.length;
+                    } else if (e.key === 'Home') {
+                        e.preventDefault();
+                        newIndex = 0;
+                    } else if (e.key === 'End') {
+                        e.preventDefault();
+                        newIndex = tabButtons.length - 1;
+                    }
+
+                    if (newIndex !== -1) {
+                        switchTab(newIndex);
+                        tabButtons[newIndex].focus();
+                    }
+                });
+            });
+
+            // Initialize first tab as active
+            if (tabButtons.length > 0) {
+                switchTab(0);
+            }
+        });
     }
 
 }
