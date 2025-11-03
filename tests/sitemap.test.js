@@ -3,32 +3,32 @@
  */
 
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const { generateSitemap } = require('../builder/generators/sitemap');
 
 describe('Sitemap Generator', () => {
-  const testOutputDir = path.join(__dirname, 'temp-output');
+  let testRootDir;
+  let testOutputDir;
   
   beforeEach(() => {
-    // Create temporary output directory
+    // Use OS temp directory to avoid cross-platform issues
+    testRootDir = fs.mkdtempSync(path.join(os.tmpdir(), 'chiron-sitemap-test-'));
+    testOutputDir = path.join(testRootDir, 'output');
+    
+    // Create output directory synchronously
+    fs.mkdirSync(testOutputDir, { recursive: true });
+    
+    // Verify directory exists before proceeding
     if (!fs.existsSync(testOutputDir)) {
-      fs.mkdirSync(testOutputDir, { recursive: true });
+      throw new Error('Failed to create test output directory');
     }
   });
 
-  afterEach(async () => {
-    // Clean up with retry logic for Windows
-    if (fs.existsSync(testOutputDir)) {
-      try {
-        fs.rmSync(testOutputDir, { recursive: true, force: true });
-      } catch (err) {
-        // On Windows, files might be locked briefly - ignore errors
-        console.warn('Could not clean up test directory:', err.message);
-      }
-    }
-    // Give Windows time to release file handles
-    if (process.platform === 'win32') {
-      await new Promise(resolve => setTimeout(resolve, 50));
+  afterEach(() => {
+    // Clean up synchronously - no race conditions
+    if (fs.existsSync(testRootDir)) {
+      fs.rmSync(testRootDir, { recursive: true, force: true });
     }
   });
 
@@ -39,7 +39,7 @@ describe('Sitemap Generator', () => {
           base_url: 'https://example.com'
         },
         build: {
-          output_dir: 'temp-output',
+          output_dir: 'output',
           sitemap: {
             priority: 0.8,
             changefreq: 'weekly'
@@ -62,7 +62,7 @@ describe('Sitemap Generator', () => {
         }
       ];
 
-      generateSitemap(config, pages, __dirname);
+      generateSitemap(config, pages, testRootDir);
 
       const sitemapPath = path.join(testOutputDir, 'sitemap.xml');
       expect(fs.existsSync(sitemapPath)).toBe(true);
@@ -83,7 +83,7 @@ describe('Sitemap Generator', () => {
           base_url: 'https://example.com'
         },
         build: {
-          output_dir: 'temp-output',
+          output_dir: 'output',
           sitemap: {
             priority: 0.8,
             changefreq: 'weekly'
@@ -100,7 +100,7 @@ describe('Sitemap Generator', () => {
         }
       ];
 
-      generateSitemap(config, pages, __dirname);
+      generateSitemap(config, pages, testRootDir);
 
       const sitemapPath = path.join(testOutputDir, 'sitemap.xml');
       const content = fs.readFileSync(sitemapPath, 'utf8');
@@ -110,20 +110,20 @@ describe('Sitemap Generator', () => {
     });
 
     it('should throw error for invalid config', () => {
-      expect(() => generateSitemap(null, [], __dirname))
+      expect(() => generateSitemap(null, [], testRootDir))
         .toThrow('Invalid config: missing base_url');
       
-      expect(() => generateSitemap({}, [], __dirname))
+      expect(() => generateSitemap({}, [], testRootDir))
         .toThrow('Invalid config: missing base_url');
     });
 
     it('should throw error for non-array pages', () => {
       const config = {
         project: { base_url: 'https://example.com' },
-        build: { output_dir: 'temp-output', sitemap: {} }
+        build: { output_dir: 'output', sitemap: {} }
       };
 
-      expect(() => generateSitemap(config, 'not-an-array', __dirname))
+      expect(() => generateSitemap(config, 'not-an-array', testRootDir))
         .toThrow('Pages must be an array');
     });
 
@@ -131,7 +131,7 @@ describe('Sitemap Generator', () => {
       const config = {
         project: { base_url: 'https://example.com' },
         build: {
-          output_dir: 'temp-output',
+          output_dir: 'output',
           sitemap: { priority: 0.8, changefreq: 'weekly' }
         }
       };
@@ -144,7 +144,7 @@ describe('Sitemap Generator', () => {
       ];
 
       // Should not throw, but should log warnings
-      generateSitemap(config, pages, __dirname);
+      generateSitemap(config, pages, testRootDir);
 
       const sitemapPath = path.join(testOutputDir, 'sitemap.xml');
       const content = fs.readFileSync(sitemapPath, 'utf8');
@@ -157,14 +157,14 @@ describe('Sitemap Generator', () => {
       const config = {
         project: { base_url: 'https://example.com/' },
         build: {
-          output_dir: 'temp-output',
+          output_dir: 'output',
           sitemap: { priority: 0.8, changefreq: 'weekly' }
         }
       };
 
       const pages = [{ url: 'index.html', lastmod: '2025-01-01' }];
 
-      generateSitemap(config, pages, __dirname);
+      generateSitemap(config, pages, testRootDir);
 
       const sitemapPath = path.join(testOutputDir, 'sitemap.xml');
       const content = fs.readFileSync(sitemapPath, 'utf8');

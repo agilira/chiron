@@ -5,35 +5,30 @@
 const fs = require('fs').promises;
 const fsSync = require('fs');
 const path = require('path');
+const os = require('os');
 const { generateRobots } = require('../builder/generators/robots');
 
 describe('Robots Generator', () => {
-  // Use unique directory for each test to avoid conflicts
   let testOutputDir;
   let testRootDir;
   
-  beforeEach(async () => {
-    // Create unique directory for this test using timestamp + random
-    const uniqueId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    testRootDir = path.join(__dirname, `temp-test-${uniqueId}`);
-    testOutputDir = path.join(testRootDir, 'temp-output');
+  beforeEach(() => {
+    // Use OS temporary directory with synchronous operations for deterministic behavior
+    testRootDir = fsSync.mkdtempSync(path.join(os.tmpdir(), 'chiron-robots-test-'));
+    testOutputDir = path.join(testRootDir, 'output');
     
-    // Create temporary output directory
-    await fs.mkdir(testOutputDir, { recursive: true });
+    fsSync.mkdirSync(testOutputDir, { recursive: true });
+    
+    // Verify directory was created successfully
+    if (!fsSync.existsSync(testOutputDir)) {
+      throw new Error('Failed to create test output directory');
+    }
   });
 
-  afterEach(async () => {
-    // Longer delay to ensure all file handles are closed on Windows
-    await new Promise(resolve => setTimeout(resolve, 100));
-    
-    // Clean up test root directory with retries
+  afterEach(() => {
+    // Synchronous cleanup - no race conditions
     if (fsSync.existsSync(testRootDir)) {
-      try {
-        await fs.rm(testRootDir, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 });
-      } catch (error) {
-        // If cleanup fails, log but don't fail the test
-        console.warn(`Failed to cleanup ${testRootDir}:`, error.message);
-      }
+      fsSync.rmSync(testRootDir, { recursive: true, force: true });
     }
   });
 
@@ -45,7 +40,7 @@ describe('Robots Generator', () => {
           base_url: 'https://example.com'
         },
         build: {
-          output_dir: 'temp-output',
+          output_dir: 'output',
           robots: {
             allow_all: true
           },
@@ -55,12 +50,10 @@ describe('Robots Generator', () => {
         }
       };
 
-      // Now properly awaited
       await generateRobots(config, testRootDir);
 
       const robotsPath = path.join(testOutputDir, 'robots.txt');
       
-      // File is guaranteed to be on disk thanks to fsync
       expect(fsSync.existsSync(robotsPath)).toBe(true);
 
       const content = await fs.readFile(robotsPath, 'utf8');
@@ -77,7 +70,7 @@ describe('Robots Generator', () => {
           base_url: 'https://example.com'
         },
         build: {
-          output_dir: 'temp-output',
+          output_dir: 'output',
           robots: {
             allow_all: false
           },
@@ -103,7 +96,7 @@ describe('Robots Generator', () => {
           base_url: 'https://example.com/'
         },
         build: {
-          output_dir: 'temp-output',
+          output_dir: 'output',
           robots: { allow_all: true },
           sitemap: { enabled: true }
         }
@@ -125,7 +118,7 @@ describe('Robots Generator', () => {
           base_url: 'https://example.com'
         },
         build: {
-          output_dir: 'temp-output',
+          output_dir: 'output',
           robots: { allow_all: true },
           sitemap: { enabled: false }
         }
