@@ -17,6 +17,8 @@ coverage/
 # Manual test scripts (keep for dev, don't commit)
 test-*.js
 test-*.yaml
+# But allow test utilities in fixtures
+!tests/fixtures/**/test-*.js
 
 # Editor directories and files
 .vscode/
