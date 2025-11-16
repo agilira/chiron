@@ -1,0 +1,60 @@
+header:
+  - label: Home
+    url: /
+  - label: Docs
+    id: docs
+    children:
+      - label: Getting Started
+        url: /showcase.html
+      - label: Templates
+        url: /custom-template-test.html
+      - divider: true
+      - label: External Scripts
+        url: /external-scripts-demo.html
+      - label: Forms
+        url: /forms-demo.html
+  - label: React Demo
+    url: /react-demo.html
+show_project_name: false
+header_dropdown_trigger: hover
+header_actions:
+  search:
+    enabled: true
+    label: Open search
+  github:
+    enabled: true
+    label: View repository on GitHub
+  theme:
+    enabled: true
+    label: Toggle dark mode
+ui_features:
+  scroll_to_top:
+    enabled: true
+breadcrumb:
+  enabled: true
+  root:
+    label: Documentation
+    url: /
+    class: breadcrumb-home
+  prefix:
+    - label: AGILira
+      url: https://github.com/agilira
+      external: true
+      class: breadcrumb-company
+    - label: Chiron
+      url: https://github.com/agilira/chiron
+      external: true
+      class: breadcrumb-project
+footer_legal_links:
+  - label: Privacy Policy
+    file: privacy-policy.md
+  - label: Terms of Service
+    file: terms-of-service.md
+  - label: Cookie Policy
+    file: cookie-policy.md
+  - label: License
+    url: https://opensource.org/licenses/MIT
+    external: true
+    class: license-link
+  - label: Manage Cookies
+    file: manage-cookies.md

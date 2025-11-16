@@ -37,7 +37,11 @@ describe('TemplateEngine', () => {
       },
       navigation: {
         sidebar: [],
-        header: []
+        header: [],
+        breadcrumb: {
+          prefix: [],
+          root: { label: 'Home', url: '/' }
+        }
       },
       seo: {
         keywords: ['test', 'keywords'],
@@ -262,8 +266,9 @@ describe('TemplateEngine', () => {
       const originalStatSync = fs.statSync;
       let readCount = 0;
       
+      const originalExistsSync = fs.existsSync;
       fs.readFileSync = jest.fn((filepath, encoding) => {
-        if (filepath.includes('page.html')) {
+        if (filepath.includes('page.ejs')) {
           readCount++;
           return '<html>{{PAGE_TITLE}}</html>';
         }
@@ -277,15 +282,762 @@ describe('TemplateEngine', () => {
         mtimeMs: 1234567890000 // Fixed timestamp for consistent caching
       }));
 
-      const template1 = engine.loadTemplate('page.html');
-      const template2 = engine.loadTemplate('page.html');
+      const template1 = engine.loadTemplate('page.ejs');
+      const template2 = engine.loadTemplate('page.ejs');
 
       expect(readCount).toBe(1); // Should only read once
-      expect(template1).toBe(template2);
+      expect(template1.content).toBe(template2.content);
 
       // Restore
       fs.readFileSync = originalReadFileSync;
       fs.statSync = originalStatSync;
+      fs.existsSync = originalExistsSync;
+    });
+  });
+
+  describe('Smart Logo Logic (TDD)', () => {
+    let baseContext;
+
+    beforeEach(() => {
+      baseContext = {
+        page: {
+          filename: 'test.html',
+          title: 'Test Page',
+          description: 'Test Description',
+          depth: 0,
+          content: '<p>Test</p>'
+        }
+      };
+    });
+
+    describe('Header Logos - Both light and dark provided', () => {
+      it('should render both logo variants when both are configured', async () => {
+        const config = {
+          ...testConfig,
+          branding: {
+            ...testConfig.branding,
+            logo: {
+              light: 'logo-black.png',
+              dark: 'logo-white.png',
+              alt: 'Test Logo'
+            }
+          }
+        };
+        const engine = new TemplateEngine(config, testRootDir);
+        const placeholders = await engine.buildTemplatePlaceholders(baseContext);
+
+        expect(placeholders.logoImages).toContain('logo-black.png');
+        expect(placeholders.logoImages).toContain('logo-white.png');
+        expect(placeholders.logoImages).toContain('class="logo-img logo-light"');
+        expect(placeholders.logoImages).toContain('class="logo-img logo-dark"');
+      });
+    });
+
+    describe('Header Logos - Only light logo provided', () => {
+      it('should use light logo for both themes when only light is configured', async () => {
+        const config = {
+          ...testConfig,
+          branding: {
+            ...testConfig.branding,
+            logo: {
+              light: 'logo.png',
+              // dark not specified
+              alt: 'Test Logo'
+            }
+          }
+        };
+        const engine = new TemplateEngine(config, testRootDir);
+        const placeholders = await engine.buildTemplatePlaceholders(baseContext);
+
+        // Should render logo with single-logo class (doesn't change between themes)
+        expect(placeholders.logoImages).toContain('logo.png');
+        expect(placeholders.logoImages).toContain('class="logo-img logo-single"');
+        expect(placeholders.logoImages).not.toContain('logo-light');
+        expect(placeholders.logoImages).not.toContain('logo-dark');
+      });
+    });
+
+    describe('Header Logos - Only dark logo provided', () => {
+      it('should use dark logo for both themes when only dark is configured', async () => {
+        const config = {
+          ...testConfig,
+          branding: {
+            ...testConfig.branding,
+            logo: {
+              // light not specified
+              dark: 'logo.png',
+              alt: 'Test Logo'
+            }
+          }
+        };
+        const engine = new TemplateEngine(config, testRootDir);
+        const placeholders = await engine.buildTemplatePlaceholders(baseContext);
+
+        // Should use dark logo for both themes
+        expect(placeholders.logoImages).toContain('logo.png');
+        expect(placeholders.logoImages).toContain('class="logo-img logo-single"');
+      });
+    });
+
+    describe('Header Logos - No logo provided', () => {
+      it('should render empty string when no logos are configured', async () => {
+        const config = {
+          ...testConfig,
+          branding: {
+            ...testConfig.branding,
+            logo: {
+              alt: 'Test Logo'
+              // no light, no dark
+            }
+          }
+        };
+        const engine = new TemplateEngine(config, testRootDir);
+        const placeholders = await engine.buildTemplatePlaceholders(baseContext);
+
+        expect(placeholders.logoImages).toBe('');
+      });
+
+      it('should render empty string when logo object is undefined', async () => {
+        const config = {
+          ...testConfig,
+          branding: {
+            company: testConfig.branding.company,
+            company_url: testConfig.branding.company_url
+            // Explicitly omit logo object
+          }
+        };
+        const engine = new TemplateEngine(config, testRootDir);
+        const placeholders = await engine.buildTemplatePlaceholders(baseContext);
+
+        expect(placeholders.logoImages).toBe('');
+      });
+    });
+
+    describe('Footer Logos - Smart fallback', () => {
+      it('should render both footer logos when both are configured', async () => {
+        const config = {
+          ...testConfig,
+          branding: {
+            ...testConfig.branding,
+            logo: {
+              light: 'logo-black.png',
+              dark: 'logo-white.png',
+              footer_light: 'footer-light.png',
+              footer_dark: 'footer-dark.png',
+              alt: 'Test Logo'
+            }
+          }
+        };
+        const engine = new TemplateEngine(config, testRootDir);
+        const placeholders = await engine.buildTemplatePlaceholders(baseContext);
+
+        expect(placeholders.logoFooterLight).toContain('footer-light.png');
+        expect(placeholders.logoFooterDark).toContain('footer-dark.png');
+      });
+
+      it('should use footer_light for both themes when only footer_light is configured', async () => {
+        const config = {
+          ...testConfig,
+          branding: {
+            ...testConfig.branding,
+            logo: {
+              light: 'logo.png',
+              footer_light: 'footer.png',
+              // footer_dark not specified
+              alt: 'Test Logo'
+            }
+          }
+        };
+        const engine = new TemplateEngine(config, testRootDir);
+        const placeholders = await engine.buildTemplatePlaceholders(baseContext);
+
+        // Both should point to footer_light
+        expect(placeholders.logoFooterLight).toContain('footer.png');
+        expect(placeholders.logoFooterDark).toContain('footer.png');
+      });
+
+      it('should use footer_dark for both themes when only footer_dark is configured', async () => {
+        const config = {
+          ...testConfig,
+          branding: {
+            ...testConfig.branding,
+            logo: {
+              light: 'logo.png',
+              footer_dark: 'footer.png',
+              // footer_light not specified
+              alt: 'Test Logo'
+            }
+          }
+        };
+        const engine = new TemplateEngine(config, testRootDir);
+        const placeholders = await engine.buildTemplatePlaceholders(baseContext);
+
+        // Both should point to footer_dark
+        expect(placeholders.logoFooterLight).toContain('footer.png');
+        expect(placeholders.logoFooterDark).toContain('footer.png');
+      });
+
+      it('should return empty strings when no footer logos are configured', async () => {
+        const config = {
+          ...testConfig,
+          branding: {
+            ...testConfig.branding,
+            logo: {
+              light: 'logo.png',
+              alt: 'Test Logo'
+              // no footer logos
+            }
+          }
+        };
+        const engine = new TemplateEngine(config, testRootDir);
+        const placeholders = await engine.buildTemplatePlaceholders(baseContext);
+
+        expect(placeholders.logoFooterLight).toBe('');
+        expect(placeholders.logoFooterDark).toBe('');
+      });
+    });
+
+    describe('Project Name Display', () => {
+      it('should render project name span when name is provided', async () => {
+        const config = {
+          ...testConfig,
+          project: {
+            ...testConfig.project,
+            name: 'My Project'
+          },
+          branding: {
+            ...testConfig.branding,
+            logo: {
+              light: 'logo.png',
+              alt: 'Logo'
+            }
+          }
+        };
+        const engine = new TemplateEngine(config, testRootDir);
+        const placeholders = await engine.buildTemplatePlaceholders(baseContext);
+
+        expect(placeholders.projectNameSpan).toContain('My Project');
+        expect(placeholders.projectNameSpan).toContain('class="project-name"');
+      });
+
+      it('should render empty string when project name is empty', async () => {
+        const config = {
+          ...testConfig,
+          project: {
+            ...testConfig.project,
+            name: ''
+          }
+        };
+        const engine = new TemplateEngine(config, testRootDir);
+        const placeholders = await engine.buildTemplatePlaceholders(baseContext);
+
+        expect(placeholders.projectNameSpan).toBe('');
+      });
+
+      it('should respect show_project_name flag when false', async () => {
+        const config = {
+          ...testConfig,
+          navigation: {
+            ...testConfig.navigation,
+            show_project_name: false
+          }
+        };
+        const engine = new TemplateEngine(config, testRootDir);
+        const placeholders = await engine.buildTemplatePlaceholders(baseContext);
+
+        expect(placeholders.projectNameSpan).toBe('');
+      });
+    });
+
+    describe('Combined Scenarios - Real World Use Cases', () => {
+      it('should support logo + name combination', async () => {
+        const config = {
+          ...testConfig,
+          project: {
+            ...testConfig.project,
+            name: 'Chiron'
+          },
+          branding: {
+            ...testConfig.branding,
+            logo: {
+              light: 'logo-black.png',
+              dark: 'logo-white.png',
+              alt: 'Chiron Logo'
+            }
+          }
+        };
+        const engine = new TemplateEngine(config, testRootDir);
+        const placeholders = await engine.buildTemplatePlaceholders(baseContext);
+
+        expect(placeholders.logoImages).not.toBe('');
+        expect(placeholders.projectNameSpan).toContain('Chiron');
+      });
+
+      it('should support logo only (no name)', async () => {
+        const config = {
+          ...testConfig,
+          project: {
+            ...testConfig.project,
+            name: ''
+          },
+          branding: {
+            ...testConfig.branding,
+            logo: {
+              light: 'logo.png',
+              alt: 'Logo'
+            }
+          }
+        };
+        const engine = new TemplateEngine(config, testRootDir);
+        const placeholders = await engine.buildTemplatePlaceholders(baseContext);
+
+        expect(placeholders.logoImages).not.toBe('');
+        expect(placeholders.projectNameSpan).toBe('');
+      });
+
+      it('should support name only (no logo)', async () => {
+        const config = {
+          ...testConfig,
+          project: {
+            ...testConfig.project,
+            name: 'My Documentation'
+          },
+          branding: {
+            ...testConfig.branding,
+            logo: {} // no logo
+          }
+        };
+        const engine = new TemplateEngine(config, testRootDir);
+        const placeholders = await engine.buildTemplatePlaceholders(baseContext);
+
+        expect(placeholders.logoImages).toBe('');
+        expect(placeholders.projectNameSpan).toContain('My Documentation');
+      });
+    });
+
+    describe('Dark Mode Disabled - Logo Behavior', () => {
+      it('should use only light logo when dark mode is disabled', async () => {
+        const config = {
+          ...testConfig,
+          features: {
+            dark_mode: false  // Dark mode disabled
+          },
+          branding: {
+            ...testConfig.branding,
+            logo: {
+              light: 'logo-light.png',
+              dark: 'logo-dark.png',  // Should be ignored
+              alt: 'Test Logo'
+            }
+          }
+        };
+        const engine = new TemplateEngine(config, testRootDir);
+        const placeholders = await engine.buildTemplatePlaceholders(baseContext);
+
+        // Should only have light logo with logo-single class
+        expect(placeholders.logoImages).toContain('logo-light.png');
+        expect(placeholders.logoImages).not.toContain('logo-dark.png');
+        expect(placeholders.logoImages).toContain('class="logo-img logo-single"');
+        expect(placeholders.logoImages).not.toContain('logo-light"'); // Not logo-light class
+      });
+
+      it('should use light logo even if only dark is provided when dark mode disabled', async () => {
+        const config = {
+          ...testConfig,
+          features: {
+            dark_mode: false
+          },
+          branding: {
+            ...testConfig.branding,
+            logo: {
+              dark: 'logo.png',  // Only dark provided, but should be used as fallback
+              alt: 'Test Logo'
+            }
+          }
+        };
+        const engine = new TemplateEngine(config, testRootDir);
+        const placeholders = await engine.buildTemplatePlaceholders(baseContext);
+
+        // Should use dark logo as fallback with logo-single class
+        expect(placeholders.logoImages).toContain('logo.png');
+        expect(placeholders.logoImages).toContain('class="logo-img logo-single"');
+      });
+
+      it('should use both logos when dark mode is enabled (default behavior)', async () => {
+        const config = {
+          ...testConfig,
+          features: {
+            dark_mode: true  // Explicitly enabled
+          },
+          branding: {
+            ...testConfig.branding,
+            logo: {
+              light: 'logo-light.png',
+              dark: 'logo-dark.png',
+              alt: 'Test Logo'
+            }
+          }
+        };
+        const engine = new TemplateEngine(config, testRootDir);
+        const placeholders = await engine.buildTemplatePlaceholders(baseContext);
+
+        // Should have both logos with theme-specific classes
+        expect(placeholders.logoImages).toContain('logo-light.png');
+        expect(placeholders.logoImages).toContain('logo-dark.png');
+        expect(placeholders.logoImages).toContain('class="logo-img logo-light"');
+        expect(placeholders.logoImages).toContain('class="logo-img logo-dark"');
+      });
+    });
+  });
+
+  // ======================
+  // Optional Sidebar Tests
+  // ======================
+  describe('Optional Sidebar', () => {
+    it('should have sidebars config in engine', () => {
+      const configWithSidebar = {
+        ...testConfig,
+        navigation: {
+          breadcrumb: testConfig.navigation.breadcrumb,
+          header: [
+            { label: 'Home', url: '/' }
+          ],
+          sidebars: {
+            default: {
+              sections: [
+                {
+                  section: 'Test',
+                  items: [
+                    { label: 'Test', url: '/' }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      };
+
+      const engineWithSidebar = new TemplateEngine(configWithSidebar, testRootDir);
+      
+      expect(engineWithSidebar.config.navigation.sidebars).toBeDefined();
+      expect(engineWithSidebar.config.navigation.sidebars.default).toBeDefined();
+    });
+
+    it('should render sidebar by default (hide_sidebar not set)', async () => {
+      const configWithSidebar = {
+        ...testConfig,
+        navigation: {
+          breadcrumb: testConfig.navigation.breadcrumb,
+          header: [
+            { label: 'Home', url: '/' }
+          ],
+          sidebars: {
+            default: {
+              sections: [
+                {
+                  section: 'Getting Started',
+                  items: [
+                    { label: 'Home', url: '/' }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      };
+
+      const engineWithSidebar = new TemplateEngine(configWithSidebar, testRootDir);
+      
+      const context = {
+        page: {
+          title: 'Test Page',
+          filename: 'test.html',
+          url: '/test',
+          content: '<p>Test content</p>',
+          depth: 0
+        },
+        config: configWithSidebar,
+        isActive: () => false
+      };
+
+      const placeholders = await engineWithSidebar.buildTemplatePlaceholders(context);
+      
+      expect(placeholders.hideSidebar).toBe(false);
+      expect(placeholders.navigation).toBeTruthy();
+      expect(placeholders.navigation).toContain('Getting Started');
+    });
+
+    it('should hide sidebar when hide_sidebar: true in frontmatter', async () => {
+      const context = {
+        page: {
+          title: 'Landing Page',
+          filename: 'landing.html',
+          url: '/landing',
+          content: '<p>Landing content</p>',
+          depth: 0,
+          hide_sidebar: true
+        },
+        config: testConfig
+      };
+
+      const placeholders = await engine.buildTemplatePlaceholders(context);
+      
+      expect(placeholders.hideSidebar).toBe(true);
+      expect(placeholders.navigation).toBe('');
+    });
+
+    it('should not render sidebar when hide_sidebar: true', async () => {
+      const configWithSidebar = {
+        ...testConfig,
+        navigation: {
+          breadcrumb: testConfig.navigation.breadcrumb,
+          header: [
+            { label: 'Home', url: '/' }
+          ],
+          sidebars: {
+            default: {
+              sections: [
+                {
+                  section: 'Navigation',
+                  items: [
+                    { label: 'Home', url: '/' },
+                    { label: 'About', url: '/about' }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      };
+
+      const engineWithSidebar = new TemplateEngine(configWithSidebar, testRootDir);
+
+      const context = {
+        page: {
+          title: 'Simple Page',
+          filename: 'simple.html',
+          url: '/simple',
+          content: '<p>Simple content</p>',
+          depth: 0,
+          hide_sidebar: true
+        },
+        config: configWithSidebar,
+        isActive: () => false
+      };
+
+      const placeholders = await engineWithSidebar.buildTemplatePlaceholders(context);
+      
+      expect(placeholders.hideSidebar).toBe(true);
+      expect(placeholders.navigation).toBe('');
+      // Header nav should still work
+      expect(placeholders.headerNav).toBeTruthy();
+    });
+
+    it('should render sidebar when hide_sidebar: false explicitly', async () => {
+      const configWithSidebar = {
+        ...testConfig,
+        navigation: {
+          breadcrumb: testConfig.navigation.breadcrumb,
+          header: [
+            { label: 'Home', url: '/' }
+          ],
+          sidebars: {
+            default: {
+              sections: [
+                {
+                  section: 'Menu',
+                  items: [
+                    { label: 'Page 1', url: '/page1' }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      };
+
+      const engineWithSidebar = new TemplateEngine(configWithSidebar, testRootDir);
+
+      const context = {
+        page: {
+          title: 'Normal Page',
+          filename: 'normal.html',
+          url: '/normal',
+          content: '<p>Normal content</p>',
+          depth: 0,
+          hide_sidebar: false
+        },
+        config: configWithSidebar,
+        isActive: () => false
+      };
+
+      const placeholders = await engineWithSidebar.buildTemplatePlaceholders(context);
+      
+      expect(placeholders.hideSidebar).toBe(false);
+      expect(placeholders.navigation).toBeTruthy();
+      expect(placeholders.navigation).toContain('Menu');
+    });
+  });
+
+  // ============================
+  // Site-Wide Sidebar Disabled
+  // ============================
+  describe('Site-Wide Sidebar Control', () => {
+    it('should hide sidebar globally when sidebar_enabled: false', async () => {
+      const configNoSidebar = {
+        ...testConfig,
+        navigation: {
+          breadcrumb: testConfig.navigation.breadcrumb,
+          sidebar_enabled: false,
+          header: [
+            { label: 'Home', url: '/' }
+          ]
+        }
+      };
+
+      const engineNoSidebar = new TemplateEngine(configNoSidebar, testRootDir);
+      
+      const context = {
+        page: {
+          title: 'Simple Site Page',
+          filename: 'page.html',
+          url: '/page',
+          content: '<p>Content</p>',
+          depth: 0
+        },
+        config: configNoSidebar,
+        isActive: () => false
+      };
+
+      const placeholders = await engineNoSidebar.buildTemplatePlaceholders(context);
+      
+      expect(placeholders.hideSidebar).toBe(true);
+      expect(placeholders.navigation).toBe('');
+    });
+
+    it('should not fail when sidebar_enabled: false and no sidebars config', async () => {
+      const configNoSidebar = {
+        ...testConfig,
+        navigation: {
+          breadcrumb: testConfig.navigation.breadcrumb,
+          sidebar_enabled: false,
+          header: [
+            { label: 'Home', url: '/' }
+          ]
+          // No sidebars property at all
+        }
+      };
+
+      const engineNoSidebar = new TemplateEngine(configNoSidebar, testRootDir);
+      
+      const context = {
+        page: {
+          title: 'Page',
+          filename: 'page.html',
+          url: '/page',
+          content: '<p>Content</p>',
+          depth: 0
+        },
+        config: configNoSidebar,
+        isActive: () => false
+      };
+
+      // Should not throw
+      const placeholders = await engineNoSidebar.buildTemplatePlaceholders(context);
+      
+      expect(placeholders.hideSidebar).toBe(true);
+      expect(placeholders.navigation).toBe('');
+    });
+
+    it('should allow page to override site-wide setting with hide_sidebar: false', async () => {
+      const configNoSidebar = {
+        ...testConfig,
+        navigation: {
+          breadcrumb: testConfig.navigation.breadcrumb,
+          sidebar_enabled: false,
+          header: [
+            { label: 'Home', url: '/' }
+          ],
+          sidebars: {
+            default: {
+              sections: [
+                {
+                  section: 'Menu',
+                  items: [
+                    { label: 'Home', url: '/' }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      };
+
+      const engineNoSidebar = new TemplateEngine(configNoSidebar, testRootDir);
+      
+      const context = {
+        page: {
+          title: 'Special Page',
+          filename: 'special.html',
+          url: '/special',
+          content: '<p>Special content</p>',
+          depth: 0,
+          hide_sidebar: false  // Force sidebar for this page
+        },
+        config: configNoSidebar,
+        isActive: () => false
+      };
+
+      const placeholders = await engineNoSidebar.buildTemplatePlaceholders(context);
+      
+      expect(placeholders.hideSidebar).toBe(false);
+      expect(placeholders.navigation).toBeTruthy();
+      expect(placeholders.navigation).toContain('Menu');
+    });
+
+    it('should allow page to override site-wide enabled with hide_sidebar: true', async () => {
+      const configWithSidebar = {
+        ...testConfig,
+        navigation: {
+          breadcrumb: testConfig.navigation.breadcrumb,
+          sidebar_enabled: true,  // Explicitly enabled
+          header: [
+            { label: 'Home', url: '/' }
+          ],
+          sidebars: {
+            default: {
+              sections: [
+                {
+                  section: 'Menu',
+                  items: [
+                    { label: 'Home', url: '/' }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      };
+
+      const engineWithSidebar = new TemplateEngine(configWithSidebar, testRootDir);
+      
+      const context = {
+        page: {
+          title: 'Landing',
+          filename: 'landing.html',
+          url: '/landing',
+          content: '<p>Landing</p>',
+          depth: 0,
+          hide_sidebar: true  // Hide for this specific page
+        },
+        config: configWithSidebar,
+        isActive: () => false
+      };
+
+      const placeholders = await engineWithSidebar.buildTemplatePlaceholders(context);
+      
+      expect(placeholders.hideSidebar).toBe(true);
+      expect(placeholders.navigation).toBe('');
     });
   });
 });

@@ -1,7 +1,7 @@
 ---
 title: UI Showcase
 description: Visual showcase of all UI components and styles available in Chiron
-template: page-with-toc.html
+template: page-with-toc.ejs
 pagination: true
 ---
 
@@ -14,8 +14,8 @@ This page demonstrates all the UI elements and components available in Chiron do
 ### Headings
 
 # Heading 1
-## Heading 2
-### Heading 3
+## Heading 2 {data-toc-ignore}
+### Heading 3 {data-toc-ignore}
 #### Heading 4
 ##### Heading 5
 ###### Heading 6
@@ -151,6 +151,10 @@ features:
 
 > **Warning**: This is a warning message.
 
+> **Success**: Operation completed successfully!
+
+> **Error**: Something went wrong. Please try again.
+
 ## Horizontal Rules
 
 ---
@@ -173,45 +177,47 @@ This paragraph contains various inline elements: **bold**, *italic*, ***bold ita
 
 Info boxes are perfect for highlighting important information, warnings, tips, and more.
 
-<div class="info-box info-box-info">
+<div class="info-box info-box-info" data-dismissible>
   <strong>Info</strong>
-  This is an informational message. Use this for general information or notes that don't require immediate action.
+  This is an informational message. Use this for general information or notes that don't require immediate action. Click the X to dismiss.
 </div>
 
-<div class="info-box info-box-warning">
+<div class="info-box info-box-warning" data-dismissible="maintenance-notice">
   <strong>Warning</strong>
-  This is a warning message. Use this to alert users about potential issues or important considerations.
+  This is a warning message. Use this to alert users about potential issues or important considerations. This one has a custom ID for persistence.
 </div>
 
-<div class="info-box info-box-error">
+<div class="info-box info-box-error" data-dismissible>
   <strong>Error</strong>
   This is an error message. Use this for critical issues that need immediate attention or things that could break functionality.
 </div>
 
-<div class="info-box info-box-success">
+<div class="info-box info-box-success" data-dismissible>
   <strong>Success</strong>
   This is a success message. Use this to confirm successful operations or positive outcomes.
 </div>
 
-<div class="info-box info-box-tip">
+<div class="info-box info-box-tip" data-dismissible>
   <strong>Tip</strong>
   This is a helpful tip. Use this for best practices, recommendations, or useful suggestions that can improve the user experience.
 </div>
 
 ### Info Box with Code
 
-<div class="info-box info-box-info">
+<div class="info-box info-box-info" data-dismissible>
   <strong>Configuration Tip</strong>
   You can customize the theme by modifying the <code>chiron.config.yaml</code> file. Here's an example:
   
-  <pre><code>theme:
+  <div class="code-block">
+    <pre><code class="language-yaml">theme:
   primaryColor: "#2563eb"
   darkMode: true</code></pre>
+  </div>
 </div>
 
 ### Info Box with Links
 
-<div class="info-box info-box-warning">
+<div class="info-box info-box-warning" data-dismissible>
   <strong>Breaking Change</strong>
   Version 2.0 introduces breaking changes. Please read the <a href="index.html">migration guide</a> before upgrading.
 </div>
@@ -226,81 +232,110 @@ Info boxes are perfect for highlighting important information, warnings, tips, a
 > 
 > Export as PNG/SVG and include them as images in your documentation.
 
-## Feature Cards
+## Cards
 
-<div class="feature-grid">
-    <a href="index.html" class="feature-card">
-        <div class="feature-icon">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                <polyline points="14 2 14 8 20 8"/>
-                <line x1="16" y1="13" x2="8" y2="13"/>
-                <line x1="16" y1="17" x2="8" y2="17"/>
-                <polyline points="10 9 9 9 8 9"/>
-            </svg>
-        </div>
-        <h3>Markdown First</h3>
-        <p>Write documentation in simple Markdown with frontmatter support.</p>
-    </a>
-    <a href="index.html" class="feature-card">
-        <div class="feature-icon">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="3"/>
-                <path d="M12 1v6m0 6v6"/>
-                <path d="m4.93 4.93 4.24 4.24m5.66 5.66 4.24 4.24"/>
-                <path d="M1 12h6m6 0h6"/>
-                <path d="m4.93 19.07 4.24-4.24m5.66-5.66 4.24-4.24"/>
-            </svg>
-        </div>
-        <h3>YAML Config</h3>
-        <p>Single configuration file for all settings.</p>
-    </a>
-    <a href="index.html" class="feature-card">
-        <div class="feature-icon">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2a10 10 0 1 0 0 20 10 10 0 1 0 0-20z"/>
-                <path d="M12 6v6l4 2"/>
-            </svg>
-        </div>
-        <h3>Modern Design</h3>
-        <p>Clean, responsive interface with dark mode support.</p>
-    </a>
-    <a href="index.html" class="feature-card">
-        <div class="feature-icon">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                <line x1="9" y1="9" x2="15" y2="15"/>
-                <line x1="15" y1="9" x2="9" y2="15"/>
-            </svg>
-        </div>
-        <h3>Code Highlighting</h3>
-        <p>Beautiful syntax highlighting with Prism.js for all major languages.</p>
-    </a>
-    <a href="index.html" class="feature-card">
-        <div class="feature-icon">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                <polyline points="7.5 4.21 12 6.81 16.5 4.21"/>
-                <polyline points="7.5 19.79 7.5 14.6 3 12"/>
-                <polyline points="21 12 16.5 14.6 16.5 19.79"/>
-                <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
-                <line x1="12" y1="22.08" x2="12" y2="12"/>
-            </svg>
-        </div>
-        <h3>Mermaid Diagrams</h3>
-        <p>Create flowcharts, sequence diagrams, and more with Mermaid.</p>
-    </a>
-    <a href="index.html" class="feature-card">
-        <div class="feature-icon">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <polyline points="7 10 12 15 17 10"/>
-                <line x1="12" y1="15" x2="12" y2="3"/>
-            </svg>
-        </div>
-        <h3>GitHub Pages Ready</h3>
-        <p>Optimized output for seamless deployment to GitHub Pages.</p>
-    </a>
+Cards are flexible content containers. Use them for features, products, team members, or any grid-based content.
+
+### Basic Cards with Icons
+
+<div class="grid-3">
+  <div class="card card-centered">
+    <div class="card-icon">
+      <svg><use href="assets/icons.svg#icon-file-text"/></svg>
+    </div>
+    <h3 class="card-title">Markdown First</h3>
+    <p class="card-text">Write documentation in simple Markdown with frontmatter support.</p>
+  </div>
+  
+  <div class="card card-centered">
+    <div class="card-icon">
+      <svg><use href="assets/icons.svg#icon-settings"/></svg>
+    </div>
+    <h3 class="card-title">YAML Config</h3>
+    <p class="card-text">Single configuration file for all settings.</p>
+  </div>
+  
+  <div class="card card-centered">
+    <div class="card-icon">
+      <svg><use href="assets/icons.svg#icon-zap"/></svg>
+    </div>
+    <h3 class="card-title">Fast Build</h3>
+    <p class="card-text">Lightning-fast static site generation.</p>
+  </div>
+</div>
+
+### Clickable Cards with Variants
+
+Cards can be clickable links with different visual styles.
+
+<div class="grid-3">
+  <a href="index.html" class="card card-centered">
+    <div class="card-icon">
+      <svg><use href="assets/icons.svg#icon-code"/></svg>
+    </div>
+    <h3 class="card-title">Default Card</h3>
+    <p class="card-text">Standard clickable card with hover effect.</p>
+  </a>
+  
+  <a href="index.html" class="card card-centered card-primary">
+    <div class="card-icon">
+      <svg><use href="assets/icons.svg#icon-github"/></svg>
+    </div>
+    <h3 class="card-title">Primary Card</h3>
+    <p class="card-text">Accent color for important CTAs. Uses <code>card-primary</code> class.</p>
+  </a>
+  
+  <a href="index.html" class="card card-centered card-bordered">
+    <div class="card-icon">
+      <svg><use href="assets/icons.svg#icon-search"/></svg>
+    </div>
+    <h3 class="card-title">Bordered Card</h3>
+    <p class="card-text">Thicker border for emphasis. Uses <code>card-bordered</code> class.</p>
+  </a>
+</div>
+
+### Cards with Images
+
+<div class="grid-2">
+  <div class="card">
+    <img src="assets/logo-black.png" alt="Logo" class="card-image" style="max-height: 120px; object-fit: contain;">
+    <h3 class="card-title">Image Card</h3>
+    <p class="card-text">Cards can display images instead of icons.</p>
+  </div>
+  
+  <div class="card">
+    <div class="card-icon">🚀</div>
+    <h3 class="card-title">Emoji Icons</h3>
+    <p class="card-text">Or use emoji for a playful touch!</p>
+  </div>
+</div>
+
+### Horizontal Cards
+
+<div class="card card-horizontal">
+  <div class="card-icon">
+    <svg><use href="assets/icons.svg#icon-lightbulb"/></svg>
+  </div>
+  <div>
+    <h3 class="card-title">Horizontal Layout</h3>
+    <p class="card-text">Cards can be displayed horizontally for a different look. Great for feature lists or step-by-step guides.</p>
+  </div>
+</div>
+
+### Using the Grid System
+
+Cards work with the responsive grid system. Use `grid-2` for equal columns, or `grid-2-1` for asymmetric layouts (2:1 ratio). All grids automatically become single column on mobile.
+
+<div class="grid-2-1">
+  <div class="card">
+    <h3 class="card-title">Wide Card (2fr)</h3>
+    <p class="card-text">This card takes 2/3 of the space on desktop using <code>grid-2-1</code> class. Automatically becomes full-width on mobile.</p>
+  </div>
+  
+  <div class="card">
+    <h3 class="card-title">Narrow (1fr)</h3>
+    <p class="card-text">This card takes 1/3 of the space. Simple and maintainable.</p>
+  </div>
 </div>
 
 ## Nested Content
@@ -378,59 +413,33 @@ This is content under a level 6 heading.
 
 ## Badges
 
-### Basic Badges
+Simple, elegant labels for status, versions, and metadata.
 
-<span class="badge">Default</span>
-<span class="badge badge-info">Info</span>
-<span class="badge badge-success">Success</span>
-<span class="badge badge-warning">Warning</span>
-<span class="badge badge-error">Error</span>
-<span class="badge badge-primary">Primary</span>
+### Colors
 
-### Size Variants
+<span class="badge">Default</span> <span class="badge badge-info">Info</span> <span class="badge badge-success">Success</span> <span class="badge badge-warning">Warning</span> <span class="badge badge-error">Error</span> <span class="badge badge-primary">Primary</span>
 
-<span class="badge badge-sm badge-info">Small</span>
-<span class="badge badge-info">Normal</span>
-<span class="badge badge-lg badge-info">Large</span>
+### Variants
 
-### Outline Style
+**Sizes:** <span class="badge badge-sm badge-info">Small</span> <span class="badge badge-info">Normal</span> <span class="badge badge-lg badge-info">Large</span>
 
-<span class="badge badge-outline badge-info">Info</span>
-<span class="badge badge-outline badge-success">Success</span>
-<span class="badge badge-outline badge-warning">Warning</span>
-<span class="badge badge-outline badge-error">Error</span>
+**Outline:** <span class="badge badge-outline badge-info">Info</span> <span class="badge badge-outline badge-success">Success</span> <span class="badge badge-outline badge-error">Error</span>
 
-### With Dot Indicator
+**With dot:** <span class="badge badge-dot badge-success">Active</span> <span class="badge badge-dot badge-warning">Pending</span> <span class="badge badge-dot badge-error">Offline</span>
 
-<span class="badge badge-dot badge-success">Active</span>
-<span class="badge badge-dot badge-warning">Pending</span>
-<span class="badge badge-dot badge-error">Failed</span>
+### Real-World Examples
 
-### In Headings
+#### New Feature <span class="badge badge-success">v2.0</span>
 
-### New Feature <span class="badge badge-success">v2.0</span>
+**API Status:** <span class="badge badge-dot badge-success">Online</span> · **Version:** <span class="badge badge-sm badge-info">v2.1.0</span>
 
-### Deprecated API <span class="badge badge-warning">Legacy</span>
-
-#### Coming Soon <span class="badge badge-info">Beta</span>
-
-### Badge Group
-
+**Tech Stack:**
 <div class="badge-group">
   <span class="badge badge-info">Node.js</span>
   <span class="badge badge-success">v18+</span>
-  <span class="badge badge-primary">Stable</span>
+  <span class="badge badge-primary">TypeScript</span>
+  <span class="badge badge-outline badge-warning">Experimental</span>
 </div>
-
-### Use Cases
-
-**Version tags:** <span class="badge badge-sm badge-info">v2.1.0</span>
-
-**Status:** <span class="badge badge-dot badge-success">Online</span>
-
-**Breaking change:** <span class="badge badge-error">Breaking</span>
-
-**Experimental:** <span class="badge badge-outline badge-warning">Experimental</span>
 
 ## Mixed Content
 
@@ -457,7 +466,7 @@ Press <kbd>Cmd</kbd> + <kbd>V</kbd> to paste.
 
 ## Abbreviations
 
-The HTML specification is maintained by the W3C.
+The HTML specification is maintained by the W3C. Hover over the abbreviations to see their full meaning.
 
 *[HTML]: Hyper Text Markup Language
 *[W3C]: World Wide Web Consortium
@@ -465,17 +474,25 @@ The HTML specification is maintained by the W3C.
 ## Definition Lists
 
 Term 1
-: Definition 1
+: Definition 1 with some explanatory text.
 
 Term 2
-: Definition 2a
-: Definition 2b
+: Definition 2a - first definition for this term.
+: Definition 2b - alternative definition for the same term.
+
+API
+: Application Programming Interface - a set of protocols for building software.
 
 ## Footnotes
 
-Here's a sentence with a footnote[^1].
+Here's a sentence with a footnote<sup><a href="#fn1" id="ref1" class="footnote-ref">1</a></sup>. You can have multiple footnotes<sup><a href="#fn2" id="ref2" class="footnote-ref">2</a></sup> in your content.
 
-[^1]: This is the footnote content.
+<div class="footnotes">
+  <ol>
+    <li id="fn1">This is the first footnote content with detailed explanation. <a href="#ref1" class="footnote-backref">↩</a></li>
+    <li id="fn2">This is the second footnote with additional context. <a href="#ref2" class="footnote-backref">↩</a></li>
+  </ol>
+</div>
 
 ## Emojis
 

@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "locale": "it",
+    "language": "Italiano",
+    "version": "1.0.0",
+    "updated": "2025-11-13",
+    "scope": "core"
+  },
+  "strings": {
+    "_comment": "Stringhe Core del Framework Chiron - Usate da builder/js-components",
+
+    "_comment_search": "=== Sistema di Ricerca ===",
+    "search_no_results": "Nessun risultato trovato",
+    "search_loading": "Caricamento...",
+    "search_error": "Ricerca non disponibile",
+    "search_timeout": "Timeout richiesta di ricerca",
+
+    "_comment_nav": "=== Navigazione ===",
+    "skip_to_content": "Vai al contenuto principale",
+
+    "_comment_theme": "=== Cambio Tema ===",
+    "theme_switch_success": "Passato alla modalità {theme}",
+
+    "_comment_sidebar": "=== Barra Laterale ===",
+    "sidebar_toggle_aria": "Mostra/nascondi navigazione laterale",
+
+    "_comment_toc": "=== Indice ===",
+    "toc_title": "In questa pagina",
+    "toc_aria": "Indice",
+
+    "_comment_code": "=== Blocchi di Codice ===",
+    "code_copy_failed": "Impossibile copiare il codice",
+    "code_copy_success": "Codice copiato negli appunti!",
+
+    "_comment_infobox": "=== Box informativi ===",
+    "aria_infobox_close": "Chiudi",
+
+    "_comment_embed": "=== Incorporamenti ===",
+    "embed_loading": "Caricamento...",
+    "embed_view_tweet": "Visualizza tweet",
+    "embed_content_loaded": "Contenuto caricato",
+
+    "_comment_aria_core": "=== Etichette ARIA Core ===",
+    "aria_search": "Cerca nella documentazione"
+  }
+}

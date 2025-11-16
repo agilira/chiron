@@ -1,124 +1,198 @@
 ---
 title: Interactive API Demo
-description: Live API explorer showing React integration in a static Chiron site
-external_scripts:
-  - https://unpkg.com/react@18/umd/react.production.min.js
-  - https://unpkg.com/react-dom@18/umd/react-dom.production.min.js
-  - assets/react-api-explorer.js
+description: Live API explorer showing React integration with lazy loading in a static Chiron site
 ---
 
 # Interactive API Explorer
 
 > **Live Demo**: Test API endpoints directly in your browser with this React-powered interactive tool.
 
-This page demonstrates how Chiron enables rich interactivity where needed while keeping the rest of your documentation fast and lightweight.
+This page demonstrates how Chiron enables rich interactivity **only when you need it** while keeping the rest of your documentation fast and lightweight.
 
-<div id="react-api-root"></div>
+**Scroll down to see the lazy loading in action!** The React app below won't load until you scroll near it.
 
-## How It Works
+---
 
-This interactive API explorer is a **real React application** running on this page only.
+## What is Lazy Loading?
 
-### 1. External Scripts Loading
+Instead of loading 130KB of React code immediately when you open this page, Chiron uses **Intersection Observer** to load the app only when it enters your viewport.
 
-In the page's frontmatter, we declare the libraries we need:
+**Benefits:**
+- ⚡ **Faster initial load** - Page loads in ~50ms instead of ~200ms
+- 📦 **Smaller payload** - Only ~35KB initially (base Chiron components)
+- 🎯 **Load on demand** - React loads only when you scroll to it
+- 🚀 **Better UX** - Users who don't scroll down don't pay the cost
 
-```yaml
-external_scripts:
-  - https://unpkg.com/react@18/umd/react.production.min.js
-  - https://unpkg.com/react-dom@18/umd/react-dom.production.min.js
-  - assets/react-api-explorer.js  # Self-hosted app (auto-whitelisted!)
-```
-
-### 2. React Powers Interactivity
-
-The API explorer includes:
-- **Dynamic endpoint selection**
-- **Live parameter input**
-- **Async API calls** (mocked for demo)
-- **Real-time response rendering**
-- **Loading states & timing**
-
-### 3. Other Pages Stay Fast
-
-Navigate to any other page in this documentation:
-- No React loaded
-- No unnecessary JavaScript
-- Pure HTML/CSS
-- Instant loading
-
-## Real-World Use Cases
-
-This approach is perfect for:
-
-- **API Documentation** - Interactive testing tools (like this!)
-- **Configuration Generators** - Build complex configs with forms
-- **Component Showcases** - Live prop editing and previews
-- **Code Playgrounds** - Try code directly in docs
-- **Data Visualizations** - Charts only where needed
-
-## The Code
-
-The API explorer uses React state management:
-
-```javascript
-const [selectedEndpoint, setSelectedEndpoint] = useState('getUser');
-const [response, setResponse] = useState(null);
-const [loading, setLoading] = useState(false);
-
-const handleRequest = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-  
-  // Simulate API call
-  const data = await fetchAPI(selectedEndpoint);
-  
-  setResponse(data);
-  setLoading(false);
-};
-```
-
-**Why `React.createElement`?** No build step needed! This runs directly in the browser using React's UMD builds.
-
-## Performance Comparison
-
-| Metric | This Page (with React) | Other Pages (pure HTML) |
-|--------|------------------------|-------------------------|
-| JavaScript | ~130 KB (React + App) | ~15 KB (Chiron core) |
-| Load Time | ~200ms | ~50ms |
-| Interactive | Full React app | Fast navigation |
-| Use Case | Rich interactions | Fast content delivery |
-
-## Security
-
-Notice how the self-hosted script (`assets/react-api-explorer.js`) works without any configuration:
-
-```yaml
-external_scripts:
-  - assets/react-api-explorer.js  # Automatically allowed!
-```
-
-**Why?** If you're hosting a script on your own site, you control it. Chiron's security model trusts self-hosted files by default.
-
-For external CDN scripts (like React from unpkg.com), Chiron validates against a list of trusted domains.
+---
 
 ## Try It Yourself
 
-1. **Select an endpoint** - Choose from GET /api/users, /api/config, or /api/search
-2. **Enter parameters** - Fill in the required values (e.g., user ID)
-3. **Send request** - Click "Send Request" and see the response
-4. **Check timing** - Notice the response time and status
-5. **Navigate away** - Click any other doc page and see instant loading
+**Instructions:**
+1. Open your browser's DevTools (F12)
+2. Go to the Network tab
+3. Scroll down slowly toward the demo below
+4. Watch the React scripts load dynamically!
 
-## The Point
+---
+
+[lazy-app framework="react" src="assets/react-api-explorer.js" deps="https://unpkg.com/react@18/umd/react.production.min.js,https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" id="react-api-root"]
+<div style="text-align: center; padding: 3rem;">
+  <p style="margin-bottom: 1rem; font-size: 1.125rem;"><strong>🚀 Interactive React API Explorer</strong></p>
+  <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Scroll here to load the app</p>
+  <button style="padding: 0.75rem 1.5rem; font-size: 1rem; background: var(--accent-primary); color: white; border: none; border-radius: 8px; cursor: pointer;">
+    Load Demo
+  </button>
+</div>
+[/lazy-app]
+
+---
+
+## How Lazy Loading Works
+
+This interactive API explorer is a **real React application** that loads **only when you scroll to it**.
+
+### 1. Intersection Observer Magic
+
+Chiron watches for when the app container enters the viewport:
+
+```javascript
+const observer = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) {
+    // User scrolled to app - load it now!
+    loadReactAndApp();
+  }
+}, {
+  rootMargin: '200px' // Start loading 200px before visible
+});
+```
+
+### 2. Simple Shortcode Syntax
+
+In your Markdown, just use the `[lazy-app]` shortcode:
+
+```markdown
+[lazy-app framework="react" 
+          src="assets/my-app.js" 
+          deps="react,react-dom"]
+  Custom loading placeholder...
+[/lazy-app]
+```
+
+### 3. Dynamic Script Loading
+
+When the app enters viewport, Chiron:
+1. Shows loading spinner
+2. Loads React & ReactDOM in parallel
+3. Loads your app script
+4. Dispatches `lazy-app-loaded` event
+5. Your app initializes!
+
+### 4. Framework Agnostic
+
+Works with **any framework**:
+- React
+- Vue
+- Svelte
+- Preact
+- Vanilla JS
+- Or anything from CDN!
+
+---
+
+## Performance Comparison
+
+| Metric | With Lazy Loading | Without (old way) |
+|--------|-------------------|-------------------|
+| **Initial JS** | ~35 KB | ~165 KB |
+| **Initial Load** | ~50ms | ~200ms |
+| **App Load** | On scroll (~150ms) | On page load |
+| **User doesn't scroll** | **0 KB overhead** | **130 KB wasted** |
+
+**Key Insight**: Users who never scroll to the app don't pay the React cost!
+
+---
+
+## Real-World Use Cases
+
+Perfect for:
+- 🔧 **API Documentation** - Interactive testing tools
+- 📝 **Form Builders** - Complex configuration generators
+- 🎨 **Component Showcases** - Live prop editing
+- 💻 **Code Playgrounds** - Try code in docs
+- 📊 **Data Visualizations** - Charts only where needed
+- 🎓 **Interactive Tutorials** - Step-by-step guides
+
+---
+
+## The Code
+
+The API explorer uses React hooks:
+
+```javascript
+const { useState } = React;
+
+function APIExplorer() {
+  const [endpoint, setEndpoint] = useState('getUser');
+  const [response, setResponse] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleRequest = async () => {
+    setLoading(true);
+    const data = await fetchAPI(endpoint);
+    setResponse(data);
+    setLoading(false);
+  };
+
+  return /* JSX */;
+}
+
+// Initialize on lazy-app-loaded event
+document.addEventListener('lazy-app-loaded', (e) => {
+  if (e.detail.appId === 'react-api-root') {
+    const root = ReactDOM.createRoot(e.target);
+    root.render(React.createElement(APIExplorer));
+  }
+});
+```
+
+---
+
+## Try Different Frameworks
+
+### React (This Page)
+```markdown
+[lazy-app framework="react" 
+          src="assets/react-app.js" 
+          deps="react,react-dom"]
+[/lazy-app]
+```
+
+### Vue
+```markdown
+[lazy-app framework="vue" 
+          src="assets/vue-app.js" 
+          deps="https://unpkg.com/vue@3"]
+[/lazy-app]
+```
+
+### Svelte
+```markdown
+[lazy-app framework="svelte" 
+          src="assets/svelte-app.js"]
+[/lazy-app]
+```
+
+---
+
+## The Chiron Philosophy
 
 This demo proves you can have:
-- **Rich interactivity** where you need it (API testing)
-- **Blazing speed** everywhere else (pure HTML)
-- **Simple integration** (just add to frontmatter)
-- **No build complexity** (optional - use if you want)
+- ⚡ **Rich interactivity** where you need it
+- 🚀 **Blazing speed** everywhere else
+- 📦 **Simple integration** (just a shortcode)
+- 🛠️ **No build complexity** required
 
-That's the Chiron philosophy: **Use what you need, where you need it.**
+**Use what you need, where you need it.** That's Chiron.
 
 ---
 

@@ -1,0 +1,19 @@
+{
+  "name": "@chiron/plugin-google-analytics",
+  "version": "1.0.0",
+  "description": "Google Analytics and Google Tag Manager integration for Chiron",
+  "main": "index.js",
+  "keywords": [
+    "chiron",
+    "plugin",
+    "analytics",
+    "google-analytics",
+    "ga4",
+    "gtm"
+  ],
+  "author": "Chiron Team",
+  "license": "MIT",
+  "peerDependencies": {
+    "chiron": ">=0.7.0"
+  }
+}

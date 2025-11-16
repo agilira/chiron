@@ -1,0 +1,9 @@
+{
+  "name": "@chiron/plugin-cookies-scanner",
+  "version": "1.0.0",
+  "description": "Cookie scanner and categorization for Chiron",
+  "main": "index.js",
+  "keywords": ["chiron", "plugin", "cookies", "privacy", "gdpr"],
+  "author": "AGILira",
+  "license": "MPL-2.0"
+}

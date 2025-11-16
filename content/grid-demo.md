@@ -1,230 +1,241 @@
 ---
 title: Grid System Demo
-description: Live examples of the 12-column grid system
+description: Live examples of the responsive grid system
 ---
 
 # Grid System Demo
 
-Chiron uses a flexible **12-column grid system** for responsive layouts.
+Chiron uses a simple, responsive grid system. All grids automatically become single column on mobile (768px).
 
-## Basic Examples
+## Equal Column Layouts
 
-### Equal Columns
+### Two Columns
 
-<div class="grid">
-  <div class="col-6" style="background: #dbeafe; padding: 1rem; border-radius: 4px;">
-    <strong>col-6</strong><br>50% width
+<div class="grid-2">
+  <div style="background: #dbeafe; padding: 1rem; border-radius: 4px;">
+    <strong>Column 1</strong><br>50% width on desktop
   </div>
-  <div class="col-6" style="background: #fef3c7; padding: 1rem; border-radius: 4px;">
-    <strong>col-6</strong><br>50% width
+  <div style="background: #fef3c7; padding: 1rem; border-radius: 4px;">
+    <strong>Column 2</strong><br>50% width on desktop
   </div>
 </div>
 
 ### Three Columns
 
-<div class="grid">
-  <div class="col-4" style="background: #dbeafe; padding: 1rem; border-radius: 4px;">
-    <strong>col-4</strong><br>33.33%
-  </div>
-  <div class="col-4" style="background: #fef3c7; padding: 1rem; border-radius: 4px;">
-    <strong>col-4</strong><br>33.33%
-  </div>
-  <div class="col-4" style="background: #d1fae5; padding: 1rem; border-radius: 4px;">
-    <strong>col-4</strong><br>33.33%
-  </div>
+<div class="grid-3">
+  <div style="background: #dbeafe; padding: 1rem; border-radius: 4px;">Column 1</div>
+  <div style="background: #fef3c7; padding: 1rem; border-radius: 4px;">Column 2</div>
+  <div style="background: #d1fae5; padding: 1rem; border-radius: 4px;">Column 3</div>
 </div>
 
 ### Four Columns
 
-<div class="grid">
-  <div class="col-3" style="background: #dbeafe; padding: 1rem; border-radius: 4px;">col-3</div>
-  <div class="col-3" style="background: #fef3c7; padding: 1rem; border-radius: 4px;">col-3</div>
-  <div class="col-3" style="background: #d1fae5; padding: 1rem; border-radius: 4px;">col-3</div>
-  <div class="col-3" style="background: #fee2e2; padding: 1rem; border-radius: 4px;">col-3</div>
+<div class="grid-4">
+  <div style="background: #dbeafe; padding: 1rem; border-radius: 4px; text-align: center;">1</div>
+  <div style="background: #fef3c7; padding: 1rem; border-radius: 4px; text-align: center;">2</div>
+  <div style="background: #d1fae5; padding: 1rem; border-radius: 4px; text-align: center;">3</div>
+  <div style="background: #fee2e2; padding: 1rem; border-radius: 4px; text-align: center;">4</div>
+</div>
+
+### Six Columns
+
+<div class="grid-6">
+  <div style="background: #dbeafe; padding: 0.75rem; border-radius: 4px; text-align: center;">1</div>
+  <div style="background: #fef3c7; padding: 0.75rem; border-radius: 4px; text-align: center;">2</div>
+  <div style="background: #d1fae5; padding: 0.75rem; border-radius: 4px; text-align: center;">3</div>
+  <div style="background: #fee2e2; padding: 0.75rem; border-radius: 4px; text-align: center;">4</div>
+  <div style="background: #e0e7ff; padding: 0.75rem; border-radius: 4px; text-align: center;">5</div>
+  <div style="background: #fce7f3; padding: 0.75rem; border-radius: 4px; text-align: center;">6</div>
 </div>
 
 ---
 
 ## Asymmetric Layouts
 
-### Sidebar Layout (2:1 ratio)
+### 2:1 Ratio (Main Content + Sidebar)
 
-<div class="grid">
-  <main class="col-8" style="background: #dbeafe; padding: 1.5rem; border-radius: 4px;">
+<div class="grid-2-1">
+  <main style="background: #dbeafe; padding: 1.5rem; border-radius: 4px;">
     <h3>Main Content</h3>
-    <p><strong>col-8</strong> - 66.66% width</p>
-    <p>This is the main content area, perfect for articles, documentation, or primary content.</p>
+    <p><code>grid-2-1</code> - Takes 2/3 of the space (66.66%)</p>
+    <p>Perfect for articles, documentation, or primary content.</p>
   </main>
-  <aside class="col-4" style="background: #fef3c7; padding: 1.5rem; border-radius: 4px;">
+  <aside style="background: #fef3c7; padding: 1.5rem; border-radius: 4px;">
     <h3>Sidebar</h3>
-    <p><strong>col-4</strong> - 33.33% width</p>
+    <p><code>grid-2-1</code> - Takes 1/3 of the space (33.33%)</p>
     <ul>
       <li>Navigation</li>
       <li>Related links</li>
-      <li>Ads</li>
+      <li>Widgets</li>
     </ul>
   </aside>
 </div>
 
-### 7-5 Split
+### 3:1 Ratio (Wide Content + Narrow Sidebar)
 
-<div class="grid">
-  <div class="col-7" style="background: #dbeafe; padding: 1.5rem; border-radius: 4px;">
-    <strong>col-7</strong> - 58.33% width
+<div class="grid-3-1">
+  <div style="background: #dbeafe; padding: 1.5rem; border-radius: 4px;">
+    <strong>grid-3-1</strong> - 75% width
   </div>
-  <div class="col-5" style="background: #d1fae5; padding: 1.5rem; border-radius: 4px;">
-    <strong>col-5</strong> - 41.66% width
+  <div style="background: #d1fae5; padding: 1.5rem; border-radius: 4px;">
+    <strong>grid-3-1</strong> - 25% width
+  </div>
+</div>
+
+### 1:2 Ratio (Narrow + Wide)
+
+<div class="grid-1-2">
+  <div style="background: #fef3c7; padding: 1.5rem; border-radius: 4px;">
+    <strong>grid-1-2</strong> - 33.33% width
+  </div>
+  <div style="background: #dbeafe; padding: 1.5rem; border-radius: 4px;">
+    <strong>grid-1-2</strong> - 66.66% width
+  </div>
+</div>
+
+### 1:3 Ratio (Narrow + Very Wide)
+
+<div class="grid-1-3">
+  <div style="background: #d1fae5; padding: 1.5rem; border-radius: 4px;">
+    <strong>grid-1-3</strong> - 25% width
+  </div>
+  <div style="background: #dbeafe; padding: 1.5rem; border-radius: 4px;">
+    <strong>grid-1-3</strong> - 75% width
   </div>
 </div>
 
 ---
 
-## All Column Sizes
+## Auto-Fit Grid
 
-<div class="grid gap-2">
-  <div class="col-1" style="background: #dbeafe; padding: 0.5rem; text-align: center; border-radius: 4px; font-size: 0.75rem;">1</div>
-  <div class="col-11" style="background: #e0e7ff; padding: 0.5rem; border-radius: 4px; font-size: 0.75rem;">col-11</div>
-  
-  <div class="col-2" style="background: #dbeafe; padding: 0.5rem; text-align: center; border-radius: 4px; font-size: 0.75rem;">2</div>
-  <div class="col-10" style="background: #e0e7ff; padding: 0.5rem; border-radius: 4px; font-size: 0.75rem;">col-10</div>
-  
-  <div class="col-3" style="background: #dbeafe; padding: 0.5rem; text-align: center; border-radius: 4px; font-size: 0.75rem;">3</div>
-  <div class="col-9" style="background: #e0e7ff; padding: 0.5rem; border-radius: 4px; font-size: 0.75rem;">col-9</div>
-  
-  <div class="col-4" style="background: #dbeafe; padding: 0.5rem; text-align: center; border-radius: 4px; font-size: 0.75rem;">4</div>
-  <div class="col-8" style="background: #e0e7ff; padding: 0.5rem; border-radius: 4px; font-size: 0.75rem;">col-8</div>
-  
-  <div class="col-5" style="background: #dbeafe; padding: 0.5rem; text-align: center; border-radius: 4px; font-size: 0.75rem;">5</div>
-  <div class="col-7" style="background: #e0e7ff; padding: 0.5rem; border-radius: 4px; font-size: 0.75rem;">col-7</div>
-  
-  <div class="col-6" style="background: #dbeafe; padding: 0.5rem; text-align: center; border-radius: 4px; font-size: 0.75rem;">6</div>
-  <div class="col-6" style="background: #e0e7ff; padding: 0.5rem; border-radius: 4px; font-size: 0.75rem;">col-6</div>
+Automatically fits items based on available space (minimum 280px width):
+
+<div class="grid-auto-fit">
+  <div style="background: #dbeafe; padding: 1rem; border-radius: 4px;">Item 1</div>
+  <div style="background: #fef3c7; padding: 1rem; border-radius: 4px;">Item 2</div>
+  <div style="background: #d1fae5; padding: 1rem; border-radius: 4px;">Item 3</div>
+  <div style="background: #fee2e2; padding: 1rem; border-radius: 4px;">Item 4</div>
+  <div style="background: #e0e7ff; padding: 1rem; border-radius: 4px;">Item 5</div>
+  <div style="background: #fce7f3; padding: 1rem; border-radius: 4px;">Item 6</div>
 </div>
 
 ---
 
 ## Gap Utilities
 
-### Default Gap
+Control spacing between grid items:
 
-<div class="grid">
-  <div class="col-4" style="background: #dbeafe; padding: 1rem; border-radius: 4px;">Default</div>
-  <div class="col-4" style="background: #fef3c7; padding: 1rem; border-radius: 4px;">Gap</div>
-  <div class="col-4" style="background: #d1fae5; padding: 1rem; border-radius: 4px;">1.5rem</div>
+### Default Gap (1.5rem)
+
+<div class="grid-3">
+  <div style="background: #dbeafe; padding: 1rem; border-radius: 4px;">Default</div>
+  <div style="background: #fef3c7; padding: 1rem; border-radius: 4px;">Gap</div>
+  <div style="background: #d1fae5; padding: 1rem; border-radius: 4px;">1.5rem</div>
 </div>
 
-### Small Gap
+### Small Gap (0.5rem)
 
-<div class="grid gap-2">
-  <div class="col-4" style="background: #dbeafe; padding: 1rem; border-radius: 4px;">Small</div>
-  <div class="col-4" style="background: #fef3c7; padding: 1rem; border-radius: 4px;">Gap</div>
-  <div class="col-4" style="background: #d1fae5; padding: 1rem; border-radius: 4px;">0.5rem</div>
+<div class="grid-3 gap-2">
+  <div style="background: #dbeafe; padding: 1rem; border-radius: 4px;">Small</div>
+  <div style="background: #fef3c7; padding: 1rem; border-radius: 4px;">Gap</div>
+  <div style="background: #d1fae5; padding: 1rem; border-radius: 4px;">0.5rem</div>
 </div>
 
-### Large Gap
+### Large Gap (4rem)
 
-<div class="grid gap-8">
-  <div class="col-4" style="background: #dbeafe; padding: 1rem; border-radius: 4px;">Large</div>
-  <div class="col-4" style="background: #fef3c7; padding: 1rem; border-radius: 4px;">Gap</div>
-  <div class="col-4" style="background: #d1fae5; padding: 1rem; border-radius: 4px;">4rem</div>
-</div>
-
----
-
-## Responsive Grid
-
-Resize your browser to see the grid adapt!
-
-<div class="grid">
-  <div class="col-3 col-md-4 col-sm-4" style="background: #dbeafe; padding: 1rem; border-radius: 4px;">
-    <strong>Desktop:</strong> 3/12<br>
-    <strong>Tablet:</strong> 4/8<br>
-    <strong>Mobile:</strong> Full
-  </div>
-  <div class="col-3 col-md-4 col-sm-4" style="background: #fef3c7; padding: 1rem; border-radius: 4px;">
-    <strong>Desktop:</strong> 3/12<br>
-    <strong>Tablet:</strong> 4/8<br>
-    <strong>Mobile:</strong> Full
-  </div>
-  <div class="col-3 col-md-4 col-sm-4" style="background: #d1fae5; padding: 1rem; border-radius: 4px;">
-    <strong>Desktop:</strong> 3/12<br>
-    <strong>Tablet:</strong> 4/8<br>
-    <strong>Mobile:</strong> Full
-  </div>
-  <div class="col-3 col-md-4 col-sm-4" style="background: #fee2e2; padding: 1rem; border-radius: 4px;">
-    <strong>Desktop:</strong> 3/12<br>
-    <strong>Tablet:</strong> 4/8<br>
-    <strong>Mobile:</strong> Full
-  </div>
+<div class="grid-3 gap-8">
+  <div style="background: #dbeafe; padding: 1rem; border-radius: 4px;">Large</div>
+  <div style="background: #fef3c7; padding: 1rem; border-radius: 4px;">Gap</div>
+  <div style="background: #d1fae5; padding: 1rem; border-radius: 4px;">4rem</div>
 </div>
 
 ---
 
-## Complex Layout Example
+## Complete Layout Example
 
-<div class="grid gap-6">
+<div class="grid-3 gap-6">
   <!-- Hero full width -->
-  <section class="col-12" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 3rem; border-radius: 8px; text-align: center;">
+  <section style="grid-column: 1 / -1; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 3rem; border-radius: 8px; text-align: center;">
     <h2 style="margin: 0 0 1rem 0; color: white;">Hero Section</h2>
-    <p style="margin: 0; opacity: 0.9;">Full width (col-12)</p>
+    <p style="margin: 0; opacity: 0.9;">Full width using grid-column: 1 / -1</p>
   </section>
   
   <!-- 3 feature cards -->
-  <div class="col-4" style="background: #dbeafe; padding: 1.5rem; border-radius: 8px;">
-    <h3 style="margin-top: 0;">⚡ Fast</h3>
+  <div style="background: #dbeafe; padding: 1.5rem; border-radius: 8px;">
+    <h3 style="margin-top: 0;">Fast</h3>
     <p>Lightning-fast static HTML generation</p>
   </div>
-  <div class="col-4" style="background: #fef3c7; padding: 1.5rem; border-radius: 8px;">
-    <h3 style="margin-top: 0;">🎨 Beautiful</h3>
+  <div style="background: #fef3c7; padding: 1.5rem; border-radius: 8px;">
+    <h3 style="margin-top: 0;">Beautiful</h3>
     <p>Professional design out of the box</p>
   </div>
-  <div class="col-4" style="background: #d1fae5; padding: 1.5rem; border-radius: 8px;">
-    <h3 style="margin-top: 0;">📱 Responsive</h3>
+  <div style="background: #d1fae5; padding: 1.5rem; border-radius: 8px;">
+    <h3 style="margin-top: 0;">Responsive</h3>
     <p>Works perfectly on all devices</p>
   </div>
-  
-  <!-- Content + Sidebar -->
-  <article class="col-8" style="background: white; padding: 2rem; border-radius: 8px; border: 1px solid #e5e7eb;">
-    <h3 style="margin-top: 0;">Article Content</h3>
-    <p>This is the main content area (col-8). Perfect for blog posts, documentation, or any primary content.</p>
-    <p>The 12-column grid gives you maximum flexibility for any layout you need.</p>
-  </article>
-  <aside class="col-4" style="background: #f9fafb; padding: 2rem; border-radius: 8px; border: 1px solid #e5e7eb;">
-    <h4 style="margin-top: 0;">Related Links</h4>
-    <ul style="margin: 0; padding-left: 1.25rem;">
-      <li>Grid System Guide</li>
-      <li>Responsive Design</li>
-      <li>Layout Examples</li>
-    </ul>
-  </aside>
 </div>
 
 ---
 
-## Documentation
+## Quick Reference
 
-For complete documentation, see [GRID-SYSTEM.md](../GRID-SYSTEM.md).
+### Available Classes
 
-### Quick Reference
+**Equal Columns:**
+- `grid-2` - 2 equal columns
+- `grid-3` - 3 equal columns
+- `grid-4` - 4 equal columns
+- `grid-6` - 6 equal columns
+
+**Asymmetric Layouts:**
+- `grid-2-1` - 2:1 ratio (66% / 33%)
+- `grid-3-1` - 3:1 ratio (75% / 25%)
+- `grid-1-2` - 1:2 ratio (33% / 66%)
+- `grid-1-3` - 1:3 ratio (25% / 75%)
+
+**Advanced:**
+- `grid` - 12-column base grid for custom layouts
+- `grid-auto-fit` - Auto-fit responsive grid
+
+**Gap Utilities:**
+- `gap-2` - 0.5rem
+- `gap-4` - 1.5rem (default)
+- `gap-6` - 2.5rem
+- `gap-8` - 4rem
+
+### Responsive Behavior
+
+- **Desktop**: Columns as defined
+- **Tablet (1024px)**: `grid-4` and `grid-6` become 2 columns
+- **Mobile (768px)**: All grids become 1 column
+
+### Code Examples
 
 ```html
-<!-- 12-column grid -->
-<div class="grid">
-  <div class="col-8">Main (66.66%)</div>
-  <div class="col-4">Sidebar (33.33%)</div>
+<!-- Two equal columns -->
+<div class="grid-2">
+  <div>Column 1</div>
+  <div>Column 2</div>
 </div>
 
-<!-- Responsive -->
-<div class="grid">
-  <div class="col-4 col-md-4 col-sm-4">
-    Desktop: 4/12, Tablet: 4/8, Mobile: Full
-  </div>
+<!-- Asymmetric layout (2:1 ratio) -->
+<div class="grid-2-1">
+  <div>Main content (66%)</div>
+  <div>Sidebar (33%)</div>
 </div>
 
-<!-- Simple shortcuts -->
+<!-- With custom gap -->
+<div class="grid-3 gap-8">
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+</div>
+
+<!-- Full width item in grid -->
 <div class="grid-3">
-  <div>Equal</div>
-  <div>Width</div>
-  <div>Columns</div>
+  <div style="grid-column: 1 / -1;">Full width</div>
+  <div>Column 1</div>
+  <div>Column 2</div>
+  <div>Column 3</div>
 </div>
 ```

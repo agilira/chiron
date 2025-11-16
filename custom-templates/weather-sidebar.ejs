@@ -1,0 +1,37 @@
+<div class="weather-sidebar">
+  <h2><%- escapeHtml(sidebarConfig.title || 'Weather Dashboard') %></h2>
+  
+  <% if (sidebarConfig.currentWeather) { %>
+    <div class="widget weather-current">
+      <div class="temp"><%- escapeHtml(sidebarConfig.currentWeather.temperature) %>°C</div>
+      <div class="condition"><%- escapeHtml(sidebarConfig.currentWeather.condition) %></div>
+    </div>
+  <% } %>
+  
+  <% if (sidebarConfig.forecast) { %>
+    <div class="widget weather-forecast">
+      <h3>5-Day Forecast</h3>
+      <ul>
+        <% sidebarConfig.forecast.forEach(day => { %>
+          <li>
+            <span><%- escapeHtml(day.day) %></span>:
+            <span><%- escapeHtml(day.temp) %>°C</span>
+          </li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %>
+</div>
+
+<style>
+.weather-sidebar {
+  padding: var(--space-6);
+}
+.widget {
+  margin-bottom: var(--space-4);
+}
+.temp {
+  font-size: var(--font-size-heading-600);
+  font-weight: var(--font-weight-bold);
+}
+</style>

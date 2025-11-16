@@ -3,6 +3,7 @@ node_modules/
 
 # Build output
 docs-api/
+docs-ejs-backup/
 
 # Test directories
 test-docs-src/
@@ -10,6 +11,12 @@ test-external/
 test-output/
 tests/temp-output/
 tests/temp-config/
+tests/temp-test-*/
+coverage/
+
+# Manual test scripts (keep for dev, don't commit)
+test-*.js
+test-*.yaml
 
 # Editor directories and files
 .vscode/
@@ -32,9 +39,25 @@ npm-debug.log*
 *.tmp
 .cache/
 .jest-cache/
+
+# Plugin state
+.chiron-plugin-state.json
+.blog-counter
+
 # OS files
 Thumbs.db
 
 # Dev Docs
 ROADMAP_FUTURE.md 
 COMPONENTS-ANALYSIS.md
+docs-internal/
+examples/
+
+# Internal documentation (not ready for publish)
+*.md
+!README.md
+!CHANGELOG.md
+!LICENSE.md
+
+# Study/Reference materials
+study/

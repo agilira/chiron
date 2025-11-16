@@ -1,0 +1,138 @@
+# Chiron Plugins Configuration
+# Configure built-in plugins to extend Chiron's functionality
+# Documentation: See PLUGINS.md for full plugin system documentation
+
+# IMPORTANT: Chiron plugins are curated, built-in extensions maintained by
+# the core team. They provide deep integration with the build system through
+# hooks and lifecycle events. For external scripts and third-party integrations
+# that don't need build-time processing, use external.scripts in chiron.config.yaml.
+
+plugins:
+  # ============================================================================
+  # BUILT-IN PLUGINS (Official Chiron Plugins)
+  # ============================================================================
+  
+  # Mermaid Diagram Support
+  # Renders flowcharts, sequence diagrams, and more
+  # Documentation: plugins/mermaid/README.md
+  - name: "mermaid"
+    enabled: true
+    config:
+      theme: "default"           # Options: default, dark, forest, neutral
+      loadOnDemand: true          # Load only on pages with diagrams
+      initOnLoad: true            # Auto-initialize Mermaid
+      logLevel: "error"           # Console log level: error, warn, info, debug
+      # cdn: "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs"
+  
+  # Cookie Consent Banner
+  # GDPR-compliant cookie consent with automatic dependency resolution
+  # Note: cookies-scanner will be loaded automatically as dependency
+  - name: "cookie-consent"
+    enabled: true
+    config:
+      position: "bottom"
+      showOnEveryPage: true
+  
+  # Embeds Plugin
+  # Responsive, GDPR-compliant embeds for YouTube, X, CodePen, and Gist
+  # Documentation: plugins/embeds/README.md
+  - name: "embeds"
+    enabled: true
+  
+  # Local Search Plugin
+  # Client-side search with multilingual support and subfolder scanning
+  # Documentation: plugins/search-local/README.md
+  - name: "search-local"
+    enabled: true
+    config:
+      scanSubfolders: true       # Recursively scan content subfolders
+      multilingualAware: true    # Filter results by current language
+      excludePaths: []           # Glob patterns to exclude from indexing
+        # - 'drafts/**'
+        # - 'internal/**'
+      minQueryLength: 2          # Minimum characters to trigger search
+      maxResults: 10             # Maximum results to show
+      debounceDelay: 300         # Debounce delay in milliseconds
+      maxFileSize: 5242880       # Max file size in bytes (5MB)
+      maxContentLength: 5000     # Max content length to index
+      concurrencyLimit: 50       # Max concurrent file processing
+  
+  # Blog Plugin
+  # Full-featured blog system with categories, tags, RSS, and multilingual support
+  # Zero-config: automatically detects content/blog/ or content/blog/{lang}/
+  # Documentation: plugins/blog/README.md
+  - name: "blog"
+    enabled: true                # Enable when you add blog content
+    config:
+      blogName: "Blog"           # Blog name (available as <%- blogName %> in templates)
+      blogDescription: ""        # Blog description (available as <%- blogDescription %> in templates)
+      postsPerPage: 10           # WordPress-style pagination (posts per page)
+      excerptLength: 150         # Default excerpt length in characters (override per-post with frontmatter)
+      showExcerpts: true
+      enableCategories: true
+      enableTags: true
+      enableRSS: true
+      # excludePaths:             # Exclude draft posts
+      #   - "blog/drafts/**"
+      #   - "**/*-draft.md"
+  
+  # Google Analytics Plugin
+  # Adds Google Analytics 4 (GA4) or Google Tag Manager (GTM) tracking
+  # Documentation: plugins/google-analytics/README.md
+  - name: "google-analytics"
+    enabled: false
+    # config:
+    #   type: "ga4"                    # Options: ga4, gtm
+    #   measurementId: "G-XXXXXXXXXX"  # Your GA4 measurement ID
+    #   anonymizeIp: true              # Anonymize IP addresses (GDPR)
+    #   cookieConsent: false           # Wait for cookie consent
+    #   respectDnt: true               # Respect Do Not Track
+
+# ============================================================================
+# PLUGIN SYSTEM CONFIGURATION
+# ============================================================================
+
+# Global plugin settings (optional)
+pluginSettings:
+  # Enable/disable all plugins globally
+  enabled: true
+  
+  # Fail build if plugin errors (default: false - errors logged but build continues)
+  failOnError: false
+  
+  # Plugin timeout in milliseconds (default: 30000)
+  # timeout: 30000
+  
+  # Enable plugin performance metrics
+  # showMetrics: true
+
+# ============================================================================
+# NOTES
+# ============================================================================
+
+# Plugin Philosophy:
+#   Chiron plugins are curated, built-in extensions maintained by the core team.
+#   They provide deep integration with the build system through hooks and offer
+#   features that require build-time processing or complex configuration.
+#
+#   For simple external scripts, analytics, or third-party integrations that
+#   don't need build-time processing, use external.scripts in chiron.config.yaml.
+
+# Plugin Hooks:
+#   - config:loaded - After config is loaded
+#   - build:start - Before build starts
+#   - build:end - After build completes
+#   - markdown:before-parse - Before Markdown parsing
+#   - markdown:after-parse - After Markdown parsing
+#   - page:before-render - Before page rendering
+#   - page:after-render - After page rendering
+#   - asset:before-copy - Before asset copying
+#   - asset:after-copy - After asset copying
+#   - search:before-index - Before search indexing
+#   - search:after-index - After search indexing
+
+# For more information:
+#   - Plugin System: PLUGINS.md
+#   - Creating Plugins: CREATING-PLUGINS.md
+#   - Built-in Plugins: plugins/*/README.md
+#   - External Scripts: See external.scripts in chiron.config.yaml

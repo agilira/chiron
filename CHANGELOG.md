@@ -11,6 +11,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Custom Sidebar Templates**: WordPress-style template system for complete sidebar customization
+  - **Three-Level Priority**: Config-level template → Theme-level partial → Built-in default
+  - **EJS Templates**: Full HTML/CSS control with access to page context and configuration
+  - **Custom Properties**: Pass any data from `sidebars.yaml` to templates
+  - **Security Utilities**: Built-in `escapeHtml()` and `sanitizeUrl()` functions
+  - **Path Security**: Validates template paths to prevent directory traversal
+  - **Use Cases**: Dashboards, marketing pages, e-commerce filters, admin panels
+  - **Mobile-Friendly**: Works seamlessly with responsive design
+  - **Graceful Fallbacks**: Falls back to standard navigation if template fails
+  - **Config Validation**: Updated validator to accept sidebars with `template` property
+  - See [CUSTOM-SIDEBAR.md](CUSTOM-SIDEBAR.md) for complete documentation
+  - Example: `content/dashboard-demo.md` with `custom-templates/dashboard-sidebar.ejs`
+
+- **Theme System**: Modular architecture for complete visual customization
+  - **Theme Structure**: `themes/{name}/` with `theme.yaml`, `styles.css`, `templates/`, `assets/`
+  - **ThemeLoader Class**: Manages theme resolution, validation, and file copying
+  - **Theme Configuration**: YAML-based theme metadata with feature flags
+  - **Template Precedence**: 4-level system - custom-templates/ > theme/ > templates/ > built-in
+  - **Default Theme**: Built-in Carbon Design System-inspired theme
+  - **Custom Theme Support**: Create custom themes with complete control
+  - **Theme Assets**: Copy theme-specific images and resources
+  - **RTL Prepared**: Configuration ready for Right-to-Left language support
+  - **Future-Ready**: Prepared for EJS templates, theme packages, theme marketplace
+  - See [THEMES.md](THEMES.md) for complete documentation
+
+- **Table of Contents UX Improvements**:
+  - Reduced link padding from `var(--space-1)` to `var(--space-05)` for cleaner look
+  - Active state now uses `text-decoration: underline` instead of prominent border-left
+  - Removed bold font-weight from active links for subtler emphasis
+
+- **TOC Exclude Enhancement**:
+  - Fixed `{data-toc-ignore}` marker to work correctly with all heading levels (H1-H6)
+  - Marker now removed BEFORE ID generation (prevents IDs like `heading-2-data-toc-ignore`)
+  - JavaScript TOC generator respects `[data-toc-ignore]` attribute
+
 - **Tabs Component**: Accessible, responsive tab interface for multi-content display
   - **Markdown Syntax**: Simple `:::tabs` and `::tab{title="..."}` syntax
   - **Full Accessibility**: WCAG 2.1 Level AA with ARIA roles and labels
@@ -74,6 +109,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Fonts Documentation**: Complete guide in `FONTS.md`
 - **External Scripts Documentation**: Complete guide in `EXTERNAL-SCRIPTS.md`
 
+### Changed
+
+- **Template Loading**: Now uses 4-level precedence system with theme support
+  - Old: `custom-templates/ > templates/ > built-in`
+  - New: `custom-templates/ > themes/{active}/templates/ > templates/ (deprecated) > built-in`
+- **Styles Location**: `styles.css` moved from root to `themes/default/styles.css`
+- **Templates Location**: Default templates moved from `templates/` to `themes/default/templates/`
+- **Build Process**: `ThemeLoader` now manages theme file copying
+- **TemplateEngine**: Now accepts optional `ThemeLoader` instance for theme integration
+
+### Deprecated
+
+- **Root `templates/` directory**: Use `themes/{name}/templates/` instead (backward compatibility maintained)
+- **Root `styles.css`**: Use `themes/{name}/styles.css` instead (file moved to theme)
+
+### Migration Notes
+
+- **Existing projects continue to work** - Default theme activates automatically
+- **custom-templates/ overrides still work** - Highest priority maintained
+- **No config changes required** - Theme system works out of the box
+- **Templates:** If you have custom templates in root `templates/`, they still work (Level 3 fallback)
+- **Styles:** Theme `styles.css` automatically replaces root `styles.css`
+
 ### Technical Details
 
 - Refactored i18n-loader to use async/await with `fs.promises`
@@ -83,12 +141,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Separated form system into dedicated `_forms.scss` component
 - Added `ensureLoaded()` method for i18n initialization
 - Fixed ESLint issues in i18n-loader.js and index.js
+- **New: ThemeLoader class** (240 lines) for theme management
+- **New: 4-level template precedence** in TemplateEngine
+- **New: Theme file copying** in Builder.copyScripts()
 
 ### Fixed
 
 - Removed unused `fsSync` variable in i18n-loader.js
 - Removed unused `i18n` import in index.js
 - Fixed `hasOwnProperty` usage with `Object.prototype.hasOwnProperty.call()`
+- **Fixed TOC exclude bug**: `{data-toc-ignore}` marker now works correctly
+- **Fixed TOC styling**: Reduced padding and improved active state appearance
 
 ---
 

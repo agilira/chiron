@@ -1,0 +1,113 @@
+/**
+ * Tests for TemplateEngine component scripts placeholder handling
+ * 
+ * Tests the fix for removing the confusing empty componentScripts from ejsData
+ * and verifying that placeholder replacement works correctly.
+ */
+
+const TemplateEngine = require('../builder/template-engine');
+
+describe('TemplateEngine - Component Scripts Placeholder', () => {
+  let engine;
+  let mockConfig;
+
+  beforeEach(() => {
+    // Minimal valid config
+    mockConfig = {
+      project: { name: 'Test', description: 'Test', base_url: 'https://test.com', language: 'en' },
+      branding: { 
+        company: 'Test', 
+        company_url: 'https://test.com',
+        logo: { 
+          light: 'logo.svg', 
+          dark: 'logo.svg',
+          footer_light: 'logo.svg',
+          footer_dark: 'logo.svg',
+          alt: 'Logo'
+        }
+      },
+      github: { owner: 'test', repo: 'test' },
+      footer: { copyright_holder: 'Test' },
+      seo: { opengraph: {}, twitter: {} },
+      navigation: { breadcrumb: { prefix: [], root: { label: 'Home', url: '/' } } },
+      sidebars: { default: [] },
+      language: { locale: 'en' }
+    };
+
+    const path = require('path');
+    engine = new TemplateEngine(mockConfig, path.join(__dirname, '..'), path.join(__dirname, '..'));
+  });
+
+  test('renderComponentScripts should generate script tag with base component', () => {
+    const result = engine.renderComponentScripts(['base']);
+    
+    // Should return a script tag
+    expect(result).toContain('<script>');
+    expect(result).toContain('</script>');
+    
+    // Should contain base component
+    expect(result).toContain('// Component: base');
+  });
+
+  test('renderComponentScripts should handle multiple components', () => {
+    const result = engine.renderComponentScripts(['base', 'tabs', 'code-blocks']);
+    
+    // Should contain all requested components
+    expect(result).toContain('// Component: base');
+    expect(result).toContain('// Component: tabs');
+    expect(result).toContain('// Component: code-blocks');
+  });
+
+  test('renderComponentScripts should default to base if empty array', () => {
+    const result = engine.renderComponentScripts([]);
+    
+    // Should still include base (always loaded)
+    expect(result).toContain('// Component: base');
+  });
+
+  test('component scripts should be injected post-render, not via ejsData', () => {
+    // This test verifies that componentScripts placeholder replacement happens
+    // AFTER EJS rendering, not during it (fixing the confusion)
+    
+    const testHtml = `<html><body>{{COMPONENT_SCRIPTS}}</body></html>`;
+    const componentScripts = engine.renderComponentScripts(['base']);
+    
+    // Debug: check if componentScripts itself contains the placeholder
+    expect(componentScripts).not.toContain('{{COMPONENT_SCRIPTS}}');
+    
+    // Manual replacement (simulating what happens in renderTemplate)
+    // Must escape $ to prevent regex interpretation ($& = matched substring)
+    const escapedScripts = componentScripts.replace(/\$/g, '$$$$');
+    const result = testHtml.replace(/\{\{COMPONENT_SCRIPTS\}\}/g, escapedScripts);
+    
+    // Should NOT contain placeholder after replacement
+    expect(result).not.toContain('{{COMPONENT_SCRIPTS}}');
+    
+    // Should contain actual scripts
+    expect(result).toContain('<script>');
+    expect(result).toContain('// Component: base');
+  });
+
+  test('component scripts placeholder should support regex replacement', () => {
+    // Multiple placeholders should all be replaced
+    const testHtml = `
+      <html>
+      <head>{{COMPONENT_SCRIPTS}}</head>
+      <body>{{COMPONENT_SCRIPTS}}</body>
+      </html>
+    `;
+    
+    const componentScripts = engine.renderComponentScripts(['base']);
+    // Must escape $ to prevent regex interpretation  
+    const escapedScripts = componentScripts.replace(/\$/g, '$$$$');
+    const result = testHtml.replace(/\{\{COMPONENT_SCRIPTS\}\}/g, escapedScripts);
+    
+    // All placeholders should be replaced
+    expect(result).not.toContain('{{COMPONENT_SCRIPTS}}');
+    
+    // Should have scripts injected twice (once in head, once in body)
+    const scriptMatches = result.match(/<script>/g);
+    expect(scriptMatches).toHaveLength(2);
+  });
+});
+

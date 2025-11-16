@@ -1,0 +1,23 @@
+{
+  "name": "@chiron/plugin-blog",
+  "version": "1.0.0",
+  "description": "Full-featured blog system for Chiron static site generator",
+  "main": "index.js",
+  "author": "AGILira",
+  "license": "MPL-2.0",
+  "keywords": [
+    "chiron",
+    "chiron-plugin",
+    "blog",
+    "rss",
+    "static-site-generator",
+    "multilingual"
+  ],
+  "chiron": {
+    "pluginType": "builtin",
+    "minVersion": "0.7.0"
+  },
+  "dependencies": {
+    "rss": "^1.2.2"
+  }
+}

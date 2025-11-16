@@ -1,0 +1,50 @@
+# Valid cache configuration for testing
+cache:
+  enabled: true
+  strategy: smart
+  
+  ttl:
+    html: 3600
+    styles: 86400
+    fonts: 31536000
+    images: 604800
+    scripts: 86400
+  
+  offline:
+    enabled: true
+    message: "You're offline, but cached pages still work!"
+  
+  updateNotification:
+    enabled: true
+    auto: false
+  
+  exclude:
+    - /admin/**
+    - /api/**
+    - /**/*-dev.*
+    - /**/*.map
+  
+  advanced:
+    maxSize: 50
+    precacheLimit: 100
+
+# Project configuration
+project:
+  title: Test Documentation
+  description: A test documentation site
+  base_url: https://example.com
+
+# Branding
+branding:
+  company: Test Company
+  tagline: Test Tagline
+  logo:
+    light: logo-black.png
+    dark: logo-white.png
+    alt: Test Logo
+
+# Build configuration
+build:
+  output_dir: docs
+  content_dir: content
+  assets_dir: assets

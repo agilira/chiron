@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="welcomeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#welcomeGradient)"/>
+  <text x="600" y="280" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="white" text-anchor="middle">Welcome to Chiron</text>
+  <text x="600" y="360" font-family="Arial, sans-serif" font-size="36" fill="rgba(255,255,255,0.9)" text-anchor="middle">Fast, Flexible Static Site Generation</text>
+  <circle cx="200" cy="500" r="40" fill="rgba(255,255,255,0.2)"/>
+  <circle cx="1000" cy="150" r="60" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="900" cy="500" r="50" fill="rgba(255,255,255,0.15)"/>
+</svg>

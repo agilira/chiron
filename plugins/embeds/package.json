@@ -1,0 +1,17 @@
+{
+  "name": "@chiron/plugin-embeds",
+  "version": "1.0.0",
+  "description": "Responsive embeds for YouTube, Asciinema, CodePen, and GitHub Gist",
+  "main": "index.js",
+  "author": "AGILira",
+  "license": "MPL-2.0",
+  "keywords": [
+    "chiron",
+    "plugin",
+    "embeds",
+    "youtube",
+    "asciinema",
+    "codepen",
+    "gist"
+  ]
+}

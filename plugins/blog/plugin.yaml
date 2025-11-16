@@ -1,0 +1,33 @@
+# Blog Plugin Metadata
+# Full-featured blog system with multilingual support
+
+name: blog
+version: 1.0.0
+description: Full-featured blog system with categories, tags, RSS, and multilingual support
+author: AGILira
+
+category: content
+tags:
+  - blog
+  - content
+  - rss
+  - multilingual
+  - categories
+  - tags
+
+# No dependencies - standalone plugin
+dependencies:
+  required: []
+  optional:
+    - search-local  # Enhanced search for blog posts
+
+provides:
+  - blog-system
+  - rss-feed
+  - blog-archive
+
+external: []
+
+themes: []
+
+requires: "^0.7.0"

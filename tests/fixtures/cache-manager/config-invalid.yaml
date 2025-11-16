@@ -1,0 +1,14 @@
+# Invalid cache configuration - for error testing
+cache:
+  enabled: true
+  strategy: invalid-strategy  # INVALID: Not a valid strategy
+  
+  ttl:
+    html: -1  # INVALID: Negative TTL
+    styles: "not-a-number"  # INVALID: String instead of number
+  
+  exclude: "not-an-array"  # INVALID: Should be array
+  
+  advanced:
+    maxSize: "fifty"  # INVALID: String instead of number
+    precacheLimit: -10  # INVALID: Negative number

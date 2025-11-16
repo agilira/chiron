@@ -1,42 +1,131 @@
 {
-  "locale": "en",
-  "name": "English",
+  "meta": {
+    "locale": "en",
+    "language": "English",
+    "version": "1.0.0",
+    "updated": "2025-11-13"
+  },
   "strings": {
+    "_comment_search": "=== Search System ===",
+    "search_modal_title": "Search Documentation",
+    "search_modal_close": "Close search",
     "search_placeholder": "Search documentation...",
+    "search_aria_label": "Search documentation",
+    "search_clear": "Clear search",
+    "search_results_label": "Search results",
     "search_no_results": "No results found",
     "search_loading": "Loading...",
     "search_error": "Search unavailable",
     "search_timeout": "Search request timeout",
-    
-    "theme_toggle": "Toggle dark mode",
-    "theme_light": "Light mode",
-    "theme_dark": "Dark mode",
-    
+
+    "_comment_nav": "=== Navigation ===",
+    "nav_main": "Main navigation",
+    "nav_home": "Home",
     "nav_previous": "Previous",
     "nav_next": "Next",
-    "nav_home": "Home",
     "nav_menu": "Menu",
     "nav_close": "Close",
     "nav_expand": "Expand",
     "nav_collapse": "Collapse",
-    
-    "cookie_message": "This website uses cookies to ensure you get the best experience.",
+    "skip_to_content": "Skip to main content",
+
+    "_comment_theme": "=== Theme Toggle ===",
+    "theme_toggle_aria": "Toggle dark mode",
+    "theme_toggle_aria_dark": "Switch to light mode",
+    "theme_toggle_aria_light": "Switch to dark mode",
+    "theme_light": "Light theme",
+    "theme_dark": "Dark theme",
+    "theme_switch_success": "Switched to {theme} mode",
+
+    "_comment_sidebar": "=== Sidebar ===",
+    "sidebar_toggle_aria": "Toggle sidebar navigation",
+    "sidebar_aria_hidden_true": "Sidebar hidden",
+    "sidebar_aria_hidden_false": "Sidebar visible",
+    "sidebar_aria_expanded_true": "Sidebar expanded",
+    "sidebar_aria_expanded_false": "Sidebar collapsed",
+
+    "_comment_toc": "=== Table of Contents ===",
+    "toc_title": "On This Page",
+    "toc_aria": "Table of contents",
+
+    "_comment_code": "=== Code Blocks ===",
+    "code_copy": "Copy code",
+    "code_copied": "Copied!",
+    "code_copy_failed": "Failed to copy code",
+    "code_copy_success": "Code copied to clipboard!",
+
+    "_comment_infobox": "=== Info Boxes ===",
+    "infobox_close": "Close",
+    "aria_infobox_close": "Close",
+
+    "_comment_embed": "=== Embeds ===",
+    "embed_loading": "Loading...",
+    "embed_view_tweet": "View tweet",
+    "embed_content_loaded": "Content loaded",
+
+    "_comment_toast": "=== Toast Messages ===",
+    "toast_success": "Success",
+    "toast_error": "Error",
+    "toast_warning": "Warning",
+    "toast_info": "Info",
+
+    "_comment_cookie": "=== Cookie Consent ===",
+    "cookie_message": "This site uses cookies to ensure you get the best experience.",
     "cookie_accept": "Accept",
     "cookie_decline": "Decline",
     "cookie_learn_more": "Learn more",
-    
+
+    "_comment_aria": "=== Accessibility ARIA ===",
     "aria_search": "Search documentation",
-    "aria_menu": "Navigation menu",
-    "aria_theme": "Toggle dark mode",
+    "aria_search_input": "Search documentation",
+    "aria_search_close": "Close search",
+    "aria_search_clear": "Clear search",
+    "aria_search_results": "Search results",
+    "aria_nav_main": "Main navigation",
+    "aria_nav_sidebar": "Sidebar navigation",
+    "aria_nav_mobile": "Mobile navigation",
+    "aria_nav_previous": "Previous page",
+    "aria_nav_next": "Next page",
     "aria_close": "Close",
     "aria_expand": "Expand section",
     "aria_collapse": "Collapse section",
-    
-    "error_404_title": "Page Not Found",
-    "error_404_message": "The page you're looking for doesn't exist.",
-    "error_404_home": "Go to homepage",
-    
-    "toc_title": "On this page",
-    "breadcrumb_home": "Home"
+    "aria_menu": "Navigation menu",
+    "aria_code_copy": "Copy code to clipboard",
+
+    "_comment_footer": "=== Footer ===",
+    "footer_copyright": "All rights reserved",
+    "footer_legal": "Legal",
+    "footer_privacy": "Privacy Policy",
+    "footer_terms": "Terms of Service",
+
+    "_comment_pagination": "=== Pagination ===",
+    "pagination_previous": "Previous",
+    "pagination_next": "Next",
+    "pagination_page": "Page",
+
+    "_comment_errors": "=== Error Messages ===",
+    "error_generic": "An error occurred",
+    "error_not_found": "Page not found",
+    "error_network": "Network error",
+    "error_timeout": "Request timeout",
+
+    "_comment_success": "=== Success Messages ===",
+    "success_generic": "Operation successful",
+    "success_saved": "Changes saved",
+    "success_updated": "Updated successfully",
+
+    "_comment_loading": "=== Loading States ===",
+    "loading": "Loading...",
+    "loading_content": "Loading content...",
+    "loading_search": "Searching...",
+
+    "_comment_misc": "=== Miscellaneous ===",
+    "read_more": "Read more",
+    "show_more": "Show more",
+    "show_less": "Show less",
+    "edit_page": "Edit this page",
+    "last_updated": "Last updated",
+    "table_of_contents": "Table of Contents",
+    "on_this_page": "On This Page"
   }
 }

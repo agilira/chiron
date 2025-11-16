@@ -142,7 +142,7 @@ function APIExplorer() {
         type: 'submit',
         disabled: loading,
         className: 'ml-auto',
-        style: { minWidth: '150px' }
+        style: { marginTop: '20px' }
       }, loading ? 'Sending...' : 'Send Request')
     ),
 
@@ -163,11 +163,39 @@ function APIExplorer() {
   );
 }
 
-// Mount the app when DOM is ready
+// Mount the app when lazy-loaded
+document.addEventListener('lazy-app-loaded', (e) => {
+  // Check if this is our React API explorer
+  if (e.detail.appId === 'react-api-root' || e.detail.container.id === 'react-api-root') {
+    const container = e.detail.container;
+    
+    console.log('[ReactApp] Initializing API Explorer...');
+    
+    // Wait a tick for React to be available
+    setTimeout(() => {
+      if (typeof React === 'undefined' || typeof ReactDOM === 'undefined') {
+        console.error('[ReactApp] React or ReactDOM not loaded');
+        container.innerHTML = '<p style="color: red;">Failed to load React</p>';
+        return;
+      }
+      
+      const root = ReactDOM.createRoot(container);
+      root.render(React.createElement(APIExplorer));
+      
+      console.log('[ReactApp] API Explorer mounted successfully');
+    }, 100);
+  }
+});
+
+// Also support old immediate mounting (backward compatibility)
+// This will run if React is already loaded on page
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('react-api-root');
-  if (container) {
-    const root = ReactDOM.createRoot(container);
-    root.render(React.createElement(APIExplorer));
+  if (container && typeof React !== 'undefined' && typeof ReactDOM !== 'undefined') {
+    // Only mount if not already loaded via lazy-app
+    if (!container.dataset.lazyApp) {
+      const root = ReactDOM.createRoot(container);
+      root.render(React.createElement(APIExplorer));
+    }
   }
 });

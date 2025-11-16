@@ -1,0 +1,162 @@
+# Chiron Sidebars Configuration
+# ==============================
+# This file defines all sidebars for your documentation site.
+# Each sidebar is identified by a unique name and contains sections with navigation items.
+#
+# Structure:
+# sidebar_name:
+#   nav_group: "group-name"  # Optional: activates corresponding header nav link
+#   sections:
+#     - section: Section Title
+#       collapsible: true/false  # Optional, default: true
+#       defaultOpen: true/false  # Optional, default: true for collapsible sections
+#       hideTitle: true/false    # Optional, default: false. Hides section title (non-collapsible only)
+#       class: "custom-class"    # Optional: custom CSS class(es) for the section container
+#       items:
+#         - label: Link Label
+#           file: path/to/file.md        # For internal pages
+#           class: "custom-class"        # Optional: custom CSS class(es)
+#         - label: External Link
+#           url: https://example.com     # For external links
+#           external: true
+#           class: "external-link-style" # Optional: custom CSS class(es)
+#
+# nav_group: Identifies which header nav link should be active for this sidebar
+#            Must match the 'id' or 'label' of a header nav item
+#
+# hideTitle: When true, the section title is hidden (only works for non-collapsible sections)
+#            Perfect for simple link lists where you don't need a section header
+#            Example: Main navigation with just 3-4 links without a title
+#            Note: Collapsible sections MUST show their title for user interaction
+#
+# See SIDEBAR.md for full documentation.
+
+# Default sidebar - used when no sidebar is specified in page frontmatter
+default:
+  # nav_group: "docs"  # Uncomment and set to activate a header nav link
+  sections:
+  - section: nav_section_documentation  # Translation key (supports i18n)
+    collapsible: false  # Always visible
+    items:
+      - label: nav_overview  # Translation key
+        file: index.md
+        active: true
+      - label: nav_react_demo  # Translation key
+        file: react-demo.md
+      - label: nav_tabs_demo  # Translation key
+        file: tabs-demo.md
+      - label: nav_api_reference  # Translation key
+        file: api-reference.md
+      - label: nav_ui_showcase  # Translation key
+        file: showcase.md
+  
+  - section: nav_section_plugins  # Translation key
+    collapsible: true
+    defaultOpen: true
+    items:
+      - label: nav_plugins_overview  # Translation key
+        file: plugins/index.md
+      - label: nav_auth_plugin  # Translation key
+        file: plugins/auth/index.md
+      - label: nav_auth_api  # Translation key
+        file: plugins/auth/api-reference.md
+      - label: nav_auth_config  # Translation key
+        file: plugins/auth/guide.md
+      - label: nav_cache_plugin  # Translation key
+        file: plugins/cache/index.md
+      - label: nav_cache_api  # Translation key
+        file: plugins/cache/api-reference.md
+  
+  - section: nav_section_legal  # Translation key
+    collapsible: true
+    defaultOpen: false  # Collapsed by default
+    items:
+      - label: nav_privacy_policy  # Translation key
+        file: privacy-policy.md
+      - label: nav_terms_of_service  # Translation key
+        file: terms-of-service.md
+      - label: Cookie Policy  # Plain string (backward compatible)
+        file: cookie-policy.md
+  
+  - section: nav_section_resources  # Translation key
+    collapsible: true
+    defaultOpen: true  # Expanded by default
+    items:
+      - label: nav_github_repo  # Translation key
+        url: https://github.com/agilira/chiron
+        external: true
+        class: "sidebar-github"  # Optional: custom CSS class for styling
+      - label: nav_changelog  # Translation key
+        file: CHANGELOG.md
+      - label: nav_accessibility  # Translation key
+        file: ACCESSIBILITY.md
+        class: "sidebar-accessibility"  # Optional: custom CSS class for styling
+
+# API-specific sidebar
+api:
+  nav_group: "api"  # Activates "API" link in header nav
+  sections:
+    - section: API Documentation
+      collapsible: false
+      items:
+        - label: API Reference
+          file: api-reference.md
+        - label: Overview
+          file: index.md
+
+# Plugins sidebar (with pagination enabled via config)
+plugins:
+  nav_group: "plugins"  # Activates "Plugins" link in header nav
+  sections:
+    - section: Plugins Documentation
+      collapsible: false
+      items:
+        - label: Plugins Overview
+          file: plugins/index.md
+        - label: Authentication Plugin
+          file: plugins/auth/index.md
+        - label: Auth API Reference
+          file: plugins/auth/api-reference.md
+        - label: Auth Configuration
+          file: plugins/auth/guide.md
+        - label: Cache Plugin
+          file: plugins/cache/index.md
+        - label: Cache API Reference
+          file: plugins/cache/api-reference.md
+
+# Example: Simple sidebar with hidden title (just links)
+# Perfect for minimal navigation with only a few pages
+# simple:
+#   sections:
+#     - section: Navigation  # Title won't be shown
+#       collapsible: false
+#       hideTitle: true      # Hide section title for cleaner look
+#       class: "simple-nav"  # Optional: custom styling
+#       items:
+#         - label: Home
+#           file: index.md
+#         - label: About
+#           file: about.md
+#         - label: Contact
+#           file: contact.md
+
+# Custom Dashboard Sidebar Example
+# Uses a custom EJS template instead of standard navigation
+# Perfect for dashboards, admin panels, or marketing pages with widgets
+dashboard:
+  template: custom-templates/dashboard-sidebar.ejs
+  title: "Dashboard Stats"
+  stats:
+    Pages: "23"
+    Tests: "730+"
+    Uptime: "99.9%"
+    Version: "0.7.0"
+  quickLinks:
+    - label: GitHub Repository
+      url: https://github.com/agilira/chiron
+      external: true
+    - label: Getting Started
+      url: index.html
+    - label: API Reference
+      url: api-reference.html
+  customHtml: "<div style=\"background: var(--color-success-50); padding: var(--space-3); border-radius: var(--border-radius-sm);\"><strong>✓ All systems operational</strong></div>"

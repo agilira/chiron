@@ -1,0 +1,41 @@
+# Google Analytics Plugin Metadata
+# Provides Google Analytics 4 and Google Tag Manager integration
+
+name: google-analytics
+version: 1.0.0
+description: Google Analytics 4 and Google Tag Manager integration for Chiron
+author: AGILira
+
+# Plugin category
+category: analytics
+
+# Tags for discovery
+tags:
+  - analytics
+  - google
+  - tracking
+  - gtm
+  - ga4
+
+# Dependencies
+dependencies:
+  # Required plugins (must be loaded before this one)
+  required: []
+  
+  # Optional plugins (if present, will be loaded before this one)
+  optional:
+    - cookie-consent  # Integrates with cookie consent if available
+
+# What this plugin provides (for other plugins to depend on)
+provides:
+  - analytics
+  - page-tracking
+
+# External scripts/libraries required
+external: []
+
+# Theme compatibility (empty = works with all themes)
+themes: []
+
+# Minimum Chiron version required
+requires: "^0.7.0"

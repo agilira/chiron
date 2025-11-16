@@ -1,0 +1,29 @@
+# Cookies Scanner Plugin Metadata
+# Scans and categorizes cookies used by the website
+
+name: cookies-scanner
+version: 1.0.0
+description: Scans and categorizes cookies (necessary, analytics, marketing)
+author: AGILira
+
+category: privacy
+tags:
+  - cookies
+  - privacy
+  - gdpr
+  - compliance
+
+dependencies:
+  required: []
+  optional: []
+
+# What this plugin provides for other plugins
+provides:
+  - cookie-detection
+  - cookie-categorization
+
+external: []
+
+themes: []
+
+requires: "^0.7.0"

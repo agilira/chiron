@@ -1,7 +1,7 @@
 ---
 title: Tabs Component Demo
 description: Interactive tab component for code examples and multi-content display
-template: page-with-toc
+template: page-with-toc.ejs
 ---
 
 # Tabs Component

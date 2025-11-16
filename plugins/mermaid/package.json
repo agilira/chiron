@@ -1,0 +1,32 @@
+{
+  "name": "@chiron/plugin-mermaid",
+  "version": "1.0.0",
+  "description": "Mermaid diagram support for Chiron - render flowcharts, sequence diagrams, and more",
+  "main": "index.js",
+  "keywords": [
+    "chiron",
+    "plugin",
+    "mermaid",
+    "diagrams",
+    "flowchart",
+    "sequence-diagram"
+  ],
+  "author": "AGILira",
+  "license": "MPL-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agilira/chiron.git",
+    "directory": "plugins/mermaid"
+  },
+  "bugs": {
+    "url": "https://github.com/agilira/chiron/issues"
+  },
+  "chiron": {
+    "pluginType": "builtin",
+    "minVersion": "0.7.0"
+  },
+  "files": [
+    "index.js",
+    "README.md"
+  ]
+}

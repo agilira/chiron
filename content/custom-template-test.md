@@ -1,23 +1,23 @@
 ---
 title: Custom Template Test
-description: Testing the custom template system
-template: example-custom.html
+description: Testing the custom EJS template system
+template: example-custom.ejs
 ---
 
 # Custom Template Test Page
 
-This page uses a **custom template** from `custom-templates/example-custom.html`.
+This page uses a **custom EJS template** from `custom-templates/example-custom.ejs`.
 
 ## Features
 
 - Custom header layout
 - Custom footer
-- All Chiron placeholders work
-- PATH_TO_ROOT for subpages support
+- All Chiron variables work (EJS syntax)
+- pathToRoot for subpages support
 
 ## How It Works
 
-1. Template specified in frontmatter: `template: example-custom.html`
+1. Template specified in frontmatter: `template: example-custom.ejs`
 2. Chiron searches in `custom-templates/` first
 3. Falls back to default templates if not found
 

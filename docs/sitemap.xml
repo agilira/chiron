@@ -2,109 +2,331 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://agilira.github.io/chiron/api-reference.html</loc>
-    <lastmod>2025-11-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agilira.github.io/chiron/cookie-policy.html</loc>
-    <lastmod>2025-11-03</lastmod>
+    <lastmod>2025-11-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://agilira.github.io/chiron/custom-template-test.html</loc>
-    <lastmod>2025-11-03</lastmod>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/dashboard-demo.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/embeds-demo.html</loc>
+    <lastmod>2025-11-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://agilira.github.io/chiron/external-scripts-demo.html</loc>
-    <lastmod>2025-11-03</lastmod>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/forms-demo.html</loc>
+    <lastmod>2025-11-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://agilira.github.io/chiron/grid-demo.html</loc>
-    <lastmod>2025-11-03</lastmod>
+    <lastmod>2025-11-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://agilira.github.io/chiron/index.html</loc>
-    <lastmod>2025-11-03</lastmod>
+    <lastmod>2025-11-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://agilira.github.io/chiron/landing-demo.html</loc>
-    <lastmod>2025-11-03</lastmod>
+    <lastmod>2025-11-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agilira.github.io/chiron/plugins/auth/api-reference.html</loc>
-    <lastmod>2025-11-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agilira.github.io/chiron/plugins/auth/guide.html</loc>
-    <lastmod>2025-11-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agilira.github.io/chiron/plugins/auth/index.html</loc>
-    <lastmod>2025-11-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agilira.github.io/chiron/plugins/cache/api-reference.html</loc>
-    <lastmod>2025-11-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agilira.github.io/chiron/plugins/cache/index.html</loc>
-    <lastmod>2025-11-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agilira.github.io/chiron/plugins/index.html</loc>
-    <lastmod>2025-11-03</lastmod>
+    <loc>https://agilira.github.io/chiron/manage-cookies.html</loc>
+    <lastmod>2025-11-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://agilira.github.io/chiron/privacy-policy.html</loc>
-    <lastmod>2025-11-03</lastmod>
+    <lastmod>2025-11-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://agilira.github.io/chiron/react-demo.html</loc>
-    <lastmod>2025-11-03</lastmod>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/shortcodes-showcase.html</loc>
+    <lastmod>2025-11-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://agilira.github.io/chiron/showcase.html</loc>
-    <lastmod>2025-11-03</lastmod>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/slideshow-demo.html</loc>
+    <lastmod>2025-11-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://agilira.github.io/chiron/tabs-demo.html</loc>
-    <lastmod>2025-11-03</lastmod>
+    <lastmod>2025-11-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://agilira.github.io/chiron/terms-of-service.html</loc>
-    <lastmod>2025-11-03</lastmod>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/test-shortcodes.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/toc-depth-test.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/blog/building-modern-documentation.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/blog/first-post.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/blog/index.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/blog/second-post.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/blog/third-post.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/blog/welcome-to-chiron.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/en/api-reference.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/en/custom-template-test.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/en/dashboard-demo.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/en/embeds-demo.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/en/external-scripts-demo.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/en/forms-demo.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/en/grid-demo.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/en/index.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/en/landing-demo.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/en/manage-cookies.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/en/privacy-policy.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/en/react-demo.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/en/shortcodes-showcase.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/en/showcase.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/en/slideshow-demo.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/en/tabs-demo.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/en/terms-of-service.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/en/test-shortcodes.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/en/toc-depth-test.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/it/index.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/it/showcase.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/plugins/index.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/blog/author/marco-rossi.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/blog/category/tutorials.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/blog/tag/javascript.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/plugins/auth/api-reference.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/plugins/auth/guide.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/plugins/auth/index.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/plugins/cache/api-reference.html</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agilira.github.io/chiron/plugins/cache/index.html</loc>
+    <lastmod>2025-11-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

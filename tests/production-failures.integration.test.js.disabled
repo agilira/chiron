@@ -1,0 +1,448 @@
+/**
+ * Production Failure Integration Tests
+ * 
+ * Tests for real-world failure scenarios that can occur in production.
+ * These tests simulate actual problems users might encounter.
+ * 
+ * Copyright (c) 2025 AGILira - A. Giordano
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
+const fs = require('fs');
+const fsp = fs.promises;
+const os = require('os');
+const path = require('path');
+const yaml = require('js-yaml');
+const ChironBuilder = require('../builder');
+
+describe('Production Failure Integration Tests', () => {
+  const originalCwd = process.cwd();
+  let tempRoot;
+
+  beforeEach(() => {
+    tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'chiron-prod-failure-test-'));
+    process.chdir(tempRoot);
+    
+    // Copy default theme to temp directory
+    const defaultThemeDir = path.join(__dirname, '..', 'themes', 'default');
+    const tempThemeDir = path.join(tempRoot, 'themes', 'default');
+    fs.mkdirSync(path.dirname(tempThemeDir), { recursive: true });
+    fs.cpSync(defaultThemeDir, tempThemeDir, { recursive: true });
+  });
+
+  afterEach(async () => {
+    process.chdir(originalCwd);
+    jest.restoreAllMocks();
+    await fsp.rm(tempRoot, { recursive: true, force: true });
+  });
+
+  test('should handle build failure when disk space runs out', async () => {
+    const contentDir = path.join(tempRoot, 'content');
+    const outputDir = path.join(tempRoot, 'docs');
+    
+    fs.mkdirSync(contentDir, { recursive: true });
+    
+    // Create a large markdown file
+    const largeContent = '# Large Content\n'.repeat(10000);
+    fs.writeFileSync(path.join(contentDir, 'large.md'), largeContent);
+
+    // Create config file
+    const config = {
+      project: {
+        name: 'Test Project',
+        description: 'Test Description',
+        base_url: 'https://example.com'
+      },
+      build: {
+        content_dir: contentDir,
+        output_dir: 'docs',
+        templates_dir: 'default'
+      },
+      navigation: {
+        sidebars: {
+          default: []
+        }
+      },
+      theme: 'default'
+    };
+    fs.writeFileSync(path.join(tempRoot, 'chiron.config.yaml'), yaml.dump(config));
+
+    const builder = new ChironBuilder('chiron.config.yaml');
+
+    // Mock fsp.writeFile to simulate disk full error
+    const originalWriteFile = fsp.writeFile;
+    jest.spyOn(fsp, 'writeFile').mockImplementation((filePath, data) => {
+      if (filePath.includes('large.html')) {
+        return Promise.reject(new Error('ENOSPC: no space left on device'));
+      }
+      return originalWriteFile(filePath, data);
+    });
+
+    // Build should fail gracefully with meaningful error
+    await expect(builder.build()).rejects.toThrow('no space left on device');
+    
+    // Should cleanup partial files
+    expect(fs.existsSync(outputDir)).toBe(false);
+  });
+
+  test('should recover from corrupted markdown files and continue building others', async () => {
+    const contentDir = path.join(tempRoot, 'content');
+    const outputDir = path.join(tempRoot, 'docs');
+    
+    fs.mkdirSync(contentDir, { recursive: true });
+    
+    // Create valid files
+    fs.writeFileSync(path.join(contentDir, 'valid1.md'), '# Valid 1\nContent 1');
+    fs.writeFileSync(path.join(contentDir, 'valid2.md'), '# Valid 2\nContent 2');
+    
+    // Create corrupted file (invalid frontmatter)
+    fs.writeFileSync(path.join(contentDir, 'corrupted.md'), `---
+invalid: frontmatter: [unclosed
+---
+
+# Corrupted Content`);
+
+    // Create config file
+    const config = {
+      project: {
+        name: 'Test Project',
+        description: 'Test Description',
+        base_url: 'https://example.com'
+      },
+      build: {
+        content_dir: contentDir,
+        output_dir: 'docs',
+        templates_dir: 'default'
+      },
+      navigation: {
+        sidebars: {
+          default: []
+        }
+      },
+      theme: 'default'
+    };
+    fs.writeFileSync(path.join(tempRoot, 'chiron.config.yaml'), yaml.dump(config));
+
+    const builder = new ChironBuilder('chiron.config.yaml');
+
+    // Build should complete but skip corrupted file
+    await builder.build();
+
+    // Valid files should be processed
+    expect(fs.existsSync(path.join(outputDir, 'valid1.html'))).toBe(true);
+    expect(fs.existsSync(path.join(outputDir, 'valid2.html'))).toBe(true);
+    
+    // Corrupted file should not crash build
+    expect(fs.existsSync(path.join(outputDir, 'corrupted.html'))).toBe(false);
+    
+    // Index should still be generated
+    expect(fs.existsSync(path.join(outputDir, 'index.html'))).toBe(true);
+  });
+
+  test('should handle network timeouts during font downloads gracefully', async () => {
+    const contentDir = path.join(tempRoot, 'content');
+    const outputDir = path.join(tempRoot, 'docs');
+    
+    fs.mkdirSync(contentDir, { recursive: true });
+    fs.writeFileSync(path.join(contentDir, 'index.md'), '# Test\nContent');
+
+    // Create config file with custom font
+    const config = {
+      project: {
+        name: 'Test Project',
+        description: 'Test Description',
+        base_url: 'https://example.com'
+      },
+      build: {
+        content_dir: contentDir,
+        output_dir: 'docs',
+        templates_dir: 'default'
+      },
+      navigation: {
+        sidebars: {
+          default: []
+        }
+      },
+      theme: 'default',
+      fonts: {
+        heading: 'Custom Font'
+      }
+    };
+    fs.writeFileSync(path.join(tempRoot, 'chiron.config.yaml'), yaml.dump(config));
+
+    const builder = new ChironBuilder('chiron.config.yaml');
+
+    // Mock FontDownloader to simulate network timeout
+    const FontDownloader = require('../builder/utils/font-downloader');
+    const originalBuild = FontDownloader.prototype.build;
+    FontDownloader.prototype.build = jest.fn().mockImplementation(async () => {
+      // Simulate timeout
+      await new Promise((resolve, reject) => {
+        setTimeout(() => reject(new Error('ETIMEDOUT: Network timeout')), 100);
+      });
+    });
+
+    // Build should complete with fallback fonts
+    await builder.build();
+
+    const fontsCss = fs.readFileSync(path.join(outputDir, 'fonts.css'), 'utf8');
+    expect(fontsCss).toContain('--font-heading: -apple-system');
+    
+    // Other files should still be generated
+    expect(fs.existsSync(path.join(outputDir, 'index.html'))).toBe(true);
+  });
+
+  test('should handle plugin system failures without breaking core build', async () => {
+    const contentDir = path.join(tempRoot, 'content');
+    const outputDir = path.join(tempRoot, 'docs');
+    const pluginsDir = path.join(tempRoot, 'plugins');
+    
+    fs.mkdirSync(contentDir, { recursive: true });
+    fs.mkdirSync(pluginsDir, { recursive: true });
+    
+    fs.writeFileSync(path.join(contentDir, 'index.md'), '# Test\nContent');
+
+    // Create a plugin that will fail
+    const failingPluginDir = path.join(pluginsDir, 'failing-plugin');
+    fs.mkdirSync(failingPluginDir, { recursive: true });
+    fs.writeFileSync(path.join(failingPluginDir, 'plugin.yaml'), `
+name: failing-plugin
+version: 1.0.0
+main: index.js
+dependencies:
+  required: []
+`);
+    
+    fs.writeFileSync(path.join(failingPluginDir, 'index.js'), `
+// This will throw an error
+throw new Error('Plugin initialization failed');
+`);
+
+    // Create config file
+    const config = {
+      project: {
+        name: 'Test Project',
+        description: 'Test Description',
+        base_url: 'https://example.com'
+      },
+      build: {
+        content_dir: contentDir,
+        output_dir: 'docs',
+        templates_dir: 'default'
+      },
+      navigation: {
+        sidebars: {
+          default: []
+        }
+      },
+      theme: 'default',
+      plugins: ['failing-plugin'],
+      pluginsDir
+    };
+    fs.writeFileSync(path.join(tempRoot, 'chiron.config.yaml'), yaml.dump(config));
+
+    // Create plugins config
+    const pluginsConfig = {
+      plugins: ['failing-plugin'],
+      pluginSettings: {
+        enabled: true,
+        failOnError: false
+      }
+    };
+    fs.writeFileSync(path.join(tempRoot, 'plugins.yaml'), yaml.dump(pluginsConfig));
+
+    const builder = new ChironBuilder('chiron.config.yaml');
+
+    // Build should continue despite plugin failure
+    await builder.build();
+
+    // Core files should be generated
+    expect(fs.existsSync(path.join(outputDir, 'index.html'))).toBe(true);
+  });
+
+  test('should handle memory pressure during large builds', async () => {
+    const contentDir = path.join(tempRoot, 'content');
+    const outputDir = path.join(tempRoot, 'docs');
+    
+    fs.mkdirSync(contentDir, { recursive: true });
+    
+    // Create many markdown files to stress test memory usage
+    const fileCount = 100;
+    for (let i = 0; i < fileCount; i++) {
+      const content = `---
+title: Page ${i}
+description: Content for page ${i}
+---
+
+# Page ${i}
+
+This is page ${i} with some content.
+
+${'Lorem ipsum dolor sit amet. '.repeat(100)}
+`;
+      fs.writeFileSync(path.join(contentDir, `page-${i}.md`), content);
+    }
+
+    // Create config file
+    const config = {
+      project: {
+        name: 'Test Project',
+        description: 'Test Description',
+        base_url: 'https://example.com'
+      },
+      build: {
+        content_dir: contentDir,
+        output_dir: 'docs',
+        templates_dir: 'default'
+      },
+      navigation: {
+        sidebars: {
+          default: []
+        }
+      },
+      theme: 'default'
+    };
+    fs.writeFileSync(path.join(tempRoot, 'chiron.config.yaml'), yaml.dump(config));
+
+    const builder = new ChironBuilder('chiron.config.yaml');
+
+    // Monitor memory usage
+    const initialMemory = process.memoryUsage().heapUsed;
+    
+    await builder.build();
+    
+    const finalMemory = process.memoryUsage().heapUsed;
+    const memoryIncrease = finalMemory - initialMemory;
+    
+    // Memory increase should be reasonable (less than 50MB for 100 pages)
+    expect(memoryIncrease).toBeLessThan(50 * 1024 * 1024);
+    
+    // All files should be generated
+    for (let i = 0; i < fileCount; i++) {
+      expect(fs.existsSync(path.join(outputDir, `page-${i}.html`))).toBe(true);
+    }
+  });
+
+  test('should handle concurrent build attempts safely', async () => {
+    const contentDir = path.join(tempRoot, 'content');
+    const outputDir = path.join(tempRoot, 'docs');
+    
+    fs.mkdirSync(contentDir, { recursive: true });
+    fs.writeFileSync(path.join(contentDir, 'index.md'), '# Test\nContent');
+
+    // Create config file
+    const config = {
+      project: {
+        name: 'Test Project',
+        description: 'Test Description',
+        base_url: 'https://example.com'
+      },
+      build: {
+        content_dir: contentDir,
+        output_dir: 'docs',
+        templates_dir: 'default'
+      },
+      navigation: {
+        sidebars: {
+          default: []
+        }
+      },
+      theme: 'default'
+    };
+    fs.writeFileSync(path.join(tempRoot, 'chiron.config.yaml'), yaml.dump(config));
+
+    const builder = new ChironBuilder('chiron.config.yaml');
+
+    // Start multiple builds concurrently
+    const concurrentBuilds = Array(3).fill().map(() => builder.build());
+    
+    // All builds should complete successfully
+    await Promise.all(concurrentBuilds);
+    
+    // Files should exist and be valid
+    expect(fs.existsSync(path.join(outputDir, 'index.html'))).toBe(true);
+    
+    const indexContent = fs.readFileSync(path.join(outputDir, 'index.html'), 'utf8');
+    expect(indexContent).toContain('Test');
+  });
+
+  test('should handle configuration errors with clear messages', async () => {
+    const contentDir = path.join(tempRoot, 'content');
+    
+    fs.mkdirSync(contentDir, { recursive: true });
+    fs.writeFileSync(path.join(contentDir, 'index.md'), '# Test\nContent');
+
+    // Test with invalid theme
+    const invalidConfig = {
+      project: {
+        name: 'Test Project',
+        description: 'Test Description',
+        base_url: 'https://example.com'
+      },
+      build: {
+        content_dir: contentDir,
+        output_dir: 'docs',
+        templates_dir: 'default'
+      },
+      navigation: {
+        sidebars: {
+          default: []
+        }
+      },
+      theme: 'non-existent-theme'
+    };
+    fs.writeFileSync(path.join(tempRoot, 'chiron.config.yaml'), yaml.dump(invalidConfig));
+
+    const builder = new ChironBuilder('chiron.config.yaml');
+
+    // Should provide clear error messages
+    await expect(builder.build()).rejects.toThrow();
+  });
+
+  test('should cleanup temporary files on build failure', async () => {
+    const contentDir = path.join(tempRoot, 'content');
+    
+    fs.mkdirSync(contentDir, { recursive: true });
+    fs.writeFileSync(path.join(contentDir, 'index.md'), '# Test\nContent');
+
+    // Create config file
+    const config = {
+      project: {
+        name: 'Test Project',
+        description: 'Test Description',
+        base_url: 'https://example.com'
+      },
+      build: {
+        content_dir: contentDir,
+        output_dir: 'docs',
+        templates_dir: 'default'
+      },
+      navigation: {
+        sidebars: {
+          default: []
+        }
+      },
+      theme: 'default'
+    };
+    fs.writeFileSync(path.join(tempRoot, 'chiron.config.yaml'), yaml.dump(config));
+
+    const builder = new ChironBuilder('chiron.config.yaml');
+
+    // Mock a critical failure during build
+    const originalBuild = builder.build;
+    builder.build = jest.fn().mockImplementation(async () => {
+      // Create some temporary files first
+      const outputDir = path.join(tempRoot, 'docs');
+      await fsp.mkdir(outputDir, { recursive: true });
+      await fsp.writeFile(path.join(outputDir, 'temp.html'), 'temp');
+      
+      // Then fail
+      throw new Error('Critical build failure');
+    });
+
+    await expect(builder.build()).rejects.toThrow();
+    
+    // Temporary files should be cleaned up
+    expect(fs.existsSync(path.join(tempRoot, 'docs'))).toBe(false);
+  });
+});

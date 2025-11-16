@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="<%- page.lang || 'en' %>" data-theme="light">
+<head>
+    <%- include('partials/head', { page, pathToRoot, metaTags, adobeFonts, structuredData, analytics, externalStyles }) %>
+</head>
+<body id="<%- bodyId %>" class="<%- bodyClasses.join(' ') %>">
+    <!-- Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- SVG Icon Sprite (hidden, for <use> references) -->
+    {{SVG_SPRITE}}
+    
+    <!-- Header -->
+    <%- include('partials/header', { githubUrl, logoImages, projectNameSpan, headerNav, headerActions }) %>
+
+    <!-- Main Layout -->
+    <div class="layout<% if (hideSidebar) { %> no-sidebar<% } %>">
+        <% if (!hideSidebar) { %>
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar" role="complementary" aria-label="Sidebar">
+            <!-- Mobile Header Navigation -->
+            <nav class="mobile-header-nav" aria-label="Main navigation (mobile)">
+                <%- mobileHeaderNav %>
+            </nav>
+            
+            <!-- Sidebar Navigation -->
+            <nav class="sidebar-nav" <%= aria('aria_nav_sidebar') %>>
+                <%- navigation %>
+            </nav>
+        </aside>
+        <% } else { %>
+        <!-- Mobile Menu Only (when sidebar is hidden) -->
+        <aside class="sidebar mobile-only" id="sidebar" role="complementary" <%= aria('aria_nav_mobile') %>>
+            <nav class="mobile-header-nav" <%= aria('aria_nav_main') %>>
+                <%- mobileHeaderNav %>
+            </nav>
+        </aside>
+        <% } %>
+
+        <!-- Main Content -->
+        <main class="main-content" id="main-content" role="main">
+            <div class="content-container">
+                <%- breadcrumb %>
+
+                <!-- Blog Index -->
+                <div class="blog-index content">
+                    <header class="blog-index-header">
+                        <h1><%- archive_title() %></h1>
+                        
+                        <% if (page.description) { %>
+                        <p class="blog-index-description"><%- page.description %></p>
+                        <% } %>
+                        
+                        <% if (page.blog && page.blog.pagination && page.blog.pagination.currentPage > 1) { %>
+                        <p class="blog-page-number">Page <%- page.blog.pagination.currentPage %> of <%- page.blog.pagination.totalPages %></p>
+                        <% } %>
+                    </header>
+                    
+                    <!-- Posts List -->
+                    <% if (page.blog && page.blog.posts && page.blog.posts.length > 0) { %>
+                    <div class="blog-post-list">
+                        <% posts.forEach(function(post) { %>
+                        <article <%- post_attributes(post) %>>
+                            <!-- Featured Image (WordPress-style helper) -->
+                            <% if (post.featuredImage || post.featured_image) { %>
+                            <div class="blog-post-featured-image">
+                                <%- the_featured_image(post, { 
+                                    class: 'post-thumbnail', 
+                                    loading: 'lazy',
+                                    link: true,
+                                    linkClass: 'post-thumbnail-link',
+                                    pathToRoot: pathToRoot
+                                }) %>
+                            </div>
+                            <% } %>
+                            
+                            <div class="blog-post-content">
+                                <!-- Title (WordPress-style helper) -->
+                                <h2 class="blog-post-title">
+                                    <a href="<%- the_permalink(post, { pathToRoot: pathToRoot }) %>">
+                                        <%- the_title(post) %>
+                                    </a>
+                                </h2>
+                                
+                                <!-- Meta (WordPress-style helpers) -->
+                                <div class="blog-post-meta">
+                                    <%- the_date(post, { format: 'long', html: true }) %>
+                                    
+                                    <% if (post.author) { %>
+                                    <%- the_author(post, { link: false, class: 'blog-post-author' }) %>
+                                    <% } %>
+                                    
+                                    <% const readingTime = the_time(post, { format: 'long' }); %>
+                                    <% if (readingTime) { %>
+                                    <span class="blog-post-reading-time">
+                                        <%- readingTime %>
+                                    </span>
+                                    <% } %>
+                                </div>
+                                
+                                <!-- Categories (WordPress-style helper) -->
+                                <%- the_categories(post, { 
+                                    separator: ' ', 
+                                    class: 'blog-post-categories',
+                                    pathToRoot: pathToRoot 
+                                }) %>
+                                
+                                <!-- Excerpt (WordPress-style helper) -->
+                                <% const excerpt = the_excerpt(post, { excerptLength: excerptLength }); %>
+                                <% if (excerpt) { %>
+                                <div class="blog-post-excerpt">
+                                    <%- excerpt %>
+                                </div>
+                                <% } %>
+                                
+                                <!-- Read More Link (WordPress-style helper with i18n support) -->
+                                <%- the_read_more(post, { pathToRoot: pathToRoot }) %>
+                            </div>
+                        </article>
+                        <% }); %>
+                    </div>
+                    
+                    <!-- Pagination (WordPress-style helper with theme defaults) -->
+                    <%- blog_pagination(page, { 
+                        pathToRoot: pathToRoot,
+                        ...helperDefaults?.blog_pagination 
+                    }) %>
+                    
+                    <!-- Load More placeholder (for future plugin) -->
+                    <% if (page.blog && page.blog.loadMoreEnabled) { %>
+                    <div class="blog-load-more-container" data-next-page="<%- page.blog.pagination.nextPage %>" data-total-pages="<%- page.blog.pagination.totalPages %>">
+                        <button class="blog-load-more-btn" type="button">
+                            Load More Posts
+                        </button>
+                    </div>
+                    <% } %>
+                    
+                    <% } else { %>
+                    <!-- Empty State -->
+                    <div class="blog-empty-state">
+                        <p>No blog posts yet. Check back soon!</p>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <%- include('partials/footer', { copyrightYear, copyrightHolder, footerLegalLinks, companyUrl, logoFooterLight, logoFooterDark, logoAlt }) %>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <% if (menus?.ui_features?.scroll_to_top?.enabled === true) { %>
+    <!-- Scroll to Top Button -->
+    <button 
+        class="scroll-to-top" 
+        id="scrollToTop" 
+        aria-label="Scroll to top of page"
+        title="Scroll to top"
+        type="button"
+    >
+        ↑
+    </button>
+    <% } %>
+
+    <!-- Search Modal -->
+    <%- include('partials/search-modal') %>
+
+    <!-- Scripts -->
+    <%- include('partials/scripts', { pathToRoot, i18nClientConfig, componentScripts, externalScripts }) %>
+</body>
+</html>

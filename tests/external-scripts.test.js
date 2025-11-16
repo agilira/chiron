@@ -3,6 +3,7 @@ const {
   DEFAULT_ALLOWED_CDN_DOMAINS,
   getAllowedCDNDomains,
   renderExternalScripts,
+  renderExternalStyles,
   getAvailablePresets,
   isAllowedCDN,
   isRelativeUrl
@@ -16,6 +17,7 @@ describe('External Scripts', () => {
   beforeEach(() => {
     logger = new Logger();
     jest.spyOn(logger, 'warn').mockImplementation(() => {});
+    jest.spyOn(logger, 'info').mockImplementation(() => {});
     
     // Mock config with default security settings
     mockConfig = {
@@ -191,8 +193,19 @@ describe('External Scripts', () => {
       expect(isAllowedCDN('http://cdn.jsdelivr.net/npm/test@1.0.0/test.js', mockConfig)).toBe(false);
     });
 
-    test('should reject unknown CDN domains', () => {
-      expect(isAllowedCDN('https://evil.com/malware.js', mockConfig)).toBe(false);
+    test('should allow unknown CDN domains by default (whitelist disabled)', () => {
+      // Without whitelist enabled, any HTTPS URL is allowed
+      expect(isAllowedCDN('https://evil.com/malware.js', mockConfig)).toBe(true);
+    });
+
+    test('should reject unknown CDN domains when whitelist is enabled', () => {
+      const configWithWhitelist = {
+        security: {
+          enable_cdn_whitelist: true,
+          allowed_cdn_domains: []
+        }
+      };
+      expect(isAllowedCDN('https://evil.com/malware.js', configWithWhitelist)).toBe(false);
     });
 
     test('should reject invalid URLs', () => {
@@ -270,12 +283,24 @@ describe('External Scripts', () => {
       expect(result).toContain('<script src=');
     });
 
-    test('should reject custom URL from disallowed CDN', () => {
+    test('should allow custom URL from any HTTPS CDN by default', () => {
+      const customUrl = 'https://any-cdn.com/lib.js';
+      const result = renderExternalScripts([customUrl], mockConfig, logger);
+      expect(result).toContain('<script src="https://any-cdn.com/lib.js">');
+    });
+
+    test('should reject custom URL from disallowed CDN when whitelist is enabled', () => {
+      const configWithWhitelist = {
+        security: {
+          enable_cdn_whitelist: true,
+          allowed_cdn_domains: []
+        }
+      };
       const evilUrl = 'https://evil.com/malware.js';
-      const result = renderExternalScripts([evilUrl], mockConfig, logger);
+      const result = renderExternalScripts([evilUrl], configWithWhitelist, logger);
       expect(result).toBe('');
       expect(logger.warn).toHaveBeenCalledWith(
-        'External script URL not from allowed CDN, skipping',
+        'External script URL blocked by CDN whitelist, skipping',
         expect.any(Object)
       );
     });
@@ -285,7 +310,7 @@ describe('External Scripts', () => {
       const result = renderExternalScripts([httpUrl], mockConfig, logger);
       expect(result).toBe('');
       expect(logger.warn).toHaveBeenCalledWith(
-        'External script URL not from allowed CDN, skipping',
+        'External script URL must use HTTPS, skipping',
         expect.any(Object)
       );
     });
@@ -390,6 +415,134 @@ describe('External Scripts', () => {
       const result = renderExternalScripts(scripts, mockConfig, logger);
       expect(result).toContain('assets/my-script.js');
       expect(logger.warn).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('renderExternalStyles', () => {
+    test('should return empty string for empty array', () => {
+      expect(renderExternalStyles([], mockConfig, logger)).toBe('');
+    });
+
+    test('should return empty string for null', () => {
+      expect(renderExternalStyles(null, mockConfig, logger)).toBe('');
+    });
+
+    test('should return empty string for undefined', () => {
+      expect(renderExternalStyles(undefined, mockConfig, logger)).toBe('');
+    });
+
+    test('should render single CSS URL', () => {
+      const styles = ['https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css'];
+      const result = renderExternalStyles(styles, mockConfig, logger);
+      expect(result).toContain('<link rel="stylesheet"');
+      expect(result).toContain('swiper-bundle.min.css');
+      expect(logger.info).toHaveBeenCalledWith(
+        'Added external stylesheet',
+        { url: 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css' }
+      );
+    });
+
+    test('should render multiple CSS URLs', () => {
+      const styles = [
+        'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css',
+        'https://cdn.jsdelivr.net/npm/animate.css@4/animate.min.css'
+      ];
+      const result = renderExternalStyles(styles, mockConfig, logger);
+      expect(result).toContain('swiper-bundle.min.css');
+      expect(result).toContain('animate.min.css');
+      expect(result.split('<link rel="stylesheet"').length - 1).toBe(2);
+    });
+
+    test('should allow self-hosted CSS', () => {
+      const styles = ['assets/custom-component.css'];
+      const result = renderExternalStyles(styles, mockConfig, logger);
+      expect(result).toContain('assets/custom-component.css');
+      expect(logger.warn).not.toHaveBeenCalled();
+    });
+
+    test('should reject non-HTTPS URLs', () => {
+      const styles = ['http://insecure.com/styles.css'];
+      const result = renderExternalStyles(styles, mockConfig, logger);
+      expect(result).toBe('');
+      expect(logger.warn).toHaveBeenCalledWith(
+        '[ExternalStyles] Blocked disallowed CSS URL',
+        { url: 'http://insecure.com/styles.css' }
+      );
+    });
+
+    test('should deduplicate CSS URLs', () => {
+      const styles = [
+        'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css',
+        'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css'
+      ];
+      const result = renderExternalStyles(styles, mockConfig, logger);
+      expect(result.split('<link rel="stylesheet"').length - 1).toBe(1);
+    });
+
+    test('should escape HTML in CSS URLs', () => {
+      const styles = ['https://cdn.jsdelivr.net/npm/test"><script>alert("xss")</script><a href="'];
+      const result = renderExternalStyles(styles, mockConfig, logger);
+      expect(result).not.toContain('<script>');
+      expect(result).toContain('&quot;');
+    });
+
+    test('should skip invalid entries', () => {
+      const styles = [
+        'https://cdn.jsdelivr.net/npm/valid.css',
+        null,
+        '',
+        '   ',
+        123,
+        'https://cdn.jsdelivr.net/npm/another-valid.css'
+      ];
+      const result = renderExternalStyles(styles, mockConfig, logger);
+      expect(result).toContain('valid.css');
+      expect(result).toContain('another-valid.css');
+      expect(result.split('<link rel="stylesheet"').length - 1).toBe(2);
+    });
+
+    test('should respect CDN whitelist when enabled', () => {
+      const configWithWhitelist = {
+        security: {
+          enable_cdn_whitelist: true,
+          allowed_cdn_domains: ['cdn.jsdelivr.net']
+        }
+      };
+      const styles = [
+        'https://cdn.jsdelivr.net/npm/allowed.css',
+        'https://unknown-cdn.com/blocked.css'
+      ];
+      const result = renderExternalStyles(styles, configWithWhitelist, logger);
+      expect(result).toContain('allowed.css');
+      expect(result).not.toContain('blocked.css');
+      expect(logger.warn).toHaveBeenCalledWith(
+        '[ExternalStyles] Blocked disallowed CSS URL',
+        { url: 'https://unknown-cdn.com/blocked.css' }
+      );
+    });
+
+    test('should allow any HTTPS CDN by default (whitelist disabled)', () => {
+      const styles = [
+        'https://unknown-cdn.com/some-library.css',
+        'https://another-cdn.io/styles.css'
+      ];
+      const result = renderExternalStyles(styles, mockConfig, logger);
+      expect(result).toContain('some-library.css');
+      expect(result).toContain('styles.css');
+      expect(logger.warn).not.toHaveBeenCalled();
+    });
+
+    test('should work with mixed self-hosted and CDN styles', () => {
+      const styles = [
+        'https://cdn.jsdelivr.net/npm/library@1.0.0/styles.css',
+        'assets/components/widget.css',
+        './styles/custom.css'
+      ];
+      const result = renderExternalStyles(styles, mockConfig, logger);
+      expect(result).toContain('library@1.0.0/styles.css');
+      expect(result).toContain('assets/components/widget.css');
+      expect(result).toContain('./styles/custom.css');
+      expect(result.split('<link rel="stylesheet"').length - 1).toBe(3);
     });
   });
 });

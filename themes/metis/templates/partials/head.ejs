@@ -1,0 +1,40 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Anti-flash script - must run before CSS loads -->
+<script>
+(function() {
+  try {
+    const theme = localStorage.getItem('theme') || 
+                  (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  } catch (e) {
+    // Fallback if localStorage is not available
+  }
+})();
+</script>
+
+<title><%- page.title %></title>
+<%- metaTags %>
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="<%- pathToRoot %>favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="<%- pathToRoot %>favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="<%- pathToRoot %>favicon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="<%- pathToRoot %>favicon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="<%- pathToRoot %>favicon-512.png">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="<%- pathToRoot %>fonts.css"><%- adobeFonts || '' %>
+<link rel="stylesheet" href="<%- pathToRoot %>styles.css?v=20251104-v1">
+<link rel="stylesheet" href="<%- pathToRoot %>custom.css">
+
+<!-- Syntax Highlighting - Custom theme in styles.css -->
+
+<%- structuredData || '' %>
+<%- analytics || '' %>
+
+<!-- Page-specific external stylesheets (from frontmatter) -->
+<%- externalStyles || '' %>

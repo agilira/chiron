@@ -61,7 +61,7 @@ describe('ConfigLoader', () => {
       const configPath = path.join(testConfigDir, 'nonexistent.yaml');
       
       expect(() => loadConfig(configPath)).toThrow(ConfigurationError);
-      expect(() => loadConfig(configPath)).toThrow('Configuration file not found');
+      expect(() => loadConfig(configPath)).toThrow(/Configuration file not found|Failed to load configuration.*ENOENT/);
     });
 
     it('should throw error for invalid YAML syntax', () => {

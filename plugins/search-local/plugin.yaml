@@ -1,0 +1,29 @@
+# Search-Local Plugin Metadata
+
+name: search-local
+version: 2.0.0
+description: Local search with multilingual and subfolder support
+author: AGILira
+
+category: search
+tags:
+  - search
+  - local
+  - multilingual
+  - offline
+  - subfolders
+
+dependencies:
+  required: []
+  optional: []
+
+provides:
+  - local-search
+  - multilingual-search
+  - offline-search
+
+external: []
+
+themes: []
+
+requires: "^0.7.0"

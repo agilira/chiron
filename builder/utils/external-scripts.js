@@ -11,6 +11,28 @@
  * These are curated, trusted CDN sources with SRI support where available
  */
 const SCRIPT_PRESETS = {
+  // ========================================
+  // GLOBAL SCRIPTS (Common on all pages)
+  // ========================================
+  
+  // Font Awesome - Icon library
+  fontawesome: {
+    url: 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/js/all.min.js',
+    description: 'Font Awesome 6 - Icon library',
+    defer: true
+  },
+
+  // Cookie Consent - GDPR cookie banner
+  cookieconsent: {
+    url: 'https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.umd.js',
+    css: 'https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.css',
+    description: 'Vanilla Cookie Consent - GDPR compliant cookie banner'
+  },
+
+  // ========================================
+  // PAGE-SPECIFIC SCRIPTS
+  // ========================================
+  
   // Mermaid - Diagrams and flowcharts
   mermaid: {
     url: 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs',
@@ -57,6 +79,56 @@ const SCRIPT_PRESETS = {
   d3: {
     url: 'https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js',
     description: 'D3.js - Data-driven documents'
+  },
+
+  // ========================================
+  // FRAMEWORK PRESETS
+  // ========================================
+  
+  // React (production build)
+  react: {
+    url: 'https://unpkg.com/react@18/umd/react.production.min.js',
+    description: 'React 18 - JavaScript library for building user interfaces'
+  },
+  
+  // React DOM (production build)
+  reactdom: {
+    url: 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js',
+    description: 'React DOM 18 - React renderer for the web',
+    requires: ['react'] // Dependency hint
+  },
+
+  // Vue 3 (production build)
+  vue: {
+    url: 'https://unpkg.com/vue@3/dist/vue.global.prod.js',
+    description: 'Vue 3 - Progressive JavaScript framework'
+  },
+
+  // Svelte (runtime only - for pre-compiled components)
+  svelte: {
+    url: 'https://unpkg.com/svelte@4/internal/index.mjs',
+    type: 'module',
+    description: 'Svelte 4 - Cybernetically enhanced web apps'
+  },
+
+  // Alpine.js - Lightweight framework
+  alpine: {
+    url: 'https://unpkg.com/alpinejs@3/dist/cdn.min.js',
+    defer: true,
+    description: 'Alpine.js - Lightweight JavaScript framework'
+  },
+
+  // Preact (React alternative, smaller)
+  preact: {
+    url: 'https://unpkg.com/preact@10/dist/preact.min.js',
+    description: 'Preact - Fast 3kB alternative to React'
+  },
+
+  // Lit (Web Components)
+  lit: {
+    url: 'https://unpkg.com/lit@3/index.js',
+    type: 'module',
+    description: 'Lit - Simple. Fast. Web Components.'
   }
 };
 
@@ -127,6 +199,15 @@ function isAllowedCDN(url, config) {
       return false;
     }
     
+    // Check if CDN whitelist is enabled (opt-in security feature)
+    const whitelistEnabled = config?.security?.enable_cdn_whitelist === true;
+    
+    if (!whitelistEnabled) {
+      // Whitelist disabled (default): allow all HTTPS URLs
+      return true;
+    }
+    
+    // Whitelist enabled: check against allowed domains
     const allowedDomains = getAllowedCDNDomains(config);
     return allowedDomains.some(domain => 
       urlObj.hostname === domain || urlObj.hostname.endsWith(`.${domain}`)
@@ -153,7 +234,12 @@ function getScriptConfig(scriptSpec, config, logger) {
   if (typeof scriptSpec === 'string' && (isRelativeUrl(scriptSpec) || scriptSpec.startsWith('http://') || scriptSpec.startsWith('https://'))) {
     // Validate against allowed CDNs (or allow if relative/self-hosted)
     if (!isAllowedCDN(scriptSpec, config)) {
-      logger.warn('External script URL not from allowed CDN, skipping', { url: scriptSpec });
+      const whitelistEnabled = config?.security?.enable_cdn_whitelist === true;
+      if (whitelistEnabled) {
+        logger.warn('External script URL blocked by CDN whitelist, skipping', { url: scriptSpec });
+      } else {
+        logger.warn('External script URL must use HTTPS, skipping', { url: scriptSpec });
+      }
       return null;
     }
 
@@ -186,6 +272,13 @@ function renderExternalScripts(externalScripts, config, logger) {
   const seen = new Set(); // For deduplication
 
   for (const spec of externalScripts) {
+    // Handle inline scripts directly (no URL)
+    if (typeof spec === 'object' && spec.type === 'inline' && spec.code) {
+      inlineScripts.push(`<script type="module">${spec.code}</script>`);
+      logger.info('Added inline script', { type: spec.type });
+      continue;
+    }
+    
     const scriptConfig = getScriptConfig(spec, config, logger);
     if (!scriptConfig) {
       continue;
@@ -249,6 +342,68 @@ function renderExternalScripts(externalScripts, config, logger) {
 }
 
 /**
+ * Render external stylesheets from frontmatter
+ * Similar to renderExternalScripts but for CSS files
+ * 
+ * @param {Array<string>} externalStyles - Array of CSS URLs from frontmatter
+ * @param {Object} config - Configuration object
+ * @param {Object} logger - Logger instance
+ * @returns {string} HTML string with <link> tags
+ * 
+ * @example
+ * // In frontmatter:
+ * // external_styles:
+ * //   - "https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+ * //   - "assets/custom-component.css"
+ */
+function renderExternalStyles(externalStyles, config, logger) {
+  if (!Array.isArray(externalStyles) || externalStyles.length === 0) {
+    return '';
+  }
+
+  const html = [];
+  const seen = new Set(); // Deduplicate
+
+  for (const url of externalStyles) {
+    if (typeof url !== 'string' || !url.trim()) {
+      continue;
+    }
+
+    const trimmedUrl = url.trim();
+    
+    // Skip duplicates
+    if (seen.has(trimmedUrl)) {
+      continue;
+    }
+    seen.add(trimmedUrl);
+
+    // Check if allowed (same rules as scripts)
+    if (!isAllowedCDN(trimmedUrl, config)) {
+      if (logger) {
+        logger.warn('[ExternalStyles] Blocked disallowed CSS URL', { url: trimmedUrl });
+      }
+      continue;
+    }
+
+    // Escape HTML in URL
+    const safeUrl = trimmedUrl
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+
+    html.push(`    <link rel="stylesheet" href="${safeUrl}">`);
+
+    if (logger) {
+      logger.info('Added external stylesheet', { url: trimmedUrl });
+    }
+  }
+
+  return html.join('\n');
+}
+
+/**
  * Get list of available presets for documentation
  * @returns {Array<Object>} Array of preset info
  */
@@ -267,6 +422,7 @@ module.exports = {
   DEFAULT_ALLOWED_CDN_DOMAINS,
   getAllowedCDNDomains,
   renderExternalScripts,
+  renderExternalStyles,
   getAvailablePresets,
   isAllowedCDN,
   isRelativeUrl

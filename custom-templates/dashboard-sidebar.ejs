@@ -1,0 +1,185 @@
+<!-- 
+  Custom Dashboard Sidebar Example
+  
+  This template demonstrates a custom sidebar with widgets instead of navigation.
+  
+  Available data:
+  - page: Current page object with title, filename, etc.
+  - config: Full Chiron configuration
+  - pathToRoot: Relative path to root (e.g., '../../')
+  - sidebarConfig: Sidebar configuration from sidebars.yaml
+  - sidebarName: Name of the current sidebar
+  - escapeHtml(str): Utility to escape HTML
+  - sanitizeUrl(url): Utility to sanitize URLs
+-->
+
+<div class="custom-dashboard-sidebar">
+  <!-- Stats Widget -->
+  <div class="widget stats-widget">
+    <h3><%- escapeHtml(sidebarConfig.title || 'Quick Stats') %></h3>
+    <div class="stats-grid">
+      <% if (sidebarConfig.stats) { %>
+        <% Object.entries(sidebarConfig.stats).forEach(([key, value]) => { %>
+          <div class="stat-item">
+            <div class="stat-value"><%- escapeHtml(String(value)) %></div>
+            <div class="stat-label"><%- escapeHtml(key) %></div>
+          </div>
+        <% }); %>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- Quick Links Widget -->
+  <% if (sidebarConfig.quickLinks) { %>
+  <div class="widget links-widget">
+    <h3>Quick Links</h3>
+    <nav class="quick-links">
+      <% sidebarConfig.quickLinks.forEach(link => { %>
+        <a 
+          href="<%- sanitizeUrl(pathToRoot + link.url) %>" 
+          class="quick-link-item"
+          <% if (link.external) { %>target="_blank" rel="noopener noreferrer"<% } %>
+        >
+          <%- escapeHtml(link.label) %>
+          <% if (link.external) { %>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
+            </svg>
+          <% } %>
+        </a>
+      <% }); %>
+    </nav>
+  </div>
+  <% } %>
+
+  <!-- Custom HTML Widget -->
+  <% if (sidebarConfig.customHtml) { %>
+  <div class="widget custom-widget">
+    <%- sidebarConfig.customHtml %>
+  </div>
+  <% } %>
+
+  <!-- Project Info -->
+  <div class="widget project-info">
+    <h3><%- escapeHtml(config.project.name) %></h3>
+    <% if (config.project.description) { %>
+      <p class="project-description">
+        <%- escapeHtml(config.project.description) %>
+      </p>
+    <% } %>
+    <% if (config.github?.url) { %>
+      <a 
+        href="<%- sanitizeUrl(config.github.url) %>" 
+        class="github-link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        View on GitHub →
+      </a>
+    <% } %>
+  </div>
+</div>
+
+<style>
+/* Custom Dashboard Sidebar Styles */
+.custom-dashboard-sidebar {
+  padding: var(--space-6);
+}
+
+.widget {
+  background: var(--color-neutral-50);
+  border: 1px solid var(--color-neutral-200);
+  border-radius: var(--border-radius-md);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.widget h3 {
+  margin: 0 0 var(--space-3) 0;
+  font-size: var(--font-size-body-300);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-neutral-700);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+
+.stat-item {
+  text-align: center;
+  padding: var(--space-2);
+}
+
+.stat-value {
+  font-size: var(--font-size-heading-400);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary-600);
+}
+
+.stat-label {
+  font-size: var(--font-size-body-100);
+  color: var(--color-neutral-600);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: var(--space-1);
+}
+
+.quick-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.quick-link-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-3);
+  background: white;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: var(--border-radius-sm);
+  text-decoration: none;
+  color: var(--color-neutral-700);
+  transition: all var(--transition-fast);
+}
+
+.quick-link-item:hover {
+  border-color: var(--color-primary-500);
+  background: var(--color-primary-50);
+  color: var(--color-primary-700);
+}
+
+.quick-link-item svg {
+  margin-left: auto;
+  opacity: 0.5;
+}
+
+.project-info {
+  background: var(--color-primary-50);
+  border-color: var(--color-primary-200);
+}
+
+.project-description {
+  font-size: var(--font-size-body-200);
+  color: var(--color-neutral-600);
+  margin: var(--space-2) 0;
+  line-height: 1.5;
+}
+
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-primary-600);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-body-200);
+  margin-top: var(--space-2);
+}
+
+.github-link:hover {
+  color: var(--color-primary-700);
+  text-decoration: underline;
+}
+</style>

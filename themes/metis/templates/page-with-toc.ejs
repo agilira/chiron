@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="<%- page.lang || 'en' %>" data-theme="light">
+<head>
+    <%- include('partials/head', { page, pathToRoot, metaTags, adobeFonts, structuredData, analytics, externalStyles }) %>
+</head>
+<body id="<%- bodyId %>" class="<%- bodyClasses.join(' ') %>">
+    <!-- Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- SVG Icon Sprite (hidden, for <use> references) -->
+    {{SVG_SPRITE}}
+    
+    <!-- Header -->
+    <%- include('partials/header', { githubUrl, logoImages, projectNameSpan, headerNav, headerActions }) %>
+
+    <!-- Main Layout with Double Sidebar -->
+    <div class="layout layout-with-toc<% if (hideSidebar) { %> no-sidebar<% } %>">
+        <% if (!hideSidebar) { %>
+        <!-- Left Sidebar (Navigation) -->
+        <aside class="sidebar" id="sidebar" role="complementary" aria-label="Sidebar">
+            <!-- Mobile Header Navigation -->
+            <nav class="mobile-header-nav" aria-label="Main navigation (mobile)">
+                <%- mobileHeaderNav %>
+            </nav>
+            
+            <!-- Sidebar Navigation -->
+            <nav class="sidebar-nav" <%= aria('aria_nav_sidebar') %>>
+                <%- navigation %>
+            </nav>
+        </aside>
+        <% } else { %>
+        <!-- Mobile Menu Only (when sidebar is hidden) -->
+        <aside class="sidebar mobile-only" id="sidebar" role="complementary" <%= aria('aria_nav_mobile') %>>
+            <nav class="mobile-header-nav" <%= aria('aria_nav_main') %>>
+                <%- mobileHeaderNav %>
+            </nav>
+        </aside>
+        <% } %>
+
+        <!-- Main Content -->
+        <main class="main-content" id="main-content" role="main">
+            <div class="content-container">
+                <%- breadcrumb %>
+
+                <!-- Page Content -->
+                <div class="content">
+                    <%- pageContent %>
+                </div>
+
+                <!-- Pagination (Previous/Next) -->
+                <%- pagination %>
+            </div>
+        </main>
+
+        <!-- Right Sidebar (Table of Contents) -->
+        <aside class="toc-sidebar" id="tocSidebar" role="complementary" aria-label="Table of contents" data-toc-depth="<%- tocDepth || 3 %>">
+            <%- tableOfContents %>
+        </aside>
+    </div>
+
+    <!-- Footer -->
+    <%- include('partials/footer', { copyrightYear, copyrightHolder, footerLegalLinks, companyUrl, logoFooterLight, logoFooterDark, logoAlt }) %>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <% if (menus?.ui_features?.scroll_to_top?.enabled === true) { %>
+    <!-- Scroll to Top Button -->
+    <button 
+        class="scroll-to-top" 
+        id="scrollToTop" 
+        aria-label="Scroll to top of page"
+        title="Scroll to top"
+        type="button"
+    >
+        ↑
+    </button>
+    <% } %>
+
+    <!-- Search Modal -->
+    <%- include('partials/search-modal') %>
+
+    <!-- Scripts -->
+    <%- include('partials/scripts', { pathToRoot, i18nClientConfig, componentScripts, externalScripts }) %>
+</body>
+</html>

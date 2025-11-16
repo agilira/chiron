@@ -1,18 +1,21 @@
-# Chiron - Static Site Generator for Documentation
+# Chiron - Modern Static Site Generator
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![Static Site Generator](https://img.shields.io/badge/SSG-Static%20Site-green.svg)](#)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
 [![Markdown](https://img.shields.io/badge/Markdown-GFM-blue.svg)](https://github.github.com/gfm/)
 
-**Chiron** is a static site generator for documentation. Markdown + YAML config → professional HTML docs with SEO, search, dark mode, and accessibility built-in.
+**Chiron** is a modern, flexible static site generator. Markdown + YAML config → beautiful sites with themes, plugins, PWA support, and built-in blog functionality.
 
-Zero runtime. Zero complexity. Just fast, beautiful docs.
+Zero runtime. Zero complexity. Just fast, beautiful websites.
 
 ## Key Features
 
 - **Markdown-First**: Write documentation in Markdown with YAML frontmatter
-- **YAML Configuration**: Single `chiron.config.yaml` file for everything
+- **Draft Status**: Content workflow with `status: draft` for work-in-progress pages - [See DRAFT-STATUS.md](DRAFT-STATUS.md)
+- **YAML Configuration**: Clean config with `chiron.config.yaml` + `sidebars.yaml` (scalable for large sites)
+- **PWA Cache System**: Lightning-fast repeat loads (<50ms) with cache-first strategy and background updates - [See PWA-CACHE.md](PWA-CACHE.md)
+- **Custom Sidebar Templates**: WordPress-style template system for sidebars - create dashboards, marketing pages, e-commerce filters, or any custom content
 - **Nested Structure (Subpages)**: Organize content in subdirectories for complex projects
 - **Pagination (Prev/Next)**: Automatic sequential navigation between pages
 - **Custom Templates**: Create custom page layouts with complete HTML control
@@ -22,12 +25,14 @@ Zero runtime. Zero complexity. Just fast, beautiful docs.
 - **Modern Design**: Clean, responsive interface
 - **Accessibility**: WCAG 2.2 AA compliant
 - **Dark Mode**: Native support for dark theme
+- **Offline Support**: Documentation works without internet connection (when PWA cache enabled)
 - **Internationalization**: Built-in i18n for UI strings (English, Italian, French + custom)
 - **SEO Optimized**: Complete meta tags, Open Graph, Schema.org
 - **GitHub Pages Ready**: Output optimized for static hosting
 - **Custom Pages**: Support for custom `index.html` and `404.html`
 - **Analytics**: Optional integration with Google Analytics 4 and GTM
 - **Code Blocks**: Copy-to-clipboard functionality for code snippets
+- **External Scripts**: Integrate external JavaScript libraries and CSS per-page or globally
 
 ## Quick Start
 
@@ -130,12 +135,19 @@ You can use Chiron **without installing Node.js** by using GitHub Actions. The w
      content_dir: content
    
    navigation:
-     sidebar:
-       - label: Home
-         file: index.md
+     sidebars_file: sidebars.yaml  # Reference to sidebars file
    ```
    
-   See [examples/docs-src-example/chiron.config.yaml](examples/docs-src-example/chiron.config.yaml) for a minimal example.
+   And create `docs-src/sidebars.yaml`:
+   ```yaml
+   default:
+     - section: Documentation
+       items:
+         - label: Home
+           file: index.md
+   ```
+   
+   See [examples/docs-src-example/](examples/docs-src-example/) for a complete minimal example.
 
 4. **Add your content** in `docs-src/content/` as Markdown files.
 
@@ -160,39 +172,41 @@ Here's the complete structure for GitHub Actions deployment:
 ```
 your-repo/
 ├── docs-src/                      # Your documentation source
-│   ├── chiron.config.yaml         # ✅ Required - Configuration
-│   ├── content/                   # ✅ Required - Markdown files
+│   ├── chiron.config.yaml         # Required - Main configuration
+│   ├── sidebars.yaml              # Required - Navigation structure
+│   ├── content/                   # Required - Markdown files
 │   │   ├── index.md
 │   │   └── ...
 │   │
-│   ├── assets/                    # ⚠️ Optional - Images & branding
+│   ├── assets/                    # Optional - Images & branding
 │   │   ├── logo-black.png         #    (referenced in config)
 │   │   ├── logo-white.png
 │   │   ├── logo-footer.png
-│   │   └── og-image.png           #    ✨ Can be here OR in root
+│   │   └── og-image.png           #    Can be here OR in root
 │   │
-│   ├── favicon-16.png             # ⚠️ Optional - Favicons
+│   ├── favicon-16.png             # Optional - Favicons
 │   ├── favicon-32.png             #    (MUST be in root of docs-src/)
 │   ├── favicon-180.png
 │   ├── favicon-192.png
 │   ├── favicon-512.png
 │   │
-│   ├── og-image.png               # ⚠️ Optional - OG image
+│   ├── og-image.png               # Optional - OG image
 │   │                              #    (can be here OR in assets/)
 │   │
-│   ├── custom.css                 # ⚠️ Optional - Custom styles
-│   ├── custom.js                  # ⚠️ Optional - Custom JavaScript
-│   ├── index.html                 # ⚠️ Optional - Custom homepage
-│   ├── 404.html                   # ⚠️ Optional - Custom 404 page
-│   └── templates/                 # ⚠️ Optional - Custom templates
+│   ├── custom.css                 # Optional - Custom styles
+│   ├── custom.js                  # Optional - Custom JavaScript
+│   ├── index.html                 # Optional - Custom homepage
+│   ├── 404.html                   # Optional - Custom 404 page
+│   └── templates/                 # Optional - Custom templates
 │       └── page.html
 │
 ├── .github/workflows/
 │   └── build-docs.yml             # Workflow file
-└── docs/                          # 🤖 Auto-generated (don't edit)
+└── docs/                          # Auto-generated (don't edit)
 ```
 
 **Important Notes:**
+- **Configuration**: `chiron.config.yaml` + `sidebars.yaml` (like Docusaurus)
 - **Favicons**: Must be in root of `docs-src/` (not in `assets/`)
 - **OG Image**: Can be in root OR `assets/` (builder checks both)
 - **Logos**: Should be in `assets/` (referenced in `chiron.config.yaml`)
@@ -200,7 +214,7 @@ your-repo/
 
 ### Optional Customizations
 
-**Everything is optional except `chiron.config.yaml` and `content/`!**
+**Everything is optional except `chiron.config.yaml`, `sidebars.yaml`, and `content/`!**
 
 If these files don't exist in `docs-src/`, Chiron automatically uses its built-in versions:
 - `styles.css`, `fonts.css`, `script.js` - Core files from Chiron
@@ -212,6 +226,7 @@ If these files don't exist in `docs-src/`, Chiron automatically uses its built-i
 ```
 chiron/
 ├── chiron.config.yaml      # Main configuration
+├── sidebars.yaml           # Sidebar navigation (separate for scalability)
 ├── content/                # Markdown page files
 │   ├── index.md
 │   ├── api-reference.md
@@ -269,23 +284,32 @@ content/
 
 ### Navigation Configuration
 
-Reference nested files in your `chiron.config.yaml`:
+Reference nested files in your `sidebars.yaml`:
 
 ```yaml
-navigation:
-  sidebars:
-    default:
-      - section: Plugins
-        items:
-          - label: Plugins Overview
-            file: plugins/index.md
-          - label: Auth Plugin
-            file: plugins/auth/index.md
-          - label: Auth API Reference
-            file: plugins/auth/api-reference.md
-          - label: Cache Plugin
-            file: plugins/cache/index.md
+# sidebars.yaml
+default:
+  - section: Plugins
+    items:
+      - label: Plugins Overview
+        file: plugins/index.md
+      - label: Auth Plugin
+        file: plugins/auth/index.md
+      - label: Auth API Reference
+        file: plugins/auth/api-reference.md
+      - label: Cache Plugin
+        file: plugins/cache/index.md
 ```
+
+Then reference the sidebars file in `chiron.config.yaml`:
+
+```yaml
+# chiron.config.yaml
+navigation:
+  sidebars_file: sidebars.yaml  # Load sidebars from external file
+```
+
+**Why a separate file?** For large documentation sites with hundreds of links, keeping sidebars in a separate file improves maintainability and keeps your main config clean (like Docusaurus).
 
 ### Smart Breadcrumbs
 
@@ -332,7 +356,7 @@ Chiron supports full **GitHub Flavored Markdown**:
 - Code blocks with copy button
 - Responsive tables
 - External links
-- Images with lazy loading
+- Images
 - Lists, blockquotes, and more
 
 ### Code Example
@@ -356,9 +380,10 @@ function hello() {
 
 ### `chiron.config.yaml` File
 
-The configuration file controls every aspect of the site:
+The main configuration file controls project settings, branding, and features. Navigation is now defined in a separate `sidebars.yaml` file for better scalability:
 
 ```yaml
+# chiron.config.yaml - Main configuration
 # Project Information
 project:
   name: Chiron
@@ -379,21 +404,14 @@ branding:
     primary: "#3b82f6"
     accent: "#10b981"
 
-# Navigation
+# Navigation - Load from external file
 navigation:
-  sidebar:
-    - section: Getting Started
-      items:
-        - label: Overview
-          file: index.md
-        - label: API Reference
-          file: api-reference.md
+  sidebars_file: sidebars.yaml  # Separate file for scalability
 
 # Features
 features:
   dark_mode: true
   code_copy: true
-  cookie_consent: true
 
 # Build
 build:
@@ -405,7 +423,36 @@ build:
     enabled: true
 ```
 
-See the full configuration file for all available options.
+### `sidebars.yaml` File
+
+Navigation structure is defined separately for better maintainability (especially for large sites with hundreds of links):
+
+```yaml
+# sidebars.yaml - Navigation structure
+default:
+  - section: Getting Started
+    items:
+      - label: Overview
+        file: index.md
+      - label: API Reference
+        file: api-reference.md
+
+api:
+  - section: API Documentation
+    items:
+      - label: Endpoints
+        file: api/endpoints.md
+      - label: Authentication
+        file: api/auth.md
+```
+
+**Why separate files?**
+- Scalable for large documentation (like Docusaurus)
+- Easier to maintain with hundreds of links
+- Cleaner git diffs when updating navigation
+- Main config stays focused on project settings
+
+See the full configuration files and [SIDEBAR.md](SIDEBAR.md) for all available options.
 
 ## NPM Commands
 
@@ -566,9 +613,9 @@ npm run build
 Output:
 ```
 Processing content files...
-  ✓ Generated: index.html (using custom HTML)
-  ✓ Generated: api-reference.html
-  ✓ Generated: 404.html (default)
+  Generated: index.html (using custom HTML)
+  Generated: api-reference.html
+  Generated: 404.html (default)
 ```
 
 **Note**: The 404.html is automatically generated if it doesn't exist. For more details, see [CUSTOM-PAGES.md](CUSTOM-PAGES.md).
@@ -624,11 +671,16 @@ project:
   base_url: https://example.github.io/docs
 
 navigation:
-  sidebar:
-    - section: Docs
-      items:
-        - label: Home
-          file: index.md
+  sidebars_file: sidebars.yaml
+```
+
+```yaml
+# sidebars.yaml
+default:
+  - section: Docs
+    items:
+      - label: Home
+        file: index.md
 ```
 
 ```markdown
@@ -644,11 +696,10 @@ This is my documentation site.
 
 ### Complete Site
 
-See `chiron.config.yaml` and `content/` for a complete example with:
+See `chiron.config.yaml`, `sidebars.yaml`, and `content/` for a complete example with:
 - Multi-level navigation
 - Complete SEO
 - Dark mode
-- Cookie consent
 - Sitemap and robots.txt
 
 ## Programmatic API
@@ -695,15 +746,19 @@ builder.watch();
 - **[Examples](examples/)** - Practical examples
 
 ### Configuration
+- **[Theme System](THEMES.md)** - Complete theme customization and creation
 - **[Nested Structure (Subpages)](SUBPAGES.md)** - Organize content in subdirectories
 - **[Pagination (Prev/Next)](PAGINATION.md)** - Sequential page navigation
-- **[Custom Templates](CUSTOM-TEMPLATES.md)** - Create custom page layouts
+- **[Custom Templates](CUSTOM-TEMPLATES.md)** - Override specific page templates
+- **[Templates Guide](TEMPLATES.md)** - Template syntax and placeholders
 - **[Sidebar Navigation](SIDEBAR.md)** - Configure multiple sidebars
+- **[Custom Sidebar Templates](CUSTOM-SIDEBAR.md)** - ⭐ Create custom sidebars with dashboards, widgets, marketing content
 - **[Header Navigation](HEADER-NAVIGATION.md)** - Configure header navigation
 - **[Table of Contents](TABLE-OF-CONTENTS.md)** - Create manual TOC in pages
 - **[Analytics Integration](ANALYTICS.md)** - Integrate Google Analytics and GTM
 - **[Custom Pages](CUSTOM-PAGES.md)** - Create custom HTML pages
-- **[Customization](CUSTOMIZATION.md)** - Customize styles and scripts
+- **[Customization](CUSTOMIZATION.md)** - Customize styles and scripts (custom.css/js)
+- **[External Scripts](EXTERNAL-SCRIPTS.md)** - Load external JavaScript libraries and CSS
 - **[Feature Cards](FEATURE-CARDS.md)** - Create feature cards with SVG
 - **[Accessibility](ACCESSIBILITY.md)** - Accessibility guide
 

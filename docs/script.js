@@ -53,13 +53,16 @@ class DocumentationApp {
         this.setupMobileSidebar();
         this.setupCollapsibleSections();
         this.setupSearch();
+        this.setupSearchModal();
         this.setupNavigation();
+        this.setupHeaderDropdowns();
         this.setupAccessibility();
         this.setupCodeBlocks();
+        this.setupBlockquotes();
+        this.setupInfoBoxes();
         this.setupTableOfContents();
         this.setupKeyboardNavigation();
         this.setupThemeToggle();
-        this.setupCookieConsent();
         this.setupSitemapGeneration();
         this.setupRobotsGeneration();
         this.setupDeveloperTools();
@@ -601,6 +604,199 @@ class DocumentationApp {
         });
     }
 
+    // Search Modal
+    setupSearchModal() {
+        const searchToggle = document.getElementById('searchToggle');
+        const searchModal = document.getElementById('searchModal');
+        const searchModalClose = document.getElementById('searchModalClose');
+        const searchModalOverlay = document.getElementById('searchModalOverlay');
+        const searchInput = document.getElementById('searchInput');
+        const searchClearBtn = document.getElementById('searchClearBtn');
+        
+        if (!searchToggle || !searchModal) return;
+        
+        const openModal = () => {
+            searchModal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            // Focus search input after modal opens
+            setTimeout(() => {
+                if (searchInput) searchInput.focus();
+            }, 100);
+        };
+        
+        const closeModal = () => {
+            searchModal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            // Clear search input
+            if (searchInput) {
+                searchInput.value = '';
+                searchInput.dispatchEvent(new Event('input'));
+            }
+        };
+        
+        // Show/hide clear button based on input value
+        if (searchInput && searchClearBtn) {
+            searchInput.addEventListener('input', () => {
+                if (searchInput.value.length > 0) {
+                    searchClearBtn.removeAttribute('hidden');
+                } else {
+                    searchClearBtn.setAttribute('hidden', '');
+                }
+            });
+            
+            // Clear input on clear button click
+            searchClearBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                searchInput.dispatchEvent(new Event('input'));
+                searchInput.focus();
+            });
+        }
+        
+        // Open modal on button click
+        searchToggle.addEventListener('click', openModal);
+        
+        // Close modal on close button click
+        if (searchModalClose) {
+            searchModalClose.addEventListener('click', closeModal);
+        }
+        
+        // Close modal on overlay click
+        if (searchModalOverlay) {
+            searchModalOverlay.addEventListener('click', closeModal);
+        }
+        
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && searchModal.getAttribute('aria-hidden') === 'false') {
+                closeModal();
+            }
+        });
+        
+        // Keyboard shortcut: Cmd/Ctrl + K to open search
+        document.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                openModal();
+            }
+        });
+    }
+
+    // Header Dropdown Menus
+    setupHeaderDropdowns() {
+        const dropdownItems = document.querySelectorAll('.header-nav-item');
+        
+        console.log('Header dropdowns found:', dropdownItems.length);
+        
+        if (!dropdownItems.length) return;
+
+        dropdownItems.forEach(item => {
+            const button = item.querySelector('.header-nav-link');
+            const dropdown = item.querySelector('.header-dropdown');
+            
+            console.log('Dropdown item:', { button, dropdown });
+            
+            if (!button || !dropdown) return;
+
+            let closeTimeout = null;
+
+            const openDropdown = () => {
+                if (closeTimeout) {
+                    clearTimeout(closeTimeout);
+                    closeTimeout = null;
+                }
+                item.classList.add('open');
+                button.setAttribute('aria-expanded', 'true');
+            };
+
+            const closeDropdown = (immediate = false) => {
+                if (immediate) {
+                    item.classList.remove('open');
+                    button.setAttribute('aria-expanded', 'false');
+                } else {
+                    // Delay closing to allow moving mouse to dropdown
+                    closeTimeout = setTimeout(() => {
+                        item.classList.remove('open');
+                        button.setAttribute('aria-expanded', 'false');
+                    }, 200);
+                }
+            };
+
+            // Click to toggle on mobile/tablet
+            button.addEventListener('click', (e) => {
+                console.log('Dropdown button clicked!');
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (item.classList.contains('open')) {
+                    console.log('Closing dropdown');
+                    closeDropdown(true);
+                } else {
+                    console.log('Opening dropdown');
+                    // Close other dropdowns
+                    dropdownItems.forEach(otherItem => {
+                        if (otherItem !== item && otherItem.classList.contains('open')) {
+                            otherItem.classList.remove('open');
+                            const otherButton = otherItem.querySelector('.header-nav-link');
+                            if (otherButton) otherButton.setAttribute('aria-expanded', 'false');
+                        }
+                    });
+                    openDropdown();
+                }
+            });
+
+            // Hover to open on desktop
+            item.addEventListener('mouseenter', () => {
+                console.log('Mouse enter dropdown');
+                openDropdown();
+            });
+
+            item.addEventListener('mouseleave', () => {
+                closeDropdown();
+            });
+
+            // Keep open when hovering dropdown content
+            dropdown.addEventListener('mouseenter', () => {
+                if (closeTimeout) {
+                    clearTimeout(closeTimeout);
+                    closeTimeout = null;
+                }
+            });
+
+            dropdown.addEventListener('mouseleave', () => {
+                closeDropdown();
+            });
+
+            // Close on Escape key
+            button.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && item.classList.contains('open')) {
+                    closeDropdown(true);
+                    button.focus();
+                }
+            });
+
+            // Close dropdown when clicking a link inside
+            dropdown.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    closeDropdown(true);
+                });
+            });
+        });
+
+        // Close all dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            const clickedOutside = !e.target.closest('.header-nav-item');
+            if (clickedOutside) {
+                dropdownItems.forEach(item => {
+                    if (item.classList.contains('open')) {
+                        item.classList.remove('open');
+                        const button = item.querySelector('.header-nav-link');
+                        if (button) button.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+        });
+    }
+
     // Navigation
     setupNavigation() {
         // Smooth scroll for internal links
@@ -709,7 +905,11 @@ class DocumentationApp {
         }
         
         // Hide search results
-        this.hideSearchResults();
+        const searchResults = document.getElementById('searchResults');
+        if (searchResults) {
+            searchResults.hidden = true;
+            searchResults.style.display = 'none';
+        }
         if (this.searchInput) {
             this.searchInput.blur();
         }
@@ -731,10 +931,16 @@ class DocumentationApp {
             hljs.registerAliases('yml', {languageName: 'yaml'});
             hljs.registerAliases('ts', {languageName: 'typescript'});
             hljs.registerAliases('cs', {languageName: 'csharp'});
+            hljs.registerAliases(['html', 'xhtml'], { languageName: 'xml' });
             
             // Languages to exclude from highlighting (keep plain)
-            const excludedLanguages = ['markdown', 'md', 'text', 'plaintext', 'txt'];
+            const excludedLanguages = ['text', 'plaintext', 'txt'];
             
+            const languageAliasMap = {
+                markdown: 'xml',
+                md: 'xml'
+            };
+
             // Highlight all code blocks
             document.querySelectorAll('pre code').forEach((block) => {
                 // Get language from class
@@ -743,15 +949,22 @@ class DocumentationApp {
                 
                 if (langClass) {
                     const lang = langClass.replace('language-', '');
+                    const normalizedLang = lang.toLowerCase();
                     
                     // Skip highlighting for excluded languages
-                    if (excludedLanguages.includes(lang.toLowerCase())) {
+                    if (excludedLanguages.includes(normalizedLang)) {
                         block.className = `language-${lang} nohighlight`;
                         return;
                     }
+
+                    const mappedLang = languageAliasMap[normalizedLang] || lang;
                     
                     // Ensure the language is set correctly
-                    block.className = `language-${lang}`;
+                    block.className = `language-${mappedLang}`;
+                    if (mappedLang !== lang) {
+                        block.classList.add(`language-${lang}`);
+                    }
+                    block.dataset.languageDisplay = lang;
                 }
                 
                 hljs.highlightElement(block);
@@ -775,9 +988,9 @@ class DocumentationApp {
                 await navigator.clipboard.writeText(text);
                 this.showToast('Code copied to clipboard!', 'success');
                 
-                // Visual feedback
+                // Visual feedback - show checkmark icon only
                 const originalHTML = button.innerHTML;
-                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>Copied!';
+                button.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
                 button.classList.add('copied');
                 
                 setTimeout(() => {
@@ -789,6 +1002,101 @@ class DocumentationApp {
                 this.showToast('Failed to copy code', 'error');
             }
         });
+    }
+
+    // Blockquotes - Auto-detect type from first bold word
+    setupBlockquotes() {
+        const blockquotes = document.querySelectorAll('.content blockquote');
+        
+        blockquotes.forEach(blockquote => {
+            // Check if first child is a paragraph
+            const firstP = blockquote.querySelector('p:first-child');
+            if (!firstP) return;
+            
+            // Check if first element in paragraph is a strong tag
+            const firstStrong = firstP.querySelector('strong:first-child');
+            if (!firstStrong) return;
+            
+            // Get the text content of the first strong tag
+            const keyword = firstStrong.textContent.trim().toLowerCase().replace(':', '');
+            
+            // Map keywords to CSS classes
+            const typeMap = {
+                'note': 'note',
+                'info': 'info',
+                'warning': 'warning',
+                'caution': 'warning',
+                'success': 'success',
+                'tip': 'tip',
+                'error': 'error',
+                'danger': 'danger',
+                'important': 'important'
+            };
+            
+            // Add the appropriate class if keyword matches
+            if (typeMap[keyword]) {
+                blockquote.classList.add(typeMap[keyword]);
+            }
+        });
+    }
+
+    // Info Boxes - Dismissible alerts with localStorage
+    setupInfoBoxes() {
+        const infoBoxes = document.querySelectorAll('.info-box');
+        
+        infoBoxes.forEach(box => {
+            // Get unique ID from data-dismissible attribute or generate one
+            const dismissibleId = box.getAttribute('data-dismissible');
+            
+            // If not dismissible, skip
+            if (dismissibleId === null) return;
+            
+            // Use provided ID or generate from content
+            const boxId = dismissibleId || `info-box-${this.hashCode(box.textContent)}`;
+            
+            // Check if already dismissed
+            if (localStorage.getItem(`dismissed-${boxId}`) === 'true') {
+                box.style.display = 'none';
+                return;
+            }
+            
+            // Add close button
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'info-box-close';
+            closeBtn.setAttribute('aria-label', 'Close');
+            closeBtn.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            `;
+            
+            closeBtn.addEventListener('click', () => {
+                // Add dismissing animation
+                box.classList.add('dismissing');
+                
+                // Save to localStorage
+                localStorage.setItem(`dismissed-${boxId}`, 'true');
+                
+                // Remove from DOM after animation
+                setTimeout(() => {
+                    box.remove();
+                }, 300);
+            });
+            
+            box.appendChild(closeBtn);
+        });
+    }
+    
+    // Helper function to generate hash from string
+    hashCode(str) {
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            const char = str.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash;
+        }
+        return Math.abs(hash).toString(36);
     }
 
     // Table of contents
@@ -1042,9 +1350,12 @@ class DocumentationApp {
 
     // Update logos based on current theme
     updateLogosForTheme(theme) {
-        const logos = document.querySelectorAll('.logo-img, .footer-logo');
+        console.log('updateLogosForTheme called with theme:', theme);
         
-        logos.forEach(logo => {
+        // Handle logos with data attributes (single img approach)
+        const logosWithData = document.querySelectorAll('[data-logo-light], [data-logo-dark]');
+        console.log('Logos with data attributes:', logosWithData.length);
+        logosWithData.forEach(logo => {
             const lightSrc = logo.getAttribute('data-logo-light');
             const darkSrc = logo.getAttribute('data-logo-dark');
             
@@ -1054,78 +1365,32 @@ class DocumentationApp {
                 logo.src = lightSrc;
             }
         });
-    }
-
-    // Cookie consent
-    setupCookieConsent() {
-        const cookieBanner = document.getElementById('cookieBanner');
-        const cookieAcceptBtn = document.getElementById('cookieAcceptBtn');
-        const cookieDeclineBtn = document.getElementById('cookieDeclineBtn');
-        const cookieConsentBtn = document.getElementById('cookieConsentBtn');
-
-        if (!cookieBanner) return;
-
-        // Safe localStorage helpers
-        const getCookieConsent = () => {
-            try {
-                return localStorage.getItem('cookieConsent');
-            } catch (e) {
-                console.warn('localStorage not available:', e);
-                return null;
-            }
-        };
         
-        const setCookieConsent = (value) => {
-            try {
-                localStorage.setItem('cookieConsent', value);
-                return true;
-            } catch (e) {
-                console.warn('Cannot save cookie consent:', e);
-                return false;
-            }
-        };
-
-        // Check if user has already given consent
-        const hasConsented = getCookieConsent();
+        // Handle separate light/dark logos (two img approach)
+        // Header logos are INVERTED: .logo-light has white logo, .logo-dark has black logo
+        const headerLightLogos = document.querySelectorAll('.logo-light');
+        const headerDarkLogos = document.querySelectorAll('.logo-dark');
         
-        if (!hasConsented) {
-            // Show banner after a brief delay
-            setTimeout(() => {
-                cookieBanner.classList.add('show');
-            }, CONFIG.UI.COOKIE_BANNER_DELAY);
-        }
-
-        // Handle acceptance
-        if (cookieAcceptBtn) {
-            cookieAcceptBtn.addEventListener('click', () => {
-                if (setCookieConsent('accepted')) {
-                    cookieBanner.classList.remove('show');
-                    this.showToast('Cookie preferences saved', 'success');
-                } else {
-                    this.showToast('Could not save preferences', 'error');
-                }
-            });
-        }
-
-        // Handle decline
-        if (cookieDeclineBtn) {
-            cookieDeclineBtn.addEventListener('click', () => {
-                if (setCookieConsent('declined')) {
-                    cookieBanner.classList.remove('show');
-                    this.showToast('Non-essential cookies disabled', 'success');
-                } else {
-                    cookieBanner.classList.remove('show');
-                    this.showToast('Preferences not saved (storage disabled)', 'error');
-                }
-            });
-        }
-
-        // Handle manage cookies button
-        if (cookieConsentBtn) {
-            cookieConsentBtn.addEventListener('click', () => {
-                // Show banner again to allow changing preferences
-                cookieBanner.classList.add('show');
-            });
+        // Footer logos are NORMAL: .footer-logo-light has black logo, .footer-logo-dark has white logo
+        const footerLightLogos = document.querySelectorAll('.footer-logo-light');
+        const footerDarkLogos = document.querySelectorAll('.footer-logo-dark');
+        
+        if (theme === 'dark') {
+            // Dark theme
+            // Header: show .logo-light (white logo)
+            headerLightLogos.forEach(logo => logo.style.display = 'block');
+            headerDarkLogos.forEach(logo => logo.style.display = 'none');
+            // Footer: show .footer-logo-dark (white logo)
+            footerLightLogos.forEach(logo => logo.style.display = 'none');
+            footerDarkLogos.forEach(logo => logo.style.display = 'block');
+        } else {
+            // Light theme
+            // Header: show .logo-dark (black logo)
+            headerLightLogos.forEach(logo => logo.style.display = 'none');
+            headerDarkLogos.forEach(logo => logo.style.display = 'block');
+            // Footer: show .footer-logo-light (black logo)
+            footerLightLogos.forEach(logo => logo.style.display = 'block');
+            footerDarkLogos.forEach(logo => logo.style.display = 'none');
         }
     }
 
@@ -1242,7 +1507,7 @@ class DocumentationApp {
 
             // Switch to a specific tab
             const switchTab = (index) => {
-                // Deactivate all tabs
+                // Deactivate all tabs within this container only
                 tabButtons.forEach((btn, i) => {
                     const isActive = i === index;
                     btn.classList.toggle('active', isActive);
@@ -1250,7 +1515,7 @@ class DocumentationApp {
                     btn.setAttribute('tabindex', isActive ? '0' : '-1');
                 });
 
-                // Show only the active panel
+                // Show only the active panel within this container only
                 tabPanels.forEach((panel, i) => {
                     if (i === index) {
                         panel.classList.add('active');
@@ -1264,7 +1529,8 @@ class DocumentationApp {
 
             // Click handler
             tabButtons.forEach((button, index) => {
-                button.addEventListener('click', () => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
                     switchTab(index);
                 });
 
@@ -1303,6 +1569,4 @@ class DocumentationApp {
 }
 
 // DocumentationApp class ends here
-// Note: DocumentationApp is now initialized after configuration is loaded
-
-// Service Worker removed - PWA features not needed for now
+// Note: DocumentationApp is initialized by the HTML template

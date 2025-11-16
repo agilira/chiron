@@ -3,6 +3,7 @@ const js = require('@eslint/js');
 
 module.exports = [
   js.configs.recommended,
+  // Base configuration for Node.js files
   {
     languageOptions: {
       ecmaVersion: 2021,
@@ -35,7 +36,11 @@ module.exports = [
       }
     },
     rules: {
-      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      'no-unused-vars': ['warn', { 
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_'
+      }],
       'no-console': 'off',
       'prefer-const': 'error',
       'no-var': 'error',
@@ -56,7 +61,39 @@ module.exports = [
       'space-infix-ops': 'error'
     }
   },
+  // Browser environment for js-components
   {
-    ignores: ['node_modules/**', 'docs/**', 'coverage/**', '**/*.min.js']
+    files: ['builder/js-components/**/*.js'],
+    languageOptions: {
+      ecmaVersion: 2021,
+      sourceType: 'script',
+      globals: {
+        // Browser globals
+        window: 'readonly',
+        document: 'readonly',
+        navigator: 'readonly',
+        localStorage: 'readonly',
+        sessionStorage: 'readonly',
+        history: 'readonly',
+        location: 'readonly',
+        fetch: 'readonly',
+        Event: 'readonly',
+        CustomEvent: 'readonly',
+        AbortController: 'readonly',
+        MutationObserver: 'readonly',
+        IntersectionObserver: 'readonly',
+        // External libraries (loaded via CDN)
+        hljs: 'readonly',
+        CONFIG: 'writable',
+        // Utility functions from core.js or base.js
+        t: 'writable',
+        debounce: 'writable',
+        showToast: 'writable',
+        hashCode: 'writable'
+      }
+    }
+  },
+  {
+    ignores: ['node_modules/**', 'docs/**', 'coverage/**', '**/*.min.js', '**/*.ejs']
   }
 ];

@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "locale": "en",
+    "language": "English",
+    "version": "1.0.0",
+    "updated": "2025-11-13",
+    "scope": "core"
+  },
+  "strings": {
+    "_comment": "Chiron Framework Core Strings - Used by builder/js-components",
+
+    "_comment_search": "=== Search System ===",
+    "search_no_results": "No results found",
+    "search_loading": "Loading...",
+    "search_error": "Search unavailable",
+    "search_timeout": "Search request timeout",
+
+    "_comment_nav": "=== Navigation ===",
+    "skip_to_content": "Skip to main content",
+
+    "_comment_theme": "=== Theme Toggle ===",
+    "theme_switch_success": "Switched to {theme} mode",
+
+    "_comment_sidebar": "=== Sidebar ===",
+    "sidebar_toggle_aria": "Toggle sidebar navigation",
+
+    "_comment_toc": "=== Table of Contents ===",
+    "toc_title": "On This Page",
+    "toc_aria": "Table of contents",
+
+    "_comment_code": "=== Code Blocks ===",
+    "code_copy_failed": "Failed to copy code",
+    "code_copy_success": "Code copied to clipboard!",
+
+    "_comment_infobox": "=== Info Boxes ===",
+    "aria_infobox_close": "Close",
+
+    "_comment_embed": "=== Embeds ===",
+    "embed_loading": "Loading...",
+    "embed_view_tweet": "View tweet",
+    "embed_content_loaded": "Content loaded",
+
+    "_comment_aria_core": "=== Core ARIA Labels ===",
+    "aria_search": "Search documentation"
+  }
+}

@@ -46,11 +46,6 @@ branding:
     alt: string         # Alt text for logo
     footer_light: string
     footer_dark: string
-  
-  colors:
-    primary: string     # Primary color (hex)
-    primary_dark: string
-    accent: string
 ```
 
 ### Navigation Configuration

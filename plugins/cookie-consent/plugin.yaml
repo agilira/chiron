@@ -1,0 +1,31 @@
+# Cookie Consent Plugin Metadata
+# GDPR-compliant cookie consent banner
+
+name: cookie-consent
+version: 1.0.0
+description: GDPR-compliant cookie consent banner with granular controls
+author: AGILira
+
+category: privacy
+tags:
+  - cookies
+  - privacy
+  - gdpr
+  - consent
+  - compliance
+
+# This plugin REQUIRES cookies-scanner
+dependencies:
+  required:
+    - cookies-scanner  # Must be loaded first
+  optional: []
+
+provides:
+  - consent-management
+  - gdpr-compliance
+
+external: []
+
+themes: []
+
+requires: "^0.7.0"

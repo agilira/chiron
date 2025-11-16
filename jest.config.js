@@ -1,9 +1,10 @@
 module.exports = {
   testEnvironment: 'node',
+  coverageProvider: 'v8',
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
     'builder/**/*.js',
-    '!builder/index.js', // Excluded from coverage (entry point)
+    '!builder/js-components/**',
     '!**/node_modules/**'
   ],
   testMatch: [
@@ -20,11 +21,7 @@ module.exports = {
   verbose: true,
   // Transform ESM modules (marked v16+) to CommonJS for Jest
   transform: {
-    '^.+\\.js$': ['babel-jest', {
-      configFile: './babel.config.js',
-      babelrc: false,
-      rootMode: 'upward'
-    }]
+    '^.+\\.js$': '<rootDir>/jest.transform.js'
   },
   transformIgnorePatterns: [
     'node_modules/(?!(marked)/)'

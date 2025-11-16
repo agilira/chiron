@@ -1,18 +1,42 @@
-# Chiron Documentation Builder Configuration
-# ==========================================
-# This is the main configuration file for your documentation site.
+# Chiron Configuration
+# ====================
+# Main configuration file for your static site.
 # Edit this file to customize your project.
+
+# Theme Configuration
+theme:
+  active: "metis"  # Theme name (folder in themes/)
+  # custom_path: "./my-custom-theme"  # Optional: use external theme
 
 # Project Information
 project:
+  # Project name displayed in header (optional)
+  # Set to empty string "" or omit to show logo only
+  # Example configurations:
+  #   name: "Chiron"        → Shows logo + name
+  #   name: ""              → Shows logo only
+  #   (omit name field)     → Shows logo only
   name: Chiron
-  title: Chiron - README on Steroids
-  description: A modern, accessible documentation template for microsites. Perfect when you need more than a README but less than a full documentation site.
+  
+  title: Chiron - Modern Static Site Generator
+  description: A fast, flexible static site generator with themes, plugins, PWA support, and built-in blog functionality.
   base_url: https://agilira.github.io/chiron
 
 # Language & Internationalization
 language:
-  locale: it  # en, it, fr (more languages: see I18N.md)
+  locale: en  # Default locale (fallback)
+  
+  # Multilingual mode: uncomment to enable (requires 2+ locales)
+  available:
+    - en
+    - it
+  default_for_missing: en  # Fallback locale for missing translations
+  
+  # Auto-redirect from root (only in multilingual mode)
+  auto_redirect:
+    enabled: true         # Enable root locale detection
+    remember_choice: true # Store user preference in localStorage
+  
   # Optional: Override specific UI strings
   # strings:
   #   search_placeholder: "Cerca nella documentazione..."
@@ -24,19 +48,51 @@ branding:
   company_url: https://github.com/agilira
   tagline: README on Steroids
   
-  # Logo paths (relative to assets folder)
+  # Logo configuration (flexible and smart)
+  # =========================================
+  # Chiron intelligently handles various logo scenarios:
+  # 
+  # 1. BOTH LOGOS (recommended for best dark mode support)
+  #    logo:
+  #      light: logo-black.png    # Used in light mode
+  #      dark: logo-white.png     # Used in dark mode
+  #      alt: Chiron Logo
+  #    Note: Requires features.dark_mode: true (default)
+  # 
+  # 2. SINGLE LOGO (same logo for both themes)
+  #    logo:
+  #      light: logo.png          # Used in both light AND dark mode
+  #      alt: Chiron Logo
+  #    OR
+  #    logo:
+  #      dark: logo.png           # Used in both light AND dark mode
+  #      alt: Chiron Logo
+  # 
+  # 3. NO LOGO (project name only)
+  #    Simply omit the logo section or set to empty:
+  #    logo: {}
+  #    # project.name will be displayed instead
+  # 
+  # 4. FOOTER LOGOS (optional, same smart fallback)
+  #    footer_light: logo-footer.png     # If only this → used for both themes
+  #    footer_dark: logo-footer-white.png
+  # 
+  # DARK MODE DISABLED:
+  # If you disable dark mode (features.dark_mode: false), Chiron will:
+  # - Use ONLY the light logo (dark logo is ignored even if provided)
+  # - No need to provide a dark logo variant
+  # - Perfect for sites that don't need theme switching
+  # 
+  # Display combinations:
+  # - Logo + Name: Set logo paths AND project.name
+  # - Logo only:   Set logo paths, omit/empty project.name
+  # - Name only:   Omit logo, set project.name
   logo:
-    light: logo-black.png
-    dark: logo-white.png
+    light: logo-black.png      # Logo for light mode (optional)
+    dark: logo-white.png       # Logo for dark mode (optional, ignored if dark_mode disabled)
     alt: Chiron Logo
     footer_light: logo-footer.png
     footer_dark: logo-footer-white.png
-  
-  # Color scheme
-  colors:
-    primary: "#3b82f6"
-    primary_dark: "#2563eb"
-    accent: "#10b981"
 
 # GitHub Integration
 github:
@@ -70,10 +126,16 @@ seo:
     site: "@agilirax"
     creator: "@agilirax"
 
-# Analytics (optional)
+# Analytics (optional) - Now handled by google-analytics plugin
+# Enable the google-analytics plugin in the plugins.list section below
 analytics:
-  google_analytics: "" # Add your GA4 Measurement ID (e.g., G-XXXXXXXXXX)
-  # google_tag_manager: "" # Optional: GTM ID (e.g., GTM-XXXXXXX)
+  enabled: false # Set to true to enable analytics
+  ga4_id: "" # Add your GA4 Measurement ID (e.g., G-XXXXXXXXXX)
+  gtm_id: "" # Optional: GTM ID (e.g., GTM-XXXXXXX) - alternative to GA4
+  anonymize_ip: true # Anonymize IP addresses (GDPR compliance)
+  cookie_consent: false # Wait for cookie consent before tracking
+  respect_dnt: true # Respect Do Not Track browser setting
+  # Note: Old format (google_analytics: "ID") is deprecated, use analytics.ga4_id instead
 
 # Navigation Structure
 navigation:
@@ -82,148 +144,29 @@ navigation:
   # Can be overridden at sidebar level or page level (frontmatter)
   # See PAGINATION.md for full documentation
   pagination:
-    enabled: false  # Default: disabled (opt-in per sidebar or page)
+    enabled: true  # Default: enabled (show prev/next navigation)
   
-  # Header navigation (top bar)
-  # Add multiple links, use 'external: true' for external links
-  # See HEADER-NAVIGATION.md for full documentation
-  header:
-    - label: Documentation
-      url: index.html
+  # Menus - Load from external file for better maintainability
+  # Menu definitions (header, breadcrumb, footer links) are now in menus.yaml
+  # This approach keeps the main config clean and organized
+  menus_file: menus.yaml
   
-  # Sidebars - Define multiple sidebars for different sections
-  # Each page can specify which sidebar to use in its frontmatter with 'sidebar: name'
-  # If not specified, 'default' sidebar is used
+  # Sidebars - Load from external file for better maintainability
+  # Sidebar definitions are now in sidebars.yaml (like Docusaurus)
+  # This approach scales better for large documentation sites with hundreds of links
+  # See SIDEBAR.md for full documentation and examples
+  sidebars_file: sidebars.yaml
+  
   # Sidebar-specific pagination settings
   # Override global default for specific sidebars
   sidebar_pagination:
-    default: false  # Disabled for default sidebar (reference docs, legal pages)
+    default: true   # Enabled for default sidebar
     plugins: true   # Enabled for plugins sidebar (sequential documentation)
-  
-  sidebars:
-    default:
-      - section: Getting Started
-        collapsible: false  # Always visible
-        items:
-          - label: Overview
-            file: index.md
-            active: true
-          - label: Landing Demo
-            file: landing-demo.md
-          - label: React Demo
-            file: react-demo.md
-          - label: API Reference
-            file: api-reference.md
-          - label: UI Showcase
-            file: showcase.md
-      
-      - section: Plugins
-        collapsible: true
-        defaultOpen: true
-        items:
-          - label: Plugins Overview
-            file: plugins/index.md
-          - label: Authentication Plugin
-            file: plugins/auth/index.md
-          - label: Auth API Reference
-            file: plugins/auth/api-reference.md
-          - label: Auth Configuration
-            file: plugins/auth/guide.md
-          - label: Cache Plugin
-            file: plugins/cache/index.md
-          - label: Cache API Reference
-            file: plugins/cache/api-reference.md
-      
-      - section: Legal
-        collapsible: true
-        defaultOpen: false  # Collapsed by default
-        items:
-          - label: Privacy Policy
-            file: privacy-policy.md
-          - label: Terms of Service
-            file: terms-of-service.md
-          - label: Cookie Policy
-            file: cookie-policy.md
-      
-      - section: Resources
-        collapsible: true
-        defaultOpen: true  # Expanded by default
-        items:
-          - label: GitHub Repository
-            url: https://github.com/agilira/chiron
-            external: true
-          - label: Changelog
-            file: CHANGELOG.md
-          - label: Accessibility Guide
-            file: ACCESSIBILITY.md
-    
-    # Example: API-specific sidebar
-    api:
-      - section: API Documentation
-        collapsible: false
-        items:
-          - label: API Reference
-            file: api-reference.md
-          - label: Overview
-            file: index.md
-    
-    # Plugins sidebar (with pagination enabled)
-    plugins:
-      - section: Plugins Documentation
-        collapsible: false
-        items:
-          - label: Plugins Overview
-            file: plugins/index.md
-          - label: Authentication Plugin
-            file: plugins/auth/index.md
-          - label: Auth API Reference
-            file: plugins/auth/api-reference.md
-          - label: Auth Configuration
-            file: plugins/auth/guide.md
-          - label: Cache Plugin
-            file: plugins/cache/index.md
-          - label: Cache API Reference
-            file: plugins/cache/api-reference.md
-  
-  # Breadcrumb configuration
-  breadcrumb:
-    enabled: true
-    items:
-      - label: AGILira
-        url: https://github.com/agilira
-        external: true
-      - label: Chiron
-        url: https://github.com/agilira/chiron
-        external: true
-
-# Features Toggle
-features:
-  search: true
-  code_copy: true
-  breadcrumbs: true
-  cookie_consent: true
-  dark_mode: true
-  print_styles: true
-  scroll_to_top: true
 
 # Footer Configuration
 footer:
   copyright_holder: Agilira
-  legal_links:
-    - label: Privacy Policy
-      file: privacy-policy.md
-    - label: Terms of Service
-      file: terms-of-service.md
-    - label: Cookie Policy
-      file: cookie-policy.md
-
-# Cookie Consent
-cookies:
-  banner_text: "We use cookies to enhance your browsing experience and analyze our traffic. By clicking 'Accept', you consent to our"
-  policy_label: Cookie Policy
-  accept_label: Accept All
-  decline_label: Decline
-  manage_label: Manage Preferences
+  # Legal links are now in menus.yaml
 
 # Font Configuration
 # =================
@@ -254,18 +197,56 @@ cookies:
 # OR leave empty for defaults:
 # fonts: {}
 fonts:
-  heading: Manrope
-  body: Work Sans
+  heading: Noto Sans
   # adobe_project_id: abc123xyz  # Optional: Add your Adobe Fonts Web Project ID
+
+# External Resources (Global)
+# ============================
+# Load external scripts and styles on ALL pages
+# Perfect for: cookie consent, analytics, Font Awesome, CDN libraries
+# 
+# Per-page external scripts can still be added via frontmatter
+# These global resources load first, then page-specific ones
+#
+# Examples:
+# external:
+#   scripts:
+#     - fontawesome          # Preset: Font Awesome icons
+#     - cookieconsent        # Preset: Cookie consent banner
+#     - https://example.com/script.js
+#   styles:
+#     - https://example.com/custom.css
+external:
+  # Global external scripts (loaded on every page)
+  scripts: []
+    # - fontawesome        # Font Awesome 6 icons
+    # - cookieconsent      # Cookie consent banner with customization
+    # - https://cdn.example.com/your-script.js
+  
+  # Global external stylesheets (loaded on every page)
+  styles: []
+    # - https://cdn.example.com/your-styles.css
 
 # Security Configuration
 security:
-  # External scripts: Additional allowed CDN domains for custom scripts
-  # Default allowed: jsdelivr.net, unpkg.com, cdnjs.cloudflare.com, esm.sh, skypack.dev
-  # Add your own trusted CDN domains here (without protocol)
+  # CDN Whitelist for External Scripts (opt-in security feature)
+  # By default, any HTTPS URL works for external_scripts in frontmatter
+  # Enable this for production sites to restrict to trusted CDNs only
+  enable_cdn_whitelist: false  # Set to true for enhanced security
+  
+  # When whitelist is enabled, only these domains are allowed (plus self-hosted scripts)
+  # Default whitelisted: jsdelivr.net, unpkg.com, cdnjs.cloudflare.com, esm.sh, skypack.dev
   allowed_cdn_domains: []
     # - example-cdn.com
-    # - my-custom-cdn.net
+    # - my-company-cdn.com
+    # - fonts.googleapis.com
+  
+  # Example for production (uncomment to enable):
+  # enable_cdn_whitelist: true
+  # allowed_cdn_domains:
+  #   - cdn.jsdelivr.net
+  #   - unpkg.com
+  #   - your-company-cdn.com
 
 # Build Configuration
 build:
@@ -278,6 +259,12 @@ build:
   # Templates in this folder take precedence over default templates
   # See CUSTOM-TEMPLATES.md for details
   custom_templates_dir: custom-templates
+  
+  # Asset Optimization
+  # Automatically minify CSS/JS and optimize images during build
+  minify: true            # Minify CSS files (Lightning CSS - Rust-based, super fast)
+  minifyJS: true          # Minify JavaScript files (Terser)
+  optimizeImages: true    # Optimize images and generate WebP
   
   # Files to copy as-is
   # Note: robots.txt and sitemap.xml are auto-generated, don't include them here
@@ -295,3 +282,34 @@ build:
   robots:
     enabled: true
     allow_all: true
+
+# PWA Cache Configuration
+# =======================
+# Progressive Web App features with cache-first strategy
+# Enables instant page loads on repeat visits while ensuring content freshness
+# See docs-internal/CACHE-STRATEGY-EXPLAINED.md for details
+cache:
+  enabled: true  # Enable PWA with Service Worker
+  
+  # Cache strategy: "smart" = cache-first with background updates
+  # Provides instant loads without sacrificing content freshness
+  strategy: smart
+  
+  # Time-to-live (TTL) for different asset types (in seconds)
+  # How long assets stay fresh before background update
+  ttl:
+    html: 3600        # 1 hour - documentation pages
+    styles: 86400     # 1 day - CSS rarely changes
+    fonts: 31536000   # 1 year - fonts are immutable
+    images: 604800    # 1 week - images rarely change
+    scripts: 86400    # 1 day - JS rarely changes
+  
+  # Offline support - show custom page when offline
+  offline:
+    enabled: true
+    message: "This page is not available offline"
+  
+  # Update notification - notify users when new version available
+  updateNotification:
+    enabled: true
+    auto: false  # false = show banner, true = auto-reload

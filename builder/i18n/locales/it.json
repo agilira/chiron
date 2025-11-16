@@ -1,42 +1,131 @@
 {
-  "locale": "it",
-  "name": "Italiano",
+  "meta": {
+    "locale": "it",
+    "language": "Italiano",
+    "version": "1.0.0",
+    "updated": "2025-11-13"
+  },
   "strings": {
+    "_comment_search": "=== Sistema di Ricerca ===",
+    "search_modal_title": "Cerca nella Documentazione",
+    "search_modal_close": "Chiudi ricerca",
     "search_placeholder": "Cerca nella documentazione...",
+    "search_aria_label": "Cerca nella documentazione",
+    "search_clear": "Cancella ricerca",
+    "search_results_label": "Risultati della ricerca",
     "search_no_results": "Nessun risultato trovato",
     "search_loading": "Caricamento...",
     "search_error": "Ricerca non disponibile",
     "search_timeout": "Timeout richiesta di ricerca",
-    
-    "theme_toggle": "Cambia tema",
-    "theme_light": "Tema chiaro",
-    "theme_dark": "Tema scuro",
-    
+
+    "_comment_nav": "=== Navigazione ===",
+    "nav_main": "Navigazione principale",
+    "nav_home": "Home",
     "nav_previous": "Precedente",
     "nav_next": "Successivo",
-    "nav_home": "Home",
     "nav_menu": "Menu",
     "nav_close": "Chiudi",
     "nav_expand": "Espandi",
     "nav_collapse": "Riduci",
-    
+    "skip_to_content": "Vai al contenuto principale",
+
+    "_comment_theme": "=== Cambio Tema ===",
+    "theme_toggle_aria": "Cambia tema",
+    "theme_toggle_aria_dark": "Passa al tema chiaro",
+    "theme_toggle_aria_light": "Passa al tema scuro",
+    "theme_light": "Tema chiaro",
+    "theme_dark": "Tema scuro",
+    "theme_switch_success": "Passato alla modalità {theme}",
+
+    "_comment_sidebar": "=== Barra Laterale ===",
+    "sidebar_toggle_aria": "Mostra/nascondi navigazione laterale",
+    "sidebar_aria_hidden_true": "Barra laterale nascosta",
+    "sidebar_aria_hidden_false": "Barra laterale visibile",
+    "sidebar_aria_expanded_true": "Barra laterale espansa",
+    "sidebar_aria_expanded_false": "Barra laterale compressa",
+
+    "_comment_toc": "=== Indice ===",
+    "toc_title": "In questa pagina",
+    "toc_aria": "Indice",
+
+    "_comment_code": "=== Blocchi di Codice ===",
+    "code_copy": "Copia codice",
+    "code_copied": "Copiato!",
+    "code_copy_failed": "Copia fallita",
+    "code_copy_success": "Codice copiato negli appunti!",
+
+    "_comment_infobox": "=== Box informativi ===",
+    "infobox_close": "Chiudi",
+    "aria_infobox_close": "Chiudi",
+
+    "_comment_embed": "=== Incorporamenti ===",
+    "embed_loading": "Caricamento...",
+    "embed_view_tweet": "Visualizza tweet",
+    "embed_content_loaded": "Contenuto caricato",
+
+    "_comment_toast": "=== Messaggi Toast ===",
+    "toast_success": "Successo",
+    "toast_error": "Errore",
+    "toast_warning": "Attenzione",
+    "toast_info": "Info",
+
+    "_comment_cookie": "=== Consenso Cookie ===",
     "cookie_message": "Questo sito utilizza i cookie per garantirti la migliore esperienza.",
     "cookie_accept": "Accetta",
     "cookie_decline": "Rifiuta",
     "cookie_learn_more": "Maggiori informazioni",
-    
+
+    "_comment_aria": "=== Accessibilità ARIA ===",
     "aria_search": "Cerca nella documentazione",
-    "aria_menu": "Menu di navigazione",
-    "aria_theme": "Cambia tema",
+    "aria_search_input": "Cerca nella documentazione",
+    "aria_search_close": "Chiudi ricerca",
+    "aria_search_clear": "Cancella ricerca",
+    "aria_search_results": "Risultati della ricerca",
+    "aria_nav_main": "Navigazione principale",
+    "aria_nav_sidebar": "Navigazione laterale",
+    "aria_nav_mobile": "Navigazione mobile",
+    "aria_nav_previous": "Pagina precedente",
+    "aria_nav_next": "Pagina successiva",
     "aria_close": "Chiudi",
     "aria_expand": "Espandi sezione",
-    "aria_collapse": "Riduci sezione",
-    
-    "error_404_title": "Pagina Non Trovata",
-    "error_404_message": "La pagina che stai cercando non esiste.",
-    "error_404_home": "Vai alla homepage",
-    
-    "toc_title": "In questa pagina",
-    "breadcrumb_home": "Home"
+    "aria_collapse": "Comprimi sezione",
+    "aria_menu": "Menu di navigazione",
+    "aria_code_copy": "Copia codice negli appunti",
+
+    "_comment_footer": "=== Footer ===",
+    "footer_copyright": "Tutti i diritti riservati",
+    "footer_legal": "Note legali",
+    "footer_privacy": "Privacy Policy",
+    "footer_terms": "Termini di Servizio",
+
+    "_comment_pagination": "=== Paginazione ===",
+    "pagination_previous": "Precedente",
+    "pagination_next": "Successivo",
+    "pagination_page": "Pagina",
+
+    "_comment_errors": "=== Messaggi di Errore ===",
+    "error_generic": "Si è verificato un errore",
+    "error_not_found": "Pagina non trovata",
+    "error_network": "Errore di rete",
+    "error_timeout": "Timeout della richiesta",
+
+    "_comment_success": "=== Messaggi di Successo ===",
+    "success_generic": "Operazione completata",
+    "success_saved": "Modifiche salvate",
+    "success_updated": "Aggiornato con successo",
+
+    "_comment_loading": "=== Stati di Caricamento ===",
+    "loading": "Caricamento...",
+    "loading_content": "Caricamento contenuto...",
+    "loading_search": "Ricerca in corso...",
+
+    "_comment_misc": "=== Varie ===",
+    "read_more": "Leggi di più",
+    "show_more": "Mostra di più",
+    "show_less": "Mostra meno",
+    "edit_page": "Modifica questa pagina",
+    "last_updated": "Ultimo aggiornamento",
+    "table_of_contents": "Indice dei Contenuti",
+    "on_this_page": "In Questa Pagina"
   }
 }
