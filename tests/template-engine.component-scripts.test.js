@@ -41,19 +41,19 @@ describe('TemplateEngine - Component Scripts Placeholder', () => {
   test('renderComponentScripts should generate script tag with base component', () => {
     const result = engine.renderComponentScripts(['base']);
     
-    // Should return a script tag
-    expect(result).toContain('<script>');
+    // Should return a script tag (external for base.js)
+    expect(result).toContain('<script');
     expect(result).toContain('</script>');
     
-    // Should contain base component
-    expect(result).toContain('// Component: base');
+    // Base is loaded as external file
+    expect(result).toContain('src="./base.js"');
   });
 
   test('renderComponentScripts should handle multiple components', () => {
     const result = engine.renderComponentScripts(['base', 'tabs', 'code-blocks']);
     
-    // Should contain all requested components
-    expect(result).toContain('// Component: base');
+    // Base is external, others are inline
+    expect(result).toContain('src="./base.js"');
     expect(result).toContain('// Component: tabs');
     expect(result).toContain('// Component: code-blocks');
   });
@@ -61,8 +61,8 @@ describe('TemplateEngine - Component Scripts Placeholder', () => {
   test('renderComponentScripts should default to base if empty array', () => {
     const result = engine.renderComponentScripts([]);
     
-    // Should still include base (always loaded)
-    expect(result).toContain('// Component: base');
+    // Should still include base (external)
+    expect(result).toContain('src="./base.js"');
   });
 
   test('component scripts should be injected post-render, not via ejsData', () => {
@@ -83,9 +83,9 @@ describe('TemplateEngine - Component Scripts Placeholder', () => {
     // Should NOT contain placeholder after replacement
     expect(result).not.toContain('{{COMPONENT_SCRIPTS}}');
     
-    // Should contain actual scripts
-    expect(result).toContain('<script>');
-    expect(result).toContain('// Component: base');
+    // Should contain actual scripts (external base.js)
+    expect(result).toContain('<script');
+    expect(result).toContain('src="./base.js"');
   });
 
   test('component scripts placeholder should support regex replacement', () => {
@@ -105,8 +105,8 @@ describe('TemplateEngine - Component Scripts Placeholder', () => {
     // All placeholders should be replaced
     expect(result).not.toContain('{{COMPONENT_SCRIPTS}}');
     
-    // Should have scripts injected twice (once in head, once in body)
-    const scriptMatches = result.match(/<script>/g);
+    // Should have script tags injected twice (once in head, once in body)
+    const scriptMatches = result.match(/<script/g);
     expect(scriptMatches).toHaveLength(2);
   });
 });

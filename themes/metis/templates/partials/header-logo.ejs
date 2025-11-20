@@ -1,0 +1,15 @@
+<!-- 
+    Flexible Logo/Name Link:
+    - logoImages: Shows logo images (light + dark) if configured
+    - projectNameSpan: Shows project name if configured
+    
+    Supports all combinations:
+    1. Logo + Name (default)
+    2. Logo only (omit project.name in config)
+    3. Name only (omit branding.logo paths in config)
+    4. Neither (edge case, link will be empty but functional)
+-->
+<a href="<%- githubUrl %>" class="logo-link" target="_blank" rel="noopener">
+    <%- logoImages %>
+    <%- projectNameSpan %>
+</a>

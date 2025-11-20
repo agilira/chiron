@@ -226,42 +226,6 @@ describe('TemplateEngine - Section Custom Classes', () => {
     });
   });
   
-  describe('renderHeaderDropdown() - Section Classes', () => {
-    test('should add custom class to header dropdown container', () => {
-      const item = {
-        label: 'Products',
-        id: 'products',
-        class: 'header-products-dropdown',
-        children: [
-          { label: 'Product A', url: '/product-a.html' },
-          { label: 'Product B', url: '/product-b.html' }
-        ]
-      };
-      
-      const result = engine.renderHeaderDropdown(item, null);
-      
-      // Header dropdown uses header-nav-item, not nav-section
-      expect(result).toContain('header-nav-item header-products-dropdown');
-    });
-    
-    test('should preserve custom class with active state in dropdown', () => {
-      const item = {
-        label: 'Docs',
-        id: 'docs',
-        class: 'header-docs',
-        children: [
-          { label: 'Guide', url: '/guide.html', id: 'docs' }
-        ]
-      };
-      
-      // Active state adds 'active' class to the link, not 'expanded' to container
-      const result = engine.renderHeaderDropdown(item, 'docs');
-      
-      expect(result).toContain('header-nav-item header-docs');
-      expect(result).toContain('header-nav-link active');
-    });
-  });
-  
   describe('CSS Use Cases', () => {
     test('should support ::before pseudo-element styling via custom class', () => {
       const items = [

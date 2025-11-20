@@ -1,0 +1,71 @@
+<%
+/**
+ * Base JavaScript Bundle Template
+ * Conditionally includes components based on build configuration
+ * 
+ * Strategy: Include ALL sitewide components in base.js to minimize HTTP requests
+ * - Always included: core, accessibility, navigation
+ * - Config-based: theme, scroll-to-top, smooth-scroll, language-switcher
+ * - Sitewide common: sidebar, dropdowns (present on most pages)
+ * 
+ * Page-specific components remain inline (tabs, toc, code-blocks, info-boxes)
+ */
+
+// Components always included (essential for accessibility and basic functionality)
+const alwaysInclude = ['core', 'accessibility', 'navigation'];
+
+// Build component list based on config
+const components = [...alwaysInclude];
+
+// Theme component (dark mode toggle)
+if (config.features?.dark_mode?.enabled === true) {
+  components.push('theme');
+}
+
+// Scroll-to-top component
+if (config.features?.scroll_to_top?.enabled === true) {
+  components.push('scroll-to-top');
+}
+
+// Smooth scroll (standalone or auto-included by scroll-to-top)
+const smoothScrollEnabled = config.features?.smooth_scroll?.enabled === true;
+const scrollToTopEnabled = config.features?.scroll_to_top?.enabled === true;
+if (smoothScrollEnabled || scrollToTopEnabled) {
+  if (!components.includes('smooth-scroll')) {
+    components.push('smooth-scroll');
+  }
+}
+
+// Language switcher component
+if (config.features?.language_switcher?.enabled === true) {
+  components.push('language-switcher');
+}
+
+// Sitewide components (present on most pages, include to reduce requests)
+// Sidebar: mobile toggle + collapsible sections
+const hasSidebar = config.sidebar?.enabled !== false; // Enabled by default
+if (hasSidebar) {
+  components.push('sidebar');
+}
+
+// Header dropdowns: navigation menus
+const hasDropdowns = config.features?.header_dropdowns?.enabled === true;
+if (hasDropdowns) {
+  components.push('dropdowns');
+}
+
+// Log what we're including
+const componentList = components.join(', ');
+-%>
+// Base JavaScript Bundle
+// Built from: base.ejs
+// Components: <%= componentList %>
+// Generated: <%= new Date().toISOString() %>
+
+<% components.forEach(function(component) { -%>
+
+// ============================================================================
+// COMPONENT: <%= component %>
+// ============================================================================
+<%- includeComponent(component) %>
+<% }); -%>

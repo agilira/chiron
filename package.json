@@ -30,6 +30,7 @@
   "author": "Agilira",
   "license": "MIT",
   "dependencies": {
+    "date-fns": "^4.1.0",
     "ejs": "^3.1.10",
     "fast-glob": "^3.3.3",
     "flexsearch": "^0.8.212",

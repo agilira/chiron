@@ -45,8 +45,8 @@ x = 1
       // Verify panels
       expect(result.html).toContain('role="tabpanel"');
       expect(result.html).toContain('class="tab-panel active"');
-      expect(result.html).toContain('const x = 1');
-      expect(result.html).toContain('x = 1');
+      expect(result.html).toContain('const');
+      expect(result.html).toContain('hljs-'); // Has highlight.js classes
       
       // Verify accessibility attributes
       expect(result.html).toContain('aria-selected="true"');
@@ -470,7 +470,9 @@ yarn add chiron
       
       // Verify markdown parsing
       expect(result.html).toContain('<strong>Node.js 18+</strong>');
-      expect(result.html).toContain('npm install chiron');
+      expect(result.html).toContain('npm');
+      expect(result.html).toContain('chiron');
+      expect(result.html).toContain('hljs-'); // Code blocks have highlight.js
       
       // Verify TOC generation includes headings
       expect(result.toc.length).toBeGreaterThan(0);

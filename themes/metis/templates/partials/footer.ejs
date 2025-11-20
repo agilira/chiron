@@ -2,18 +2,19 @@
     <div class="footer-container">
         <div class="footer-content">
             <div class="footer-left">
-                <p class="footer-copyright">
-                    &copy; <span class="copyright-year"><%- copyrightYear %></span> <span class="copyright-holder"><%- copyrightHolder %></span>. <%= t('footer_copyright') %>.
-                </p>
+                <%- include('partials/footer-copyright', { copyrightYear, copyrightHolder, t }) %>
                 <div class="footer-legal">
-                    <%- footerLegalLinks %>
+                    <%- menu('footer_legal_links', { 
+                        container: false, 
+                        menu_class: 'footer-links',
+                        link_class: 'footer-legal-link',
+                        aria_label: t ? t('navigation.legal') : 'Legal links',
+                        context
+                    }) %>
                 </div>
             </div>
             <div class="footer-right">
-                <a href="<%- companyUrl %>" target="_blank" rel="noopener" class="footer-logo-link">
-                    <img src="<%- logoFooterLight %>" alt="<%- logoAlt %>" class="footer-logo footer-logo-light" loading="lazy">
-                    <img src="<%- logoFooterDark %>" alt="<%- logoAlt %>" class="footer-logo footer-logo-dark" loading="lazy">
-                </a>
+                <%- include('partials/footer-logo', { companyUrl, logoFooterLight, logoFooterDark, logoAlt }) %>
             </div>
         </div>
     </div>

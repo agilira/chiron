@@ -1,32 +1,13 @@
 /**
- * Navigation Component - Smooth scroll and active state
- * Detects: a[href^="#"], .nav-item
+ * Navigation Component - Active navigation state
+ * Detects: .nav-item, section[id]
+ * 
+ * Note: Smooth scroll is now a separate component (smooth-scroll.js)
  * 
  * @component navigation
  */
 
-// Smooth scroll for internal links
-document.querySelectorAll('a[href^="#"]').forEach(link => {
-  link.addEventListener('click', (e) => {
-    e.preventDefault();
-    const targetId = link.getAttribute('href').substring(1);
-    const targetElement = document.getElementById(targetId);
-        
-    if (targetElement) {
-      const headerHeight = document.querySelector('.header').offsetHeight;
-      const targetPosition = targetElement.offsetTop - headerHeight - CONFIG.UI.SCROLL_OFFSET;
-            
-      window.scrollTo({
-        top: targetPosition,
-        behavior: 'smooth'
-      });
-            
-      history.pushState(null, null, `#${targetId}`);
-    }
-  });
-});
-
-// Active navigation state
+// Active navigation state - highlights current section in navigation
 const updateActiveNavigation = () => {
   const sections = document.querySelectorAll('section[id]');
   const navItems = document.querySelectorAll('.nav-item[href^="#"]');

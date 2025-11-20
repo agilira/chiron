@@ -1,0 +1,13 @@
+<!-- Scripts -->
+{{HIGHLIGHT_JS}}
+
+<% if (i18nClientConfig && i18nClientConfig.trim()) { %>
+<!-- i18n Configuration -->
+<script>
+<%- i18nClientConfig %>
+</script>
+<% } %>
+
+{{COMPONENT_SCRIPTS}}
+
+<%- externalScripts || '' %>

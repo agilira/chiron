@@ -11,8 +11,18 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
+const { format: dateFnsFormat } = require('date-fns');
+const { enUS, it } = require('date-fns/locale');
+const { createSlug } = require('../../builder/utils/file-utils');
+
+// Locale mapping for date-fns
+const LOCALE_MAP = {
+  en: enUS,
+  it: it
+};
+
 /**
- * Format date with various formats
+ * Format date with various formats using date-fns
  * @param {Object} page - Page object with date field
  * @param {string|Object} formatOrOptions - Date format string or options object
  *   Format strings:
@@ -52,41 +62,43 @@ function the_date(page, formatOrOptions = 'YYYY-MM-DD', locale = 'en') {
   const date = new Date(page.date);
   if (isNaN(date.getTime())) return page.date; // Return as-is if invalid
   
-  const months = {
-    en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-    it: ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre']
+  // Get date-fns locale object
+  const dateFnsLocale = LOCALE_MAP[actualLocale] || LOCALE_MAP.en;
+  
+  // Map custom format strings to date-fns format tokens
+  // Legacy format -> date-fns format
+  const formatMap = {
+    'YYYY-MM-DD': 'yyyy-MM-dd',
+    'DD/MM/YYYY': 'dd/MM/yyyy',
+    'MM/DD/YYYY': 'MM/dd/yyyy',
+    'MMMM D, YYYY': 'MMMM d, yyyy',
+    'D MMMM YYYY': 'd MMMM yyyy',
+    'short': 'MMM d, yyyy',
+    'long': 'MMMM d, yyyy',
+    'iso': 'iso'
   };
   
-  const monthsShort = {
-    en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    it: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic']
-  };
+  // Convert legacy format to date-fns format
+  let dateFnsFormatString = formatMap[format];
   
-  const year = date.getFullYear();
-  const month = date.getMonth();
-  const day = date.getDate();
+  // If not in map, try to convert common patterns
+  if (!dateFnsFormatString) {
+    dateFnsFormatString = format
+      .replace(/YYYY/g, 'yyyy')
+      .replace(/YY/g, 'yy')
+      .replace(/DD/g, 'dd')
+      .replace(/D/g, 'd')
+      .replace(/MM/g, 'MM')
+      .replace(/M/g, 'M');
+  }
   
-  // Pad numbers
-  const pad = (n) => String(n).padStart(2, '0');
-  
-  // Handle preset formats
+  // Handle ISO format
   let formattedDate;
-  if (format === 'short') {
-    formattedDate = `${monthsShort[actualLocale]?.[month] || monthsShort.en[month]} ${day}, ${year}`;
-  } else if (format === 'long') {
-    formattedDate = `${months[actualLocale]?.[month] || months.en[month]} ${day}, ${year}`;
-  } else if (format === 'iso') {
+  if (dateFnsFormatString === 'iso') {
     formattedDate = date.toISOString();
   } else {
-    // Custom format parsing
-    formattedDate = format
-      .replace('YYYY', year)
-      .replace('YY', String(year).slice(-2))
-      .replace('MMMM', months[actualLocale]?.[month] || months.en[month])
-      .replace('MMM', monthsShort[actualLocale]?.[month] || monthsShort.en[month])
-      .replace('MM', pad(month + 1))
-      .replace('DD', pad(day))
-      .replace('D', day);
+    // Format using date-fns
+    formattedDate = dateFnsFormat(date, dateFnsFormatString, { locale: dateFnsLocale });
   }
   
   // Wrap in <time> tag if requested
@@ -134,7 +146,7 @@ function the_author(page, options = {}) {
   
   // Author name with link to author archive
   const authorText = page.author;
-  const authorSlug = authorText.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+  const authorSlug = createSlug(authorText);
   
   if (link) {
     // Link to /blog/author/{author-slug}/
@@ -270,7 +282,7 @@ function the_tags(page, options = {}) {
   } = options;
   
   const tagHtml = page.tags.map(tag => {
-    const slug = tag.toLowerCase().replace(/\s+/g, '-');
+    const slug = createSlug(tag);
     const content = icon + tag;
     if (link) {
       return `<a href="${pathToRoot}blog/tag/${slug}.html" class="${className}">${content}</a>`;
@@ -740,11 +752,11 @@ function the_archive_url(type, item, options = {}) {
   // Extract slug from item
   let slug;
   if (typeof item === 'string') {
-    slug = item.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '');
+    slug = createSlug(item);
   } else if (item && item.slug) {
     slug = item.slug;
   } else if (item && item.name) {
-    slug = item.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '');
+    slug = createSlug(item.name);
   } else {
     return '#';
   }

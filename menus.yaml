@@ -16,20 +16,34 @@ header:
   - label: React Demo
     url: /react-demo.html
 show_project_name: false
-header_dropdown_trigger: hover
+header_dropdown_trigger: click
 header_actions:
-  search:
-    enabled: true
-    label: Open search
-  github:
-    enabled: true
-    label: View repository on GitHub
-  theme:
-    enabled: true
-    label: Toggle dark mode
-ui_features:
-  scroll_to_top:
-    enabled: true
+  - id: search
+    type: button
+    icon: search
+    label: Search
+  - id: github
+    type: link
+    icon: github
+    label: GitHub
+  - id: theme
+    type: button
+    label: Theme
+    class: theme-toggle
+  - id: login
+    type: link
+    icon: user
+    label: Login
+    url: /login
+    class: btn-login hide-on-mobile
+  - id: donate
+    type: link
+    icon: heart
+    label: Donate
+    url: https://github.com/sponsors
+    external: true
+    class:
+      - btn-donate
 breadcrumb:
   enabled: true
   root:
@@ -56,5 +70,23 @@ footer_legal_links:
     url: https://opensource.org/licenses/MIT
     external: true
     class: license-link
-  - label: Manage Cookies
-    file: manage-cookies.md
+social_links:
+  - icon: github
+    url: https://github.com/agilira
+    label: GitHub
+  - icon: twitter
+    url: https://twitter.com/agilirax
+    label: Twitter
+simple_menu:
+  - label: Home
+    url: /
+  - label: About
+    url: /about
+footer_products:
+  - label: Product A
+    url: /products/a
+  - label: Product B
+    url: /products/b
+  - label: External Tool
+    url: https://external.com/tool
+    external: true

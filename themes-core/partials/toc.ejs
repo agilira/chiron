@@ -1,0 +1,23 @@
+<% 
+// Table of Contents partial
+// Data passed: { tocTitle, filteredToc }
+// filteredToc = array of { text, id, level }
+// 
+// Customization (in order of precedence):
+// 1. Page frontmatter: toc_title: "Custom Title"
+// 2. i18n translations: locales/en.json → "toc_title": "On this page"
+// 3. Global config: chiron.config.yaml → ui.toc_title: "In this article"
+// 4. Default: "On this page"
+%>
+<nav class="toc-nav" aria-label="Table of contents">
+  <h2 class="toc-title"><%= tocTitle || 'On this page' %></h2>
+  <ul class="toc-list">
+<% for (const item of filteredToc) { 
+  const levelClass = `toc-level-${item.level}`;
+%>
+    <li class="toc-item <%= levelClass %>">
+      <a href="#<%= item.id %>" class="toc-link"><%= item.text %></a>
+    </li>
+<% } %>
+  </ul>
+</nav>

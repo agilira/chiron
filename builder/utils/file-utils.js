@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { logger } = require('../logger');
 const fsPromises = require('fs').promises;
+const { minifyJS } = require('./js-minifier');
 
 // AbortController is a global in Node.js 15+
 /* global AbortController */
@@ -316,6 +317,84 @@ async function copyFileWithTimeout(src, dest, options = {}) {
   }
 }
 
+/**
+ * Create URL-friendly slug from text
+ * Converts text to lowercase, replaces spaces with hyphens,
+ * removes special characters, and ensures clean URLs
+ * 
+ * @param {string} text - Text to slugify
+ * @returns {string} URL-friendly slug
+ * 
+ * @example
+ * createSlug('Hello World!') // 'hello-world'
+ * createSlug('JavaScript & Node.js') // 'javascript-node-js'
+ * createSlug('  Multiple   Spaces  ') // 'multiple-spaces'
+ */
+function createSlug(text) {
+  if (!text || typeof text !== 'string') {return '';}
+  
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')           // Replace spaces with hyphens
+    .replace(/[^\w-]+/g, '')       // Remove non-word chars (except hyphens)
+    .replace(/--+/g, '-')         // Replace multiple hyphens with single hyphen
+    .replace(/^-+/, '')             // Trim hyphens from start
+    .replace(/-+$/, '');            // Trim hyphens from end
+}
+
+/**
+ * Copy and optionally minify a JavaScript file
+ * @param {string} src - Source file path
+ * @param {string} dest - Destination file path
+ * @param {Object} options - Options
+ * @param {boolean} options.minify - Whether to minify (default: true)
+ * @param {Object} options.config - Build config (to check minifyJS setting)
+ * @throws {Error} If copy or minification fails
+ */
+async function copyAndMinifyJS(src, dest, options = {}) {
+  const { minify = true, config = {} } = options;
+  const shouldMinify = minify && (config.build?.minifyJS !== false);
+  
+  try {
+    const destDir = path.dirname(dest);
+    ensureDir(destDir);
+    
+    if (shouldMinify) {
+      // Read source file
+      const jsContent = fs.readFileSync(src, 'utf8');
+      
+      try {
+        // Minify the content
+        const minified = await minifyJS(jsContent);
+        
+        // Write minified content
+        fs.writeFileSync(dest, minified);
+        fileLogger.debug('JavaScript file minified and copied', { src, dest });
+      } catch (minifyError) {
+        // If minification fails, fall back to regular copy
+        fileLogger.warn('Failed to minify JS, copying original', { 
+          src, 
+          dest,
+          error: minifyError.message 
+        });
+        fs.copyFileSync(src, dest);
+      }
+    } else {
+      // Just copy without minification
+      fs.copyFileSync(src, dest);
+      fileLogger.debug('JavaScript file copied (minification disabled)', { src, dest });
+    }
+  } catch (error) {
+    fileLogger.error('Failed to copy/minify JavaScript file', { 
+      src, 
+      dest, 
+      error: error.message 
+    });
+    throw error;
+  }
+}
+
 module.exports = {
   ensureDir,
   copyFile,
@@ -327,6 +406,8 @@ module.exports = {
   getStats,
   toUrlPath,
   mdToHtmlPath,
+  createSlug,
+  copyAndMinifyJS,
   // Async versions with timeout
   readFileWithTimeout,
   writeFileWithTimeout,

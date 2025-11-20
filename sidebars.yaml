@@ -144,7 +144,7 @@ plugins:
 # Uses a custom EJS template instead of standard navigation
 # Perfect for dashboards, admin panels, or marketing pages with widgets
 dashboard:
-  template: custom-templates/dashboard-sidebar.ejs
+  template: themes-core/templates/dashboard-sidebar.ejs
   title: "Dashboard Stats"
   stats:
     Pages: "23"

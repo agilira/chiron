@@ -282,4 +282,112 @@ describe('ConfigLoader', () => {
       expect(() => validateConfig(config)).not.toThrow();
     });
   });
+
+  describe('Custom menus from menus.yaml', () => {
+    it('should load and expose all custom menus from menus.yaml', () => {
+      // Create main config
+      const configPath = path.join(testConfigDir, 'chiron.config.yaml');
+      const config = {
+        project: {
+          name: 'Test',
+          base_url: 'https://example.com'
+        },
+        build: {
+          output_dir: 'docs',
+          content_dir: 'content',
+          templates_dir: 'templates'
+        },
+        navigation: {
+          menus_file: 'menus.yaml',
+          sidebars: {
+            default: []
+          }
+        }
+      };
+      fs.writeFileSync(configPath, yaml.dump(config), 'utf8');
+
+      // Create menus.yaml with custom menus
+      const menusPath = path.join(testConfigDir, 'menus.yaml');
+      const menus = {
+        header: [],
+        header_actions: [],
+        footer_legal_links: [],
+        // Custom menus
+        social_links: [
+          { icon: 'github', url: 'https://github.com/test', label: 'GitHub' },
+          { icon: 'twitter', url: 'https://twitter.com/test', label: 'Twitter' }
+        ],
+        footer_columns: [
+          {
+            title: 'Products',
+            items: [
+              { label: 'Feature A', url: '/features/a' },
+              { label: 'Feature B', url: '/features/b' }
+            ]
+          },
+          {
+            title: 'Resources',
+            items: [
+              { label: 'Docs', url: '/docs' },
+              { label: 'Blog', url: '/blog' }
+            ]
+          }
+        ]
+      };
+      fs.writeFileSync(menusPath, yaml.dump(menus), 'utf8');
+
+      const loaded = loadConfig(configPath);
+
+      // Standard menus should be in config.navigation
+      expect(loaded.navigation.header).toBeDefined();
+      expect(loaded.navigation.header_actions).toBeDefined();
+
+      // Custom menus should be available in config.menus
+      expect(loaded.menus).toBeDefined();
+      expect(loaded.menus.social_links).toBeDefined();
+      expect(loaded.menus.social_links).toHaveLength(2);
+      expect(loaded.menus.social_links[0].icon).toBe('github');
+      
+      expect(loaded.menus.footer_columns).toBeDefined();
+      expect(loaded.menus.footer_columns).toHaveLength(2);
+      expect(loaded.menus.footer_columns[0].title).toBe('Products');
+      expect(loaded.menus.footer_columns[0].items).toHaveLength(2);
+    });
+
+    it('should handle menus.yaml with only standard menus', () => {
+      const configPath = path.join(testConfigDir, 'chiron.config.yaml');
+      const config = {
+        project: {
+          name: 'Test',
+          base_url: 'https://example.com'
+        },
+        build: {
+          output_dir: 'docs',
+          content_dir: 'content',
+          templates_dir: 'templates'
+        },
+        navigation: {
+          menus_file: 'menus.yaml',
+          sidebars: {
+            default: []
+          }
+        }
+      };
+      fs.writeFileSync(configPath, yaml.dump(config), 'utf8');
+
+      const menusPath = path.join(testConfigDir, 'menus.yaml');
+      const menus = {
+        header: [],
+        header_actions: []
+      };
+      fs.writeFileSync(menusPath, yaml.dump(menus), 'utf8');
+
+      const loaded = loadConfig(configPath);
+
+      // Should have menus object - 'header' is now treated as a custom menu
+      expect(loaded.menus).toBeDefined();
+      expect(Object.keys(loaded.menus).length).toBe(1);
+      expect(loaded.menus.header).toEqual([]);
+    });
+  });
 });

@@ -116,7 +116,7 @@
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
     setStoredTheme(newTheme);
-    showToast(t('theme_switch_success', 'Switched to {theme} mode').replace('{theme}', newTheme), 'success');
+    // Visual feedback is immediate - no toast needed
   });
 
   // Listen for system theme changes

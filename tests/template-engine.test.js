@@ -763,8 +763,8 @@ describe('TemplateEngine', () => {
       const placeholders = await engineWithSidebar.buildTemplatePlaceholders(context);
       
       expect(placeholders.hideSidebar).toBe(false);
-      expect(placeholders.navigation).toBeTruthy();
-      expect(placeholders.navigation).toContain('Getting Started');
+      expect(placeholders.sidebar).toBeTruthy();
+      expect(placeholders.sidebar).toContain('Getting Started');
     });
 
     it('should hide sidebar when hide_sidebar: true in frontmatter', async () => {
@@ -783,7 +783,7 @@ describe('TemplateEngine', () => {
       const placeholders = await engine.buildTemplatePlaceholders(context);
       
       expect(placeholders.hideSidebar).toBe(true);
-      expect(placeholders.navigation).toBe('');
+      expect(placeholders.sidebar).toBe('');
     });
 
     it('should not render sidebar when hide_sidebar: true', async () => {
@@ -828,9 +828,9 @@ describe('TemplateEngine', () => {
       const placeholders = await engineWithSidebar.buildTemplatePlaceholders(context);
       
       expect(placeholders.hideSidebar).toBe(true);
-      expect(placeholders.navigation).toBe('');
-      // Header nav should still work
-      expect(placeholders.headerNav).toBeTruthy();
+      expect(placeholders.sidebar).toBe('');
+      // Mobile header nav should still work
+      expect(placeholders.mobileNav).toBeTruthy();
     });
 
     it('should render sidebar when hide_sidebar: false explicitly', async () => {
@@ -874,8 +874,8 @@ describe('TemplateEngine', () => {
       const placeholders = await engineWithSidebar.buildTemplatePlaceholders(context);
       
       expect(placeholders.hideSidebar).toBe(false);
-      expect(placeholders.navigation).toBeTruthy();
-      expect(placeholders.navigation).toContain('Menu');
+      expect(placeholders.sidebar).toBeTruthy();
+      expect(placeholders.sidebar).toContain('Menu');
     });
   });
 
@@ -912,7 +912,7 @@ describe('TemplateEngine', () => {
       const placeholders = await engineNoSidebar.buildTemplatePlaceholders(context);
       
       expect(placeholders.hideSidebar).toBe(true);
-      expect(placeholders.navigation).toBe('');
+      expect(placeholders.sidebar).toBe('');
     });
 
     it('should not fail when sidebar_enabled: false and no sidebars config', async () => {
@@ -946,7 +946,7 @@ describe('TemplateEngine', () => {
       const placeholders = await engineNoSidebar.buildTemplatePlaceholders(context);
       
       expect(placeholders.hideSidebar).toBe(true);
-      expect(placeholders.navigation).toBe('');
+      expect(placeholders.sidebar).toBe('');
     });
 
     it('should allow page to override site-wide setting with hide_sidebar: false', async () => {
@@ -991,8 +991,8 @@ describe('TemplateEngine', () => {
       const placeholders = await engineNoSidebar.buildTemplatePlaceholders(context);
       
       expect(placeholders.hideSidebar).toBe(false);
-      expect(placeholders.navigation).toBeTruthy();
-      expect(placeholders.navigation).toContain('Menu');
+      expect(placeholders.sidebar).toBeTruthy();
+      expect(placeholders.sidebar).toContain('Menu');
     });
 
     it('should allow page to override site-wide enabled with hide_sidebar: true', async () => {
@@ -1037,7 +1037,7 @@ describe('TemplateEngine', () => {
       const placeholders = await engineWithSidebar.buildTemplatePlaceholders(context);
       
       expect(placeholders.hideSidebar).toBe(true);
-      expect(placeholders.navigation).toBe('');
+      expect(placeholders.sidebar).toBe('');
     });
   });
 });

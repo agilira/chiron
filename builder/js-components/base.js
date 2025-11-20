@@ -30,9 +30,6 @@ const CONFIG = {
     MAX_FILE_SIZE: 10 * 1024 * 1024 // 10MB
   },
   UI: {
-    TOAST_DURATION: 3000,
-    TOAST_ANIMATION_DELAY: 100,
-    TOAST_FADE_OUT_DELAY: 300,
     BLUR_DELAY: 200,
     COOKIE_BANNER_DELAY: 1000,
     WATCH_DEBOUNCE_DELAY: 300,
@@ -59,43 +56,6 @@ const debounce = (func, wait) => {
     timeout = setTimeout(later, wait);
   };
 };
-
-// eslint-disable-next-line no-redeclare
-const showToast = (message, type = 'info') => {
-  const toast = document.createElement('div');
-  toast.className = `toast toast-${type}`;
-  toast.textContent = message;
-  toast.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: ${type === 'success' ? 'var(--success-500)' : 'var(--error-500)'};
-        color: white;
-        padding: 12px 20px;
-        border-radius: var(--border-radius);
-        box-shadow: var(--shadow-lg);
-        z-index: 1000;
-        transform: translateX(100%);
-        transition: transform 0.3s ease;
-    `;
-
-  document.body.appendChild(toast);
-
-  setTimeout(() => {
-    toast.style.transform = 'translateX(0)';
-  }, CONFIG.UI.TOAST_ANIMATION_DELAY);
-
-  setTimeout(() => {
-    toast.style.transform = 'translateX(100%)';
-    setTimeout(() => {
-      if (toast.parentNode) {
-        toast.parentNode.removeChild(toast);
-      }
-    }, CONFIG.UI.TOAST_FADE_OUT_DELAY);
-  }, CONFIG.UI.TOAST_DURATION);
-};
-// Make showToast globally accessible for other components
-window.showToast = showToast;
 
 // Hash helper for info boxes
 // eslint-disable-next-line no-unused-vars, no-redeclare
@@ -174,146 +134,6 @@ document.addEventListener('keydown', (e) => {
         
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {searchInput.blur();}
-  }
-});
-
-// ============================================================================
-// SIDEBAR - Mobile sidebar toggle and collapsible sections
-// ============================================================================
-
-// Mobile sidebar
-(() => {
-  const sidebar = document.getElementById('sidebar');
-  const sidebarToggle = document.getElementById('sidebarToggle');
-  const mobileOverlay = document.getElementById('mobileOverlay');
-    
-  if (!sidebarToggle || !mobileOverlay) {return;}
-
-  let lastFocusedElement = null;
-
-  const getFocusableElements = (container) => {
-    return container.querySelectorAll('a[href], button, input, textarea, select, [tabindex]:not([tabindex="-1"])');
-  };
-
-  const openSidebar = () => {
-    lastFocusedElement = document.activeElement;
-    sidebar.classList.add('open');
-    mobileOverlay.classList.add('open');
-    sidebar.setAttribute('aria-hidden', 'false');
-    sidebarToggle.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
-
-    const focusables = getFocusableElements(sidebar);
-    if (focusables.length) {focusables[0].focus();}
-  };
-
-  const closeSidebar = () => {
-    sidebar.classList.remove('open');
-    mobileOverlay.classList.remove('open');
-    sidebar.setAttribute('aria-hidden', 'true');
-    sidebarToggle.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-    if (lastFocusedElement) {lastFocusedElement.focus();}
-  };
-
-  const toggleSidebar = () => {
-    if (sidebar.classList.contains('open')) {closeSidebar();}
-    else {openSidebar();}
-  };
-
-  sidebarToggle.addEventListener('click', toggleSidebar);
-  mobileOverlay.addEventListener('click', closeSidebar);
-
-  document.addEventListener('keydown', (e) => {
-    if (!sidebar.classList.contains('open')) {return;}
-    if (e.key === 'Escape') {
-      closeSidebar();
-      return;
-    }
-
-    if (e.key === 'Tab') {
-      const focusables = Array.from(getFocusableElements(sidebar));
-      if (!focusables.length) {return;}
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
-
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    }
-  });
-
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) {
-      sidebar.classList.remove('open');
-      mobileOverlay.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-  });
-})();
-
-// Collapsible sidebar sections
-(() => {
-  const collapsibleButtons = document.querySelectorAll('.nav-section-title.collapsible');
-    
-  if (!collapsibleButtons.length) {return;}
-
-  collapsibleButtons.forEach(button => {
-    button.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-            
-      const section = button.closest('.nav-section');
-      if (!section) {return;}
-
-      const isExpanded = section.classList.contains('expanded');
-      section.classList.toggle('expanded');
-      button.setAttribute('aria-expanded', !isExpanded);
-
-      const sectionTitle = button.textContent.trim();
-      try {
-        const stateKey = `sidebar-section-${sectionTitle}`;
-        localStorage.setItem(stateKey, !isExpanded ? 'open' : 'closed');
-      } catch {
-        // Ignore localStorage errors (intentionally empty)
-      }
-    });
-  });
-
-  // Restore state from localStorage
-  collapsibleButtons.forEach(button => {
-    const sectionTitle = button.textContent.trim();
-    const stateKey = `sidebar-section-${sectionTitle}`;
-        
-    try {
-      const savedState = localStorage.getItem(stateKey);
-            
-      if (savedState) {
-        const section = button.closest('.nav-section');
-        const shouldBeOpen = savedState === 'open';
-        const isCurrentlyOpen = section.classList.contains('expanded');
-
-        if (shouldBeOpen !== isCurrentlyOpen) {
-          section.classList.toggle('expanded', shouldBeOpen);
-          button.setAttribute('aria-expanded', shouldBeOpen);
-        }
-      }
-    } catch {
-      // Ignore localStorage errors (intentionally empty)
-    }
-  });
-})();
-
-// Keyboard shortcut: Ctrl/Cmd + / to toggle sidebar
-document.addEventListener('keydown', (e) => {
-  if ((e.ctrlKey || e.metaKey) && e.key === '/') {
-    e.preventDefault();
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    if (sidebarToggle) {sidebarToggle.click();}
   }
 });
 
@@ -439,7 +259,7 @@ document.addEventListener('keydown', (e) => {
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
     setStoredTheme(newTheme);
-    showToast(`Switched to ${newTheme} mode`, 'success');
+    // Visual feedback is immediate - no toast needed
   });
 
   // Listen for system theme changes
@@ -538,123 +358,6 @@ window.addEventListener('scroll', debounce(updateActiveNavigation, 100), { passi
   });
 
   toggleScrollButton();
-})();
-
-// ============================================================================
-// HEADER DROPDOWNS - Dropdown menus in header navigation
-// ============================================================================
-(function setupHeaderDropdowns() {
-  const headerNav = document.querySelector('.header-nav');
-  const dropdownItems = document.querySelectorAll('.header-nav-item');
-  
-  if (!dropdownItems.length) {return;}
-
-  // Get dropdown trigger mode from config (default: 'hover')
-  // Options: 'hover' | 'click'
-  const triggerMode = headerNav?.getAttribute('data-dropdown-trigger') || 'hover';
-
-  dropdownItems.forEach(item => {
-    const button = item.querySelector('.header-nav-link');
-    const dropdown = item.querySelector('.header-dropdown');
-    
-    if (!button || !dropdown) {return;}
-
-    let closeTimeout = null;
-
-    const openDropdown = () => {
-      if (closeTimeout) {
-        clearTimeout(closeTimeout);
-        closeTimeout = null;
-      }
-      item.classList.add('open');
-      button.setAttribute('aria-expanded', 'true');
-    };
-
-    const closeDropdown = (immediate = false) => {
-      if (immediate) {
-        item.classList.remove('open');
-        button.setAttribute('aria-expanded', 'false');
-      } else {
-        // Delay closing to allow moving mouse to dropdown
-        closeTimeout = setTimeout(() => {
-          item.classList.remove('open');
-          button.setAttribute('aria-expanded', 'false');
-        }, 200);
-      }
-    };
-
-    // Click handler - always enabled for accessibility
-    button.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      if (item.classList.contains('open')) {
-        closeDropdown(true);
-      } else {
-        // Close other dropdowns
-        dropdownItems.forEach(otherItem => {
-          if (otherItem !== item && otherItem.classList.contains('open')) {
-            otherItem.classList.remove('open');
-            const otherButton = otherItem.querySelector('.header-nav-link');
-            if (otherButton) {otherButton.setAttribute('aria-expanded', 'false');}
-          }
-        });
-        openDropdown();
-      }
-    });
-
-    // Hover handlers - only if trigger mode is 'hover'
-    if (triggerMode === 'hover') {
-      item.addEventListener('mouseenter', () => {
-        openDropdown();
-      });
-
-      item.addEventListener('mouseleave', () => {
-        closeDropdown();
-      });
-
-      // Keep open when hovering dropdown content
-      dropdown.addEventListener('mouseenter', () => {
-        if (closeTimeout) {
-          clearTimeout(closeTimeout);
-          closeTimeout = null;
-        }
-      });
-
-      dropdown.addEventListener('mouseleave', () => {
-        closeDropdown();
-      });
-    }
-
-    // Close on Escape key
-    button.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && item.classList.contains('open')) {
-        closeDropdown(true);
-        button.focus();
-      }
-    });
-
-    // Close dropdown when clicking a link inside
-    dropdown.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        closeDropdown(true);
-      });
-    });
-  });
-
-  // Close all dropdowns when clicking outside
-  document.addEventListener('click', (e) => {
-    const clickedOutside = !e.target.closest('.header-nav-item');
-    if (clickedOutside) {
-      dropdownItems.forEach(item => {
-        if (item.classList.contains('open')) {
-          item.classList.remove('open');
-          const button = item.querySelector('.header-nav-link');
-          if (button) {button.setAttribute('aria-expanded', 'false');}
-        }
-      });
-    }
-  });
 })();
 
 // LANGUAGE SWITCHER - Dropdown for language selection

@@ -22,10 +22,9 @@ const { generateSitemap } = require('./generators/sitemap');
 const { generateRobots } = require('./generators/robots');
 const { ParseError } = require('./errors');
 const { loadConfig } = require('./config/config-loader');
-const { copyDirRecursive, ensureDir, toUrlPath, mdToHtmlPath, copyFileWithTimeout, writeFileWithTimeout } = require('./utils/file-utils');
+const { copyDirRecursive, ensureDir, toUrlPath, mdToHtmlPath } = require('./utils/file-utils');
 const FontDownloader = require('./utils/font-downloader');
 const { CacheManager } = require('./cache/cache-manager');
-const { minifyCSS } = require('./utils/css-minifier');
 const { optimizeImage } = require('./utils/image-optimizer');
 const { minifyJS } = require('./utils/js-minifier');
 
@@ -935,6 +934,103 @@ class ChironBuilder {
   }
 
   /**
+   * Build component scripts (base.js, base-minimal.js) from templates
+   * Uses EJS templates to conditionally include components based on config
+   * @returns {Promise<void>}
+   */
+  async buildComponentScripts() {
+    const componentDir = path.join(this.chironRootDir, 'builder', 'js-components');
+    const outputDir = this.getOutputDir();
+    const ejs = require('ejs');
+    
+    // Helper function to include component code
+    const includeComponent = (componentName) => {
+      const componentPath = path.join(componentDir, `${componentName}.js`);
+      if (fs.existsSync(componentPath)) {
+        return fs.readFileSync(componentPath, 'utf8');
+      } else {
+        this.logger.warn(`Component not found: ${componentName}.js`);
+        return `// Component ${componentName} not found`;
+      }
+    };
+    
+    // Build base.js from template
+    const baseTemplatePath = path.join(componentDir, 'base.ejs');
+    
+    if (fs.existsSync(baseTemplatePath)) {
+      try {
+        const template = fs.readFileSync(baseTemplatePath, 'utf8');
+        
+        // Render template with config and helper
+        const rendered = ejs.render(template, {
+          config: this.config,
+          includeComponent
+        });
+        
+        // Minify if enabled
+        const shouldMinify = this.config.build?.minifyJS !== false;
+        const bundlePath = path.join(outputDir, 'base.js');
+        
+        if (shouldMinify) {
+          try {
+            const minified = await minifyJS(rendered);
+            fs.writeFileSync(bundlePath, minified, 'utf8');
+            const sizeKB = (Buffer.byteLength(minified, 'utf8') / 1024).toFixed(2);
+            this.logger.info(`Built base.js: ${sizeKB} KB (minified, from template)`);
+          } catch (error) {
+            this.logger.warn('Minification failed for base.js, using unminified', { error: error.message });
+            fs.writeFileSync(bundlePath, rendered, 'utf8');
+            const sizeKB = (Buffer.byteLength(rendered, 'utf8') / 1024).toFixed(2);
+            this.logger.info(`Built base.js: ${sizeKB} KB (from template)`);
+          }
+        } else {
+          fs.writeFileSync(bundlePath, rendered, 'utf8');
+          const sizeKB = (Buffer.byteLength(rendered, 'utf8') / 1024).toFixed(2);
+          this.logger.info(`Built base.js: ${sizeKB} KB (from template)`);
+        }
+      } catch (error) {
+        this.logger.error('Failed to build base.js from template', { error: error.message });
+      }
+    } else {
+      this.logger.warn('base.ejs template not found, skipping base.js build');
+    }
+    
+    // Build base-minimal.js (minimal bundle: core + accessibility only)
+    const minimalComponents = ['core', 'accessibility'];
+    const minimalScripts = minimalComponents.map(comp => {
+      const componentPath = path.join(componentDir, `${comp}.js`);
+      if (fs.existsSync(componentPath)) {
+        return `// Component: ${comp}\n${fs.readFileSync(componentPath, 'utf8')}`;
+      }
+      return '';
+    }).filter(s => s);
+    
+    if (minimalScripts.length > 0) {
+      const minimalContent = minimalScripts.join('\n\n');
+      const minimalPath = path.join(outputDir, 'base-minimal.js');
+      const shouldMinify = this.config.build?.minifyJS !== false;
+      
+      if (shouldMinify) {
+        try {
+          const minified = await minifyJS(minimalContent);
+          fs.writeFileSync(minimalPath, minified, 'utf8');
+          const sizeKB = (Buffer.byteLength(minified, 'utf8') / 1024).toFixed(2);
+          this.logger.info(`Built base-minimal.js: ${sizeKB} KB (minified, ${minimalComponents.length} components)`);
+        } catch (error) {
+          this.logger.warn('Minification failed for base-minimal.js', { error: error.message });
+          fs.writeFileSync(minimalPath, minimalContent, 'utf8');
+          const sizeKB = (Buffer.byteLength(minimalContent, 'utf8') / 1024).toFixed(2);
+          this.logger.info(`Built base-minimal.js: ${sizeKB} KB (${minimalComponents.length} components)`);
+        }
+      } else {
+        fs.writeFileSync(minimalPath, minimalContent, 'utf8');
+        const sizeKB = (Buffer.byteLength(minimalContent, 'utf8') / 1024).toFixed(2);
+        this.logger.info(`Built base-minimal.js: ${sizeKB} KB (${minimalComponents.length} components)`);
+      }
+    }
+  }
+
+  /**
    * Copy static assets from assets directory to output
    * Recursively copies all files and subdirectories
    * @throws {Error} If assets directory cannot be read
@@ -1089,19 +1185,12 @@ class ChironBuilder {
   }
 
   /**
-   * Copy CSS and JS files to output directory
-   * Creates empty custom.css and custom.js in custom-templates/ if they don't exist
-   * Falls back to Chiron's files if not found in user directory
-   * Uses timeout to prevent hanging on locked files
+   * Copy theme files to output directory
    * @returns {Promise<void>}
    * @throws {Error} If file copying fails
    */
   async copyScripts() {
-    const fsSync = require('fs');
     const outputDir = this.getOutputDir();
-    const customTemplatesDir = path.join(this.rootDir, this.config.build.custom_templates_dir || 'custom-templates');
-    
-    const FILE_TIMEOUT = 5000; // 5 second timeout per file
     
     try {
       // Copy theme files (styles.css, assets, optional theme.js)
@@ -1112,122 +1201,11 @@ class ChironBuilder {
         assets: themeResults.assets.copied,
         themeScript: themeResults.script.copied
       });
-
-      // Copy framework files (custom.css, custom.js)
-      const filesToCopy = ['custom.css', 'custom.js'];
-      
-      // Execute all file operations in parallel
-      const results = await Promise.allSettled(filesToCopy.map(async (file) => {
-        let src;
-        const dest = path.join(outputDir, file);
-        
-        try {
-          // Custom files should be in custom-templates/ (preferred) or root (fallback)
-          // Check custom-templates/ first (preferred location)
-          src = path.join(customTemplatesDir, file);
-          if (!fsSync.existsSync(src)) {
-            // Fallback to root for backward compatibility
-            const rootSrc = path.join(this.rootDir, file);
-            if (fsSync.existsSync(rootSrc)) {
-              src = rootSrc;
-            }
-          }
-          
-          // Try user's file first
-          if (!fsSync.existsSync(src)) {
-            // Fallback to Chiron's directory (for non-custom files)
-            const chironSrc = path.join(this.chironRootDir, file);
-            if (fsSync.existsSync(chironSrc)) {
-              src = chironSrc;
-            }
-          }
-          
-          if (fsSync.existsSync(src)) {
-            // Check if file needs processing (CSS and JS minification)
-            const isCSS = file.endsWith('.css');
-            const isJS = file.endsWith('.js');
-            const shouldMinifyCSS = isCSS && this.config.build?.minify !== false;
-            const shouldMinifyJS = isJS && this.config.build?.minifyJS !== false;
-            
-            if (shouldMinifyCSS) {
-              // Read, minify, and write CSS (async)
-              try {
-                const cssContent = fsSync.readFileSync(src, 'utf-8');
-                const minified = await minifyCSS(cssContent);
-                await writeFileWithTimeout(dest, minified, { timeout: FILE_TIMEOUT });
-                return { success: true, file, minified: true };
-              } catch (error) {
-                // Fallback to simple copy on minification error
-                this.logger.warn('CSS minification failed, copying as-is', { file, error: error.message });
-                await copyFileWithTimeout(src, dest, { timeout: FILE_TIMEOUT });
-                return { success: true, file };
-              }
-            } else if (shouldMinifyJS) {
-              // Read, minify, and write JavaScript
-              try {
-                const jsContent = fsSync.readFileSync(src, 'utf-8');
-                const minified = await minifyJS(jsContent);
-                await writeFileWithTimeout(dest, minified, { timeout: FILE_TIMEOUT });
-                return { success: true, file, minified: true };
-              } catch (error) {
-                // Fallback to simple copy on minification error
-                this.logger.warn('JS minification failed, copying as-is', { file, error: error.message });
-                await copyFileWithTimeout(src, dest, { timeout: FILE_TIMEOUT });
-                return { success: true, file };
-              }
-            } else {
-              // Use timeout-protected copy for non-minified files
-              await copyFileWithTimeout(src, dest, { timeout: FILE_TIMEOUT });
-              return { success: true, file };
-            }
-          } else {
-            // Create empty custom files if they don't exist anywhere
-            // Use timeout-protected write
-            await writeFileWithTimeout(dest, '', { timeout: FILE_TIMEOUT });
-            return { success: true, file, created: true };
-          }
-        } catch (err) {
-          this.logger.error('Error processing file', { file, error: err.message });
-          this.buildErrors.push({
-            file,
-            error: `Failed to process: ${err.message}`
-          });
-          // Re-throw to mark as rejected
-          throw err;
-        }
-      }));
-
-      // Check for critical failures (rejected promises)
-      const failures = results.filter(r => r.status === 'rejected');
-      const criticalFiles = []; // No critical files - custom.css/js are optional
-      const criticalFailures = failures.filter(f => 
-        f.reason && criticalFiles.some(cf => f.reason.message?.includes(cf))
-      );
-
-      if (criticalFailures.length > 0) {
-        const errorMsg = `Failed to copy ${criticalFailures.length} critical file(s)`;
-        this.logger.error(errorMsg, { 
-          files: criticalFailures.map(f => f.reason?.message || 'Unknown') 
-        });
-        
-        // In production or strict mode, fail the build for critical files
-        if (process.env.NODE_ENV === 'production') {
-          throw new Error(`${errorMsg}: ${criticalFailures.map(f => f.reason?.message).join(', ')}`);
-        }
-      } else if (failures.length > 0) {
-        // Non-critical failures: log but continue
-        this.logger.warn(`${failures.length} non-critical file(s) failed to copy`, {
-          files: failures.map(f => f.reason?.message || 'Unknown')
-        });
-      }
-
-      const successCount = results.filter(r => r.status === 'fulfilled').length;
-      this.logger.info(`Custom files copied: ${successCount}/${filesToCopy.length} successful`);
     } catch (error) {
-      this.logger.error('Failed to copy scripts', { error: error.message });
+      this.logger.error('Failed to copy theme files', { error: error.message });
       this.buildErrors.push({
-        file: 'scripts',
-        error: `Failed to copy scripts: ${error.message}`
+        file: 'theme-files',
+        error: `Failed to copy theme files: ${error.message}`
       });
       throw error;
     }
@@ -1466,6 +1444,14 @@ ${analyticsSnippet}
     } catch (error) {
       this.logger.error('Failed to initialize builder', { error: error.message });
       throw error; // Throw instead of process.exit - allows tests to catch errors
+    }
+    
+    // Build component scripts (base.js, base-minimal.js) before processing pages
+    this.logger.info('Building component scripts...');
+    try {
+      await this.buildComponentScripts();
+    } catch (error) {
+      this.logger.error('Failed to build component scripts', { error: error.message });
     }
     
     // Reset error tracking

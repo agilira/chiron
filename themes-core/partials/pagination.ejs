@@ -1,0 +1,44 @@
+<% 
+// Pagination partial - renders previous/next page navigation
+// Data passed: { prev: {url, title}, next: {url, title}, i18n }
+
+if (prev || next) {
+const prevLabel = i18n?.pagination_previous || 'Previous';
+const nextLabel = i18n?.pagination_next || 'Next';
+%>
+<nav class="pagination" aria-label="Page navigation">
+    <div class="grid-2">
+        <% if (prev) { %>
+        <div>
+            <a href="<%= prev.url %>" class="pagination-link pagination-prev" rel="prev">
+                <svg class="pagination-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <div class="pagination-text">
+                    <span class="pagination-label"><%= prevLabel %></span>
+                    <span class="pagination-title"><%= prev.title %></span>
+                </div>
+            </a>
+        </div>
+        <% } else { %>
+        <div class="pagination-spacer"></div>
+        <% } %>
+        
+        <% if (next) { %>
+        <div>
+            <a href="<%= next.url %>" class="pagination-link pagination-next" rel="next">
+                <div class="pagination-text">
+                    <span class="pagination-label"><%= nextLabel %></span>
+                    <span class="pagination-title"><%= next.title %></span>
+                </div>
+                <svg class="pagination-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </a>
+        </div>
+        <% } else { %>
+        <div class="pagination-spacer"></div>
+        <% } %>
+    </div>
+</nav>
+<% } %>

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+
 <!-- Anti-flash script - must run before CSS loads -->
 <script>
 (function() {
@@ -18,6 +19,7 @@
   }
 })();
 </script>
+
 
 <title>UI Showcase</title>
 
@@ -64,7 +66,6 @@
 <!-- Stylesheets -->
 <link rel="stylesheet" href="./fonts.css">
 <link rel="stylesheet" href="./styles.css?v=20251104-v1">
-<link rel="stylesheet" href="./custom.css">
 
 <!-- Syntax Highlighting - Custom theme in styles.css -->
 
@@ -542,44 +543,43 @@
     <div class="header-container">
         <div class="header-left">
             <!-- 
-                Flexible Logo/Name Link:
-                - logoImages: Shows logo images (light + dark) if configured
-                - projectNameSpan: Shows project name if configured
-                
-                Supports all combinations:
-                1. Logo + Name (default)
-                2. Logo only (omit project.name in config)
-                3. Name only (omit branding.logo paths in config)
-                4. Neither (edge case, link will be empty but functional)
-            -->
-            <a href="https://github.com/agilira/chiron" class="logo-link" target="_blank" rel="noopener">
-                <img src="./assets/logo-black.png" alt="Chiron Logo" class="logo-img logo-light" width="32" height="32" loading="eager">
+    Flexible Logo/Name Link:
+    - logoImages: Shows logo images (light + dark) if configured
+    - projectNameSpan: Shows project name if configured
+    
+    Supports all combinations:
+    1. Logo + Name (default)
+    2. Logo only (omit project.name in config)
+    3. Name only (omit branding.logo paths in config)
+    4. Neither (edge case, link will be empty but functional)
+-->
+<a href="https://github.com/agilira/chiron" class="logo-link" target="_blank" rel="noopener">
+    <img src="./assets/logo-black.png" alt="Chiron Logo" class="logo-img logo-light" width="32" height="32" loading="eager">
     <img src="./assets/logo-white.png" alt="Chiron Logo" class="logo-img logo-dark" width="32" height="32" loading="eager">
-                
-            </a>
-            <nav class="header-nav" aria-label=&#34;Main navigation&#34; data-dropdown-trigger="hover">
-                <a href="./index.html">Home</a>
-                    <div class="header-nav-item">
-                      <button class="header-nav-link" aria-expanded="false" aria-haspopup="true">
-                        Docs
-                        <svg class="dropdown-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                          <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                      </button>
-                      <div class="header-dropdown">
-                        <a href="./showcase.html">Getting Started</a>
-                      <a href="./custom-template-test.html">Templates</a>
-                      <div class="header-dropdown-divider"></div>
-                      <a href="./external-scripts-demo.html">External Scripts</a>
-                      <a href="./forms-demo.html">Forms</a>
-                      </div>
-                    </div>
-                    <a href="./react-demo.html">React Demo</a>
-            </nav>
+    
+</a>
+
+            <nav aria-label="Main navigation" role="navigation">
+  <ul class="header-nav" data-dropdown-trigger="click">
+    <li class="header-nav-item"><a href="/" class="header-nav-link">Home</a></li>
+    <li class="header-nav-item">
+      <button class="header-nav-link" aria-haspopup="true" aria-expanded="false">Docs <svg class="dropdown-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <ul class="header-dropdown">
+        <li class="header-nav-item"><a href="/showcase.html" class="header-dropdown-link">Getting Started</a></li>
+    <li class="header-nav-item"><a href="/custom-template-test.html" class="header-dropdown-link">Templates</a></li>
+    <li class="header-nav-item menu-divider"><hr /></li>
+    <li class="header-nav-item"><a href="/external-scripts-demo.html" class="header-dropdown-link">External Scripts</a></li>
+    <li class="header-nav-item"><a href="/forms-demo.html" class="header-dropdown-link">Forms</a></li>
+      </ul>
+    </li>
+    <li class="header-nav-item"><a href="/react-demo.html" class="header-nav-link">React Demo</a></li>
+  </ul>
+</nav>
         </div>
         <div class="header-right">
             <div class="header-actions">
-                <div class="header-action-dropdown language-switcher">
+                
+<div class="header-action-dropdown language-switcher">
                     <button type="button" class="header-action-btn dropdown-toggle" aria-label="Language selection" aria-haspopup="true" aria-expanded="false">
                         <svg width="20" height="20" aria-hidden="true">
                             <use href="#icon-languages"></use>
@@ -594,29 +594,84 @@
                             
                         </a>
                     </div>
-                </div><button type="button" class="header-action-btn" id="searchToggle" aria-label="Open search">
-                        <svg width="20" height="20" aria-hidden="true">
-                            <use href="#icon-search"></use>
-                        </svg>
-                    </button>
-                    <a href="https://github.com/agilira/chiron" class="header-action-btn" target="_blank" rel="noopener" aria-label="View repository on GitHub">
-                        <svg width="20" height="20" aria-hidden="true">
-                            <use href="#icon-github"></use>
-                        </svg>
-                    </a>
-                    <button type="button" class="header-action-btn theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-                        <svg width="20" height="20" aria-hidden="true" class="theme-icon-light">
-                            <use href="#icon-sun"></use>
-                        </svg>
-                        <svg width="20" height="20" aria-hidden="true" class="theme-icon-dark" style="display: none;">
-                            <use href="#icon-moon"></use>
-                        </svg>
-                    </button>
-                    <button type="button" class="header-action-btn mobile-only" id="sidebarToggle" aria-label="Toggle navigation menu">
-                        <svg width="20" height="20" aria-hidden="true">
-                            <use href="#icon-menu"></use>
-                        </svg>
-                    </button>
+                </div>
+
+
+
+    
+        
+
+        
+            <button type="button" class="header-action-btn" id="searchToggle" aria-label="Search" >
+                
+                    <svg width="20" height="20" aria-hidden="true">
+                        <use href="#icon-search"></use>
+                    </svg>
+                
+            </button>
+        
+    
+        
+
+        
+            <a href="https://github.com/agilira/chiron" class="header-action-btn" aria-label="GitHub" rel=&#34;noopener&#34;>
+                
+                    <svg width="20" height="20" aria-hidden="true">
+                        <use href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+
+        
+            <button type="button" class="header-action-btn theme-toggle" id="themeToggle" aria-label="Theme" >
+                
+                    
+                    <svg width="20" height="20" aria-hidden="true" class="theme-icon-light">
+                        <use href="#icon-sun"></use>
+                    </svg>
+                    <svg width="20" height="20" aria-hidden="true" class="theme-icon-dark" style="display: none;">
+                        <use href="#icon-moon"></use>
+                    </svg>
+                
+            </button>
+        
+    
+        
+
+        
+            <a href="./login" class="header-action-btn btn-login hide-on-mobile" aria-label="Login" >
+                
+                    <svg width="20" height="20" aria-hidden="true">
+                        <use href="#icon-user"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+
+        
+            <a href="https://github.com/sponsors" class="header-action-btn btn-donate" aria-label="Donate" rel=&#34;noopener noreferrer&#34;>
+                
+                    <svg width="20" height="20" aria-hidden="true">
+                        <use href="#icon-heart"></use>
+                    </svg>
+                
+            </a>
+        
+    
+
+
+
+<button type="button" class="header-action-btn mobile-only" id="sidebarToggle" aria-label=&#34;aria_sidebar_toggle&#34;>
+    <svg width="20" height="20" aria-hidden="true">
+        <use href="#icon-menu"></use>
+    </svg>
+</button>
+
             </div>
         </div>
     </div>
@@ -641,7 +696,7 @@
                       <ul class="nav-list">
                         <li><a href="./showcase.html" class="nav-item">Getting Started</a></li>
                       <li><a href="./custom-template-test.html" class="nav-item">Templates</a></li>
-                      <li><a href="#" class="nav-item">Untitled</a></li>
+                      <li class="menu-divider"><hr /></li>
                       <li><a href="./external-scripts-demo.html" class="nav-item">External Scripts</a></li>
                       <li><a href="./forms-demo.html" class="nav-item">Forms</a></li>
                       </ul>
@@ -710,16 +765,63 @@
         <!-- Main Content -->
         <main class="main-content" id="main-content" role="main">
             <div class="content-container">
-                <nav class="breadcrumb" aria-label="Breadcrumb">
-                    <ol class="breadcrumb-list">
-                        <li class="breadcrumb-item breadcrumb-company"><a href="https://github.com/agilira" target="_blank" rel="noopener noreferrer">AGILira</a></li>
-                        <li class="breadcrumb-separator">/</li>
-                        <li class="breadcrumb-item breadcrumb-project"><a href="https://github.com/agilira/chiron" target="_blank" rel="noopener noreferrer">Chiron</a></li>
-                        <li class="breadcrumb-separator">/</li>
-                        <li class="breadcrumb-item breadcrumb-home"><a href="./index.html">Documentation</a></li>
-                        <li class="breadcrumb-separator">/</li><li class="breadcrumb-item current" aria-current="page">UI Showcase</li>
-                    </ol>
-                </nav>
+                
+<nav class="breadcrumb" aria-label="Breadcrumb">
+    <ol class="breadcrumb-list">
+        
+            
+            
+            
+                
+                <li class="breadcrumb-item breadcrumb-company">
+                    <a href="https://github.com/agilira" target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;>AGILira</a>
+                </li>
+            
+
+            
+                <li class="breadcrumb-separator" aria-hidden="true">/</li>
+            
+        
+            
+            
+            
+                
+                <li class="breadcrumb-item breadcrumb-project">
+                    <a href="https://github.com/agilira/chiron" target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;>Chiron</a>
+                </li>
+            
+
+            
+                <li class="breadcrumb-separator" aria-hidden="true">/</li>
+            
+        
+            
+            
+            
+                
+                <li class="breadcrumb-item breadcrumb-home">
+                    <a href="./index.html">Documentation</a>
+                </li>
+            
+
+            
+                <li class="breadcrumb-separator" aria-hidden="true">/</li>
+            
+        
+            
+            
+            
+                <li class="breadcrumb-item current" aria-current=&#34;page&#34;>
+                    UI Showcase
+                </li>
+            
+
+            
+        
+    </ol>
+</nav>
+
+
 
                 <!-- Page Content -->
                 <div class="content">
@@ -752,42 +854,42 @@
 <li><input disabled="" type="checkbox" name="task"> Pending task</li>
 <li><input disabled="" type="checkbox" name="task"> Another pending task</li>
 </ul>
-<h2 id="code-blocks-6">Code Blocks</h2><h3 id="javascript-3">JavaScript</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript">function greet(name) {
-  console.log(`Hello, ${name}!`);
-  return `Welcome to Chiron`;
+<h2 id="code-blocks-6">Code Blocks</h2><h3 id="javascript-3">JavaScript</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">greet</span>(name) {
+  console.<span class="hljs-title function_">log</span>(<span class="hljs-template-literal">`Hello, ${name}!`</span>);
+  <span class="hljs-keyword">return</span> <span class="hljs-template-literal">`Welcome to Chiron`</span>;
 }
 
-const result = greet(&#039;Developer&#039;);
-console.log(result);</code></pre></div><h3 id="typescript-2">TypeScript</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-typescript">interface User {
+<span class="hljs-keyword">const</span> result = <span class="hljs-title function_">greet</span>(<span class="hljs-string">&#039;Developer&#039;</span>);
+console.<span class="hljs-title function_">log</span>(result);</code></pre></div><h3 id="typescript-2">TypeScript</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-typescript">interface User {
   id: number;
   name: string;
   email: string;
 }
 
-function createUser(data: User): User {
-  return {
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">createUser</span>(data: User): User {
+  <span class="hljs-keyword">return</span> {
     ...data,
-    id: Date.now()
+    id: Date.<span class="hljs-title function_">now</span>()
   };
-}</code></pre></div><h3 id="bash-2">Bash</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"># Install dependencies
-npm install
+}</code></pre></div><h3 id="bash-2">Bash</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-comment"># Install dependencies</span>
+<span class="hljs-built_in">npm</span> install
 
-# Run development server
-npm run dev
+<span class="hljs-comment"># Run development server</span>
+<span class="hljs-built_in">npm</span> run dev
 
-# Build for production
-npm run build</code></pre></div><h3 id="yaml-2">YAML</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">project:
+<span class="hljs-comment"># Build for production</span>
+<span class="hljs-built_in">npm</span> run build</code></pre></div><h3 id="yaml-2">YAML</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">project:
   name: Chiron
-  version: 2.0.0
+  version: <span class="hljs-number">2.0</span>.<span class="hljs-number">0</span>
   
 features:
   - markdown
   - yaml
   - mermaid</code></pre></div><h3 id="json-2">JSON</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-json">{
-  &quot;name&quot;: &quot;chiron&quot;,
-  &quot;version&quot;: &quot;2.0.0&quot;,
-  &quot;description&quot;: &quot;Modern documentation builder&quot;,
-  &quot;keywords&quot;: [&quot;documentation&quot;, &quot;markdown&quot;, &quot;static-site&quot;]
+  <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;chiron&quot;</span>,
+  <span class="hljs-string">&quot;version&quot;</span>: <span class="hljs-string">&quot;2.0.0&quot;</span>,
+  <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;Modern documentation builder&quot;</span>,
+  <span class="hljs-string">&quot;keywords&quot;</span>: [<span class="hljs-string">&quot;documentation&quot;</span>, <span class="hljs-string">&quot;markdown&quot;</span>, <span class="hljs-string">&quot;static-site&quot;</span>]
 }</code></pre></div><h2 id="tables-5">Tables</h2><h3 id="basic-table-2">Basic Table</h3><div class="table-wrapper">
         <table>
           <thead><tr>
@@ -1083,9 +1185,9 @@ features:
 </div>
 
 <h2 id="mixed-content-2">Mixed Content</h2><p>Here&#39;s a paragraph followed by a code block:</p>
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript">const config = {
-  theme: &#039;dark&#039;,
-  language: &#039;en&#039;
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript"><span class="hljs-keyword">const</span> config = {
+  theme: <span class="hljs-string">&#039;dark&#039;</span>,
+  language: <span class="hljs-string">&#039;en&#039;</span>
 };</code></pre></div><p>And here&#39;s a list with code:</p>
 <ul>
 <li>Install with <code>npm install</code></li>
@@ -1160,32 +1262,40 @@ features:
                 </div>
 
                 <!-- Pagination (Previous/Next) -->
-                <nav class="pagination" aria-label="Page navigation">
-                <div class="grid-2">
-                    <div>
-                <a href="./api-reference.html" class="pagination-link pagination-prev" rel="prev">
-                    <svg class="pagination-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                    <div class="pagination-text">
-                        <span class="pagination-label">Previous</span>
-                        <span class="pagination-title">nav_api_reference</span>
-                    </div>
-                </a>
-            </div>
-                    <div>
-                <a href="./plugins/index.html" class="pagination-link pagination-next" rel="next">
-                    <div class="pagination-text">
-                        <span class="pagination-label">Next</span>
-                        <span class="pagination-title">nav_plugins_overview</span>
-                    </div>
-                    <svg class="pagination-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                </a>
-            </div>
+                
+<nav class="pagination" aria-label="Page navigation">
+    <div class="grid-2">
+        
+        <div>
+            <a href="./api-reference.html" class="pagination-link pagination-prev" rel="prev">
+                <svg class="pagination-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <div class="pagination-text">
+                    <span class="pagination-label">Previous</span>
+                    <span class="pagination-title">API Reference</span>
                 </div>
-            </nav>
+            </a>
+        </div>
+        
+        
+        
+        <div>
+            <a href="./plugins/index.html" class="pagination-link pagination-next" rel="next">
+                <div class="pagination-text">
+                    <span class="pagination-label">Next</span>
+                    <span class="pagination-title">Plugins Overview</span>
+                </div>
+                <svg class="pagination-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </a>
+        </div>
+        
+    </div>
+</nav>
+
+
             </div>
         </main>
 
@@ -1201,21 +1311,25 @@ features:
         <div class="footer-content">
             <div class="footer-left">
                 <p class="footer-copyright">
-                    &copy; <span class="copyright-year">2025</span> <span class="copyright-holder">Agilira</span>. All rights reserved.
-                </p>
+    &copy; <span class="copyright-year">2025</span> <span class="copyright-holder">Agilira</span>. All rights reserved.
+</p>
+
                 <div class="footer-legal">
-                    <a href="./privacy-policy.html" class="footer-legal-link">Privacy Policy</a>
-                                    <a href="./terms-of-service.html" class="footer-legal-link">Terms of Service</a>
-                                    <a href="./cookie-policy.html" class="footer-legal-link">Cookie Policy</a>
-                                    <a href="https://opensource.org/licenses/MIT" class="footer-legal-link license-link" target="_blank" rel="noopener noreferrer">License</a>
-                                    <a href="./manage-cookies.html" class="footer-legal-link">Manage Cookies</a>
+                    <ul class="footer-links">
+    <li><a href="./privacy-policy.html" class="footer-legal-link">Privacy Policy</a></li>
+    <li><a href="./terms-of-service.html" class="footer-legal-link">Terms of Service</a></li>
+    <li><a href="./cookie-policy.html" class="footer-legal-link">Cookie Policy</a></li>
+    <li><a href="https://opensource.org/licenses/MIT" class="footer-legal-link" target="_blank" rel="noopener noreferrer" aria-label="License - aria.external_link">License</a></li>
+    <li><a href="./manage-cookies.html" class="footer-legal-link">Manage Cookies</a></li>
+  </ul>
                 </div>
             </div>
             <div class="footer-right">
                 <a href="https://github.com/agilira" target="_blank" rel="noopener" class="footer-logo-link">
-                    <img src="./assets/logo-footer.png" alt="Chiron Logo" class="footer-logo footer-logo-light" loading="lazy">
-                    <img src="./assets/logo-footer-white.png" alt="Chiron Logo" class="footer-logo footer-logo-dark" loading="lazy">
-                </a>
+    <img src="./assets/logo-footer.png" alt="Chiron Logo" class="footer-logo footer-logo-light" loading="lazy">
+    <img src="./assets/logo-footer-white.png" alt="Chiron Logo" class="footer-logo footer-logo-dark" loading="lazy">
+</a>
+
             </div>
         </div>
     </div>
@@ -1226,26 +1340,26 @@ features:
     <div class="mobile-overlay" id="mobileOverlay"></div>
 
     
-    <!-- Scroll to Top Button -->
-    <button 
-        class="scroll-to-top" 
-        id="scrollToTop" 
-        aria-label="Scroll to top of page"
-        title="Scroll to top"
-        type="button"
-    >
-        ↑
-    </button>
-    
+<!-- Scroll to Top Button -->
+<button 
+    class="scroll-to-top" 
+    id="scrollToTop" 
+    aria-label="Scroll to top of page"
+    title="Scroll to top"
+    type="button"
+>
+    ↑
+</button>
 
-    <!-- Search Modal -->
-    <!-- Search Modal -->
+
+    
+<!-- Search Modal -->
 <div class="search-modal" id="searchModal" aria-hidden="true">
     <div class="search-modal-overlay" id="searchModalOverlay"></div>
     <div class="search-modal-content" role="dialog" aria-modal="true" aria-labelledby="searchModalTitle">
         <div class="search-modal-header">
             <h2 id="searchModalTitle" class="search-modal-title">Search Documentation</h2>
-            <button type="button" class="search-modal-close" id="searchModalClose" aria-label=&#34;Close search&#34;>
+            <button type="button" class="search-modal-close" id="searchModalClose" aria-label="Close search">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -1258,7 +1372,7 @@ features:
                     id="searchInput" 
                     class="search-input" 
                     placeholder="Search documentation..." 
-                    aria-label=&#34;Search documentation&#34;
+                    aria-label="Search input"
                     aria-autocomplete="list"
                     aria-controls="searchResults"
                     aria-expanded="false"
@@ -1268,7 +1382,7 @@ features:
                     type="button" 
                     class="search-clear-btn" 
                     id="searchClearBtn" 
-                    aria-label=&#34;Clear search&#34;
+                    aria-label="Clear search"
                     hidden
                 >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -1279,7 +1393,7 @@ features:
                     class="search-results" 
                     id="searchResults" 
                     role="listbox"
-                    aria-label=&#34;Search results&#34;
+                    aria-label="Search results"
                     hidden
                 ></div>
             </div>
@@ -1290,7 +1404,8 @@ features:
 
     <!-- Scripts -->
     <!-- Scripts -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+
 
 <!-- i18n Configuration -->
 <script>
@@ -1446,799 +1561,16 @@ window.CHIRON_I18N = {
 window.CHIRON_LOCALE = 'en';
 </script>
 
+
+<script src="./base.js"></script>
 <script>
-
-// Component: base
-/**
- * Base Component Bundle - Always loaded components
- * Includes: core, accessibility, sidebar, search, theme, navigation, scroll-to-top
- * These components are present on every page so we bundle them together
- * 
- * @component base
- * @required
- */
-
-// ============================================================================
-// CORE - Utilities and configuration
-// ============================================================================
-
-// i18n Helper - Get translated string with fallback
-const i18n = window.CHIRON_I18N || {};
-// eslint-disable-next-line no-redeclare
-const t = (key, fallback = '') => i18n[key] || fallback;
-// Make t() globally accessible for other components
-window.t = t;
-
-// Configuration Constants
-// eslint-disable-next-line no-redeclare
-const CONFIG = {
-  SEARCH: {
-    MIN_QUERY_LENGTH: 2,
-    DEBOUNCE_DELAY: 200,
-    RATE_LIMIT_MS: 100,
-    MAX_RESULTS: 10,
-    FETCH_TIMEOUT: 10000,
-    MAX_FILE_SIZE: 10 * 1024 * 1024 // 10MB
-  },
-  UI: {
-    TOAST_DURATION: 3000,
-    TOAST_ANIMATION_DELAY: 100,
-    TOAST_FADE_OUT_DELAY: 300,
-    BLUR_DELAY: 200,
-    COOKIE_BANNER_DELAY: 1000,
-    WATCH_DEBOUNCE_DELAY: 300,
-    SCROLL_OFFSET: 20,
-    HEADER_SCROLL_OFFSET: 50,
-    TOC_SCROLL_OFFSET: 100,
-    SCROLL_TO_TOP_THRESHOLD: 300
-  },
-  CACHE: {
-    MAX_SIZE: 50
-  }
-};
-
-// Utility functions
-// eslint-disable-next-line no-redeclare
-const debounce = (func, wait) => {
-  let timeout;
-  return function executedFunction(...args) {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
-    };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
-};
-
-// eslint-disable-next-line no-redeclare
-const showToast = (message, type = 'info') => {
-  const toast = document.createElement('div');
-  toast.className = `toast toast-${type}`;
-  toast.textContent = message;
-  toast.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: ${type === 'success' ? 'var(--success-500)' : 'var(--error-500)'};
-        color: white;
-        padding: 12px 20px;
-        border-radius: var(--border-radius);
-        box-shadow: var(--shadow-lg);
-        z-index: 1000;
-        transform: translateX(100%);
-        transition: transform 0.3s ease;
-    `;
-
-  document.body.appendChild(toast);
-
-  setTimeout(() => {
-    toast.style.transform = 'translateX(0)';
-  }, CONFIG.UI.TOAST_ANIMATION_DELAY);
-
-  setTimeout(() => {
-    toast.style.transform = 'translateX(100%)';
-    setTimeout(() => {
-      if (toast.parentNode) {
-        toast.parentNode.removeChild(toast);
-      }
-    }, CONFIG.UI.TOAST_FADE_OUT_DELAY);
-  }, CONFIG.UI.TOAST_DURATION);
-};
-// Make showToast globally accessible for other components
-window.showToast = showToast;
-
-// Hash helper for info boxes
-// eslint-disable-next-line no-unused-vars, no-redeclare
-const hashCode = (str) => {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
-  }
-  return Math.abs(hash).toString(36);
-};
-
-// ============================================================================
-// ACCESSIBILITY - Skip link, ARIA labels, focus management
-// ============================================================================
-
-// Skip link for screen readers
-(() => {
-  const skipLink = document.createElement('a');
-  skipLink.href = '#main-content';
-  skipLink.textContent = 'Skip to main content';
-  skipLink.className = 'skip-link';
-  skipLink.style.cssText = `
-        position: absolute;
-        top: -40px;
-        left: 6px;
-        background: var(--primary-600);
-        color: white;
-        padding: 8px;
-        text-decoration: none;
-        border-radius: 4px;
-        z-index: 1000;
-        transition: top 0.3s;
-    `;
-  skipLink.addEventListener('focus', () => {
-    skipLink.style.top = '6px';
-  });
-  skipLink.addEventListener('blur', () => {
-    skipLink.style.top = '-40px';
-  });
-  document.body.insertBefore(skipLink, document.body.firstChild);
-})();
-
-// ARIA labels
-(() => {
-  const sidebarToggle = document.getElementById('sidebarToggle');
-  if (sidebarToggle) {
-    sidebarToggle.setAttribute('aria-label', 'Toggle sidebar navigation');
-    sidebarToggle.setAttribute('aria-expanded', 'false');
-  }
-
-  const searchInput = document.getElementById('searchInput');
-  if (searchInput) {
-    searchInput.setAttribute('aria-label', t('aria_search', 'Search documentation'));
-  }
-})();
-
-// Close modals on Escape
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    const sidebar = document.getElementById('sidebar');
-    const mobileOverlay = document.getElementById('mobileOverlay');
-        
-    if (sidebar && sidebar.classList.contains('open')) {
-      sidebar.classList.remove('open');
-      if (mobileOverlay) {mobileOverlay.classList.remove('open');}
-      document.body.style.overflow = '';
-    }
-        
-    const searchResults = document.getElementById('searchResults');
-    if (searchResults) {
-      searchResults.hidden = true;
-      searchResults.style.display = 'none';
-    }
-        
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {searchInput.blur();}
-  }
-});
-
-// ============================================================================
-// SIDEBAR - Mobile sidebar toggle and collapsible sections
-// ============================================================================
-
-// Mobile sidebar
-(() => {
-  const sidebar = document.getElementById('sidebar');
-  const sidebarToggle = document.getElementById('sidebarToggle');
-  const mobileOverlay = document.getElementById('mobileOverlay');
-    
-  if (!sidebarToggle || !mobileOverlay) {return;}
-
-  let lastFocusedElement = null;
-
-  const getFocusableElements = (container) => {
-    return container.querySelectorAll('a[href], button, input, textarea, select, [tabindex]:not([tabindex="-1"])');
-  };
-
-  const openSidebar = () => {
-    lastFocusedElement = document.activeElement;
-    sidebar.classList.add('open');
-    mobileOverlay.classList.add('open');
-    sidebar.setAttribute('aria-hidden', 'false');
-    sidebarToggle.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
-
-    const focusables = getFocusableElements(sidebar);
-    if (focusables.length) {focusables[0].focus();}
-  };
-
-  const closeSidebar = () => {
-    sidebar.classList.remove('open');
-    mobileOverlay.classList.remove('open');
-    sidebar.setAttribute('aria-hidden', 'true');
-    sidebarToggle.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-    if (lastFocusedElement) {lastFocusedElement.focus();}
-  };
-
-  const toggleSidebar = () => {
-    if (sidebar.classList.contains('open')) {closeSidebar();}
-    else {openSidebar();}
-  };
-
-  sidebarToggle.addEventListener('click', toggleSidebar);
-  mobileOverlay.addEventListener('click', closeSidebar);
-
-  document.addEventListener('keydown', (e) => {
-    if (!sidebar.classList.contains('open')) {return;}
-    if (e.key === 'Escape') {
-      closeSidebar();
-      return;
-    }
-
-    if (e.key === 'Tab') {
-      const focusables = Array.from(getFocusableElements(sidebar));
-      if (!focusables.length) {return;}
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
-
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    }
-  });
-
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) {
-      sidebar.classList.remove('open');
-      mobileOverlay.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-  });
-})();
-
-// Collapsible sidebar sections
-(() => {
-  const collapsibleButtons = document.querySelectorAll('.nav-section-title.collapsible');
-    
-  if (!collapsibleButtons.length) {return;}
-
-  collapsibleButtons.forEach(button => {
-    button.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-            
-      const section = button.closest('.nav-section');
-      if (!section) {return;}
-
-      const isExpanded = section.classList.contains('expanded');
-      section.classList.toggle('expanded');
-      button.setAttribute('aria-expanded', !isExpanded);
-
-      const sectionTitle = button.textContent.trim();
-      try {
-        const stateKey = `sidebar-section-${sectionTitle}`;
-        localStorage.setItem(stateKey, !isExpanded ? 'open' : 'closed');
-      } catch {
-        // Ignore localStorage errors (intentionally empty)
-      }
-    });
-  });
-
-  // Restore state from localStorage
-  collapsibleButtons.forEach(button => {
-    const sectionTitle = button.textContent.trim();
-    const stateKey = `sidebar-section-${sectionTitle}`;
-        
-    try {
-      const savedState = localStorage.getItem(stateKey);
-            
-      if (savedState) {
-        const section = button.closest('.nav-section');
-        const shouldBeOpen = savedState === 'open';
-        const isCurrentlyOpen = section.classList.contains('expanded');
-
-        if (shouldBeOpen !== isCurrentlyOpen) {
-          section.classList.toggle('expanded', shouldBeOpen);
-          button.setAttribute('aria-expanded', shouldBeOpen);
-        }
-      }
-    } catch {
-      // Ignore localStorage errors (intentionally empty)
-    }
-  });
-})();
-
-// Keyboard shortcut: Ctrl/Cmd + / to toggle sidebar
-document.addEventListener('keydown', (e) => {
-  if ((e.ctrlKey || e.metaKey) && e.key === '/') {
-    e.preventDefault();
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    if (sidebarToggle) {sidebarToggle.click();}
-  }
-});
-
-// ============================================================================
-// THEME - Dark/light mode toggle
-// ============================================================================
-
-(() => {
-  const themeToggle = document.querySelector('.theme-toggle');
-  if (!themeToggle) {return;}
-
-  const getStoredTheme = () => {
-    try {
-      return localStorage.getItem('theme');
-    } catch (_e) {
-      console.warn('localStorage not available:', _e);
-      return null;
-    }
-  };
-    
-  const setStoredTheme = (theme) => {
-    try {
-      localStorage.setItem('theme', theme);
-    } catch (_e) {
-      console.warn('Cannot save theme preference:', _e);
-    }
-  };
-
-  const setTheme = (theme) => {
-    document.documentElement.setAttribute('data-theme', theme);
-    const themeToggleBtn = document.getElementById('themeToggle');
-    if (themeToggleBtn) {
-      themeToggleBtn.setAttribute('data-theme', theme);
-      themeToggleBtn.setAttribute('aria-label', 
-        theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
-      );
-    }
-        
-    updateLogosForTheme(theme);
-    updateHighlightTheme(theme);
-  };
-
-  const updateHighlightTheme = (_theme) => {
-    // Remove external Highlight.js CSS (we use custom styles in styles.css)
-    const existingLinks = document.querySelectorAll('link[href*="highlight.js"]');
-    existingLinks.forEach(link => link.remove());
-        
-    if (typeof hljs !== 'undefined') {
-      const excludedLanguages = ['text', 'plaintext', 'txt'];
-      const languageAliasMap = {
-        markdown: 'html',
-        md: 'html'
-      };
-            
-      document.querySelectorAll('pre code').forEach((block) => {
-        const classList = block.className.split(' ');
-        const langClass = classList.find(cls => cls.startsWith('language-'));
-                
-        if (langClass) {
-          const lang = langClass.replace('language-', '');
-          const normalizedLang = lang.toLowerCase();
-          if (excludedLanguages.includes(normalizedLang)) {
-            block.className = `language-${lang} nohighlight`;
-            return;
-          }
-          const mappedLang = languageAliasMap[normalizedLang] || lang;
-          block.className = `language-${mappedLang}`;
-          if (mappedLang !== lang) {
-            block.classList.add(`language-${lang}`);
-          }
-        } else {
-          block.className = '';
-        }
-                
-        hljs.highlightElement(block);
-      });
-    }
-  };
-
-  const updateLogosForTheme = (theme) => {
-    const logosWithData = document.querySelectorAll('[data-logo-light], [data-logo-dark]');
-    logosWithData.forEach(logo => {
-      const lightSrc = logo.getAttribute('data-logo-light');
-      const darkSrc = logo.getAttribute('data-logo-dark');
-            
-      if (theme === 'dark' && darkSrc) {
-        logo.src = darkSrc;
-      } else if (lightSrc) {
-        logo.src = lightSrc;
-      }
-    });
-        
-    const headerLightLogos = document.querySelectorAll('.logo-light');
-    const headerDarkLogos = document.querySelectorAll('.logo-dark');
-    const footerLightLogos = document.querySelectorAll('.footer-logo-light');
-    const footerDarkLogos = document.querySelectorAll('.footer-logo-dark');
-        
-    if (theme === 'dark') {
-      headerLightLogos.forEach(logo => logo.style.display = 'block');
-      headerDarkLogos.forEach(logo => logo.style.display = 'none');
-      footerLightLogos.forEach(logo => logo.style.display = 'none');
-      footerDarkLogos.forEach(logo => logo.style.display = 'block');
-    } else {
-      headerLightLogos.forEach(logo => logo.style.display = 'none');
-      headerDarkLogos.forEach(logo => logo.style.display = 'block');
-      footerLightLogos.forEach(logo => logo.style.display = 'block');
-      footerDarkLogos.forEach(logo => logo.style.display = 'none');
-    }
-  };
-
-  // Initialize theme
-  const savedTheme = getStoredTheme();
-  let systemTheme = 'light';
-  if (window.matchMedia) {
-    systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  }
-  const currentTheme = savedTheme || systemTheme;
-  setTheme(currentTheme);
-
-  // Toggle theme on button click
-  themeToggle.addEventListener('click', () => {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
-    setStoredTheme(newTheme);
-    showToast(`Switched to ${newTheme} mode`, 'success');
-  });
-
-  // Listen for system theme changes
-  if (window.matchMedia) {
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-      if (!getStoredTheme()) {
-        setTheme(e.matches ? 'dark' : 'light');
-      }
-    });
-  }
-})();
-
-// ============================================================================
-// NAVIGATION - Smooth scroll and active state
-// ============================================================================
-
-// Smooth scroll for internal links
-document.querySelectorAll('a[href^="#"]').forEach(link => {
-  link.addEventListener('click', (e) => {
-    e.preventDefault();
-    const targetId = link.getAttribute('href').substring(1);
-    const targetElement = document.getElementById(targetId);
-        
-    if (targetElement) {
-      const headerHeight = document.querySelector('.header').offsetHeight;
-      const targetPosition = targetElement.offsetTop - headerHeight - CONFIG.UI.SCROLL_OFFSET;
-            
-      window.scrollTo({
-        top: targetPosition,
-        behavior: 'smooth'
-      });
-            
-      history.pushState(null, null, `#${targetId}`);
-    }
-  });
-});
-
-// Active navigation state
-const updateActiveNavigation = () => {
-  const sections = document.querySelectorAll('section[id]');
-  const navItems = document.querySelectorAll('.nav-item[href^="#"]');
-    
-  let currentSection = '';
-    
-  sections.forEach(section => {
-    const rect = section.getBoundingClientRect();
-    const headerHeight = document.querySelector('.header').offsetHeight;
-        
-    if (rect.top <= headerHeight + CONFIG.UI.HEADER_SCROLL_OFFSET && rect.bottom > headerHeight + CONFIG.UI.HEADER_SCROLL_OFFSET) {
-      currentSection = section.id;
-    }
-  });
-
-  navItems.forEach(item => {
-    item.classList.remove('active');
-    if (item.getAttribute('href') === `#${currentSection}`) {
-      item.classList.add('active');
-    }
-  });
-};
-
-updateActiveNavigation();
-window.addEventListener('scroll', debounce(updateActiveNavigation, 100), { passive: true });
-
-// ============================================================================
-// SCROLL TO TOP - Button to scroll back to top
-// ============================================================================
-
-(() => {
-  const scrollToTopBtn = document.getElementById('scrollToTop');
-  if (!scrollToTopBtn) {return;}
-
-  const toggleScrollButton = () => {
-    if (window.pageYOffset > CONFIG.UI.SCROLL_TO_TOP_THRESHOLD) {
-      scrollToTopBtn.classList.add('show');
-    } else {
-      scrollToTopBtn.classList.remove('show');
-    }
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
-
-  window.addEventListener('scroll', toggleScrollButton, { passive: true });
-  scrollToTopBtn.addEventListener('click', scrollToTop);
-
-  scrollToTopBtn.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      scrollToTop();
-    }
-  });
-
-  toggleScrollButton();
-})();
-
-// ============================================================================
-// HEADER DROPDOWNS - Dropdown menus in header navigation
-// ============================================================================
-(function setupHeaderDropdowns() {
-  const headerNav = document.querySelector('.header-nav');
-  const dropdownItems = document.querySelectorAll('.header-nav-item');
-  
-  if (!dropdownItems.length) {return;}
-
-  // Get dropdown trigger mode from config (default: 'hover')
-  // Options: 'hover' | 'click'
-  const triggerMode = headerNav?.getAttribute('data-dropdown-trigger') || 'hover';
-
-  dropdownItems.forEach(item => {
-    const button = item.querySelector('.header-nav-link');
-    const dropdown = item.querySelector('.header-dropdown');
-    
-    if (!button || !dropdown) {return;}
-
-    let closeTimeout = null;
-
-    const openDropdown = () => {
-      if (closeTimeout) {
-        clearTimeout(closeTimeout);
-        closeTimeout = null;
-      }
-      item.classList.add('open');
-      button.setAttribute('aria-expanded', 'true');
-    };
-
-    const closeDropdown = (immediate = false) => {
-      if (immediate) {
-        item.classList.remove('open');
-        button.setAttribute('aria-expanded', 'false');
-      } else {
-        // Delay closing to allow moving mouse to dropdown
-        closeTimeout = setTimeout(() => {
-          item.classList.remove('open');
-          button.setAttribute('aria-expanded', 'false');
-        }, 200);
-      }
-    };
-
-    // Click handler - always enabled for accessibility
-    button.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      if (item.classList.contains('open')) {
-        closeDropdown(true);
-      } else {
-        // Close other dropdowns
-        dropdownItems.forEach(otherItem => {
-          if (otherItem !== item && otherItem.classList.contains('open')) {
-            otherItem.classList.remove('open');
-            const otherButton = otherItem.querySelector('.header-nav-link');
-            if (otherButton) {otherButton.setAttribute('aria-expanded', 'false');}
-          }
-        });
-        openDropdown();
-      }
-    });
-
-    // Hover handlers - only if trigger mode is 'hover'
-    if (triggerMode === 'hover') {
-      item.addEventListener('mouseenter', () => {
-        openDropdown();
-      });
-
-      item.addEventListener('mouseleave', () => {
-        closeDropdown();
-      });
-
-      // Keep open when hovering dropdown content
-      dropdown.addEventListener('mouseenter', () => {
-        if (closeTimeout) {
-          clearTimeout(closeTimeout);
-          closeTimeout = null;
-        }
-      });
-
-      dropdown.addEventListener('mouseleave', () => {
-        closeDropdown();
-      });
-    }
-
-    // Close on Escape key
-    button.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && item.classList.contains('open')) {
-        closeDropdown(true);
-        button.focus();
-      }
-    });
-
-    // Close dropdown when clicking a link inside
-    dropdown.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        closeDropdown(true);
-      });
-    });
-  });
-
-  // Close all dropdowns when clicking outside
-  document.addEventListener('click', (e) => {
-    const clickedOutside = !e.target.closest('.header-nav-item');
-    if (clickedOutside) {
-      dropdownItems.forEach(item => {
-        if (item.classList.contains('open')) {
-          item.classList.remove('open');
-          const button = item.querySelector('.header-nav-link');
-          if (button) {button.setAttribute('aria-expanded', 'false');}
-        }
-      });
-    }
-  });
-})();
-
-// LANGUAGE SWITCHER - Dropdown for language selection
-(function setupLanguageSwitcher() {
-  const switcher = document.querySelector('.language-switcher');
-  
-  if (!switcher) {return;} // No language switcher present
-  
-  const button = switcher.querySelector('.dropdown-toggle');
-  const menu = switcher.querySelector('.dropdown-menu');
-  
-  if (!button || !menu) {return;}
-  
-  // Toggle dropdown on click
-  button.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const isOpen = button.getAttribute('aria-expanded') === 'true';
-    
-    if (isOpen) {
-      // Close
-      button.setAttribute('aria-expanded', 'false');
-      menu.setAttribute('hidden', '');
-    } else {
-      // Open
-      button.setAttribute('aria-expanded', 'true');
-      menu.removeAttribute('hidden');
-      
-      // Focus first item
-      const firstItem = menu.querySelector('.dropdown-item');
-      if (firstItem) {
-        setTimeout(() => firstItem.focus(), 100);
-      }
-    }
-  });
-  
-  // Close on escape
-  menu.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      button.setAttribute('aria-expanded', 'false');
-      menu.setAttribute('hidden', '');
-      button.focus();
-    }
-  });
-  
-  // Keyboard navigation
-  menu.addEventListener('keydown', (e) => {
-    const items = Array.from(menu.querySelectorAll('.dropdown-item'));
-    const currentIndex = items.indexOf(document.activeElement);
-    
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      const nextIndex = (currentIndex + 1) % items.length;
-      items[nextIndex].focus();
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      const prevIndex = (currentIndex - 1 + items.length) % items.length;
-      items[prevIndex].focus();
-    }
-  });
-  
-  // Close when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!switcher.contains(e.target)) {
-      button.setAttribute('aria-expanded', 'false');
-      menu.setAttribute('hidden', '');
-    }
-  });
-  
-  // Store language preference when switching
-  menu.querySelectorAll('.dropdown-item').forEach(item => {
-    item.addEventListener('click', (_e) => {
-      const locale = item.getAttribute('lang');
-      if (locale) {
-        try {
-          localStorage.setItem('chiron_locale', locale);
-        } catch (_err) {
-          // Ignore localStorage errors
-        }
-      }
-    });
-  });
-})();
-
-
-
-
 // Component: code-blocks
 /**
- * Code Blocks Component - Syntax highlighting and copy button
+ * Code Blocks Component - Copy button only
  * Detects: pre code, .code-copy
  * 
  * @component code-blocks
  */
-
-// Initialize highlight.js
-(() => {
-  if (typeof hljs === 'undefined') {return;}
-    
-  hljs.configure({
-    ignoreUnescapedHTML: true,
-    languages: ['javascript', 'python', 'java', 'html', 'css', 'bash', 'sh', 'shell', 'json', 'yaml', 'yml', 'xml', 'sql', 'typescript', 'ts', 'php', 'ruby', 'go', 'rust', 'c', 'cpp', 'csharp', 'cs', 'plaintext', 'text']
-  });
-    
-  hljs.registerAliases('sh', {languageName: 'bash'});
-  hljs.registerAliases('shell', {languageName: 'bash'});
-  hljs.registerAliases('yml', {languageName: 'yaml'});
-  hljs.registerAliases('ts', {languageName: 'typescript'});
-  hljs.registerAliases('cs', {languageName: 'csharp'});
-  hljs.registerAliases(['markdown', 'md'], {languageName: 'html'});
-    
-  const excludedLanguages = ['text', 'plaintext', 'txt'];
-    
-  document.querySelectorAll('pre code').forEach((block) => {
-    const classList = block.className.split(' ');
-    const langClass = classList.find(cls => cls.startsWith('language-'));
-        
-    if (langClass) {
-      const lang = langClass.replace('language-', '');
-      const normalizedLang = lang.toLowerCase();
-      if (excludedLanguages.includes(normalizedLang)) {
-        block.className = `language-${lang} nohighlight`;
-        return;
-      }
-      const mappedLang = hljs.getLanguage(lang) ? lang : hljs.getLanguage(normalizedLang) ? normalizedLang : (normalizedLang === 'markdown' || normalizedLang === 'md') ? 'html' : lang;
-      block.className = `language-${mappedLang}`;
-      if (mappedLang !== lang) {
-        block.classList.add(`language-${lang}`);
-      }
-    }
-        
-    hljs.highlightElement(block);
-  });
-})();
 
 // Copy button functionality
 document.addEventListener('click', async (e) => {
@@ -2252,22 +1584,36 @@ document.addEventListener('click', async (e) => {
   if (!code) {return;}
 
   const text = code.textContent;
+  const originalHTML = button.innerHTML;
+  const originalLabel = button.getAttribute('aria-label');
 
   try {
     await navigator.clipboard.writeText(text);
-    showToast(t('code_copy_success', 'Code copied to clipboard!'), 'success');
-        
-    const originalHTML = button.innerHTML;
+    
+    // Success state - checkmark icon
     button.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
     button.classList.add('copied');
+    button.setAttribute('aria-label', t('code_copied', 'Code copied'));
         
     setTimeout(() => {
       button.innerHTML = originalHTML;
       button.classList.remove('copied');
+      button.setAttribute('aria-label', originalLabel || t('code_copy', 'Copy code'));
     }, 2000);
-  } catch (err) {
-    console.error('Failed to copy code:', err);
-    showToast(t('code_copy_failed', 'Failed to copy code'), 'error');
+  } catch (_err) {
+    console.error('Failed to copy code to clipboard');
+    
+    // Error state: X icon in lighter red with clear visual feedback
+    button.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>';
+    button.classList.add('copy-error');
+    button.setAttribute('aria-label', t('code_copy_failed', 'Copy failed'));
+    
+    // Reset after 3 seconds (longer for error visibility)
+    setTimeout(() => {
+      button.innerHTML = originalHTML;
+      button.classList.remove('copy-error');
+      button.setAttribute('aria-label', originalLabel || t('code_copy', 'Copy code'));
+    }, 3000);
   }
 });
 
@@ -2451,8 +1797,7 @@ document.addEventListener('click', async (e) => {
   });
 })();
 
-    </script>
-<script src="./custom.js"></script>
+</script>
 
 
     <!-- External Scripts -->

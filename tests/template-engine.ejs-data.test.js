@@ -66,7 +66,6 @@ describe('TemplateEngine - buildEjsData()', () => {
     
     // Mock render methods to return simple strings
     jest.spyOn(engine, 'renderSidebar').mockResolvedValue('<nav>sidebar</nav>');
-    jest.spyOn(engine, 'renderHeaderNav').mockReturnValue('<a>Home</a>');
     jest.spyOn(engine, 'renderMobileHeaderNav').mockReturnValue('<a>Mobile Home</a>');
     jest.spyOn(engine, 'renderHeaderActions').mockReturnValue('<div>actions</div>');
     jest.spyOn(engine, 'renderBreadcrumb').mockReturnValue('<nav>breadcrumb</nav>');
@@ -78,7 +77,6 @@ describe('TemplateEngine - buildEjsData()', () => {
     // renderAnalytics() removed - now handled by google-analytics plugin
     jest.spyOn(engine, 'renderExternalScripts').mockReturnValue('<script>external</script>');
     jest.spyOn(engine, 'renderExternalStyles').mockReturnValue('<link>external</link>');
-    jest.spyOn(engine, 'renderFooterLinks').mockReturnValue('<a>Privacy</a>');
   });
   
   afterEach(() => {
@@ -105,10 +103,9 @@ describe('TemplateEngine - buildEjsData()', () => {
     
     // Verify structure
     expect(ejsData).toHaveProperty('page');
-    expect(ejsData).toHaveProperty('navigation');
+    expect(ejsData).toHaveProperty('sidebar');
     expect(ejsData).toHaveProperty('pathToRoot');
-    expect(ejsData).toHaveProperty('headerNav');
-    expect(ejsData).toHaveProperty('mobileHeaderNav');
+    expect(ejsData).toHaveProperty('mobileNav');
     expect(ejsData).toHaveProperty('metaTags');
     expect(ejsData).toHaveProperty('structuredData');
     expect(ejsData).toHaveProperty('githubUrl');
@@ -162,7 +159,6 @@ describe('TemplateEngine - buildEjsData()', () => {
     
     // Re-mock render methods
     jest.spyOn(engine, 'renderSidebar').mockResolvedValue('');
-    jest.spyOn(engine, 'renderHeaderNav').mockReturnValue('');
     jest.spyOn(engine, 'renderMobileHeaderNav').mockReturnValue('');
     jest.spyOn(engine, 'renderHeaderActions').mockReturnValue('');
     jest.spyOn(engine, 'renderBreadcrumb').mockReturnValue('');
@@ -174,7 +170,6 @@ describe('TemplateEngine - buildEjsData()', () => {
     // renderAnalytics() removed - now handled by google-analytics plugin
     jest.spyOn(engine, 'renderExternalScripts').mockReturnValue('');
     jest.spyOn(engine, 'renderExternalStyles').mockReturnValue('');
-    jest.spyOn(engine, 'renderFooterLinks').mockReturnValue('');
     
     const context = {
       page: { filename: 'test.md', content: '<p>Test</p>' }
@@ -189,7 +184,6 @@ describe('TemplateEngine - buildEjsData()', () => {
     mockConfig.navigation.show_project_name = true;
     engine = new TemplateEngine(mockConfig, '/test/root');
     jest.spyOn(engine, 'renderSidebar').mockResolvedValue('');
-    jest.spyOn(engine, 'renderHeaderNav').mockReturnValue('');
     jest.spyOn(engine, 'renderMobileHeaderNav').mockReturnValue('');
     jest.spyOn(engine, 'renderHeaderActions').mockReturnValue('');
     jest.spyOn(engine, 'renderBreadcrumb').mockReturnValue('');
@@ -201,7 +195,6 @@ describe('TemplateEngine - buildEjsData()', () => {
     // renderAnalytics() removed - now handled by google-analytics plugin
     jest.spyOn(engine, 'renderExternalScripts').mockReturnValue('');
     jest.spyOn(engine, 'renderExternalStyles').mockReturnValue('');
-    jest.spyOn(engine, 'renderFooterLinks').mockReturnValue('');
     
     const context = {
       page: { filename: 'test.md', content: '<p>Test</p>' }
@@ -217,7 +210,6 @@ describe('TemplateEngine - buildEjsData()', () => {
     mockConfig.navigation.show_project_name = false;
     engine = new TemplateEngine(mockConfig, '/test/root');
     jest.spyOn(engine, 'renderSidebar').mockResolvedValue('');
-    jest.spyOn(engine, 'renderHeaderNav').mockReturnValue('');
     jest.spyOn(engine, 'renderMobileHeaderNav').mockReturnValue('');
     jest.spyOn(engine, 'renderHeaderActions').mockReturnValue('');
     jest.spyOn(engine, 'renderBreadcrumb').mockReturnValue('');
@@ -229,7 +221,6 @@ describe('TemplateEngine - buildEjsData()', () => {
     // renderAnalytics() removed - now handled by google-analytics plugin
     jest.spyOn(engine, 'renderExternalScripts').mockReturnValue('');
     jest.spyOn(engine, 'renderExternalStyles').mockReturnValue('');
-    jest.spyOn(engine, 'renderFooterLinks').mockReturnValue('');
     
     const context = {
       page: { filename: 'test.md', content: '<p>Test</p>' }
@@ -250,7 +241,6 @@ describe('TemplateEngine - buildEjsData()', () => {
     };
     
     jest.spyOn(engine, 'renderSidebar').mockResolvedValue('');
-    jest.spyOn(engine, 'renderHeaderNav').mockReturnValue('');
     jest.spyOn(engine, 'renderMobileHeaderNav').mockReturnValue('');
     jest.spyOn(engine, 'renderHeaderActions').mockReturnValue('');
     jest.spyOn(engine, 'renderBreadcrumb').mockReturnValue('');
@@ -262,7 +252,6 @@ describe('TemplateEngine - buildEjsData()', () => {
     // renderAnalytics() removed - now handled by google-analytics plugin
     jest.spyOn(engine, 'renderExternalScripts').mockReturnValue('');
     jest.spyOn(engine, 'renderExternalStyles').mockReturnValue('');
-    jest.spyOn(engine, 'renderFooterLinks').mockReturnValue('');
     
     const ejsData1 = await engine.buildEjsData(contextWithCustom, './', 'en', {}, '');
     const ejsData2 = await engine.buildEjsData(contextWithoutCustom, './', 'en', {}, '');
@@ -286,7 +275,6 @@ describe('TemplateEngine - buildEjsData()', () => {
     mockConfig.footer.copyright_holder = 'Test & Company <script>';
     engine = new TemplateEngine(mockConfig, '/test/root');
     jest.spyOn(engine, 'renderSidebar').mockResolvedValue('');
-    jest.spyOn(engine, 'renderHeaderNav').mockReturnValue('');
     jest.spyOn(engine, 'renderMobileHeaderNav').mockReturnValue('');
     jest.spyOn(engine, 'renderHeaderActions').mockReturnValue('');
     jest.spyOn(engine, 'renderBreadcrumb').mockReturnValue('');
@@ -298,7 +286,6 @@ describe('TemplateEngine - buildEjsData()', () => {
     // renderAnalytics() removed - now handled by google-analytics plugin
     jest.spyOn(engine, 'renderExternalScripts').mockReturnValue('');
     jest.spyOn(engine, 'renderExternalStyles').mockReturnValue('');
-    jest.spyOn(engine, 'renderFooterLinks').mockReturnValue('');
     
     const context = {
       page: { filename: 'test.md', content: '<p>Test</p>' }
@@ -330,7 +317,6 @@ describe('TemplateEngine - buildEjsData()', () => {
     await engine.buildEjsData(context, pathToRoot, 'en', i18nStrings, '');
     
     expect(engine.renderSidebar).toHaveBeenCalledWith(context, pathToRoot);
-    expect(engine.renderHeaderNav).toHaveBeenCalledWith(context, pathToRoot);
     expect(engine.renderMobileHeaderNav).toHaveBeenCalledWith(context, pathToRoot);
     expect(engine.renderHeaderActions).toHaveBeenCalledWith(context, pathToRoot, i18nStrings);
     expect(engine.renderBreadcrumb).toHaveBeenCalledWith(context, pathToRoot);
@@ -340,6 +326,5 @@ describe('TemplateEngine - buildEjsData()', () => {
     expect(engine.renderStructuredData).toHaveBeenCalledWith(context);
     expect(engine.renderExternalScripts).toHaveBeenCalledWith(context.page);
     expect(engine.renderExternalStyles).toHaveBeenCalledWith(context.page);
-    expect(engine.renderFooterLinks).toHaveBeenCalledWith(pathToRoot);
   });
 });

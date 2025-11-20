@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="<%= page.lang || 'en' %>">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Helper Test - <%= config.project.name %></title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+    .test-section {
+      margin: 3rem 0;
+      padding: 2rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+    }
+    .test-section h2 {
+      margin-top: 0;
+      color: #1f2937;
+      border-bottom: 2px solid #3b82f6;
+      padding-bottom: 0.5rem;
+    }
+    .code-example {
+      background: #f3f4f6;
+      padding: 1rem;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.875rem;
+      margin: 1rem 0;
+      overflow-x: auto;
+    }
+    .result {
+      background: #fff;
+      padding: 1.5rem;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      margin-top: 1rem;
+    }
+    
+    /* Menu Styles */
+    nav {
+      background: #f9fafb;
+      padding: 1rem;
+      border-radius: 4px;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    nav li {
+      margin: 0;
+    }
+    nav a {
+      color: #3b82f6;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    nav a:hover {
+      background: #dbeafe;
+    }
+    nav a[aria-current="page"] {
+      background: #3b82f6;
+      color: white;
+      font-weight: bold;
+    }
+    
+    .social-nav ul {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .social-link {
+      width: 40px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #1f2937;
+      color: white;
+      border-radius: 50%;
+      text-decoration: none;
+    }
+    .social-link:hover {
+      background: #3b82f6;
+    }
+    .menu-icon {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+    
+    .footer-menu {
+      background: #1f2937;
+      color: white;
+      padding: 2rem;
+      border-radius: 8px;
+    }
+    .footer-menu h3 {
+      color: white;
+      margin-top: 0;
+    }
+    .footer-menu ul {
+      list-style: none;
+      padding: 0;
+    }
+    .footer-menu a {
+      color: #9ca3af;
+      text-decoration: none;
+      display: block;
+      padding: 0.25rem 0;
+    }
+    .footer-menu a:hover {
+      color: white;
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      background: #10b981;
+      color: white;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      margin-left: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧪 Menu Helper Test Page</h1>
+  <p>Testing the <code>menu()</code> helper with various configurations and accessibility features.</p>
+
+  <!-- Test 1: Basic Menu -->
+  <div class="test-section">
+    <h2>1. Basic Menu (Default Settings)</h2>
+    <div class="code-example">
+&lt;%- menu('social_links') %&gt;
+    </div>
+    <div class="result">
+      <%- menu('social_links') %>
+    </div>
+    <p><strong>✅ ARIA Check:</strong> Inspect with DevTools - should have <code>aria-label</code> and <code>role="navigation"</code></p>
+  </div>
+
+  <!-- Test 2: Custom ARIA Label -->
+  <div class="test-section">
+    <h2>2. Custom ARIA Label</h2>
+    <div class="code-example">
+&lt;%- menu('social_links', {
+  aria_label: 'Follow us on social media',
+  container_class: 'social-nav'
+}) %&gt;
+    </div>
+    <div class="result">
+      <%- menu('social_links', {
+        aria_label: 'Follow us on social media',
+        container_class: 'social-nav'
+      }) %>
+    </div>
+  </div>
+
+  <!-- Test 3: With Icons -->
+  <div class="test-section">
+    <h2>3. Menu with Icons (Before Text)</h2>
+    <div class="code-example">
+&lt;%- menu('social_links', {
+  show_icons: true,
+  icon_position: 'before',
+  aria_label: 'Social media links'
+}) %&gt;
+    </div>
+    <div class="result">
+      <%- menu('social_links', {
+        show_icons: true,
+        icon_position: 'before',
+        aria_label: 'Social media links'
+      }) %>
+    </div>
+    <p><strong>✅ ARIA Check:</strong> Icons should have <code>aria-hidden="true"</code> (decorative)</p>
+  </div>
+
+  <!-- Test 4: Icons After Text -->
+  <div class="test-section">
+    <h2>4. Icons After Text</h2>
+    <div class="code-example">
+&lt;%- menu('social_links', {
+  show_icons: true,
+  icon_position: 'after',
+  aria_label: 'Connect with us'
+}) %&gt;
+    </div>
+    <div class="result">
+      <%- menu('social_links', {
+        show_icons: true,
+        icon_position: 'after',
+        aria_label: 'Connect with us'
+      }) %>
+    </div>
+  </div>
+
+  <!-- Test 5: Custom CSS Classes (WordPress-style) -->
+  <div class="test-section">
+    <h2>5. Full WordPress-style Customization</h2>
+    <div class="code-example">
+&lt;%- menu('footer_products', {
+  container: 'div',
+  container_class: 'footer-menu',
+  menu_class: 'product-list',
+  item_class: 'product-item',
+  link_class: 'product-link',
+  aria_label: 'Product Navigation'
+}) %&gt;
+    </div>
+    <div class="result">
+      <%- menu('footer_products', {
+        container: 'div',
+        container_class: 'footer-menu',
+        menu_class: 'product-list',
+        item_class: 'product-item',
+        link_class: 'product-link',
+        aria_label: 'Product Navigation'
+      }) %>
+    </div>
+    <p><strong>✅ External Link Check:</strong> External links should have <code>target="_blank"</code>, <code>rel="noopener noreferrer"</code>, and screen reader notice</p>
+  </div>
+
+  <!-- Test 6: Container False (No Wrapper) -->
+  <div class="test-section">
+    <h2>6. No Container (Just &lt;ul&gt;)</h2>
+    <div class="code-example">
+&lt;%- menu('simple_menu', {
+  container: false,
+  menu_class: 'inline-menu'
+}) %&gt;
+    </div>
+    <div class="result">
+      <%- menu('simple_menu', {
+        container: false,
+        menu_class: 'inline-menu'
+      }) %>
+    </div>
+  </div>
+
+  <!-- Test 7: Before/After Wrappers -->
+  <div class="test-section">
+    <h2>7. Before/After Content Wrapping</h2>
+    <div class="code-example">
+&lt;%- menu('simple_menu', {
+  before: '&lt;div style="background: #fef3c7; padding: 1rem; border-radius: 4px;"&gt;&lt;h3&gt;Quick Links&lt;/h3&gt;',
+  after: '&lt;/div&gt;',
+  aria_label: 'Quick navigation'
+}) %&gt;
+    </div>
+    <div class="result">
+      <%- menu('simple_menu', {
+        before: '<div style="background: #fef3c7; padding: 1rem; border-radius: 4px;"><h3>Quick Links</h3>',
+        after: '</div>',
+        aria_label: 'Quick navigation'
+      }) %>
+    </div>
+  </div>
+
+  <!-- Test 8: Link Before/After -->
+  <div class="test-section">
+    <h2>8. Link Text Wrapping</h2>
+    <div class="code-example">
+&lt;%- menu('simple_menu', {
+  link_before: '&lt;span style="font-weight: bold;"&gt;→ ',
+  link_after: '&lt;/span&gt;',
+  aria_label: 'Styled links'
+}) %&gt;
+    </div>
+    <div class="result">
+      <%- menu('simple_menu', {
+        link_before: '<span style="font-weight: bold;">→ ',
+        link_after: '</span>',
+        aria_label: 'Styled links'
+      }) %>
+    </div>
+  </div>
+
+  <!-- Test 9: Fallback for Missing Menu -->
+  <div class="test-section">
+    <h2>9. Fallback for Non-Existent Menu</h2>
+    <div class="code-example">
+&lt;%- menu('non_existent_menu', {
+  fallback: '&lt;div class="alert"&gt;⚠️ Menu not found&lt;/div&gt;'
+}) %&gt;
+    </div>
+    <div class="result">
+      <%- menu('non_existent_menu', {
+        fallback: '<div style="background: #fef2f2; color: #991b1b; padding: 1rem; border-radius: 4px;">⚠️ Menu not found</div>'
+      }) %>
+    </div>
+  </div>
+
+  <!-- Test 10: Current Page Detection -->
+  <div class="test-section">
+    <h2>10. Current Page Detection (aria-current)</h2>
+    <div class="code-example">
+&lt;%- menu('simple_menu', {
+  aria_label: 'Main navigation'
+}) %&gt;
+    </div>
+    <div class="result">
+      <%- menu('simple_menu', {
+        aria_label: 'Main navigation'
+      }) %>
+    </div>
+    <p><strong>Note:</strong> If current page URL matches a menu link, it will have <code>aria-current="page"</code> and styled differently.</p>
+  </div>
+
+  <!-- Accessibility Summary -->
+  <div class="test-section" style="background: #f0fdf4; border-color: #10b981;">
+    <h2>♿ Accessibility Features (WCAG 2.1 AA)</h2>
+    <ul>
+      <li>✅ <code>&lt;nav&gt;</code> with <code>aria-label</code> or <code>aria-labelledby</code> (REQUIRED)</li>
+      <li>✅ <code>role="navigation"</code> explicit for clarity</li>
+      <li>✅ <code>aria-hidden="true"</code> on decorative icons</li>
+      <li>✅ <code>aria-current="page"</code> on active links</li>
+      <li>✅ <code>rel="noopener noreferrer"</code> on external links</li>
+      <li>✅ <code>target="_blank"</code> with screen reader notice</li>
+      <li>✅ Semantic HTML: <code>&lt;nav&gt;</code>, <code>&lt;ul&gt;</code>, <code>&lt;li&gt;</code>, <code>&lt;a&gt;</code></li>
+      <li>✅ Keyboard navigation support</li>
+      <li>✅ XSS protection (all labels escaped)</li>
+    </ul>
+  </div>
+
+  <!-- Icon Sprite (required for icons to work) -->
+  <svg style="display: none;">
+    <symbol id="icon-github" viewBox="0 0 24 24">
+      <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+    </symbol>
+    <symbol id="icon-twitter" viewBox="0 0 24 24">
+      <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+    </symbol>
+  </svg>
+</body>
+</html>

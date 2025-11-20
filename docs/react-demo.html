@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+
 <!-- Anti-flash script - must run before CSS loads -->
 <script>
 (function() {
@@ -18,6 +19,7 @@
   }
 })();
 </script>
+
 
 <title>Interactive API Demo</title>
 
@@ -62,7 +64,6 @@
 <!-- Stylesheets -->
 <link rel="stylesheet" href="./fonts.css">
 <link rel="stylesheet" href="./styles.css?v=20251104-v1">
-<link rel="stylesheet" href="./custom.css">
 
 <!-- Syntax Highlighting - Custom theme in styles.css -->
 
@@ -540,66 +541,120 @@
     <div class="header-container">
         <div class="header-left">
             <!-- 
-                Flexible Logo/Name Link:
-                - logoImages: Shows logo images (light + dark) if configured
-                - projectNameSpan: Shows project name if configured
-                
-                Supports all combinations:
-                1. Logo + Name (default)
-                2. Logo only (omit project.name in config)
-                3. Name only (omit branding.logo paths in config)
-                4. Neither (edge case, link will be empty but functional)
-            -->
-            <a href="https://github.com/agilira/chiron" class="logo-link" target="_blank" rel="noopener">
-                <img src="./assets/logo-black.png" alt="Chiron Logo" class="logo-img logo-light" width="32" height="32" loading="eager">
+    Flexible Logo/Name Link:
+    - logoImages: Shows logo images (light + dark) if configured
+    - projectNameSpan: Shows project name if configured
+    
+    Supports all combinations:
+    1. Logo + Name (default)
+    2. Logo only (omit project.name in config)
+    3. Name only (omit branding.logo paths in config)
+    4. Neither (edge case, link will be empty but functional)
+-->
+<a href="https://github.com/agilira/chiron" class="logo-link" target="_blank" rel="noopener">
+    <img src="./assets/logo-black.png" alt="Chiron Logo" class="logo-img logo-light" width="32" height="32" loading="eager">
     <img src="./assets/logo-white.png" alt="Chiron Logo" class="logo-img logo-dark" width="32" height="32" loading="eager">
-                
-            </a>
-            <nav class="header-nav" aria-label=&#34;Main navigation&#34; data-dropdown-trigger="hover">
-                <a href="./index.html">Home</a>
-                    <div class="header-nav-item">
-                      <button class="header-nav-link" aria-expanded="false" aria-haspopup="true">
-                        Docs
-                        <svg class="dropdown-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                          <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                      </button>
-                      <div class="header-dropdown">
-                        <a href="./showcase.html">Getting Started</a>
-                      <a href="./custom-template-test.html">Templates</a>
-                      <div class="header-dropdown-divider"></div>
-                      <a href="./external-scripts-demo.html">External Scripts</a>
-                      <a href="./forms-demo.html">Forms</a>
-                      </div>
-                    </div>
-                    <a href="./react-demo.html">React Demo</a>
-            </nav>
+    
+</a>
+
+            <nav aria-label="Main navigation" role="navigation">
+  <ul class="header-nav" data-dropdown-trigger="click">
+    <li class="header-nav-item"><a href="/" class="header-nav-link">Home</a></li>
+    <li class="header-nav-item">
+      <button class="header-nav-link" aria-haspopup="true" aria-expanded="false">Docs <svg class="dropdown-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <ul class="header-dropdown">
+        <li class="header-nav-item"><a href="/showcase.html" class="header-dropdown-link">Getting Started</a></li>
+    <li class="header-nav-item"><a href="/custom-template-test.html" class="header-dropdown-link">Templates</a></li>
+    <li class="header-nav-item menu-divider"><hr /></li>
+    <li class="header-nav-item"><a href="/external-scripts-demo.html" class="header-dropdown-link">External Scripts</a></li>
+    <li class="header-nav-item"><a href="/forms-demo.html" class="header-dropdown-link">Forms</a></li>
+      </ul>
+    </li>
+    <li class="header-nav-item"><a href="/react-demo.html" class="header-nav-link">React Demo</a></li>
+  </ul>
+</nav>
         </div>
         <div class="header-right">
             <div class="header-actions">
-                <button type="button" class="header-action-btn" id="searchToggle" aria-label="Open search">
-                        <svg width="20" height="20" aria-hidden="true">
-                            <use href="#icon-search"></use>
-                        </svg>
-                    </button>
-                    <a href="https://github.com/agilira/chiron" class="header-action-btn" target="_blank" rel="noopener" aria-label="View repository on GitHub">
-                        <svg width="20" height="20" aria-hidden="true">
-                            <use href="#icon-github"></use>
-                        </svg>
-                    </a>
-                    <button type="button" class="header-action-btn theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-                        <svg width="20" height="20" aria-hidden="true" class="theme-icon-light">
-                            <use href="#icon-sun"></use>
-                        </svg>
-                        <svg width="20" height="20" aria-hidden="true" class="theme-icon-dark" style="display: none;">
-                            <use href="#icon-moon"></use>
-                        </svg>
-                    </button>
-                    <button type="button" class="header-action-btn mobile-only" id="sidebarToggle" aria-label="Toggle navigation menu">
-                        <svg width="20" height="20" aria-hidden="true">
-                            <use href="#icon-menu"></use>
-                        </svg>
-                    </button>
+                
+
+
+
+
+    
+        
+
+        
+            <button type="button" class="header-action-btn" id="searchToggle" aria-label="Search" >
+                
+                    <svg width="20" height="20" aria-hidden="true">
+                        <use href="#icon-search"></use>
+                    </svg>
+                
+            </button>
+        
+    
+        
+
+        
+            <a href="https://github.com/agilira/chiron" class="header-action-btn" aria-label="GitHub" rel=&#34;noopener&#34;>
+                
+                    <svg width="20" height="20" aria-hidden="true">
+                        <use href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+
+        
+            <button type="button" class="header-action-btn theme-toggle" id="themeToggle" aria-label="Theme" >
+                
+                    
+                    <svg width="20" height="20" aria-hidden="true" class="theme-icon-light">
+                        <use href="#icon-sun"></use>
+                    </svg>
+                    <svg width="20" height="20" aria-hidden="true" class="theme-icon-dark" style="display: none;">
+                        <use href="#icon-moon"></use>
+                    </svg>
+                
+            </button>
+        
+    
+        
+
+        
+            <a href="./login" class="header-action-btn btn-login hide-on-mobile" aria-label="Login" >
+                
+                    <svg width="20" height="20" aria-hidden="true">
+                        <use href="#icon-user"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+
+        
+            <a href="https://github.com/sponsors" class="header-action-btn btn-donate" aria-label="Donate" rel=&#34;noopener noreferrer&#34;>
+                
+                    <svg width="20" height="20" aria-hidden="true">
+                        <use href="#icon-heart"></use>
+                    </svg>
+                
+            </a>
+        
+    
+
+
+
+<button type="button" class="header-action-btn mobile-only" id="sidebarToggle" aria-label=&#34;aria_sidebar_toggle&#34;>
+    <svg width="20" height="20" aria-hidden="true">
+        <use href="#icon-menu"></use>
+    </svg>
+</button>
+
             </div>
         </div>
     </div>
@@ -624,7 +679,7 @@
                       <ul class="nav-list">
                         <li><a href="./showcase.html" class="nav-item">Getting Started</a></li>
                       <li><a href="./custom-template-test.html" class="nav-item">Templates</a></li>
-                      <li><a href="#" class="nav-item">Untitled</a></li>
+                      <li class="menu-divider"><hr /></li>
                       <li><a href="./external-scripts-demo.html" class="nav-item">External Scripts</a></li>
                       <li><a href="./forms-demo.html" class="nav-item">Forms</a></li>
                       </ul>
@@ -693,16 +748,63 @@
         <!-- Main Content -->
         <main class="main-content" id="main-content" role="main">
             <div class="content-container">
-                <nav class="breadcrumb" aria-label="Breadcrumb">
-                    <ol class="breadcrumb-list">
-                        <li class="breadcrumb-item breadcrumb-company"><a href="https://github.com/agilira" target="_blank" rel="noopener noreferrer">AGILira</a></li>
-                        <li class="breadcrumb-separator">/</li>
-                        <li class="breadcrumb-item breadcrumb-project"><a href="https://github.com/agilira/chiron" target="_blank" rel="noopener noreferrer">Chiron</a></li>
-                        <li class="breadcrumb-separator">/</li>
-                        <li class="breadcrumb-item breadcrumb-home"><a href="./index.html">Documentation</a></li>
-                        <li class="breadcrumb-separator">/</li><li class="breadcrumb-item current" aria-current="page">Interactive API Demo</li>
-                    </ol>
-                </nav>
+                
+<nav class="breadcrumb" aria-label="Breadcrumb">
+    <ol class="breadcrumb-list">
+        
+            
+            
+            
+                
+                <li class="breadcrumb-item breadcrumb-company">
+                    <a href="https://github.com/agilira" target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;>AGILira</a>
+                </li>
+            
+
+            
+                <li class="breadcrumb-separator" aria-hidden="true">/</li>
+            
+        
+            
+            
+            
+                
+                <li class="breadcrumb-item breadcrumb-project">
+                    <a href="https://github.com/agilira/chiron" target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;>Chiron</a>
+                </li>
+            
+
+            
+                <li class="breadcrumb-separator" aria-hidden="true">/</li>
+            
+        
+            
+            
+            
+                
+                <li class="breadcrumb-item breadcrumb-home">
+                    <a href="./index.html">Documentation</a>
+                </li>
+            
+
+            
+                <li class="breadcrumb-separator" aria-hidden="true">/</li>
+            
+        
+            
+            
+            
+                <li class="breadcrumb-item current" aria-current=&#34;page&#34;>
+                    Interactive API Demo
+                </li>
+            
+
+            
+        
+    </ol>
+</nav>
+
+
 
                 <!-- Page Content -->
                 <div class="content">
@@ -748,17 +850,17 @@
 <hr>
 <h2 id="how-lazy-loading-works-2">How Lazy Loading Works</h2><p>This interactive API explorer is a <strong>real React application</strong> that loads <strong>only when you scroll to it</strong>.</p>
 <h3 id="1-intersection-observer-magic-2">1. Intersection Observer Magic</h3><p>Chiron watches for when the app container enters the viewport:</p>
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript">const observer = new IntersectionObserver((entries) =&gt; {
-  if (entries[0].isIntersecting) {
-    // User scrolled to app - load it now!
-    loadReactAndApp();
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript"><span class="hljs-keyword">const</span> observer = <span class="hljs-keyword">new</span> <span class="hljs-title function_">IntersectionObserver</span>((entries) =&gt; {
+  <span class="hljs-keyword">if</span> (entries[<span class="hljs-number">0</span>].isIntersecting) {
+    <span class="hljs-comment">// User scrolled to app - load it now!</span>
+    <span class="hljs-title function_">loadReactAndApp</span>();
   }
 }, {
-  rootMargin: &#039;200px&#039; // Start loading 200px before visible
-});</code></pre></div><h3 id="2-simple-shortcode-syntax-2">2. Simple Shortcode Syntax</h3><p>In your Markdown, just use the <code>&lt;div    class=&quot;lazy-app-container&quot;    data-lazy-app=&quot;react&quot;   data-script-src=&quot;&quot;   id=&quot;lazy-app-1763323647565&quot;&gt;   &lt;div class=&quot;app-placeholder&quot;&gt;     </code> shortcode:</p>
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-markdown">[lazy-app framework=&quot;react&quot; 
-          src=&quot;assets/my-app.js&quot; 
-          deps=&quot;react,react-dom&quot;]
+  rootMargin: <span class="hljs-string">&#039;200px&#039;</span> <span class="hljs-comment">// Start loading 200px before visible</span>
+});</code></pre></div><h3 id="2-simple-shortcode-syntax-2">2. Simple Shortcode Syntax</h3><p>In your Markdown, just use the <code>&lt;div    class=&quot;lazy-app-container&quot;    data-lazy-app=&quot;react&quot;   data-script-src=&quot;&quot;   id=&quot;lazy-app-1763631298517&quot;&gt;   &lt;div class=&quot;app-placeholder&quot;&gt;     </code> shortcode:</p>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-markdown">[lazy-app framework=<span class="hljs-string">&quot;react&quot;</span> 
+          src=<span class="hljs-string">&quot;assets/my-app.js&quot;</span> 
+          deps=<span class="hljs-string">&quot;react,react-dom&quot;</span>]
   Custom loading placeholder...
   &lt;/div&gt;
 &lt;/div&gt;</code></pre></div><h3 id="3-dynamic-script-loading-2">3. Dynamic Script Loading</h3><p>When the app enters viewport, Chiron:</p>
@@ -822,66 +924,66 @@
 </ul>
 <hr>
 <h2 id="the-code-2">The Code</h2><p>The API explorer uses React hooks:</p>
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript">const { useState } = React;
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript"><span class="hljs-keyword">const</span> { useState } = React;
 
-function APIExplorer() {
-  const [endpoint, setEndpoint] = useState(&#039;getUser&#039;);
-  const [response, setResponse] = useState(null);
-  const [loading, setLoading] = useState(false);
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">APIExplorer</span>() {
+  <span class="hljs-keyword">const</span> [endpoint, setEndpoint] = <span class="hljs-title function_">useState</span>(<span class="hljs-string">&#039;getUser&#039;</span>);
+  <span class="hljs-keyword">const</span> [response, setResponse] = <span class="hljs-title function_">useState</span>(<span class="hljs-literal">null</span>);
+  <span class="hljs-keyword">const</span> [loading, setLoading] = <span class="hljs-title function_">useState</span>(<span class="hljs-literal">false</span>);
 
-  const handleRequest = async () =&gt; {
-    setLoading(true);
-    const data = await fetchAPI(endpoint);
-    setResponse(data);
-    setLoading(false);
+  <span class="hljs-keyword">const</span> handleRequest = <span class="hljs-keyword">async</span> () =&gt; {
+    <span class="hljs-title function_">setLoading</span>(<span class="hljs-literal">true</span>);
+    <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetchAPI</span>(endpoint);
+    <span class="hljs-title function_">setResponse</span>(data);
+    <span class="hljs-title function_">setLoading</span>(<span class="hljs-literal">false</span>);
   };
 
-  return /* JSX */;
+  <span class="hljs-keyword">return</span> <span class="hljs-comment">/* JSX */</span>;
 }
 
-// Initialize on lazy-app-loaded event
-document.addEventListener(&#039;lazy-app-loaded&#039;, (e) =&gt; {
-  if (e.detail.appId === &#039;react-api-root&#039;) {
-    const root = ReactDOM.createRoot(e.target);
-    root.render(React.createElement(APIExplorer));
+<span class="hljs-comment">// Initialize on lazy-app-loaded event</span>
+document.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#039;lazy-app-loaded&#039;</span>, (e) =&gt; {
+  <span class="hljs-keyword">if</span> (e.detail.appId === <span class="hljs-string">&#039;react-api-root&#039;</span>) {
+    <span class="hljs-keyword">const</span> root = ReactDOM.<span class="hljs-title function_">createRoot</span>(e.target);
+    root.<span class="hljs-title function_">render</span>(React.<span class="hljs-title function_">createElement</span>(APIExplorer));
   }
 });</code></pre></div><hr>
 <h2 id="try-different-frameworks-2">Try Different Frameworks</h2><h3 id="react-this-page-2">React (This Page)</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-markdown">&lt;div 
-  class=&quot;lazy-app-container&quot; 
-  data-lazy-app=&quot;react&quot;
-  data-script-src=&quot;assets/react-app.js&quot; data-dependencies=&quot;react,react-dom&quot;
-  id=&quot;lazy-app-1763323647565&quot;&gt;
-  &lt;div class=&quot;app-placeholder&quot;&gt;
+  <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;lazy-app-container&quot;</span> 
+  data-lazy-app=<span class="hljs-string">&quot;react&quot;</span>
+  data-script-src=<span class="hljs-string">&quot;assets/react-app.js&quot;</span> data-dependencies=<span class="hljs-string">&quot;react,react-dom&quot;</span>
+  id=<span class="hljs-string">&quot;lazy-app-1763631298517&quot;</span>&gt;
+  &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;app-placeholder&quot;</span>&gt;
     
-        &lt;div style=&quot;text-align: center; padding: 3rem;&quot;&gt;
-          &lt;p style=&quot;margin-bottom: 1rem;&quot;&gt;&lt;strong&gt;Interactive react App&lt;/strong&gt;&lt;/p&gt;
-          &lt;button class=&quot;button&quot; style=&quot;cursor: pointer;&quot;&gt;Load App&lt;/button&gt;
+        &lt;div style=<span class="hljs-string">&quot;text-align: center; padding: 3rem;&quot;</span>&gt;
+          &lt;p style=<span class="hljs-string">&quot;margin-bottom: 1rem;&quot;</span>&gt;&lt;strong&gt;Interactive react App&lt;/strong&gt;&lt;/p&gt;
+          &lt;button <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;button&quot;</span> style=<span class="hljs-string">&quot;cursor: pointer;&quot;</span>&gt;Load App&lt;/button&gt;
         &lt;/div&gt;
       
   &lt;/div&gt;
 &lt;/div&gt;</code></pre></div><h3 id="vue-2">Vue</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-markdown">&lt;div 
-  class=&quot;lazy-app-container&quot; 
-  data-lazy-app=&quot;vue&quot;
-  data-script-src=&quot;assets/vue-app.js&quot; data-dependencies=&quot;https://unpkg.com/vue@3&quot;
-  id=&quot;lazy-app-1763323647565&quot;&gt;
-  &lt;div class=&quot;app-placeholder&quot;&gt;
+  <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;lazy-app-container&quot;</span> 
+  data-lazy-app=<span class="hljs-string">&quot;vue&quot;</span>
+  data-script-src=<span class="hljs-string">&quot;assets/vue-app.js&quot;</span> data-dependencies=<span class="hljs-string">&quot;https://unpkg.com/vue@3&quot;</span>
+  id=<span class="hljs-string">&quot;lazy-app-1763631298517&quot;</span>&gt;
+  &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;app-placeholder&quot;</span>&gt;
     
-        &lt;div style=&quot;text-align: center; padding: 3rem;&quot;&gt;
-          &lt;p style=&quot;margin-bottom: 1rem;&quot;&gt;&lt;strong&gt;Interactive vue App&lt;/strong&gt;&lt;/p&gt;
-          &lt;button class=&quot;button&quot; style=&quot;cursor: pointer;&quot;&gt;Load App&lt;/button&gt;
+        &lt;div style=<span class="hljs-string">&quot;text-align: center; padding: 3rem;&quot;</span>&gt;
+          &lt;p style=<span class="hljs-string">&quot;margin-bottom: 1rem;&quot;</span>&gt;&lt;strong&gt;Interactive vue App&lt;/strong&gt;&lt;/p&gt;
+          &lt;button <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;button&quot;</span> style=<span class="hljs-string">&quot;cursor: pointer;&quot;</span>&gt;Load App&lt;/button&gt;
         &lt;/div&gt;
       
   &lt;/div&gt;
 &lt;/div&gt;</code></pre></div><h3 id="svelte-2">Svelte</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-markdown">&lt;div 
-  class=&quot;lazy-app-container&quot; 
-  data-lazy-app=&quot;svelte&quot;
-  data-script-src=&quot;assets/svelte-app.js&quot;
-  id=&quot;lazy-app-1763323647565&quot;&gt;
-  &lt;div class=&quot;app-placeholder&quot;&gt;
+  <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;lazy-app-container&quot;</span> 
+  data-lazy-app=<span class="hljs-string">&quot;svelte&quot;</span>
+  data-script-src=<span class="hljs-string">&quot;assets/svelte-app.js&quot;</span>
+  id=<span class="hljs-string">&quot;lazy-app-1763631298517&quot;</span>&gt;
+  &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;app-placeholder&quot;</span>&gt;
     
-        &lt;div style=&quot;text-align: center; padding: 3rem;&quot;&gt;
-          &lt;p style=&quot;margin-bottom: 1rem;&quot;&gt;&lt;strong&gt;Interactive svelte App&lt;/strong&gt;&lt;/p&gt;
-          &lt;button class=&quot;button&quot; style=&quot;cursor: pointer;&quot;&gt;Load App&lt;/button&gt;
+        &lt;div style=<span class="hljs-string">&quot;text-align: center; padding: 3rem;&quot;</span>&gt;
+          &lt;p style=<span class="hljs-string">&quot;margin-bottom: 1rem;&quot;</span>&gt;&lt;strong&gt;Interactive svelte App&lt;/strong&gt;&lt;/p&gt;
+          &lt;button <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;button&quot;</span> style=<span class="hljs-string">&quot;cursor: pointer;&quot;</span>&gt;Load App&lt;/button&gt;
         &lt;/div&gt;
       
   &lt;/div&gt;
@@ -904,32 +1006,40 @@ document.addEventListener(&#039;lazy-app-loaded&#039;, (e) =&gt; {
                 </div>
 
                 <!-- Pagination (Previous/Next) -->
-                <nav class="pagination" aria-label="Page navigation">
-                <div class="grid-2">
-                    <div>
-                <a href="./index.html" class="pagination-link pagination-prev" rel="prev">
-                    <svg class="pagination-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                    <div class="pagination-text">
-                        <span class="pagination-label">Previous</span>
-                        <span class="pagination-title">nav_overview</span>
-                    </div>
-                </a>
-            </div>
-                    <div>
-                <a href="./tabs-demo.html" class="pagination-link pagination-next" rel="next">
-                    <div class="pagination-text">
-                        <span class="pagination-label">Next</span>
-                        <span class="pagination-title">nav_tabs_demo</span>
-                    </div>
-                    <svg class="pagination-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                </a>
-            </div>
+                
+<nav class="pagination" aria-label="Page navigation">
+    <div class="grid-2">
+        
+        <div>
+            <a href="./index.html" class="pagination-link pagination-prev" rel="prev">
+                <svg class="pagination-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <div class="pagination-text">
+                    <span class="pagination-label">Previous</span>
+                    <span class="pagination-title">Overview</span>
                 </div>
-            </nav>
+            </a>
+        </div>
+        
+        
+        
+        <div>
+            <a href="./tabs-demo.html" class="pagination-link pagination-next" rel="next">
+                <div class="pagination-text">
+                    <span class="pagination-label">Next</span>
+                    <span class="pagination-title">Tabs Demo</span>
+                </div>
+                <svg class="pagination-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </a>
+        </div>
+        
+    </div>
+</nav>
+
+
             </div>
         </main>
     </div>
@@ -940,21 +1050,25 @@ document.addEventListener(&#039;lazy-app-loaded&#039;, (e) =&gt; {
         <div class="footer-content">
             <div class="footer-left">
                 <p class="footer-copyright">
-                    &copy; <span class="copyright-year">2025</span> <span class="copyright-holder">Agilira</span>. All rights reserved.
-                </p>
+    &copy; <span class="copyright-year">2025</span> <span class="copyright-holder">Agilira</span>. All rights reserved.
+</p>
+
                 <div class="footer-legal">
-                    <a href="./privacy-policy.html" class="footer-legal-link">Privacy Policy</a>
-                                    <a href="./terms-of-service.html" class="footer-legal-link">Terms of Service</a>
-                                    <a href="./cookie-policy.html" class="footer-legal-link">Cookie Policy</a>
-                                    <a href="https://opensource.org/licenses/MIT" class="footer-legal-link license-link" target="_blank" rel="noopener noreferrer">License</a>
-                                    <a href="./manage-cookies.html" class="footer-legal-link">Manage Cookies</a>
+                    <ul class="footer-links">
+    <li><a href="./privacy-policy.html" class="footer-legal-link">Privacy Policy</a></li>
+    <li><a href="./terms-of-service.html" class="footer-legal-link">Terms of Service</a></li>
+    <li><a href="./cookie-policy.html" class="footer-legal-link">Cookie Policy</a></li>
+    <li><a href="https://opensource.org/licenses/MIT" class="footer-legal-link" target="_blank" rel="noopener noreferrer" aria-label="License - aria.external_link">License</a></li>
+    <li><a href="./manage-cookies.html" class="footer-legal-link">Manage Cookies</a></li>
+  </ul>
                 </div>
             </div>
             <div class="footer-right">
                 <a href="https://github.com/agilira" target="_blank" rel="noopener" class="footer-logo-link">
-                    <img src="./assets/logo-footer.png" alt="Chiron Logo" class="footer-logo footer-logo-light" loading="lazy">
-                    <img src="./assets/logo-footer-white.png" alt="Chiron Logo" class="footer-logo footer-logo-dark" loading="lazy">
-                </a>
+    <img src="./assets/logo-footer.png" alt="Chiron Logo" class="footer-logo footer-logo-light" loading="lazy">
+    <img src="./assets/logo-footer-white.png" alt="Chiron Logo" class="footer-logo footer-logo-dark" loading="lazy">
+</a>
+
             </div>
         </div>
     </div>
@@ -965,26 +1079,26 @@ document.addEventListener(&#039;lazy-app-loaded&#039;, (e) =&gt; {
     <div class="mobile-overlay" id="mobileOverlay"></div>
 
     
-    <!-- Scroll to Top Button -->
-    <button 
-        class="scroll-to-top" 
-        id="scrollToTop" 
-        aria-label="Scroll to top of page"
-        title="Scroll to top"
-        type="button"
-    >
-        ↑
-    </button>
-    
+<!-- Scroll to Top Button -->
+<button 
+    class="scroll-to-top" 
+    id="scrollToTop" 
+    aria-label="Scroll to top of page"
+    title="Scroll to top"
+    type="button"
+>
+    ↑
+</button>
 
-    <!-- Search Modal -->
-    <!-- Search Modal -->
+
+    
+<!-- Search Modal -->
 <div class="search-modal" id="searchModal" aria-hidden="true">
     <div class="search-modal-overlay" id="searchModalOverlay"></div>
     <div class="search-modal-content" role="dialog" aria-modal="true" aria-labelledby="searchModalTitle">
         <div class="search-modal-header">
             <h2 id="searchModalTitle" class="search-modal-title">Search Documentation</h2>
-            <button type="button" class="search-modal-close" id="searchModalClose" aria-label=&#34;Close search&#34;>
+            <button type="button" class="search-modal-close" id="searchModalClose" aria-label="Close search">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -997,7 +1111,7 @@ document.addEventListener(&#039;lazy-app-loaded&#039;, (e) =&gt; {
                     id="searchInput" 
                     class="search-input" 
                     placeholder="Search documentation..." 
-                    aria-label=&#34;Search documentation&#34;
+                    aria-label="Search input"
                     aria-autocomplete="list"
                     aria-controls="searchResults"
                     aria-expanded="false"
@@ -1007,7 +1121,7 @@ document.addEventListener(&#039;lazy-app-loaded&#039;, (e) =&gt; {
                     type="button" 
                     class="search-clear-btn" 
                     id="searchClearBtn" 
-                    aria-label=&#34;Clear search&#34;
+                    aria-label="Clear search"
                     hidden
                 >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -1018,7 +1132,7 @@ document.addEventListener(&#039;lazy-app-loaded&#039;, (e) =&gt; {
                     class="search-results" 
                     id="searchResults" 
                     role="listbox"
-                    aria-label=&#34;Search results&#34;
+                    aria-label="Search results"
                     hidden
                 ></div>
             </div>
@@ -1029,7 +1143,8 @@ document.addEventListener(&#039;lazy-app-loaded&#039;, (e) =&gt; {
 
     <!-- Scripts -->
     <!-- Scripts -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+
 
 <!-- i18n Configuration -->
 <script>
@@ -1185,799 +1300,16 @@ window.CHIRON_I18N = {
 window.CHIRON_LOCALE = 'en';
 </script>
 
+
+<script src="./base.js"></script>
 <script>
-
-// Component: base
-/**
- * Base Component Bundle - Always loaded components
- * Includes: core, accessibility, sidebar, search, theme, navigation, scroll-to-top
- * These components are present on every page so we bundle them together
- * 
- * @component base
- * @required
- */
-
-// ============================================================================
-// CORE - Utilities and configuration
-// ============================================================================
-
-// i18n Helper - Get translated string with fallback
-const i18n = window.CHIRON_I18N || {};
-// eslint-disable-next-line no-redeclare
-const t = (key, fallback = '') => i18n[key] || fallback;
-// Make t() globally accessible for other components
-window.t = t;
-
-// Configuration Constants
-// eslint-disable-next-line no-redeclare
-const CONFIG = {
-  SEARCH: {
-    MIN_QUERY_LENGTH: 2,
-    DEBOUNCE_DELAY: 200,
-    RATE_LIMIT_MS: 100,
-    MAX_RESULTS: 10,
-    FETCH_TIMEOUT: 10000,
-    MAX_FILE_SIZE: 10 * 1024 * 1024 // 10MB
-  },
-  UI: {
-    TOAST_DURATION: 3000,
-    TOAST_ANIMATION_DELAY: 100,
-    TOAST_FADE_OUT_DELAY: 300,
-    BLUR_DELAY: 200,
-    COOKIE_BANNER_DELAY: 1000,
-    WATCH_DEBOUNCE_DELAY: 300,
-    SCROLL_OFFSET: 20,
-    HEADER_SCROLL_OFFSET: 50,
-    TOC_SCROLL_OFFSET: 100,
-    SCROLL_TO_TOP_THRESHOLD: 300
-  },
-  CACHE: {
-    MAX_SIZE: 50
-  }
-};
-
-// Utility functions
-// eslint-disable-next-line no-redeclare
-const debounce = (func, wait) => {
-  let timeout;
-  return function executedFunction(...args) {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
-    };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
-};
-
-// eslint-disable-next-line no-redeclare
-const showToast = (message, type = 'info') => {
-  const toast = document.createElement('div');
-  toast.className = `toast toast-${type}`;
-  toast.textContent = message;
-  toast.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: ${type === 'success' ? 'var(--success-500)' : 'var(--error-500)'};
-        color: white;
-        padding: 12px 20px;
-        border-radius: var(--border-radius);
-        box-shadow: var(--shadow-lg);
-        z-index: 1000;
-        transform: translateX(100%);
-        transition: transform 0.3s ease;
-    `;
-
-  document.body.appendChild(toast);
-
-  setTimeout(() => {
-    toast.style.transform = 'translateX(0)';
-  }, CONFIG.UI.TOAST_ANIMATION_DELAY);
-
-  setTimeout(() => {
-    toast.style.transform = 'translateX(100%)';
-    setTimeout(() => {
-      if (toast.parentNode) {
-        toast.parentNode.removeChild(toast);
-      }
-    }, CONFIG.UI.TOAST_FADE_OUT_DELAY);
-  }, CONFIG.UI.TOAST_DURATION);
-};
-// Make showToast globally accessible for other components
-window.showToast = showToast;
-
-// Hash helper for info boxes
-// eslint-disable-next-line no-unused-vars, no-redeclare
-const hashCode = (str) => {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
-  }
-  return Math.abs(hash).toString(36);
-};
-
-// ============================================================================
-// ACCESSIBILITY - Skip link, ARIA labels, focus management
-// ============================================================================
-
-// Skip link for screen readers
-(() => {
-  const skipLink = document.createElement('a');
-  skipLink.href = '#main-content';
-  skipLink.textContent = 'Skip to main content';
-  skipLink.className = 'skip-link';
-  skipLink.style.cssText = `
-        position: absolute;
-        top: -40px;
-        left: 6px;
-        background: var(--primary-600);
-        color: white;
-        padding: 8px;
-        text-decoration: none;
-        border-radius: 4px;
-        z-index: 1000;
-        transition: top 0.3s;
-    `;
-  skipLink.addEventListener('focus', () => {
-    skipLink.style.top = '6px';
-  });
-  skipLink.addEventListener('blur', () => {
-    skipLink.style.top = '-40px';
-  });
-  document.body.insertBefore(skipLink, document.body.firstChild);
-})();
-
-// ARIA labels
-(() => {
-  const sidebarToggle = document.getElementById('sidebarToggle');
-  if (sidebarToggle) {
-    sidebarToggle.setAttribute('aria-label', 'Toggle sidebar navigation');
-    sidebarToggle.setAttribute('aria-expanded', 'false');
-  }
-
-  const searchInput = document.getElementById('searchInput');
-  if (searchInput) {
-    searchInput.setAttribute('aria-label', t('aria_search', 'Search documentation'));
-  }
-})();
-
-// Close modals on Escape
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    const sidebar = document.getElementById('sidebar');
-    const mobileOverlay = document.getElementById('mobileOverlay');
-        
-    if (sidebar && sidebar.classList.contains('open')) {
-      sidebar.classList.remove('open');
-      if (mobileOverlay) {mobileOverlay.classList.remove('open');}
-      document.body.style.overflow = '';
-    }
-        
-    const searchResults = document.getElementById('searchResults');
-    if (searchResults) {
-      searchResults.hidden = true;
-      searchResults.style.display = 'none';
-    }
-        
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {searchInput.blur();}
-  }
-});
-
-// ============================================================================
-// SIDEBAR - Mobile sidebar toggle and collapsible sections
-// ============================================================================
-
-// Mobile sidebar
-(() => {
-  const sidebar = document.getElementById('sidebar');
-  const sidebarToggle = document.getElementById('sidebarToggle');
-  const mobileOverlay = document.getElementById('mobileOverlay');
-    
-  if (!sidebarToggle || !mobileOverlay) {return;}
-
-  let lastFocusedElement = null;
-
-  const getFocusableElements = (container) => {
-    return container.querySelectorAll('a[href], button, input, textarea, select, [tabindex]:not([tabindex="-1"])');
-  };
-
-  const openSidebar = () => {
-    lastFocusedElement = document.activeElement;
-    sidebar.classList.add('open');
-    mobileOverlay.classList.add('open');
-    sidebar.setAttribute('aria-hidden', 'false');
-    sidebarToggle.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
-
-    const focusables = getFocusableElements(sidebar);
-    if (focusables.length) {focusables[0].focus();}
-  };
-
-  const closeSidebar = () => {
-    sidebar.classList.remove('open');
-    mobileOverlay.classList.remove('open');
-    sidebar.setAttribute('aria-hidden', 'true');
-    sidebarToggle.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-    if (lastFocusedElement) {lastFocusedElement.focus();}
-  };
-
-  const toggleSidebar = () => {
-    if (sidebar.classList.contains('open')) {closeSidebar();}
-    else {openSidebar();}
-  };
-
-  sidebarToggle.addEventListener('click', toggleSidebar);
-  mobileOverlay.addEventListener('click', closeSidebar);
-
-  document.addEventListener('keydown', (e) => {
-    if (!sidebar.classList.contains('open')) {return;}
-    if (e.key === 'Escape') {
-      closeSidebar();
-      return;
-    }
-
-    if (e.key === 'Tab') {
-      const focusables = Array.from(getFocusableElements(sidebar));
-      if (!focusables.length) {return;}
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
-
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    }
-  });
-
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) {
-      sidebar.classList.remove('open');
-      mobileOverlay.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-  });
-})();
-
-// Collapsible sidebar sections
-(() => {
-  const collapsibleButtons = document.querySelectorAll('.nav-section-title.collapsible');
-    
-  if (!collapsibleButtons.length) {return;}
-
-  collapsibleButtons.forEach(button => {
-    button.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-            
-      const section = button.closest('.nav-section');
-      if (!section) {return;}
-
-      const isExpanded = section.classList.contains('expanded');
-      section.classList.toggle('expanded');
-      button.setAttribute('aria-expanded', !isExpanded);
-
-      const sectionTitle = button.textContent.trim();
-      try {
-        const stateKey = `sidebar-section-${sectionTitle}`;
-        localStorage.setItem(stateKey, !isExpanded ? 'open' : 'closed');
-      } catch {
-        // Ignore localStorage errors (intentionally empty)
-      }
-    });
-  });
-
-  // Restore state from localStorage
-  collapsibleButtons.forEach(button => {
-    const sectionTitle = button.textContent.trim();
-    const stateKey = `sidebar-section-${sectionTitle}`;
-        
-    try {
-      const savedState = localStorage.getItem(stateKey);
-            
-      if (savedState) {
-        const section = button.closest('.nav-section');
-        const shouldBeOpen = savedState === 'open';
-        const isCurrentlyOpen = section.classList.contains('expanded');
-
-        if (shouldBeOpen !== isCurrentlyOpen) {
-          section.classList.toggle('expanded', shouldBeOpen);
-          button.setAttribute('aria-expanded', shouldBeOpen);
-        }
-      }
-    } catch {
-      // Ignore localStorage errors (intentionally empty)
-    }
-  });
-})();
-
-// Keyboard shortcut: Ctrl/Cmd + / to toggle sidebar
-document.addEventListener('keydown', (e) => {
-  if ((e.ctrlKey || e.metaKey) && e.key === '/') {
-    e.preventDefault();
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    if (sidebarToggle) {sidebarToggle.click();}
-  }
-});
-
-// ============================================================================
-// THEME - Dark/light mode toggle
-// ============================================================================
-
-(() => {
-  const themeToggle = document.querySelector('.theme-toggle');
-  if (!themeToggle) {return;}
-
-  const getStoredTheme = () => {
-    try {
-      return localStorage.getItem('theme');
-    } catch (_e) {
-      console.warn('localStorage not available:', _e);
-      return null;
-    }
-  };
-    
-  const setStoredTheme = (theme) => {
-    try {
-      localStorage.setItem('theme', theme);
-    } catch (_e) {
-      console.warn('Cannot save theme preference:', _e);
-    }
-  };
-
-  const setTheme = (theme) => {
-    document.documentElement.setAttribute('data-theme', theme);
-    const themeToggleBtn = document.getElementById('themeToggle');
-    if (themeToggleBtn) {
-      themeToggleBtn.setAttribute('data-theme', theme);
-      themeToggleBtn.setAttribute('aria-label', 
-        theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
-      );
-    }
-        
-    updateLogosForTheme(theme);
-    updateHighlightTheme(theme);
-  };
-
-  const updateHighlightTheme = (_theme) => {
-    // Remove external Highlight.js CSS (we use custom styles in styles.css)
-    const existingLinks = document.querySelectorAll('link[href*="highlight.js"]');
-    existingLinks.forEach(link => link.remove());
-        
-    if (typeof hljs !== 'undefined') {
-      const excludedLanguages = ['text', 'plaintext', 'txt'];
-      const languageAliasMap = {
-        markdown: 'html',
-        md: 'html'
-      };
-            
-      document.querySelectorAll('pre code').forEach((block) => {
-        const classList = block.className.split(' ');
-        const langClass = classList.find(cls => cls.startsWith('language-'));
-                
-        if (langClass) {
-          const lang = langClass.replace('language-', '');
-          const normalizedLang = lang.toLowerCase();
-          if (excludedLanguages.includes(normalizedLang)) {
-            block.className = `language-${lang} nohighlight`;
-            return;
-          }
-          const mappedLang = languageAliasMap[normalizedLang] || lang;
-          block.className = `language-${mappedLang}`;
-          if (mappedLang !== lang) {
-            block.classList.add(`language-${lang}`);
-          }
-        } else {
-          block.className = '';
-        }
-                
-        hljs.highlightElement(block);
-      });
-    }
-  };
-
-  const updateLogosForTheme = (theme) => {
-    const logosWithData = document.querySelectorAll('[data-logo-light], [data-logo-dark]');
-    logosWithData.forEach(logo => {
-      const lightSrc = logo.getAttribute('data-logo-light');
-      const darkSrc = logo.getAttribute('data-logo-dark');
-            
-      if (theme === 'dark' && darkSrc) {
-        logo.src = darkSrc;
-      } else if (lightSrc) {
-        logo.src = lightSrc;
-      }
-    });
-        
-    const headerLightLogos = document.querySelectorAll('.logo-light');
-    const headerDarkLogos = document.querySelectorAll('.logo-dark');
-    const footerLightLogos = document.querySelectorAll('.footer-logo-light');
-    const footerDarkLogos = document.querySelectorAll('.footer-logo-dark');
-        
-    if (theme === 'dark') {
-      headerLightLogos.forEach(logo => logo.style.display = 'block');
-      headerDarkLogos.forEach(logo => logo.style.display = 'none');
-      footerLightLogos.forEach(logo => logo.style.display = 'none');
-      footerDarkLogos.forEach(logo => logo.style.display = 'block');
-    } else {
-      headerLightLogos.forEach(logo => logo.style.display = 'none');
-      headerDarkLogos.forEach(logo => logo.style.display = 'block');
-      footerLightLogos.forEach(logo => logo.style.display = 'block');
-      footerDarkLogos.forEach(logo => logo.style.display = 'none');
-    }
-  };
-
-  // Initialize theme
-  const savedTheme = getStoredTheme();
-  let systemTheme = 'light';
-  if (window.matchMedia) {
-    systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  }
-  const currentTheme = savedTheme || systemTheme;
-  setTheme(currentTheme);
-
-  // Toggle theme on button click
-  themeToggle.addEventListener('click', () => {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
-    setStoredTheme(newTheme);
-    showToast(`Switched to ${newTheme} mode`, 'success');
-  });
-
-  // Listen for system theme changes
-  if (window.matchMedia) {
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-      if (!getStoredTheme()) {
-        setTheme(e.matches ? 'dark' : 'light');
-      }
-    });
-  }
-})();
-
-// ============================================================================
-// NAVIGATION - Smooth scroll and active state
-// ============================================================================
-
-// Smooth scroll for internal links
-document.querySelectorAll('a[href^="#"]').forEach(link => {
-  link.addEventListener('click', (e) => {
-    e.preventDefault();
-    const targetId = link.getAttribute('href').substring(1);
-    const targetElement = document.getElementById(targetId);
-        
-    if (targetElement) {
-      const headerHeight = document.querySelector('.header').offsetHeight;
-      const targetPosition = targetElement.offsetTop - headerHeight - CONFIG.UI.SCROLL_OFFSET;
-            
-      window.scrollTo({
-        top: targetPosition,
-        behavior: 'smooth'
-      });
-            
-      history.pushState(null, null, `#${targetId}`);
-    }
-  });
-});
-
-// Active navigation state
-const updateActiveNavigation = () => {
-  const sections = document.querySelectorAll('section[id]');
-  const navItems = document.querySelectorAll('.nav-item[href^="#"]');
-    
-  let currentSection = '';
-    
-  sections.forEach(section => {
-    const rect = section.getBoundingClientRect();
-    const headerHeight = document.querySelector('.header').offsetHeight;
-        
-    if (rect.top <= headerHeight + CONFIG.UI.HEADER_SCROLL_OFFSET && rect.bottom > headerHeight + CONFIG.UI.HEADER_SCROLL_OFFSET) {
-      currentSection = section.id;
-    }
-  });
-
-  navItems.forEach(item => {
-    item.classList.remove('active');
-    if (item.getAttribute('href') === `#${currentSection}`) {
-      item.classList.add('active');
-    }
-  });
-};
-
-updateActiveNavigation();
-window.addEventListener('scroll', debounce(updateActiveNavigation, 100), { passive: true });
-
-// ============================================================================
-// SCROLL TO TOP - Button to scroll back to top
-// ============================================================================
-
-(() => {
-  const scrollToTopBtn = document.getElementById('scrollToTop');
-  if (!scrollToTopBtn) {return;}
-
-  const toggleScrollButton = () => {
-    if (window.pageYOffset > CONFIG.UI.SCROLL_TO_TOP_THRESHOLD) {
-      scrollToTopBtn.classList.add('show');
-    } else {
-      scrollToTopBtn.classList.remove('show');
-    }
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
-
-  window.addEventListener('scroll', toggleScrollButton, { passive: true });
-  scrollToTopBtn.addEventListener('click', scrollToTop);
-
-  scrollToTopBtn.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      scrollToTop();
-    }
-  });
-
-  toggleScrollButton();
-})();
-
-// ============================================================================
-// HEADER DROPDOWNS - Dropdown menus in header navigation
-// ============================================================================
-(function setupHeaderDropdowns() {
-  const headerNav = document.querySelector('.header-nav');
-  const dropdownItems = document.querySelectorAll('.header-nav-item');
-  
-  if (!dropdownItems.length) {return;}
-
-  // Get dropdown trigger mode from config (default: 'hover')
-  // Options: 'hover' | 'click'
-  const triggerMode = headerNav?.getAttribute('data-dropdown-trigger') || 'hover';
-
-  dropdownItems.forEach(item => {
-    const button = item.querySelector('.header-nav-link');
-    const dropdown = item.querySelector('.header-dropdown');
-    
-    if (!button || !dropdown) {return;}
-
-    let closeTimeout = null;
-
-    const openDropdown = () => {
-      if (closeTimeout) {
-        clearTimeout(closeTimeout);
-        closeTimeout = null;
-      }
-      item.classList.add('open');
-      button.setAttribute('aria-expanded', 'true');
-    };
-
-    const closeDropdown = (immediate = false) => {
-      if (immediate) {
-        item.classList.remove('open');
-        button.setAttribute('aria-expanded', 'false');
-      } else {
-        // Delay closing to allow moving mouse to dropdown
-        closeTimeout = setTimeout(() => {
-          item.classList.remove('open');
-          button.setAttribute('aria-expanded', 'false');
-        }, 200);
-      }
-    };
-
-    // Click handler - always enabled for accessibility
-    button.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      if (item.classList.contains('open')) {
-        closeDropdown(true);
-      } else {
-        // Close other dropdowns
-        dropdownItems.forEach(otherItem => {
-          if (otherItem !== item && otherItem.classList.contains('open')) {
-            otherItem.classList.remove('open');
-            const otherButton = otherItem.querySelector('.header-nav-link');
-            if (otherButton) {otherButton.setAttribute('aria-expanded', 'false');}
-          }
-        });
-        openDropdown();
-      }
-    });
-
-    // Hover handlers - only if trigger mode is 'hover'
-    if (triggerMode === 'hover') {
-      item.addEventListener('mouseenter', () => {
-        openDropdown();
-      });
-
-      item.addEventListener('mouseleave', () => {
-        closeDropdown();
-      });
-
-      // Keep open when hovering dropdown content
-      dropdown.addEventListener('mouseenter', () => {
-        if (closeTimeout) {
-          clearTimeout(closeTimeout);
-          closeTimeout = null;
-        }
-      });
-
-      dropdown.addEventListener('mouseleave', () => {
-        closeDropdown();
-      });
-    }
-
-    // Close on Escape key
-    button.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && item.classList.contains('open')) {
-        closeDropdown(true);
-        button.focus();
-      }
-    });
-
-    // Close dropdown when clicking a link inside
-    dropdown.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        closeDropdown(true);
-      });
-    });
-  });
-
-  // Close all dropdowns when clicking outside
-  document.addEventListener('click', (e) => {
-    const clickedOutside = !e.target.closest('.header-nav-item');
-    if (clickedOutside) {
-      dropdownItems.forEach(item => {
-        if (item.classList.contains('open')) {
-          item.classList.remove('open');
-          const button = item.querySelector('.header-nav-link');
-          if (button) {button.setAttribute('aria-expanded', 'false');}
-        }
-      });
-    }
-  });
-})();
-
-// LANGUAGE SWITCHER - Dropdown for language selection
-(function setupLanguageSwitcher() {
-  const switcher = document.querySelector('.language-switcher');
-  
-  if (!switcher) {return;} // No language switcher present
-  
-  const button = switcher.querySelector('.dropdown-toggle');
-  const menu = switcher.querySelector('.dropdown-menu');
-  
-  if (!button || !menu) {return;}
-  
-  // Toggle dropdown on click
-  button.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const isOpen = button.getAttribute('aria-expanded') === 'true';
-    
-    if (isOpen) {
-      // Close
-      button.setAttribute('aria-expanded', 'false');
-      menu.setAttribute('hidden', '');
-    } else {
-      // Open
-      button.setAttribute('aria-expanded', 'true');
-      menu.removeAttribute('hidden');
-      
-      // Focus first item
-      const firstItem = menu.querySelector('.dropdown-item');
-      if (firstItem) {
-        setTimeout(() => firstItem.focus(), 100);
-      }
-    }
-  });
-  
-  // Close on escape
-  menu.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      button.setAttribute('aria-expanded', 'false');
-      menu.setAttribute('hidden', '');
-      button.focus();
-    }
-  });
-  
-  // Keyboard navigation
-  menu.addEventListener('keydown', (e) => {
-    const items = Array.from(menu.querySelectorAll('.dropdown-item'));
-    const currentIndex = items.indexOf(document.activeElement);
-    
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      const nextIndex = (currentIndex + 1) % items.length;
-      items[nextIndex].focus();
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      const prevIndex = (currentIndex - 1 + items.length) % items.length;
-      items[prevIndex].focus();
-    }
-  });
-  
-  // Close when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!switcher.contains(e.target)) {
-      button.setAttribute('aria-expanded', 'false');
-      menu.setAttribute('hidden', '');
-    }
-  });
-  
-  // Store language preference when switching
-  menu.querySelectorAll('.dropdown-item').forEach(item => {
-    item.addEventListener('click', (_e) => {
-      const locale = item.getAttribute('lang');
-      if (locale) {
-        try {
-          localStorage.setItem('chiron_locale', locale);
-        } catch (_err) {
-          // Ignore localStorage errors
-        }
-      }
-    });
-  });
-})();
-
-
-
-
 // Component: code-blocks
 /**
- * Code Blocks Component - Syntax highlighting and copy button
+ * Code Blocks Component - Copy button only
  * Detects: pre code, .code-copy
  * 
  * @component code-blocks
  */
-
-// Initialize highlight.js
-(() => {
-  if (typeof hljs === 'undefined') {return;}
-    
-  hljs.configure({
-    ignoreUnescapedHTML: true,
-    languages: ['javascript', 'python', 'java', 'html', 'css', 'bash', 'sh', 'shell', 'json', 'yaml', 'yml', 'xml', 'sql', 'typescript', 'ts', 'php', 'ruby', 'go', 'rust', 'c', 'cpp', 'csharp', 'cs', 'plaintext', 'text']
-  });
-    
-  hljs.registerAliases('sh', {languageName: 'bash'});
-  hljs.registerAliases('shell', {languageName: 'bash'});
-  hljs.registerAliases('yml', {languageName: 'yaml'});
-  hljs.registerAliases('ts', {languageName: 'typescript'});
-  hljs.registerAliases('cs', {languageName: 'csharp'});
-  hljs.registerAliases(['markdown', 'md'], {languageName: 'html'});
-    
-  const excludedLanguages = ['text', 'plaintext', 'txt'];
-    
-  document.querySelectorAll('pre code').forEach((block) => {
-    const classList = block.className.split(' ');
-    const langClass = classList.find(cls => cls.startsWith('language-'));
-        
-    if (langClass) {
-      const lang = langClass.replace('language-', '');
-      const normalizedLang = lang.toLowerCase();
-      if (excludedLanguages.includes(normalizedLang)) {
-        block.className = `language-${lang} nohighlight`;
-        return;
-      }
-      const mappedLang = hljs.getLanguage(lang) ? lang : hljs.getLanguage(normalizedLang) ? normalizedLang : (normalizedLang === 'markdown' || normalizedLang === 'md') ? 'html' : lang;
-      block.className = `language-${mappedLang}`;
-      if (mappedLang !== lang) {
-        block.classList.add(`language-${lang}`);
-      }
-    }
-        
-    hljs.highlightElement(block);
-  });
-})();
 
 // Copy button functionality
 document.addEventListener('click', async (e) => {
@@ -1991,22 +1323,36 @@ document.addEventListener('click', async (e) => {
   if (!code) {return;}
 
   const text = code.textContent;
+  const originalHTML = button.innerHTML;
+  const originalLabel = button.getAttribute('aria-label');
 
   try {
     await navigator.clipboard.writeText(text);
-    showToast(t('code_copy_success', 'Code copied to clipboard!'), 'success');
-        
-    const originalHTML = button.innerHTML;
+    
+    // Success state - checkmark icon
     button.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
     button.classList.add('copied');
+    button.setAttribute('aria-label', t('code_copied', 'Code copied'));
         
     setTimeout(() => {
       button.innerHTML = originalHTML;
       button.classList.remove('copied');
+      button.setAttribute('aria-label', originalLabel || t('code_copy', 'Copy code'));
     }, 2000);
-  } catch (err) {
-    console.error('Failed to copy code:', err);
-    showToast(t('code_copy_failed', 'Failed to copy code'), 'error');
+  } catch (_err) {
+    console.error('Failed to copy code to clipboard');
+    
+    // Error state: X icon in lighter red with clear visual feedback
+    button.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>';
+    button.classList.add('copy-error');
+    button.setAttribute('aria-label', t('code_copy_failed', 'Copy failed'));
+    
+    // Reset after 3 seconds (longer for error visibility)
+    setTimeout(() => {
+      button.innerHTML = originalHTML;
+      button.classList.remove('copy-error');
+      button.setAttribute('aria-label', originalLabel || t('code_copy', 'Copy code'));
+    }, 3000);
   }
 });
 
@@ -2053,212 +1399,409 @@ document.addEventListener('click', async (e) => {
 
 // Component: lazy-app-loader
 /**
- * Lazy App Loader Component
+ * Lazy App Loader - Core Module (Testable & Reliable)
  * 
- * Description: Loads embedded React/Vue/Svelte apps only when they become visible in viewport
- * Triggers: [data-lazy-app], .lazy-app-container
- * Dependencies: base.js (core utilities)
- * Size: ~2.5 KB
- * 
- * @component lazy-app-loader
- * @version 1.0.0
+ * @module lazy-app-loader-core
+ * @version 2.0.0
  * @since 0.8.0
  * 
- * How it works:
- * 1. Scans page for [data-lazy-app] containers
- * 2. Uses IntersectionObserver to detect when container enters viewport
- * 3. Loads framework dependencies + app script dynamically
- * 4. Initializes app when ready
- * 
- * Supports: React, Vue, Svelte, Preact, or any framework via CDN
+ * Features:
+ * - Reliable script loading with timeout and retry
+ * - Data injection for SSR-like performance
+ * - Zero hydration overhead
+ * - Race condition prevention
+ * - Comprehensive error handling
  */
 
-(() => {
+(function() {
   'use strict';
-  
-  // Wait for DOM to be ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initLazyApps);
-  } else {
-    initLazyApps();
+
+  // Configuration
+  const CONFIG = {
+    SCRIPT_TIMEOUT: 10000, // 10 seconds
+    INTERSECTION_THRESHOLD: 0.01,
+    INTERSECTION_MARGIN: '50px', // Load slightly before entering viewport
+    RETRY_DELAY: 1000,
+    MAX_RETRIES: 3,
+    DEBOUNCE_DELAY: 100 // Debounce intersection events
+  };
+
+  // Global state
+  const loadedScripts = new Set();
+  const loadingScripts = new Map(); // URL -> Promise
+  const loadingApps = new Set();
+
+  /**
+ * Load a single script with timeout and deduplication
+ * @param {string} src - Script URL
+ * @param {Object} options - Loading options
+ * @param {number} options.timeout - Timeout in ms
+ * @param {boolean} options.async - Load async (default: true)
+ * @returns {Promise<void>}
+ */
+  function loadScript(src, options = {}) {
+    const { timeout = CONFIG.SCRIPT_TIMEOUT, async = true } = options;
+
+    // Return existing promise if already loading
+    if (loadingScripts.has(src)) {
+      return loadingScripts.get(src);
+    }
+
+    // Return resolved promise if already loaded
+    if (loadedScripts.has(src)) {
+      return Promise.resolve();
+    }
+
+    // Check if script exists in DOM
+    const existing = document.querySelector(`script[src="${src}"]`);
+    if (existing) {
+      loadedScripts.add(src);
+      return Promise.resolve();
+    }
+
+    // Create loading promise
+    const promise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.async = async;
+      script.setAttribute('data-lazy-loaded', 'true');
+
+      let timeoutId;
+
+      const cleanup = () => {
+        clearTimeout(timeoutId);
+        script.onload = null;
+        script.onerror = null;
+      };
+
+      script.onload = () => {
+        cleanup();
+        loadedScripts.add(src);
+        loadingScripts.delete(src);
+        console.debug(`[LazyApp] ✓ Loaded: ${src}`);
+        resolve();
+      };
+
+      script.onerror = (_error) => {
+        cleanup();
+        loadingScripts.delete(src);
+        const err = new Error(`Failed to load script: ${src}`);
+        console.error('[LazyApp]', err);
+        reject(err);
+      };
+
+      // Timeout handler
+      if (timeout > 0) {
+        timeoutId = setTimeout(() => {
+          cleanup();
+          script.remove();
+          loadingScripts.delete(src);
+          const err = new Error(`Script load timeout: ${src}`);
+          console.error('[LazyApp]', err);
+          reject(err);
+        }, timeout);
+      }
+
+      document.head.appendChild(script);
+    });
+
+    loadingScripts.set(src, promise);
+    return promise;
   }
+
+  /**
+ * Load multiple scripts in parallel
+ * @param {string[]} urls - Array of script URLs
+ * @param {Object} options - Loading options
+ * @returns {Promise<void>}
+ */
+  async function loadScripts(urls, options = {}) {
+    if (!urls || urls.length === 0) {
+      return Promise.resolve();
+    }
+
+    console.debug(`[LazyApp] Loading ${urls.length} script(s) in parallel...`);
   
-  function initLazyApps() {
-    // Early exit if no lazy apps on page
-    const lazyApps = document.querySelectorAll('[data-lazy-app]');
-    if (lazyApps.length === 0) {
-      console.debug('[LazyApp] No lazy apps found on page');
+    try {
+      await Promise.all(urls.map(url => loadScript(url, options)));
+      console.debug(`[LazyApp] ✓ All scripts loaded`);
+    } catch (error) {
+      console.error('[LazyApp] Script loading failed:', error);
+      throw error;
+    }
+  }
+
+  /**
+ * Inject data into page for app consumption (Data Island pattern)
+ * @param {string} appId - App container ID
+ * @param {Object} data - Data to inject
+ */
+  function injectData(appId, data) {
+    const dataId = `${appId}-data`;
+  
+    // Remove existing data script if any
+    const existing = document.getElementById(dataId);
+    if (existing) {
+      existing.remove();
+    }
+
+    // Create JSON script tag
+    const script = document.createElement('script');
+    script.type = 'application/json';
+    script.id = dataId;
+  
+    // Safely serialize data (prevents XSS)
+    script.textContent = JSON.stringify(data);
+  
+    // Insert before app container
+    const container = document.getElementById(appId);
+    if (container) {
+      container.parentNode.insertBefore(script, container);
+      console.debug(`[LazyApp] ✓ Data injected for: ${appId}`);
+    } else {
+      console.warn(`[LazyApp] Container not found for data injection: ${appId}`);
+    }
+  }
+
+  /**
+ * Get injected data for an app
+ * @param {string} appId - App container ID
+ * @returns {Object|null} - Parsed data or null
+ */
+  function getData(appId) {
+    const dataScript = document.getElementById(`${appId}-data`);
+    if (!dataScript) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(dataScript.textContent);
+    } catch (error) {
+      console.error(`[LazyApp] Failed to parse data for ${appId}:`, error);
+      return null;
+    }
+  }
+
+  /**
+ * Load an app with all dependencies and data
+ * @param {HTMLElement} container - App container element
+ * @param {Object} options - Loading options
+ * @returns {Promise<void>}
+ */
+  async function loadApp(container, options = {}) {
+    const appId = container.id || `app-${Date.now()}`;
+
+    // Prevent double-loading
+    if (loadingApps.has(appId)) {
+      console.debug(`[LazyApp] Already loading: ${appId}`);
       return;
     }
-    
-    console.debug(`[LazyApp] Found ${lazyApps.length} lazy app(s) on page`);
-  
-    // Track loaded scripts to avoid duplicates
-    const loadedScripts = new Set();
-  
-    // Track apps being loaded to prevent race conditions
-    const loadingApps = new Set();
-  
-    /**
-   * Load a script dynamically
-   * @param {string} src - Script URL
-   * @returns {Promise<void>}
-   */
-    function loadScript(src) {
-    // Check if already loaded
-      if (loadedScripts.has(src)) {
-        console.debug(`[LazyApp] Script already loaded: ${src}`);
-        return Promise.resolve();
-      }
-    
-      // Check if script tag already exists in DOM
-      const existing = document.querySelector(`script[src="${src}"]`);
-      if (existing) {
-        console.debug(`[LazyApp] Script exists in DOM: ${src}`);
-        loadedScripts.add(src);
-        return Promise.resolve();
-      }
-    
-      console.debug(`[LazyApp] Loading script: ${src}`);
-    
-      return new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.src = src;
-        script.async = true;
-      
-        script.onload = () => {
-          console.debug(`[LazyApp] Script loaded successfully: ${src}`);
-          loadedScripts.add(src);
-          resolve();
-        };
-      
-        script.onerror = (error) => {
-          console.error(`[LazyApp] Failed to load script: ${src}`, error);
-          reject(new Error(`Failed to load script: ${src}`));
-        };
-      
-        document.head.appendChild(script);
-      });
+
+    if (container.dataset.lazyAppLoaded === 'true') {
+      console.debug(`[LazyApp] Already loaded: ${appId}`);
+      return;
     }
-  
-    /**
-   * Load an app and all its dependencies
-   * @param {HTMLElement} container - App container element
-   */
-    async function loadApp(container) {
-      const appId = container.id || `app-${Date.now()}`;
-    
-      // Prevent double-loading
-      if (loadingApps.has(appId)) {
-        console.debug(`[LazyApp] App already loading: ${appId}`);
-        return;
+
+    // Verify container is still in DOM
+    if (!document.body.contains(container)) {
+      console.warn(`[LazyApp] Container removed from DOM, aborting: ${appId}`);
+      return;
+    }
+
+    loadingApps.add(appId);
+
+    const framework = container.dataset.lazyApp || 'react';
+    const scriptSrc = container.dataset.scriptSrc;
+    const depsAttr = container.dataset.dependencies || '';
+    const dependencies = depsAttr.split(',').map(s => s.trim()).filter(Boolean);
+
+    console.log(`[LazyApp] Loading ${framework} app: ${appId}`);
+
+    // Show skeleton loading state
+    const placeholder = container.querySelector('.app-placeholder');
+    if (placeholder) {
+      placeholder.innerHTML = '<div class="lazy-app-skeleton" role="status" aria-label="Loading application"></div>';
+    }
+
+    try {
+    // Load dependencies first
+      if (dependencies.length > 0) {
+        console.debug(`[LazyApp] Loading ${dependencies.length} dependencies...`);
+      
+        // Check container still exists before loading
+        if (!document.body.contains(container)) {
+          throw new Error('Container removed from DOM during loading');
+        }
+      
+        await loadScripts(dependencies, options);
       }
-    
-      if (container.dataset.lazyAppLoaded === 'true') {
-        console.debug(`[LazyApp] App already loaded: ${appId}`);
-        return;
+
+      // Load main app script
+      if (scriptSrc) {
+      // Check container still exists before loading app script
+        if (!document.body.contains(container)) {
+          throw new Error('Container removed from DOM during loading');
+        }
+      
+        await loadScript(scriptSrc, options);
       }
-    
-      loadingApps.add(appId);
-    
-      const framework = container.dataset.lazyApp || 'react';
-      const scriptSrc = container.dataset.scriptSrc;
-      const depsAttr = container.dataset.dependencies || '';
-      const dependencies = depsAttr.split(',').map(s => s.trim()).filter(Boolean);
-    
-      console.log(`[LazyApp] Loading ${framework} app: ${appId}`);
-    
-      // Show loading state
-      const placeholder = container.querySelector('.app-placeholder');
+
+      console.log(`[LazyApp] ✓ App loaded successfully: ${appId}`);
+
+      // Mark as loaded
+      container.dataset.lazyAppLoaded = 'true';
+
+      // Verify container is still visible before removing placeholder
+      const isVisible = container.offsetParent !== null && 
+                     container.offsetWidth > 0 && 
+                     container.offsetHeight > 0;
+
+      // Remove placeholder only if container is visible
       if (placeholder) {
-        placeholder.innerHTML = `
-        <div class="loading-spinner">
-          <div class="spinner"></div>
-          <p>Loading ${framework} app...</p>
-        </div>
-      `;
-      }
-    
-      try {
-      // Load all dependencies in parallel
-        if (dependencies.length > 0) {
-          console.debug(`[LazyApp] Loading ${dependencies.length} dependencies...`);
-          await Promise.all(dependencies.map(dep => loadScript(dep)));
-        }
-      
-        // Load main app script
-        if (scriptSrc) {
-          await loadScript(scriptSrc);
-        }
-      
-        console.log(`[LazyApp] ✓ App loaded successfully: ${appId}`);
-      
-        // Mark as loaded
-        container.dataset.lazyAppLoaded = 'true';
-      
-        // Remove placeholder if it exists
-        if (placeholder) {
+        if (isVisible) {
           placeholder.remove();
-        }
-      
-        // Dispatch custom event for app-specific initialization
-        const event = new CustomEvent('lazy-app-loaded', {
-          detail: { 
-            appId,
-            framework,
-            container 
-          },
-          bubbles: true
-        });
-        container.dispatchEvent(event);
-      
-      } catch (error) {
-        console.error(`[LazyApp] Failed to load app: ${appId}`, error);
-      
-        // Show error state
-        if (placeholder) {
+        } else {
+          console.warn(`[LazyApp] Container not visible, keeping placeholder: ${appId}`);
+          // Keep placeholder but update its content to show success
           placeholder.innerHTML = `
-          <div class="app-error">
-            <p><strong>Failed to load app</strong></p>
-            <p class="error-details">${error.message}</p>
-            <button class="retry-btn" onclick="this.closest('[data-lazy-app]').dataset.lazyAppLoaded='false';location.reload()">
-              Retry
-            </button>
+          <div style="text-align: center; padding: 2rem; opacity: 0.6;">
+            <p><strong>App loaded</strong></p>
+            <p style="font-size: 0.875rem; margin-top: 0.5rem;">Scroll back to view</p>
           </div>
         `;
         }
-      } finally {
-        loadingApps.delete(appId);
       }
+
+      // Dispatch custom event
+      const event = new CustomEvent('lazy-app-loaded', {
+        detail: {
+          appId,
+          framework,
+          container,
+          data: getData(appId), // Include injected data
+          visible: isVisible
+        },
+        bubbles: true
+      });
+      container.dispatchEvent(event);
+
+    } catch (error) {
+      console.error(`[LazyApp] Failed to load app: ${appId}`, error);
+
+      // Show error state with retry
+      if (placeholder) {
+        const retryCount = parseInt(container.dataset.retryCount || '0', 10);
+        const canRetry = retryCount < CONFIG.MAX_RETRIES;
+
+        placeholder.innerHTML = `
+        <div class="app-error">
+          <p><strong>Failed to load app</strong></p>
+          <p class="error-details">${error.message}</p>
+          ${canRetry ? `
+            <button class="retry-btn" data-app-id="${appId}">
+              Retry (${retryCount + 1}/${CONFIG.MAX_RETRIES})
+            </button>
+          ` : `
+            <p class="error-final">Maximum retries exceeded. Please refresh the page.</p>
+          `}
+        </div>
+      `;
+
+        // Attach retry handler
+        if (canRetry) {
+          const retryBtn = placeholder.querySelector('.retry-btn');
+          if (retryBtn) {
+            retryBtn.addEventListener('click', () => retryApp(container));
+          }
+        }
+      }
+
+      throw error; // Re-throw for caller handling
+
+    } finally {
+      loadingApps.delete(appId);
     }
+  }
+
+  /**
+ * Retry loading an app
+ * @param {HTMLElement} container - App container
+ * @returns {Promise<void>}
+ */
+  async function retryApp(container) {
+    const retryCount = parseInt(container.dataset.retryCount || '0', 10);
+    container.dataset.retryCount = String(retryCount + 1);
+    container.dataset.lazyAppLoaded = 'false';
+
+    console.log(`[LazyApp] Retrying app: ${container.id} (attempt ${retryCount + 1})`);
+
+    // Wait before retry
+    await new Promise(resolve => setTimeout(resolve, CONFIG.RETRY_DELAY));
+
+    // Retry loading
+    return loadApp(container);
+  }
+
+  /**
+ * Initialize lazy app loading for all containers on page
+ */
+  function initLazyApps() {
+    const lazyApps = document.querySelectorAll('[data-lazy-app]');
   
-    /**
-   * Setup Intersection Observer
-   * Triggers app loading when container enters viewport
-   */
+    if (lazyApps.length === 0) {
+      console.debug('[LazyApp] No lazy apps found');
+      return;
+    }
+
+    console.debug(`[LazyApp] Found ${lazyApps.length} lazy app(s)`);
+
+    // Setup Intersection Observer
     const observerOptions = {
-      root: null, // viewport
-      rootMargin: '0px', // Load when entering viewport
-      threshold: 0.01 // Trigger when 1% visible
+      root: null,
+      rootMargin: CONFIG.INTERSECTION_MARGIN,
+      threshold: CONFIG.INTERSECTION_THRESHOLD
     };
-  
+
+    // Debounce map to prevent rapid-fire triggers during fast scroll
+    const debounceTimers = new Map();
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const container = entry.target;
+          const containerId = container.id;
         
-          // Load app
-          loadApp(container);
+          // Clear any pending debounce timer
+          if (debounceTimers.has(containerId)) {
+            clearTimeout(debounceTimers.get(containerId));
+          }
         
-          // Stop observing this container (load only once)
-          observer.unobserve(container);
+          // Debounce the load to prevent multiple triggers during fast scroll
+          const timer = setTimeout(() => {
+            debounceTimers.delete(containerId);
+          
+            // Stop observing immediately to prevent multiple triggers
+            observer.unobserve(container);
+          
+            // Load app and handle completion
+            loadApp(container).catch(err => {
+              console.error('[LazyApp] Load error:', err);
+            
+              // On error, re-observe to allow retry on next scroll
+              if (container.dataset.lazyAppLoaded !== 'true') {
+                observer.observe(container);
+              }
+            });
+          }, CONFIG.DEBOUNCE_DELAY);
+        
+          debounceTimers.set(containerId, timer);
         }
       });
     }, observerOptions);
-  
+
     // Observe all lazy apps
     lazyApps.forEach((app, index) => {
-    // Assign ID if missing (for tracking)
+    // Assign ID if missing
       if (!app.id) {
         app.id = `lazy-app-${index + 1}`;
       }
@@ -2266,13 +1809,35 @@ document.addEventListener('click', async (e) => {
       console.debug(`[LazyApp] Observing: ${app.id}`);
       observer.observe(app);
     });
-  
+
     console.debug('[LazyApp] Initialization complete');
-  } // End initLazyApps
+  }
+
+  // Export for testing and usage
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+      loadScript,
+      loadScripts,
+      injectData,
+      getData,
+      loadApp,
+      retryApp,
+      initLazyApps,
+      CONFIG
+    };
+  }
+
+  // Auto-init in browser
+  if (typeof window !== 'undefined') {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initLazyApps);
+    } else {
+      initLazyApps();
+    }
+  }
 })();
 
-    </script>
-<script src="./custom.js"></script>
+</script>
 
 
     <!-- External Scripts -->

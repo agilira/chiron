@@ -1,0 +1,30 @@
+<% if (locals.enabled && locals.items && items.length > 0) { %>
+<nav class="<%= containerClass %>" aria-label="<%= ariaLabel %>">
+    <ol class="<%= listClass %>">
+        <% items.forEach((item, index) => { %>
+            <% 
+                const isLast = index === items.length - 1;
+                const itemCssClass = item.class ? `${itemClass} ${item.class}` : itemClass;
+                const currentClass = item.isCurrent ? ' current' : '';
+                const ariaCurrent = item.isCurrent ? ' aria-current="page"' : '';
+                const titleAttr = item.fullLabel ? ` title="${item.fullLabel}"` : '';
+            %>
+            
+            <% if (item.isCurrent || !item.url) { %>
+                <li class="<%= itemCssClass %><%= currentClass %>"<%= ariaCurrent %><%= titleAttr %>>
+                    <%= item.label %>
+                </li>
+            <% } else { %>
+                <% const targetAttr = item.target ? ` target="${item.target}" rel="noopener noreferrer"` : ''; %>
+                <li class="<%= itemCssClass %>"<%= titleAttr %>>
+                    <a href="<%= item.url %>"<%= targetAttr %>><%= item.label %></a>
+                </li>
+            <% } %>
+
+            <% if (!item.isCurrent && !isLast) { %>
+                <li class="<%= separatorClass %>" aria-hidden="true"><%= separator %></li>
+            <% } %>
+        <% }); %>
+    </ol>
+</nav>
+<% } %>

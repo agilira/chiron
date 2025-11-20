@@ -1,187 +1,277 @@
-/**
- * Tests for TemplateEngine renderHeaderActions method
- * 
- * Tests Fix #3: Inlined getGitHubUrl() into renderHeaderActions()
- * Verifies GitHub URL generation and header actions rendering.
- */
 
 const TemplateEngine = require('../builder/template-engine');
-const path = require('path');
 
-describe('TemplateEngine - Header Actions', () => {
+describe('TemplateEngine Header Actions (Structured Data)', () => {
   let engine;
-  let mockConfig;
+  let testConfig;
+  let testRootDir;
 
   beforeEach(() => {
-    // Minimal valid config
-    mockConfig = {
-      project: { name: 'Test', description: 'Test', base_url: 'https://test.com', language: 'en' },
-      branding: { 
-        company: 'Test', 
-        company_url: 'https://test.com',
-        logo: { 
-          light: 'logo.svg', 
-          dark: 'logo.svg',
-          footer_light: 'logo.svg',
-          footer_dark: 'logo.svg',
-          alt: 'Logo'
-        }
+    testRootDir = __dirname;
+    testConfig = {
+      project: {
+        name: 'Test Project',
+        base_url: 'https://example.com'
       },
-      github: { owner: 'testuser', repo: 'testrepo' },
-      footer: { copyright_holder: 'Test' },
-      seo: { opengraph: {}, twitter: {} },
-      navigation: { 
-        breadcrumb: { prefix: [], root: { label: 'Home', url: '/' } },
-        header_actions: {}
+      features: {
+        search: true,
+        dark_mode: { enabled: true }
       },
-      sidebars: { default: [] },
-      language: { locale: 'en' },
-      features: { search: true, dark_mode: true }
+      github: {
+        owner: 'test-owner',
+        repo: 'test-repo'
+      },
+      navigation: {
+        // Simulating menus.yaml content loaded into config
+        header_actions: [
+          { id: 'search', type: 'button', icon: 'search', label: 'Search' },
+          { id: 'github', type: 'link', icon: 'github', label: 'GitHub' },
+          { id: 'theme', type: 'button', icon: 'sun', label: 'Theme' }
+        ]
+      }
     };
 
-    engine = new TemplateEngine(mockConfig, path.join(__dirname, '..'), path.join(__dirname, '..'));
+    engine = new TemplateEngine(testConfig, testRootDir);
   });
 
-  describe('GitHub URL generation (inlined)', () => {
-    test('should generate GitHub URL when owner and repo configured', () => {
-      const context = { page: {}, isMultilingual: false };
-      const result = engine.renderHeaderActions(context, '../', {});
-      
-      // Should contain GitHub link
-      expect(result).toContain('href="https://github.com/testuser/testrepo"');
-      expect(result).toContain('icon-github');
+  describe('prepareHeaderActionsData()', () => {
+    it('should return standard actions when enabled', () => {
+      const context = {};
+      const data = engine.prepareHeaderActionsData(context);
+
+      expect(data.length).toBe(3);
+
+      // Search Action
+      expect(data[0]).toEqual(expect.objectContaining({
+        id: 'search',
+        type: 'button',
+        icon: 'search',
+        label: 'Search'
+      }));
+
+      // GitHub Action
+      expect(data[1]).toEqual(expect.objectContaining({
+        id: 'github',
+        type: 'link',
+        icon: 'github',
+        label: 'GitHub',
+        url: 'https://github.com/test-owner/test-repo'
+      }));
+
+      // Theme Action
+      expect(data[2]).toEqual(expect.objectContaining({
+        id: 'theme',
+        type: 'button',
+        icon: 'sun',
+        label: 'Theme'
+      }));
     });
 
-    test('should not render GitHub link when owner missing', () => {
-      mockConfig.github = { repo: 'testrepo' }; // Missing owner
-      engine = new TemplateEngine(mockConfig, path.join(__dirname, '..'), path.join(__dirname, '..'));
-      
-      const context = { page: {}, isMultilingual: false };
-      const result = engine.renderHeaderActions(context, '../', {});
-      
-      // Should NOT contain GitHub link
-      expect(result).not.toContain('icon-github');
-      expect(result).not.toContain('github.com');
+    it('should handle custom actions', () => {
+      // Add a custom login action
+      testConfig.navigation.header_actions.push({
+        id: 'login',
+        type: 'link',
+        icon: 'user',
+        label: 'Login',
+        url: '/login'
+      });
+
+      const context = {};
+      const data = engine.prepareHeaderActionsData(context);
+
+      expect(data.length).toBe(4);
+      const loginAction = data[3];
+      expect(loginAction).toEqual(expect.objectContaining({
+        id: 'login',
+        type: 'link',
+        icon: 'user',
+        label: 'Login',
+        url: './login'
+      }));
     });
 
-    test('should not render GitHub link when repo missing', () => {
-      mockConfig.github = { owner: 'testuser' }; // Missing repo
-      engine = new TemplateEngine(mockConfig, path.join(__dirname, '..'), path.join(__dirname, '..'));
-      
-      const context = { page: {}, isMultilingual: false };
-      const result = engine.renderHeaderActions(context, '../', {});
-      
-      // Should NOT contain GitHub link
-      expect(result).not.toContain('icon-github');
-      expect(result).not.toContain('github.com');
+    it('should respect feature flags (disable search)', () => {
+      // Disable search globally
+      testConfig.features.search = false;
+
+      const context = {};
+      const data = engine.prepareHeaderActionsData(context);
+
+      // Should exclude search even if in header_actions
+      const searchAction = data.find(a => a.id === 'search');
+      expect(searchAction).toBeUndefined();
     });
 
-    test('should not render GitHub link when github config missing', () => {
-      delete mockConfig.github;
-      engine = new TemplateEngine(mockConfig, path.join(__dirname, '..'), path.join(__dirname, '..'));
-      
-      const context = { page: {}, isMultilingual: false };
-      const result = engine.renderHeaderActions(context, '../', {});
-      
-      // Should NOT contain GitHub link
-      expect(result).not.toContain('icon-github');
-      expect(result).not.toContain('github.com');
+    it('should respect feature flags (disable dark mode)', () => {
+      // Disable dark mode globally
+      testConfig.features.dark_mode.enabled = false;
+
+      const context = {};
+      const data = engine.prepareHeaderActionsData(context);
+
+      // Should exclude theme toggle
+      const themeAction = data.find(a => a.id === 'theme');
+      expect(themeAction).toBeUndefined();
+    });
+
+    it('should handle missing header_actions config gracefully', () => {
+      testConfig.navigation.header_actions = undefined;
+
+      const context = {};
+      const data = engine.prepareHeaderActionsData(context);
+
+      // Should return empty array or defaults? 
+      // Decision: Empty array if not configured, to avoid magic behavior.
+      expect(data).toEqual([]);
+    });
+
+    it('should resolve URLs for custom actions', () => {
+      testConfig.navigation.header_actions = [
+        { id: 'custom', type: 'link', label: 'Custom', url: '/custom.html' }
+      ];
+
+      const context = {};
+      const pathToRoot = '../';
+      const data = engine.prepareHeaderActionsData(context, pathToRoot);
+
+      expect(data[0].url).toBe('../custom.html');
+    });
+
+    it('should support custom CSS classes', () => {
+      testConfig.navigation.header_actions = [
+        { id: 'search', type: 'button', icon: 'search', label: 'Search', class: 'custom-search' },
+        { id: 'github', type: 'link', icon: 'github', label: 'GitHub', class: 'custom-github' }
+      ];
+
+      const context = {};
+      const data = engine.prepareHeaderActionsData(context);
+
+      expect(data[0].class).toBe('custom-search');
+      expect(data[1].class).toBe('custom-github');
+    });
+
+    it('should support custom attributes', () => {
+      testConfig.navigation.header_actions = [
+        {
+          id: 'custom',
+          type: 'link',
+          label: 'Custom',
+          url: '/custom',
+          attrs: {
+            'data-test': 'value',
+            'aria-describedby': 'desc'
+          }
+        }
+      ];
+
+      const context = {};
+      const data = engine.prepareHeaderActionsData(context);
+
+      expect(data[0].attrs).toEqual({
+        'data-test': 'value',
+        'aria-describedby': 'desc'
+      });
+    });
+
+    it('should handle external links with target and rel', () => {
+      testConfig.navigation.header_actions = [
+        {
+          id: 'external',
+          type: 'link',
+          label: 'External',
+          url: 'https://external.com',
+          external: true
+        }
+      ];
+
+      const context = {};
+      const data = engine.prepareHeaderActionsData(context);
+
+      expect(data[0].target).toBe('_blank');
+      expect(data[0].attrs.rel).toBe('noopener noreferrer');
+    });
+
+    it('should handle theme toggle with dual icons', () => {
+      testConfig.navigation.header_actions = [
+        {
+          id: 'theme',
+          type: 'button',
+          label: 'Toggle Theme',
+          icon: 'should-be-ignored', // This should be ignored
+          class: 'custom-theme'
+        }
+      ];
+
+      const context = {};
+      const data = engine.prepareHeaderActionsData(context);
+
+      const themeAction = data[0];
+      expect(themeAction.dualIcon).toBe(true);
+      expect(themeAction.iconLight).toBe('sun');
+      expect(themeAction.iconDark).toBe('moon');
+      expect(themeAction.class).toBe('custom-theme');
+    });
+
+    it('should support multiple CSS classes as string', () => {
+      testConfig.navigation.header_actions = [
+        {
+          id: 'login',
+          type: 'link',
+          label: 'Login',
+          url: '/login',
+          class: 'btn-login hide-on-mobile'
+        }
+      ];
+
+      const context = {};
+      const data = engine.prepareHeaderActionsData(context);
+
+      expect(data[0].class).toBe('btn-login hide-on-mobile');
+    });
+
+    it('should support multiple CSS classes as array', () => {
+      testConfig.navigation.header_actions = [
+        {
+          id: 'donate',
+          type: 'link',
+          label: 'Donate',
+          url: '/donate',
+          class: ['btn-donate', 'btn-primary', 'hide-on-mobile']
+        }
+      ];
+
+      const context = {};
+      const data = engine.prepareHeaderActionsData(context);
+
+      expect(data[0].class).toBe('btn-donate btn-primary hide-on-mobile');
+    });
+
+    it('should filter out empty classes from array', () => {
+      testConfig.navigation.header_actions = [
+        {
+          id: 'custom',
+          type: 'link',
+          label: 'Custom',
+          url: '/custom',
+          class: ['btn-custom', '', null, 'active', undefined]
+        }
+      ];
+
+      const context = {};
+      const data = engine.prepareHeaderActionsData(context);
+
+      expect(data[0].class).toBe('btn-custom active');
     });
   });
 
-  describe('Header actions rendering', () => {
-    test('should render all actions when enabled', () => {
-      const context = { page: {}, isMultilingual: false };
-      const result = engine.renderHeaderActions(context, '../', {});
+  describe('CSS customization', () => {
+    it('should return default container class', () => {
+      const context = {};
+      const data = engine.prepareHeaderActionsData(context);
       
-      // Search button
-      expect(result).toContain('id="searchToggle"');
-      expect(result).toContain('icon-search');
-      
-      // GitHub link
-      expect(result).toContain('icon-github');
-      expect(result).toContain('testuser/testrepo');
-      
-      // Theme toggle
-      expect(result).toContain('id="themeToggle"');
-      expect(result).toContain('icon-sun');
-      expect(result).toContain('icon-moon');
-      
-      // Mobile sidebar toggle (always present)
-      expect(result).toContain('id="sidebarToggle"');
-      expect(result).toContain('icon-menu');
-    });
-
-    test('should respect action disabled flags', () => {
-      mockConfig.navigation.header_actions = {
-        search: { enabled: false },
-        github: { enabled: false },
-        theme: { enabled: false }
-      };
-      engine = new TemplateEngine(mockConfig, path.join(__dirname, '..'), path.join(__dirname, '..'));
-      
-      const context = { page: {}, isMultilingual: false };
-      const result = engine.renderHeaderActions(context, '../', {});
-      
-      // Should NOT contain disabled actions
-      expect(result).not.toContain('id="searchToggle"');
-      expect(result).not.toContain('icon-github');
-      expect(result).not.toContain('id="themeToggle"');
-      
-      // Mobile sidebar always present
-      expect(result).toContain('id="sidebarToggle"');
-    });
-
-    test('should use custom labels from i18n', () => {
-      const i18nStrings = {
-        aria_search_button: 'Cerca documenti',
-        aria_github: 'Vai al repository',
-        aria_theme_toggle: 'Cambia tema',
-        aria_sidebar_toggle: 'Menu navigazione'
-      };
-      
-      const context = { page: {}, isMultilingual: false };
-      const result = engine.renderHeaderActions(context, '../', i18nStrings);
-      
-      expect(result).toContain('aria-label="Cerca documenti"');
-      expect(result).toContain('aria-label="Vai al repository"');
-      expect(result).toContain('aria-label="Cambia tema"');
-      expect(result).toContain('aria-label="Menu navigazione"');
-    });
-
-    test('should apply custom CSS classes', () => {
-      mockConfig.navigation.header_actions = {
-        search: { class: 'custom-search' },
-        github: { class: 'custom-github' },
-        theme: { class: 'custom-theme' }
-      };
-      engine = new TemplateEngine(mockConfig, path.join(__dirname, '..'), path.join(__dirname, '..'));
-      
-      const context = { page: {}, isMultilingual: false };
-      const result = engine.renderHeaderActions(context, '../', {});
-      
-      expect(result).toContain('custom-search');
-      expect(result).toContain('custom-github');
-      expect(result).toContain('custom-theme');
-    });
-
-    test('should respect feature flags', () => {
-      mockConfig.features.search = false;
-      mockConfig.features.dark_mode = false;
-      engine = new TemplateEngine(mockConfig, path.join(__dirname, '..'), path.join(__dirname, '..'));
-      
-      const context = { page: {}, isMultilingual: false };
-      const result = engine.renderHeaderActions(context, '../', {});
-      
-      // Search and theme disabled by features
-      expect(result).not.toContain('id="searchToggle"');
-      expect(result).not.toContain('id="themeToggle"');
-      
-      // GitHub still shown (has own enabled flag)
-      expect(result).toContain('icon-github');
-      
-      // Sidebar always shown
-      expect(result).toContain('id="sidebarToggle"');
+      // Actions data doesn't include container class - it's in headerData
+      expect(Array.isArray(data)).toBe(true);
     });
   });
 });

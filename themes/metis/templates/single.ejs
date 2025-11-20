@@ -11,7 +11,7 @@
     {{SVG_SPRITE}}
     
     <!-- Header -->
-    <%- include('partials/header', { githubUrl, logoImages, projectNameSpan, headerNav, headerActions }) %>
+    <%- include('partials/header', { githubUrl, logoImages, projectNameSpan, headerActionsData, languageSwitcher, headerDropdownTrigger, aria, context }) %>
 
     <!-- Main Layout -->
     <div class="layout<% if (hideSidebar) { %> no-sidebar<% } %>">
@@ -20,19 +20,19 @@
         <aside class="sidebar" id="sidebar" role="complementary" aria-label="Sidebar">
             <!-- Mobile Header Navigation -->
             <nav class="mobile-header-nav" aria-label="Main navigation (mobile)">
-                <%- mobileHeaderNav %>
+                <%- mobileNav %>
             </nav>
             
             <!-- Sidebar Navigation -->
             <nav class="sidebar-nav" <%= aria('aria_nav_sidebar') %>>
-                <%- navigation %>
+                <%- sidebar %>
             </nav>
         </aside>
         <% } else { %>
         <!-- Mobile Menu Only (when sidebar is hidden) -->
         <aside class="sidebar mobile-only" id="sidebar" role="complementary" <%= aria('aria_nav_mobile') %>>
             <nav class="mobile-header-nav" <%= aria('aria_nav_main') %>>
-                <%- mobileHeaderNav %>
+                <%- mobileNav %>
             </nav>
         </aside>
         <% } %>
@@ -40,7 +40,7 @@
         <!-- Main Content -->
         <main class="main-content" id="main-content" role="main">
             <div class="content-container">
-                <%- breadcrumb %>
+                <%- include('partials/breadcrumb', breadcrumbData) %>
 
                 <!-- Page Content -->
                 <div class="content">
@@ -82,7 +82,7 @@
                     </header>
                     <% } %>
                     
-                    <%- pageContent %>
+                    <%- content %>
                     
                     <!-- Blog Footer with Categories and Tags -->
                     <% if ((page.categories && page.categories.length > 0) || (page.tags && page.tags.length > 0)) { %>
@@ -119,26 +119,14 @@
     </div>
 
     <!-- Footer -->
-    <%- include('partials/footer', { copyrightYear, copyrightHolder, footerLegalLinks, companyUrl, logoFooterLight, logoFooterDark, logoAlt }) %>
+    <%- include('partials/footer', { copyrightYear, copyrightHolder, companyUrl, logoFooterLight, logoFooterDark, logoAlt, context }) %>
 
     <!-- Mobile Overlay -->
     <div class="mobile-overlay" id="mobileOverlay"></div>
 
-    <% if (menus?.ui_features?.scroll_to_top?.enabled === true) { %>
-    <!-- Scroll to Top Button -->
-    <button 
-        class="scroll-to-top" 
-        id="scrollToTop" 
-        aria-label="Scroll to top of page"
-        title="Scroll to top"
-        type="button"
-    >
-        ↑
-    </button>
-    <% } %>
+    <%- scrollToTop %>
 
-    <!-- Search Modal -->
-    <%- include('partials/search-modal') %>
+    <%- searchModal %>
 
     <!-- Scripts -->
     <%- include('partials/scripts', { pathToRoot, i18nClientConfig, componentScripts, externalScripts }) %>

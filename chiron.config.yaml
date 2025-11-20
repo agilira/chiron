@@ -161,7 +161,7 @@ navigation:
   # Override global default for specific sidebars
   sidebar_pagination:
     default: true   # Enabled for default sidebar
-    plugins: true   # Enabled for plugins sidebar (sequential documentation)
+    plugins: true   # Enabled for plugins sidebar (sequential documentation example)
 
 # Footer Configuration
 footer:
@@ -248,6 +248,45 @@ security:
   #   - unpkg.com
   #   - your-company-cdn.com
 
+# UI Features Configuration
+# =========================
+# Control which JavaScript features are loaded on pages
+# Disabling unused features reduces bundle size and improves performance
+features:
+  # Dark mode theme toggle
+  # Adds theme switcher button in header and persists user preference
+  dark_mode:
+    enabled: true
+  
+  # Breadcrumb navigation
+  # Shows hierarchical path navigation at the top of content
+  # Can be disabled per-page via frontmatter: breadcrumb: false
+  breadcrumb:
+    enabled: true
+  
+  # Scroll to top button
+  # Shows floating button to scroll back to page top
+  scroll_to_top:
+    enabled: true
+    threshold: 300  # Show button after scrolling N pixels
+  
+  # Smooth scrolling for anchor links
+  # Enables smooth scroll animation when clicking TOC or anchor links
+  # Note: Auto-included if scroll_to_top is enabled (dependency)
+  smooth_scroll:
+    enabled: true
+  
+  # Header dropdown menus
+  # Required for multi-level navigation in header
+  header_dropdowns:
+    enabled: true
+    trigger: hover  # 'hover' or 'click'
+  
+  # Language switcher
+  # Shows language picker in header (requires multilingual setup)
+  language_switcher:
+    enabled: true
+
 # Build Configuration
 build:
   output_dir: docs
@@ -255,10 +294,10 @@ build:
   assets_dir: assets
   templates_dir: templates
   
-  # Custom templates directory (optional)
-  # Templates in this folder take precedence over default templates
-  # See CUSTOM-TEMPLATES.md for details
-  custom_templates_dir: custom-templates
+  # Core templates directory (highest priority)
+  # Contains fallback components and full template overrides
+  # Structure: core/ (system files), template-parts/ (UI components), templates/ (full overrides)
+  core_templates_dir: themes-core
   
   # Asset Optimization
   # Automatically minify CSS/JS and optimize images during build

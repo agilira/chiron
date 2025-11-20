@@ -1,32 +1,32 @@
 /**
- * Custom Sidebar Templates - Integration Tests
+ * Core Templates - Integration Tests
  * 
- * These tests verify that custom sidebar templates work end-to-end
+ * These tests verify that core template overrides work end-to-end
  * in real scenarios without complex mocking.
  */
 
 const fs = require('fs');
 const path = require('path');
 
-describe('Custom Sidebar Templates - Integration', () => {
+describe('Core Templates - Integration', () => {
   const rootDir = path.join(__dirname, '..');
-  const customTemplatesDir = path.join(rootDir, 'custom-templates');
+  const coreTemplatesDir = path.join(rootDir, 'themes-core', 'templates');
   const sidebarsConfigPath = path.join(rootDir, 'sidebars.yaml');
   const configLoaderPath = path.join(rootDir, 'builder', 'config', 'config-loader.js');
 
   describe('Template Files', () => {
-    it('should have custom-templates directory', () => {
-      expect(fs.existsSync(customTemplatesDir)).toBe(true);
+    it('should have themes-core/templates directory', () => {
+      expect(fs.existsSync(coreTemplatesDir)).toBe(true);
     });
 
-    it('custom sidebar templates should use security utilities', () => {
-      // Find any .ejs files in custom-templates directory
-      const files = fs.readdirSync(customTemplatesDir)
+    it('core sidebar templates should use security utilities', () => {
+      // Find any .ejs files in themes-core/templates directory
+      const files = fs.readdirSync(coreTemplatesDir)
         .filter(f => f.endsWith('.ejs') && f.includes('sidebar'));
       
       // If there are sidebar templates, verify they use security
       if (files.length > 0) {
-        const templatePath = path.join(customTemplatesDir, files[0]);
+        const templatePath = path.join(coreTemplatesDir, files[0]);
         const content = fs.readFileSync(templatePath, 'utf-8');
         
         // Should use at least one security utility
@@ -36,14 +36,14 @@ describe('Custom Sidebar Templates - Integration', () => {
       }
     });
 
-    it('custom sidebar templates should use sidebarConfig data', () => {
-      // Find any .ejs files in custom-templates directory
-      const files = fs.readdirSync(customTemplatesDir)
+    it('core sidebar templates should use sidebarConfig data', () => {
+      // Find any .ejs files in themes-core/templates directory
+      const files = fs.readdirSync(coreTemplatesDir)
         .filter(f => f.endsWith('.ejs') && f.includes('sidebar'));
       
       // If there are sidebar templates, verify they use config data
       if (files.length > 0) {
-        const templatePath = path.join(customTemplatesDir, files[0]);
+        const templatePath = path.join(coreTemplatesDir, files[0]);
         const content = fs.readFileSync(templatePath, 'utf-8');
         expect(content).toContain('sidebarConfig');
       }
@@ -67,7 +67,7 @@ describe('Custom Sidebar Templates - Integration', () => {
       // Read the actual config-loader code to verify validation exists
       const configLoaderContent = fs.readFileSync(configLoaderPath, 'utf-8');
       
-      // Verify there's validation for custom template sidebars
+      // Verify there's validation for core template sidebars
       expect(configLoaderContent).toContain('sidebarConfig.template');
       expect(configLoaderContent).toContain('typeof sidebarConfig.template');
       
@@ -75,10 +75,10 @@ describe('Custom Sidebar Templates - Integration', () => {
       expect(configLoaderContent).toContain("!== 'string'");
     });
 
-    it('should skip sections validation for custom template sidebars', () => {
+    it('should skip sections validation for core template sidebars', () => {
       const configLoaderContent = fs.readFileSync(configLoaderPath, 'utf-8');
       
-      // Verify custom template sidebars can skip sections array requirement
+      // Verify core template sidebars can skip sections array requirement
       expect(configLoaderContent).toContain('if (sidebarConfig.template)');
       expect(configLoaderContent).toContain('continue');
     });
@@ -249,11 +249,11 @@ describe('Custom Sidebar Templates - Integration', () => {
       expect(content).toMatch(/license|copyright/i);
     });
 
-    it('should have custom-templates/README.md documentation', () => {
-      const docPath = path.join(rootDir, 'custom-templates', 'README.md');
+    it('should have themes-core/README.md documentation', () => {
+      const docPath = path.join(rootDir, 'themes-core', 'README.md');
       expect(fs.existsSync(docPath)).toBe(true);
       const content = fs.readFileSync(docPath, 'utf-8');
-      expect(content).toContain('Custom Sidebar Templates');
+      expect(content).toContain('Core Templates');
     });
   });
 });

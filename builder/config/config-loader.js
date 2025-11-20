@@ -51,12 +51,28 @@ function loadConfig(configPath) {
       config.navigation.header_dropdown_trigger = menus.header_dropdown_trigger || config.navigation.header_dropdown_trigger;
       config.navigation.show_project_name = menus.show_project_name !== undefined ? menus.show_project_name : config.navigation.show_project_name;
       config.navigation.breadcrumb = menus.breadcrumb || config.navigation.breadcrumb;
-      config.navigation.ui_features = menus.ui_features || config.navigation.ui_features;
       
-      // Merge footer legal links
+      // Merge footer legal links (keep in both places for BC and menu() helper)
       if (menus.footer_legal_links) {
         config.footer = config.footer || {};
         config.footer.legal_links = menus.footer_legal_links;
+      }
+      
+      // Extract custom menus (all menus except the standard ones)
+      // NOTE: 'header' and 'footer_legal_links' are now treated as custom menus for menu() helper
+      const standardMenuKeys = ['header_actions', 'header_dropdown_trigger', 'show_project_name', 'breadcrumb'];
+      const customMenus = {};
+      for (const [key, value] of Object.entries(menus)) {
+        if (!standardMenuKeys.includes(key)) {
+          customMenus[key] = value;
+        }
+      }
+      
+      // Make custom menus available in config.menus
+      if (Object.keys(customMenus).length > 0) {
+        config.menus = customMenus;
+      } else {
+        config.menus = {};
       }
       
       // Remove the menus_file reference from config (internal use only)

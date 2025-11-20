@@ -81,7 +81,8 @@ describe('MarkdownParser Additional Coverage', () => {
       const result = parser.parse(content);
       
       expect(result.html).toContain('<pre');
-      expect(result.html).toContain('const x = 1');
+      expect(result.html).toContain('const');
+      expect(result.html).toContain('hljs-'); // Should have highlight.js classes
     });
 
     test('should handle tables', () => {

@@ -64,7 +64,8 @@
     searchDataPromise = null;
   };
     
-  window.addEventListener('beforeunload', cleanup);
+  // Use pagehide instead of beforeunload (deprecated API)
+  window.addEventListener('pagehide', cleanup);
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {cleanup();}
   });

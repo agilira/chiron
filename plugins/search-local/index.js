@@ -40,6 +40,7 @@
 const SearchIndexer = require('./search-indexer');
 const fs = require('fs');
 const path = require('path');
+const { copyAndMinifyJS } = require('../../builder/utils/file-utils');
 
 module.exports = {
   name: 'search-local',
@@ -140,12 +141,16 @@ module.exports = {
         // Save index to output directory
         await indexer.save(outputDir);
         
-        // Copy search-client.js to output directory
+        // Copy and minify search-client.js to output directory
         const searchClientSource = path.join(__dirname, 'search-client.js');
         const searchClientDest = path.join(outputDir, 'search-client.js');
         
-        fs.copyFileSync(searchClientSource, searchClientDest);
-        context.logger.info('Search client script copied to output');
+        await copyAndMinifyJS(searchClientSource, searchClientDest, {
+          minify: true,
+          config: context.config
+        });
+        
+        context.logger.info('Search client script processed');
         
         // Store stats
         const pageCount = indexer.index.length;

@@ -157,18 +157,25 @@ class MarkdownParser {
 
 
 
-    // Add copy button to code blocks
+    // Simple syntax highlighting for code blocks with copy button
     renderer.code = ({ text, lang }) => {
       const language = lang || 'text';
-      // Trim to remove leading/trailing newlines
       const trimmedCode = String(text).trim();
-      const escapedCode = this.escapeHtml(trimmedCode);
-
+      
       // Validate language string to prevent XSS
       const safeLang = this.escapeHtml(language.replace(/[^a-zA-Z0-9\-_]/g, ''));
-
-      // Simplified: no header, copy button positioned absolutely in top-right
-      return `<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-${safeLang}">${escapedCode}</code></pre></div>`;
+      
+      // Skip highlighting for plain text
+      let codeContent;
+      if (['text', 'plaintext', 'txt'].includes(language.toLowerCase())) {
+        codeContent = this.escapeHtml(trimmedCode);
+      } else {
+        // Apply simple pattern-based syntax highlighting on raw text, then escape
+        codeContent = this.highlightCode(trimmedCode, language);
+      }
+      
+      // Return with copy button
+      return `<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-${safeLang}">${codeContent}</code></pre></div>`;
     };
 
     marked.use({ renderer });
@@ -895,6 +902,88 @@ ${field}
       this.logger.error('Error parsing markdown', { error: error.message, stack: error.stack });
       throw new Error(`Failed to parse markdown: ${error.message}`);
     }
+  }
+
+  /**
+   * Simple syntax highlighting for code blocks
+   * @param {string} code - Raw code (not HTML-escaped)
+   * @param {string} _lang - Language identifier (unused, pattern-based detection)
+   * @returns {string} - Code with span elements for syntax highlighting (HTML-safe)
+   */
+  highlightCode(code, _lang) {
+    // Pattern matching for common tokens - ordine importante!
+    const patterns = [
+      // Comments e documentation (match first to avoid highlighting inside)
+      { regex: /(\/\*\*[\s\S]*?\*\/)/g, type: 'meta' }, // JSDoc
+      { regex: /(\/\*[\s\S]*?\*\/)/g, type: 'comment' }, // Block comments
+      { regex: /(\/\/[^\n]*)/g, type: 'comment' }, // Line comments
+      { regex: /(#[^\n]*)/g, type: 'comment' }, // Python/Shell comments
+      
+      // Strings e template literals
+      { regex: /("(?:[^"\\]|\\.)*")/g, type: 'string' },
+      { regex: /('(?:[^'\\]|\\.)*')/g, type: 'string' },
+      { regex: /(`(?:[^`\\]|\\.)*`)/g, type: 'template-literal' },
+      
+      // Keywords (solo i più importanti per JS/Python)
+      { regex: /\b(function|const|let|var|if|else|for|while|return|class|def|import|from|export|async|await|new|try|catch|throw|switch|case|break|continue)\b/g, type: 'keyword' },
+      
+      // Built-in commands (solo comandi principali npm/yarn/git)
+      { regex: /\b(npm|yarn|pnpm|git|docker|node|python|pip)\b/g, type: 'built_in' },
+      
+      // Literals
+      { regex: /\b(true|false|null|undefined|None|True|False)\b/g, type: 'literal' },
+      
+      // Numbers
+      { regex: /\b(0x[a-fA-F0-9]+|\d+\.?\d*)\b/g, type: 'number' },
+      
+      // Function calls
+      { regex: /\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*(?=\()/g, type: 'title function_' }
+    ];
+
+    // Tokenize code
+    const matches = [];
+    
+    patterns.forEach(({ regex, type }) => {
+      let match;
+      const re = new RegExp(regex.source, regex.flags);
+      while ((match = re.exec(code)) !== null) {
+        matches.push({
+          start: match.index,
+          end: match.index + match[0].length,
+          text: match[0],
+          type
+        });
+      }
+    });
+    
+    // Sort matches by position
+    matches.sort((a, b) => a.start - b.start);
+    
+    // Build output, avoiding overlapping matches
+    let result = '';
+    let pos = 0;
+    
+    for (const match of matches) {
+      // Skip if overlapping with previous match
+      if (match.start < pos) {continue;}
+      
+      // Add text before match (escaped)
+      if (match.start > pos) {
+        result += this.escapeHtml(code.substring(pos, match.start));
+      }
+      
+      // Add highlighted match (escaped)
+      result += `<span class="hljs-${match.type}">${this.escapeHtml(match.text)}</span>`;
+      
+      pos = match.end;
+    }
+    
+    // Add remaining text (escaped)
+    if (pos < code.length) {
+      result += this.escapeHtml(code.substring(pos));
+    }
+    
+    return result;
   }
 
   /**

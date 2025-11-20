@@ -1,0 +1,50 @@
+<%# Language Switcher (if multilingual) - rendered from helper function %>
+<%- languageSwitcher %>
+
+<%# Header Actions from config %>
+<% if (locals.headerActionsData && headerActionsData.length > 0) { %>
+    <% headerActionsData.forEach(action => { %>
+        <% 
+            const cssClass = action.class ? `header-action-btn ${action.class}` : 'header-action-btn';
+            const attrs = action.attrs ? Object.entries(action.attrs).map(([k, v]) => `${k}="${v}"`).join(' ') : '';
+            const iconUrl = `assets/icons.svg#icon-${action.icon}`;
+        %>
+
+        <% if (action.type === 'button') { %>
+            <button type="button" class="<%= cssClass %>" id="<%= action.id %>Toggle" aria-label="<%= action.label %>" <%= attrs %>>
+                <% if (action.dualIcon) { %>
+                    <%# Theme toggle with dual sun/moon icons %>
+                    <svg width="20" height="20" aria-hidden="true" class="theme-icon-light">
+                        <use href="assets/icons.svg#icon-<%= action.iconLight %>"></use>
+                    </svg>
+                    <svg width="20" height="20" aria-hidden="true" class="theme-icon-dark" style="display: none;">
+                        <use href="assets/icons.svg#icon-<%= action.iconDark %>"></use>
+                    </svg>
+                <% } else if (action.icon) { %>
+                    <svg width="20" height="20" aria-hidden="true">
+                        <use href="<%= iconUrl %>"></use>
+                    </svg>
+                <% } else { %>
+                    <span><%= action.label %></span>
+                <% } %>
+            </button>
+        <% } else { %>
+            <a href="<%= action.url %>" class="<%= cssClass %>" aria-label="<%= action.label %>" <%= attrs %>>
+                <% if (action.icon) { %>
+                    <svg width="20" height="20" aria-hidden="true">
+                        <use href="<%= iconUrl %>"></use>
+                    </svg>
+                <% } else { %>
+                    <span><%= action.label %></span>
+                <% } %>
+            </a>
+        <% } %>
+    <% }); %>
+<% } %>
+
+<%# Mobile Sidebar Toggle (always shown) %>
+<button type="button" class="header-action-btn mobile-only" id="sidebarToggle" <%= aria('aria_sidebar_toggle') %>>
+    <svg width="20" height="20" aria-hidden="true">
+        <use href="assets/icons.svg#icon-menu"></use>
+    </svg>
+</button>
