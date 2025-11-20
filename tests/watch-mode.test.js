@@ -146,7 +146,8 @@ describe('Watch Mode - File Detection', () => {
       }
     });
     
-    // Create files first
+    // Create directories and files first
+    fs.ensureDirSync(path.join(themeDir, 'styles'));
     fs.writeFileSync(mdFile, '# Test');
     fs.writeFileSync(cssFile, 'body { color: red; }');
     fs.writeFileSync(ejsFile, '<div>Test</div>');

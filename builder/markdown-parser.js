@@ -12,6 +12,9 @@ const { marked } = require('marked');
 const { logger } = require('./logger');
 const ShortcodeParser = require('./shortcode-parser');
 const { abbreviationExtension, definitionListExtension, replaceAbbreviations } = require('./markdown-extensions');
+const { Worker } = require('worker_threads');
+const path = require('path');
+const os = require('os');
 
 // Parser Configuration Constants
 const PARSER_CONFIG = {
@@ -26,6 +29,13 @@ class MarkdownParser {
     this.toc = []; // Table of Contents entries
     this.abbreviations = new Map(); // Store abbreviations
     this.logger = logger.child('MarkdownParser');
+    
+    // Worker thread pool configuration
+    this.maxWorkers = Math.max(1, os.cpus().length - 1); // Leave 1 CPU for main thread
+    this.workerPool = [];
+    this.availableWorkers = [];
+    this.workersAvailable = true;
+    this.workerTimeout = 30000; // 30 seconds default
     
     // Initialize shortcode parser
     this.shortcode = new ShortcodeParser();
@@ -1031,6 +1041,148 @@ ${field}
    */
   getTOC() {
     return this.toc || [];
+  }
+
+  /**
+   * Parse markdown in a worker thread
+   * @param {string} content - Markdown content to parse
+   * @param {object} options - Parsing options
+   * @returns {Promise<{html: string, toc: Array, frontmatter: object}>}
+   */
+  async parseInWorker(content, options = {}) {
+    if (!content || typeof content !== 'string') {
+      throw new Error('Invalid content: must be a non-empty string');
+    }
+
+    const worker = await this.getAvailableWorker();
+
+    return new Promise((resolve, reject) => {
+      const timeout = setTimeout(() => {
+        reject(new Error('Worker timeout exceeded'));
+        this.releaseWorker(worker);
+      }, this.workerTimeout);
+
+      worker.once('message', (result) => {
+        clearTimeout(timeout);
+        
+        if (result.success) {
+          resolve({
+            html: result.html,
+            toc: result.toc,
+            frontmatter: result.frontmatter
+          });
+        } else {
+          reject(new Error(result.error));
+        }
+        
+        this.releaseWorker(worker);
+      });
+
+      worker.once('error', (error) => {
+        clearTimeout(timeout);
+        reject(error);
+        this.releaseWorker(worker);
+      });
+
+      worker.postMessage({
+        type: 'parse',
+        content,
+        options
+      });
+    });
+  }
+
+  /**
+   * Parse multiple markdown files in parallel using worker threads
+   * @param {Array<{content: string, id: string}>} files - Array of files to parse
+   * @returns {Promise<Array>}
+   */
+  async parseMultipleInWorkers(files) {
+    const results = await Promise.all(
+      files.map(file => this.parseInWorker(file.content))
+    );
+    return results;
+  }
+
+  /**
+   * Parse with fallback to synchronous if workers fail
+   * @param {string} content - Markdown content
+   * @returns {Promise<{html: string, toc: Array}>}
+   */
+  async parseWithFallback(content) {
+    if (!this.workersAvailable) {
+      // Fallback to synchronous parsing
+      const result = this.parse(content);
+      return {
+        html: result.html,
+        toc: this.getTOC()
+      };
+    }
+
+    try {
+      return await this.parseInWorker(content);
+    } catch (error) {
+      this.logger.warn('Worker parsing failed, falling back to sync', { error: error.message });
+      const result = this.parse(content);
+      return {
+        html: result.html,
+        toc: this.getTOC()
+      };
+    }
+  }
+
+  /**
+   * Get an available worker from the pool or create a new one
+   * @returns {Promise<Worker>}
+   */
+  async getAvailableWorker() {
+    // Check if there's an available worker
+    if (this.availableWorkers.length > 0) {
+      return this.availableWorkers.pop();
+    }
+
+    // Create new worker if pool is not full
+    if (this.workerPool.length < this.maxWorkers) {
+      const workerPath = path.join(__dirname, 'workers', 'markdown-worker.js');
+      const worker = new Worker(workerPath);
+      
+      // Increase max listeners to avoid warnings with multiple parallel operations
+      worker.setMaxListeners(20);
+      
+      this.workerPool.push(worker);
+      return worker;
+    }
+
+    // Wait for a worker to become available
+    return new Promise((resolve) => {
+      const checkInterval = setInterval(() => {
+        if (this.availableWorkers.length > 0) {
+          clearInterval(checkInterval);
+          resolve(this.availableWorkers.pop());
+        }
+      }, 10);
+    });
+  }
+
+  /**
+   * Release a worker back to the available pool
+   * @param {Worker} worker - Worker to release
+   */
+  releaseWorker(worker) {
+    if (!this.availableWorkers.includes(worker)) {
+      this.availableWorkers.push(worker);
+    }
+  }
+
+  /**
+   * Terminate all workers and clean up
+   * @returns {Promise<void>}
+   */
+  async terminateWorkers() {
+    const terminationPromises = this.workerPool.map(worker => worker.terminate());
+    await Promise.all(terminationPromises);
+    this.workerPool = [];
+    this.availableWorkers = [];
   }
 }
 
