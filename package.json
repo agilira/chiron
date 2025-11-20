@@ -5,8 +5,7 @@
   "main": "builder/index.js",
   "scripts": {
     "build": "node builder/index.js",
-    "dev": "node builder/index.js --watch",
-    "dev:server": "npx browser-sync start --server docs --files 'docs/**/*' --no-notify --port 3000",
+    "watch": "node builder/index.js --dev",
     "preview": "npx serve docs",
     "clean": "node -e \"require('fs').rmSync('docs', {recursive: true, force: true})\"",
     "test": "jest",

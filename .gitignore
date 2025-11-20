@@ -12,11 +12,13 @@ test-output/
 tests/temp-output/
 tests/temp-config/
 tests/temp-test-*/
+test-watch-tmp/
 coverage/
 
 # Manual test scripts (keep for dev, don't commit)
 test-*.js
 test-*.yaml
+test_output.txt
 # But allow test utilities in fixtures
 !tests/fixtures/**/test-*.js
 

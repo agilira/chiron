@@ -63,6 +63,22 @@ class TemplateEngine {
     this.logger = logger.child('TemplateEngine');
     this.markdownParser = new MarkdownParser(); // For component detection
     this.pageMetadata = {}; // Maps file paths to metadata (including draft status)
+    this.currentDependencies = new Set(); // Track dependencies for the current render
+  }
+
+  /**
+   * Get dependencies for the last rendered page
+   * @returns {Array<string>} List of file paths
+   */
+  getDependencies() {
+    return Array.from(this.currentDependencies);
+  }
+
+  /**
+   * Clear dependencies tracker
+   */
+  clearDependencies() {
+    this.currentDependencies.clear();
   }
 
   /**
@@ -94,16 +110,16 @@ class TemplateEngine {
    * @returns {string} Space-separated class string
    */
   normalizeClasses(classes) {
-    if (!classes) {return '';}
-    
+    if (!classes) { return ''; }
+
     if (Array.isArray(classes)) {
       return classes.filter(c => c && typeof c === 'string').join(' ').trim();
     }
-    
+
     if (typeof classes === 'string') {
       return classes.trim();
     }
-    
+
     return '';
   }
 
@@ -336,6 +352,12 @@ class TemplateEngine {
     } catch {
       this.cacheTemplate(templateName, template, Date.now());
     }
+
+    // Track dependency
+    if (this.currentDependencies) {
+      this.currentDependencies.add(templatePath);
+    }
+
     return { content: template, path: templatePath };
   }
 
@@ -1005,13 +1027,13 @@ class TemplateEngine {
         if (action.id === 'github') {
           action.url = `https://github.com/${github.owner}/${github.repo}`;
           action.target = '_blank';
-          if (!action.attrs) {action.attrs = {};}
+          if (!action.attrs) { action.attrs = {}; }
           action.attrs.rel = 'noopener';
         } else {
           action.url = this.resolveUrl(actionConfig.url || '#', pathToRoot);
           if (actionConfig.external) {
             action.target = '_blank';
-            if (!action.attrs) {action.attrs = {};}
+            if (!action.attrs) { action.attrs = {}; }
             action.attrs.rel = 'noopener noreferrer';
           }
         }
@@ -1709,12 +1731,12 @@ class TemplateEngine {
       // Render using a wrapper template that includes the partial
       // Pass data as flat object so partial can access prev, next, i18n directly
       const wrapperTemplate = `<%- include('partials/pagination', { prev, next, i18n }) %>`;
-      
-      return ejs.render(wrapperTemplate, { 
+
+      return ejs.render(wrapperTemplate, {
         prev: pagination.prev,
         next: pagination.next,
         i18n: context.i18n
-      }, { 
+      }, {
         views: viewsPaths,
         filename: dummyFilename
       });
@@ -1753,8 +1775,8 @@ class TemplateEngine {
       }
 
       const wrapperTemplate = `<%- include('partials/scroll-to-top', { label, title }) %>`;
-      
-      return ejs.render(wrapperTemplate, { label, title }, { 
+
+      return ejs.render(wrapperTemplate, { label, title }, {
         views: viewsPaths,
         filename: path.join(coreTemplatesDir, '_scroll-to-top-wrapper.ejs')
       });
@@ -1776,7 +1798,7 @@ class TemplateEngine {
     const searchInput = context.i18n?.search_input || 'Search input';
     const searchClear = context.i18n?.search_clear || 'Clear search';
     const searchResults = context.i18n?.search_results || 'Search results';
-    
+
     // Render using EJS partial
     // Partial location: themes-core/partials/search-modal.ejs (with theme override support)
     try {
@@ -1793,15 +1815,15 @@ class TemplateEngine {
       }
 
       const wrapperTemplate = `<%- include('partials/search-modal', { searchTitle, searchPlaceholder, searchClose, searchInput, searchClear, searchResults }) %>`;
-      
-      return ejs.render(wrapperTemplate, { 
-        searchTitle, 
-        searchPlaceholder, 
-        searchClose, 
-        searchInput, 
-        searchClear, 
-        searchResults 
-      }, { 
+
+      return ejs.render(wrapperTemplate, {
+        searchTitle,
+        searchPlaceholder,
+        searchClose,
+        searchInput,
+        searchClear,
+        searchResults
+      }, {
         views: viewsPaths,
         filename: path.join(coreTemplatesDir, '_search-modal-wrapper.ejs')
       });
@@ -1842,13 +1864,13 @@ class TemplateEngine {
         aria,
         context
       }) %>`;
-      
+
       // Get i18n context for aria helper
       const { createAriaHelper } = require('./i18n/i18n-helpers');
       const i18nStrings = context.i18n || {};
       const aria = createAriaHelper(i18nStrings);
-      
-      return ejs.render(wrapperTemplate, { 
+
+      return ejs.render(wrapperTemplate, {
         githubUrl,
         logoImages,
         projectNameSpan,
@@ -1861,7 +1883,7 @@ class TemplateEngine {
           const optionsWithContext = { ...menuOptions, context };
           return this.renderMenu(menuName, optionsWithContext);
         }
-      }, { 
+      }, {
         views: viewsPaths,
         filename: path.join(coreTemplatesDir, '_header-wrapper.ejs')
       });
@@ -1909,8 +1931,8 @@ class TemplateEngine {
         externalStyles,
         config
       }) %>`;
-      
-      return ejs.render(wrapperTemplate, { 
+
+      return ejs.render(wrapperTemplate, {
         page: context.page,
         pathToRoot,
         metaTags,
@@ -1919,7 +1941,7 @@ class TemplateEngine {
         analytics,
         externalStyles,
         config: this.config
-      }, { 
+      }, {
         views: viewsPaths,
         filename: path.join(coreTemplatesDir, '_head-wrapper.ejs')
       });
@@ -1961,7 +1983,7 @@ class TemplateEngine {
 
       // i18n translation function (from context)
       const t = context.i18n ? (key) => context.i18n[key] || key : (key) => key;
-      
+
       // Menu helper function (needs to be bound with correct context)
       const menu = (menuName, menuOptions = {}) => {
         const optionsWithContext = { ...menuOptions, context };
@@ -1979,8 +2001,8 @@ class TemplateEngine {
         t,
         menu
       }) %>`;
-      
-      return ejs.render(wrapperTemplate, { 
+
+      return ejs.render(wrapperTemplate, {
         copyrightYear,
         copyrightHolder,
         companyUrl,
@@ -1990,7 +2012,7 @@ class TemplateEngine {
         context,
         t,
         menu
-      }, { 
+      }, {
         views: viewsPaths,
         filename: path.join(coreTemplatesDir, '_footer-wrapper.ejs')
       });
@@ -2006,7 +2028,7 @@ class TemplateEngine {
   renderBreadcrumbs(context, pathToRoot) {
     try {
       const breadcrumbData = this.prepareBreadcrumbData(context, pathToRoot);
-      
+
       // If breadcrumbs are disabled, return empty string
       if (!breadcrumbData.enabled || !breadcrumbData.items || breadcrumbData.items.length === 0) {
         return '';
@@ -2014,8 +2036,8 @@ class TemplateEngine {
 
       const coreTemplatesDir = path.join(this.rootDir, this.config.build.core_templates_dir || 'themes-core');
       const corePartialsDir = path.join(coreTemplatesDir, 'partials');
-      
-      const themeTemplatesDir = this.themeLoader ? 
+
+      const themeTemplatesDir = this.themeLoader ?
         path.join(this.themeLoader.themePath, 'templates') : null;
 
       const viewsPaths = [];
@@ -2025,7 +2047,7 @@ class TemplateEngine {
       if (fs.existsSync(coreTemplatesDir)) {
         viewsPaths.push(coreTemplatesDir);
       }
-      
+
       const breadcrumbTemplate = path.join(corePartialsDir, 'breadcrumb.ejs');
 
       return ejs.render(fs.readFileSync(breadcrumbTemplate, 'utf-8'), breadcrumbData, {
@@ -2323,15 +2345,15 @@ class TemplateEngine {
    * @private
    */
   convertFilenameToUrl(filename, context) {
-    if (!filename) {return '';}
-    
+    if (!filename) { return ''; }
+
     // Convert .md to .html
     const htmlFile = filename.replace(/\.md$/, '.html');
-    
+
     // Calculate path from current page to root
     const depth = context.page?.depth || 0;
     const pathToRoot = depth > 0 ? '../'.repeat(depth) : './';
-    
+
     // Return relative path
     return pathToRoot + htmlFile;
   }
@@ -2405,14 +2427,14 @@ class TemplateEngine {
         }
 
         const label = this.escapeHtml(item.label || '');
-        
+
         // Convert file to URL if needed (for BC with footer legal links)
         let url = item.url || '';
         if (!url && item.file && context) {
           // Convert filename to URL path (e.g., privacy-policy.md → privacy-policy.html)
           url = this.convertFilenameToUrl(item.file, context);
         }
-        
+
         const isExternal = item.external || url.startsWith('http://') || url.startsWith('https://');
         const hasChildren = Array.isArray(item.children) && item.children.length > 0;
 
@@ -2518,7 +2540,7 @@ class TemplateEngine {
       const containerClassAttr = container_class ? ` class="${this.escapeHtml(container_class)}"` : '';
       const containerIdAttr = container_id ? ` id="${this.escapeHtml(container_id)}"` : '';
       const containerAttrsStr = container_attrs ? ` ${container_attrs}` : '';
-      
+
       // Add role="navigation" for explicit accessibility (WCAG)
       html = `<${container}${containerClassAttr}${containerIdAttr}${ariaLabelAttr} role="navigation"${containerAttrsStr}>
   ${ulHtml}
@@ -2713,9 +2735,9 @@ class TemplateEngine {
     // 2. i18n strings: locales/en.json → `"toc_title": "On this page"` (translations)
     // 3. Global config: chiron.config.yaml → `ui.toc_title: "In this article"` (site-wide)
     // 4. Default fallback: "On this page"
-    const tocTitle = context.page?.toc_title 
-      || context.i18n?.toc_title 
-      || this.config.ui?.toc_title 
+    const tocTitle = context.page?.toc_title
+      || context.i18n?.toc_title
+      || this.config.ui?.toc_title
       || 'On this page';
 
     // Execute toc:before-render hook (allows plugins to inject content)
@@ -2751,8 +2773,8 @@ class TemplateEngine {
       }
 
       const wrapperTemplate = `<%- include('partials/toc', { tocTitle, filteredToc }) %>`;
-      
-      tocHtml = ejs.render(wrapperTemplate, { tocTitle, filteredToc }, { 
+
+      tocHtml = ejs.render(wrapperTemplate, { tocTitle, filteredToc }, {
         views: viewsPaths,
         filename: path.join(coreTemplatesDir, '_toc-wrapper.ejs')
       });
@@ -2858,20 +2880,14 @@ class TemplateEngine {
 
   /**
    * Render a page with the given context
-   * 
-   * @param {Object} context - Page context with config and page data
-   * @returns {Promise<string>} Fully rendered HTML page
+   * @param {Object} context - Page context with config, page data, etc.
+   * @returns {Promise<string>} Rendered HTML
    */
   async render(context) {
-    // Use custom template from frontmatter, fallback to default page.ejs
-    let templateName = context.page.template || 'page.ejs';
-
-    // SAFETY: Ensure templateName is a string (not an object from config)
-    if (typeof templateName !== 'string') {
-      this.logger.warn('Invalid template type, using default', {
-        template: templateName,
-        type: typeof templateName
-      });
+    let templateName = context.page?.template || 'page.ejs';
+    
+    // Ensure .ejs extension
+    if (!templateName.endsWith('.ejs')) {
       templateName = 'page.ejs';
     }
 
@@ -3509,7 +3525,7 @@ class TemplateEngine {
       tocDepth: context.page.toc_depth || '2',
       menus: this.config.navigation,  // Pass menus config to templates
       customMenus: this.config.menus || {},  // Pass custom menus from menus.yaml to templates
-      
+
       // Custom menu helper (WordPress-style with accessibility-first design)
       menu: (menuName, menuOptions = {}) => {
         // Inject current page context for aria-current detection
@@ -3537,10 +3553,10 @@ class TemplateEngine {
       projectNameSpan,
       // Pre-rendered header (WordPress-style) - must be after logoImages, projectNameSpan, etc.
       header: this.renderHeader(
-        context, 
-        pathToRoot, 
-        logoImages, 
-        projectNameSpan, 
+        context,
+        pathToRoot,
+        logoImages,
+        projectNameSpan,
         this.prepareHeaderActionsData(context, pathToRoot),
         this.renderLanguageSwitcher(context, pathToRoot, i18nStrings),
         this.config.navigation?.header_dropdown_trigger || 'hover',
@@ -3572,24 +3588,24 @@ class TemplateEngine {
       scripts: () => {
         let output = '<!-- Scripts -->\n';
         output += '{{HIGHLIGHT_JS}}\n\n';
-        
+
         // i18n client config (if present)
         if (i18nClientConfig && i18nClientConfig.trim()) {
           output += '<!-- i18n Configuration -->\n';
           output += '<script>\n';
-          output += `${i18nClientConfig  }\n`;
+          output += `${i18nClientConfig}\n`;
           output += '</script>\n\n';
         }
-        
+
         // Component scripts placeholder (filled after component detection)
         output += '{{COMPONENT_SCRIPTS}}\n\n';
-        
+
         // External scripts (from frontmatter or page config)
         const externalScripts = this.renderExternalScripts(context.page);
         if (externalScripts) {
           output += externalScripts;
         }
-        
+
         return output;
       },
 

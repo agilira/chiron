@@ -25,6 +25,7 @@ const { loadConfig } = require('./config/config-loader');
 const { copyDirRecursive, ensureDir, toUrlPath, mdToHtmlPath } = require('./utils/file-utils');
 const FontDownloader = require('./utils/font-downloader');
 const { CacheManager } = require('./cache/cache-manager');
+const { DependencyGraph } = require('./dependency-graph');
 const { optimizeImage } = require('./utils/image-optimizer');
 const { minifyJS } = require('./utils/js-minifier');
 
@@ -63,7 +64,7 @@ class ChironBuilder {
    */
   constructor(configPathOrObject = 'chiron.config.yaml') {
     this.chironRootDir = path.resolve(__dirname, '..'); // Always save Chiron's directory
-    
+
     // Support passing a config object directly (for tests)
     if (typeof configPathOrObject === 'object') {
       this.rootDir = process.cwd();
@@ -75,7 +76,7 @@ class ChironBuilder {
       // Fallback to Chiron root directory (for local usage)
       const cwdConfigPath = path.join(process.cwd(), configPath);
       const defaultConfigPath = path.join(this.chironRootDir, configPath);
-      
+
       if (fs.existsSync(cwdConfigPath)) {
         // Config found in current directory - use it (GitHub Actions scenario)
         this.rootDir = process.cwd();
@@ -85,10 +86,10 @@ class ChironBuilder {
         this.rootDir = this.chironRootDir;
         this.configPath = defaultConfigPath;
       }
-      
+
       this.config = null;
     }
-    
+
     this.markdownParser = new MarkdownParser();
     this.templateEngine = null;
     this.pluginManager = null;  // Initialize after config load
@@ -96,6 +97,7 @@ class ChironBuilder {
     this.buildErrors = []; // Track errors during build
     this.pageMetadata = {}; // Maps file paths to metadata (including draft status)
     this.logger = this.config ? new Logger({ level: this.config.log_level || 'INFO' }) : logger.child('Builder');
+    this.dependencyGraph = new DependencyGraph();
   }
 
   /**
@@ -173,7 +175,7 @@ class ChironBuilder {
       }
       return this.config;
     }
-    
+
     this.config = loadConfig(this.configPath);
     this.logger.info('Configuration loaded successfully');
     return this.config;
@@ -185,7 +187,7 @@ class ChironBuilder {
    */
   loadPluginsConfig() {
     const pluginsConfigPath = path.join(this.rootDir, 'plugins.yaml');
-    
+
     if (!fs.existsSync(pluginsConfigPath)) {
       this.logger.debug('No plugins.yaml found, plugins disabled');
       return { plugins: [], pluginSettings: { enabled: false } };
@@ -194,7 +196,7 @@ class ChironBuilder {
     try {
       const content = fs.readFileSync(pluginsConfigPath, 'utf-8');
       const config = yaml.load(content);
-      
+
       // Validate structure
       if (!config || typeof config !== 'object') {
         this.logger.warn('Invalid plugins.yaml format, plugins disabled');
@@ -211,8 +213,8 @@ class ChironBuilder {
       };
 
       const plugins = Array.isArray(config.plugins) ? config.plugins : [];
-      
-      this.logger.info('Plugins configuration loaded', { 
+
+      this.logger.info('Plugins configuration loaded', {
         total: plugins.length,
         enabled: plugins.filter(p => p.enabled !== false).length
       });
@@ -230,7 +232,7 @@ class ChironBuilder {
    */
   async init() {
     this.loadConfig();
-    
+
     // Initialize theme loader FIRST (needed by PluginContext)
     this.themeLoader = new ThemeLoader(this.config, this.rootDir);
     const themeInfo = this.themeLoader.getThemeInfo();
@@ -239,16 +241,16 @@ class ChironBuilder {
       version: themeInfo.version,
       engine: themeInfo.engine
     });
-    
+
     // Configure i18n with active theme
     const activeTheme = this.config?.theme?.active || 'default';
     const i18n = require('./i18n/i18n-loader');
     await i18n.setTheme(activeTheme, this.rootDir);
     this.logger.info('i18n configured', { theme: activeTheme });
-    
+
     // Load plugins configuration
     const { plugins, pluginSettings } = this.loadPluginsConfig();
-    
+
     // Initialize PluginManager and load plugins
     if (pluginSettings.enabled && plugins.length > 0) {
       this.pluginManager = new PluginManager(this.rootDir);
@@ -262,7 +264,7 @@ class ChironBuilder {
     } else {
       this.logger.debug('Plugins disabled or no plugins configured');
     }
-    
+
     // Create PluginContext for use throughout the build
     this.pluginContext = new PluginContext({
       config: this.config,
@@ -272,7 +274,7 @@ class ChironBuilder {
       theme: themeInfo,
       externalScripts: null  // will be set per-page
     });
-    
+
     // Execute config:loaded hook
     if (this.pluginManager) {
       try {
@@ -280,11 +282,11 @@ class ChironBuilder {
       } catch (error) {
         this.logger.error('Error in config:loaded hook', { error: error.message });
       }
-      
+
       // Register plugin shortcodes with the MarkdownParser
       const shortcodes = this.pluginManager.getShortcodes();
       this.logger.debug('Registering plugin shortcodes with MarkdownParser', { count: shortcodes.length });
-      
+
       for (const shortcodeName of shortcodes) {
         // Wrap the plugin's shortcode handler to match MarkdownParser's expected signature
         // MarkdownParser expects: (content, attrs) => string
@@ -292,19 +294,19 @@ class ChironBuilder {
         this.markdownParser.shortcode.register(shortcodeName, (content, attrs) => {
           return this.pluginManager.executeShortcode(shortcodeName, attrs, content);
         });
-        
+
         this.logger.debug('Registered plugin shortcode', { name: shortcodeName });
       }
     }
-    
+
     this.templateEngine = new TemplateEngine(
-      this.config, 
-      this.rootDir, 
+      this.config,
+      this.rootDir,
       this.chironRootDir,
       this.themeLoader,  // Pass ThemeLoader for template path resolution
       this.pluginManager // Pass PluginManager for hook execution
     );
-    
+
     // Ensure output directory exists
     const outputDir = this.getOutputDir();
     ensureDir(outputDir);
@@ -328,7 +330,7 @@ class ChironBuilder {
    */
   getContentFiles() {
     const contentDir = this.getContentDir();
-    
+
     if (!fs.existsSync(contentDir)) {
       this.logger.warn('Content directory not found', { path: contentDir });
       return { files: [], pageRegistry: {}, locales: [] };
@@ -336,24 +338,24 @@ class ChironBuilder {
 
     const pageRegistry = {}; // Maps page paths across locales
     const detectedLocales = new Set();
-    
+
     // Check if multilingual mode is enabled
     const availableLocales = this.config.language?.available || [];
     const isMultilingualEnabled = Array.isArray(availableLocales) && availableLocales.length > 1;
     const defaultLocale = this.config.language?.locale || 'en';
     const maxDepth = BUILD_CONFIG.MAX_DEPTH;
-    
+
     if (isMultilingualEnabled) {
-      this.logger.debug('Multilingual mode ENABLED', { 
-        availableLocales, 
-        defaultLocale 
+      this.logger.debug('Multilingual mode ENABLED', {
+        availableLocales,
+        defaultLocale
       });
     } else {
       this.logger.debug('Multilingual mode DISABLED (legacy mode)', {
         reason: availableLocales.length <= 1 ? 'only one locale configured' : 'language.available not defined'
       });
     }
-    
+
     /**
      * Detect locale from directory structure
      * ONLY if multilingual mode is enabled, otherwise return default locale
@@ -368,10 +370,10 @@ class ChironBuilder {
           pagePath: relativePath  // No locale prefix to remove
         };
       }
-      
+
       // Multilingual mode: check if first directory is a locale
       const parts = relativePath.split(path.sep);
-      
+
       // Check if first directory is a locale
       if (parts.length > 1 && availableLocales.includes(parts[0])) {
         return {
@@ -379,14 +381,14 @@ class ChironBuilder {
           pagePath: parts.slice(1).join(path.sep) // Remove locale prefix
         };
       }
-      
+
       // No locale directory detected - use default locale
       return {
         locale: defaultLocale,
         pagePath: relativePath
       };
     };
-    
+
     /**
      * Add file to page registry for cross-locale mapping
      * ONLY in multilingual mode, otherwise skip registry
@@ -397,29 +399,29 @@ class ChironBuilder {
       if (!isMultilingualEnabled) {
         return;
       }
-      
+
       const { pagePath, locale } = fileInfo;
-      
+
       if (!pageRegistry[pagePath]) {
         pageRegistry[pagePath] = {};
       }
-      
+
       pageRegistry[pagePath][locale] = {
         inputPath: fileInfo.path,
         relativePath: fileInfo.relativePath,
         outputPath: fileInfo.outputName,
-        url: `/${  fileInfo.outputName.replace(/\\/g, '/')}`,
+        url: `/${fileInfo.outputName.replace(/\\/g, '/')}`,
         locale,
         exists: true
       };
     };
-    
+
     // OPTIMIZED: Use fast-glob instead of recursive fs.readdirSync
     // This is significantly faster for large projects while maintaining
     // all security checks and business logic
     try {
       this.logger.debug('Starting content scan with fast-glob', { contentDir });
-      
+
       // Use fast-glob to find all .md files efficiently
       // - Uses relative paths for compatibility with existing logic
       // - We don't use 'deep' option here because we need to validate depth
@@ -443,11 +445,11 @@ class ChironBuilder {
         // NORMALIZE: fast-glob returns forward slashes (/) even on Windows
         // Convert to platform-specific separators for consistency
         relPath = path.normalize(relPath);
-        
+
         // SECURITY: Validate file path to prevent injection attacks
         // Reject paths with suspicious characters
         if (relPath.includes('..') || relPath.includes('\0')) {
-          this.logger.warn('Skipping suspicious filename from fast-glob', { 
+          this.logger.warn('Skipping suspicious filename from fast-glob', {
             filename: relPath
           });
           return null;  // Will be filtered out below
@@ -458,9 +460,9 @@ class ChironBuilder {
         const fullPath = path.join(contentDir, relPath);
         const resolvedPath = path.resolve(fullPath);
         const resolvedContentDir = path.resolve(contentDir);
-        
+
         if (!resolvedPath.startsWith(resolvedContentDir)) {
-          this.logger.error('Security: Path traversal detected from fast-glob', { 
+          this.logger.error('Security: Path traversal detected from fast-glob', {
             path: relPath,
             contentDir: resolvedContentDir
           });
@@ -471,15 +473,15 @@ class ChironBuilder {
         // Depth is number of directory separators in relative path
         // This is used by TemplateEngine to generate correct relative URLs
         const depth = relPath.split(path.sep).length - 1;
-        
+
         // SECURITY: Enforce maximum depth limit (compatibility with original behavior)
         // This maintains the same error-throwing behavior as the original recursive scan
         if (depth > maxDepth) {
           const error = new Error(`Maximum directory depth (${maxDepth}) exceeded at: ${relPath}`);
-          this.logger.error('Directory depth limit exceeded', { 
-            path: relPath, 
+          this.logger.error('Directory depth limit exceeded', {
+            path: relPath,
             maxDepth,
-            currentDepth: depth 
+            currentDepth: depth
           });
           throw error;
         }
@@ -488,13 +490,13 @@ class ChironBuilder {
         // This is CRITICAL for multilingual support
         const { locale, pagePath } = detectLocale(relPath);
         detectedLocales.add(locale);
-        
+
         // BUSINESS LOGIC: Check if file is in multilingual directory structure
         const parts = relPath.split(path.sep);
-        const isMultilingual = isMultilingualEnabled && 
-                                parts.length > 1 && 
-                                availableLocales.includes(parts[0]);
-        
+        const isMultilingual = isMultilingualEnabled &&
+          parts.length > 1 &&
+          availableLocales.includes(parts[0]);
+
         // Create file info object with all required metadata
         const fileInfo = {
           filename: path.basename(relPath),
@@ -506,12 +508,12 @@ class ChironBuilder {
           pagePath,         // Path without locale prefix
           isMultilingual    // Whether file is in locale directory
         };
-        
+
         // BUSINESS LOGIC: Add to page registry for cross-locale mapping
         // This enables fallback mechanism for missing translations
         addToPageRegistry(fileInfo);
-        
-        this.logger.debug('Found markdown file (via fast-glob)', { 
+
+        this.logger.debug('Found markdown file (via fast-glob)', {
           file: relPath,
           locale,
           pagePath,
@@ -521,19 +523,19 @@ class ChironBuilder {
 
         return fileInfo;
       }).filter(fileInfo => fileInfo !== null);  // Remove null entries from security checks
-      
+
       const locales = Array.from(detectedLocales);
-      
+
       if (isMultilingualEnabled) {
         this.logger.info(`Found ${files.length} markdown file(s) in ${locales.length} locale(s): ${locales.join(', ')}`);
         this.logger.info(`Page registry: ${Object.keys(pageRegistry).length} unique page(s) across locales`);
-        
+
         // Build fallback entries for missing translations
         this.buildFallbackEntries(pageRegistry, availableLocales, defaultLocale);
       } else {
         this.logger.info(`Found ${files.length} markdown file(s) (multilingual mode disabled)`);
       }
-      
+
       return {
         files,
         pageRegistry,
@@ -541,14 +543,14 @@ class ChironBuilder {
         isMultilingualEnabled
       };
     } catch (error) {
-      this.logger.error('Failed to scan content directory', { 
+      this.logger.error('Failed to scan content directory', {
         contentDir,
-        error: error.message 
+        error: error.message
       });
       throw error;
     }
   }
-  
+
   /**
    * Build fallback entries for missing translations
    * If a page exists in one locale but not another, create fallback entry
@@ -565,10 +567,10 @@ class ChironBuilder {
         if (!localeMap[locale]) {
           // Try to find fallback (default locale first)
           const fallbackLocale = localeMap[defaultLocale] ? defaultLocale : Object.keys(localeMap)[0];
-          
+
           if (fallbackLocale) {
             const fallbackEntry = localeMap[fallbackLocale];
-            
+
             // Create fallback entry pointing to source locale but with target locale URL
             pageRegistry[pagePath][locale] = {
               inputPath: fallbackEntry.inputPath,          // Use fallback content
@@ -581,7 +583,7 @@ class ChironBuilder {
               fallbackLocale,              // Source locale
               fallbackUrl: fallbackEntry.url               // Original URL
             };
-            
+
             this.logger.debug(`Created fallback entry for missing translation`, {
               pagePath,
               locale,
@@ -605,20 +607,20 @@ class ChironBuilder {
     if (!this.isMultilingualEnabled || !this.pageRegistry) {
       return {};
     }
-    
+
     const availableLocales = {};
     const pagePath = file.pagePath || file.relativePath;
-    
+
     // Get page registry entry for this page
     const pageEntry = this.pageRegistry[pagePath];
-    
+
     if (!pageEntry) {
       // Page not in registry, return current locale only
       const currentLocale = file.locale || this.config.language?.locale || 'en';
-      availableLocales[currentLocale] = `/${  file.outputName.replace(/\\/g, '/')}`;
+      availableLocales[currentLocale] = `/${file.outputName.replace(/\\/g, '/')}`;
       return availableLocales;
     }
-    
+
     // Build locale map from page registry - ONLY include existing translations
     for (const [locale, info] of Object.entries(pageEntry)) {
       // Skip fallback entries - only show languages where the page actually exists
@@ -626,7 +628,7 @@ class ChironBuilder {
         availableLocales[locale] = info.url;
       }
     }
-    
+
     return availableLocales;
   }
 
@@ -653,7 +655,7 @@ class ChironBuilder {
       // Process markdown content
       let content;
       let parsed;
-      
+
       // Handle virtual pages (from plugins, no file on disk)
       if (file.isVirtual) {
         content = ''; // Virtual pages have no markdown content
@@ -671,7 +673,7 @@ class ChironBuilder {
         };
       } else {
         content = fs.readFileSync(file.path, 'utf8');
-        
+
         // Execute markdown:before-parse hook
         if (this.pluginManager && this.pluginContext) {
           try {
@@ -682,9 +684,9 @@ class ChironBuilder {
             this.logger.error('Error in markdown:before-parse hook', { error: error.message });
           }
         }
-        
+
         parsed = this.markdownParser.parse(content);
-        
+
         // Execute markdown:after-parse hook
         if (this.pluginManager && this.pluginContext) {
           try {
@@ -695,7 +697,7 @@ class ChironBuilder {
           }
         }
       }
-      
+
       // Determine if this is the active page for navigation
       // Must handle both flat and nested paths (e.g., 'api.md' and 'plugins/auth/api.md')
       const isActive = (navItem) => {
@@ -743,6 +745,23 @@ class ChironBuilder {
       // Render HTML with template engine
       let html = await this.templateEngine.render(modifiedPageContext);
 
+      // Register dependencies
+      if (this.dependencyGraph && this.templateEngine.getDependencies) {
+        const dependencies = this.templateEngine.getDependencies();
+        // Clear old dependencies for this file
+        this.dependencyGraph.clearNode(file.path);
+
+        // Add new dependencies
+        for (const dep of dependencies) {
+          this.dependencyGraph.addDependency(file.path, dep);
+        }
+
+        this.logger.debug('Registered dependencies', {
+          file: file.filename,
+          count: dependencies.length
+        });
+      }
+
       // Execute page:after-render hook
       if (this.pluginManager && this.pluginContext) {
         try {
@@ -755,7 +774,7 @@ class ChironBuilder {
 
       // Write output file (directory already ensured above)
       fs.writeFileSync(outputPath, html, 'utf8');
-      
+
       // Log with relative path for better readability
       this.logger.info(`Generated: ${file.outputName}`);
 
@@ -775,27 +794,27 @@ class ChironBuilder {
         file.path,
         { originalError: error.message, stack: error.stack }
       );
-      
-      this.buildErrors.push({ 
-        file: file.filename, 
+
+      this.buildErrors.push({
+        file: file.filename,
         error: parseError.message,
-        stack: parseError.stack 
+        stack: parseError.stack
       });
-      
-      this.logger.error(`Error processing ${file.filename}`, { 
+
+      this.logger.error(`Error processing ${file.filename}`, {
         error: parseError.message,
         file: file.path
       });
-      
+
       // Fail fast if strict mode is enabled or in production
       const args = process.argv.slice(2);
       const isStrict = args.includes('--strict') || args.includes('-s');
-      
+
       if (process.env.NODE_ENV === 'production' || isStrict) {
         this.logger.error('Build failed in strict mode. Use --no-strict to continue on errors.');
         throw parseError;
       }
-      
+
       // In development, log but continue
       this.logger.warn('Continuing build in development mode (use --strict to fail on errors)');
       return null;
@@ -823,10 +842,10 @@ class ChironBuilder {
 
       // Read content from fallback locale file
       const content = fs.readFileSync(entry.inputPath, 'utf8');
-      
+
       // Parse markdown (same as normal processing)
       let parsed = this.markdownParser.parse(content);
-      
+
       // Create file object for hooks and context (simulating the original file)
       const fileObj = {
         filename: path.basename(entry.outputPath),
@@ -849,7 +868,7 @@ class ChironBuilder {
           this.logger.error('Error in markdown:before-parse hook for fallback', { error: error.message });
         }
       }
-      
+
       // Execute markdown:after-parse hook
       if (this.pluginManager && this.pluginContext) {
         try {
@@ -917,7 +936,7 @@ class ChironBuilder {
 
       // Write output file
       fs.writeFileSync(outputPath, html, 'utf8');
-      
+
       this.logger.debug(`Generated fallback page`, {
         targetLocale: entry.locale,
         fallbackLocale: entry.fallbackLocale,
@@ -942,7 +961,7 @@ class ChironBuilder {
     const componentDir = path.join(this.chironRootDir, 'builder', 'js-components');
     const outputDir = this.getOutputDir();
     const ejs = require('ejs');
-    
+
     // Helper function to include component code
     const includeComponent = (componentName) => {
       const componentPath = path.join(componentDir, `${componentName}.js`);
@@ -953,24 +972,24 @@ class ChironBuilder {
         return `// Component ${componentName} not found`;
       }
     };
-    
+
     // Build base.js from template
     const baseTemplatePath = path.join(componentDir, 'base.ejs');
-    
+
     if (fs.existsSync(baseTemplatePath)) {
       try {
         const template = fs.readFileSync(baseTemplatePath, 'utf8');
-        
+
         // Render template with config and helper
         const rendered = ejs.render(template, {
           config: this.config,
           includeComponent
         });
-        
+
         // Minify if enabled
         const shouldMinify = this.config.build?.minifyJS !== false;
         const bundlePath = path.join(outputDir, 'base.js');
-        
+
         if (shouldMinify) {
           try {
             const minified = await minifyJS(rendered);
@@ -994,7 +1013,7 @@ class ChironBuilder {
     } else {
       this.logger.warn('base.ejs template not found, skipping base.js build');
     }
-    
+
     // Build base-minimal.js (minimal bundle: core + accessibility only)
     const minimalComponents = ['core', 'accessibility'];
     const minimalScripts = minimalComponents.map(comp => {
@@ -1004,12 +1023,12 @@ class ChironBuilder {
       }
       return '';
     }).filter(s => s);
-    
+
     if (minimalScripts.length > 0) {
       const minimalContent = minimalScripts.join('\n\n');
       const minimalPath = path.join(outputDir, 'base-minimal.js');
       const shouldMinify = this.config.build?.minifyJS !== false;
-      
+
       if (shouldMinify) {
         try {
           const minified = await minifyJS(minimalContent);
@@ -1047,7 +1066,7 @@ class ChironBuilder {
     try {
       // Check if image optimization is enabled
       const optimizeImages = this.config.build?.optimizeImages !== false;
-      
+
       if (optimizeImages) {
         // Copy with image optimization
         await this.copyAssetsWithOptimization(assetsDir, outputDir);
@@ -1092,16 +1111,16 @@ class ChironBuilder {
         await this.copyAssetsWithOptimization(srcPath, destPath, currentDepth + 1, maxDepth);
       } else if (entry.isFile()) {
         const ext = path.extname(entry.name).toLowerCase();
-        
+
         if (imageExtensions.includes(ext)) {
           // Optimize image
           try {
             await optimizeImage(srcPath, destPath);
             this.logger.debug('Image optimized', { file: entry.name });
           } catch (error) {
-            this.logger.warn('Image optimization failed, copying as-is', { 
-              file: entry.name, 
-              error: error.message 
+            this.logger.warn('Image optimization failed, copying as-is', {
+              file: entry.name,
+              error: error.message
             });
             fs.copyFileSync(srcPath, destPath);
           }
@@ -1129,7 +1148,7 @@ class ChironBuilder {
       if (pattern.includes('*')) {
         const prefix = pattern.split('*')[0];
         const suffix = pattern.split('*')[1] || '';
-        
+
         // Check root directory for wildcard patterns
         if (fs.existsSync(this.rootDir)) {
           const files = fs.readdirSync(this.rootDir)
@@ -1149,7 +1168,7 @@ class ChironBuilder {
         const src = path.join(this.rootDir, pattern);
         const dest = path.join(outputDir, pattern);
         let found = false;
-        
+
         if (fs.existsSync(src) && fs.statSync(src).isFile()) {
           fs.copyFileSync(src, dest);
           found = true;
@@ -1164,7 +1183,7 @@ class ChironBuilder {
             this.logger.debug(`Found ${pattern} in assets directory, copied to root of output`);
           }
         }
-        
+
         if (!found) {
           notFoundFiles.push(pattern);
         }
@@ -1175,9 +1194,9 @@ class ChironBuilder {
     if (copiedCount > 0) {
       this.logger.info(`Static files copied: ${copiedCount} file(s)`);
     }
-    
+
     if (notFoundFiles.length > 0) {
-      this.logger.warn(`Static files not found (will use placeholders if referenced):`, { 
+      this.logger.warn(`Static files not found (will use placeholders if referenced):`, {
         files: notFoundFiles,
         searchedIn: [this.rootDir, assetsDir]
       });
@@ -1191,7 +1210,7 @@ class ChironBuilder {
    */
   async copyScripts() {
     const outputDir = this.getOutputDir();
-    
+
     try {
       // Copy theme files (styles.css, assets, optional theme.js)
       this.logger.info('Copying theme files...');
@@ -1445,7 +1464,7 @@ ${analyticsSnippet}
       this.logger.error('Failed to initialize builder', { error: error.message });
       throw error; // Throw instead of process.exit - allows tests to catch errors
     }
-    
+
     // Build component scripts (base.js, base-minimal.js) before processing pages
     this.logger.info('Building component scripts...');
     try {
@@ -1453,7 +1472,7 @@ ${analyticsSnippet}
     } catch (error) {
       this.logger.error('Failed to build component scripts', { error: error.message });
     }
-    
+
     // Reset error tracking
     this.buildErrors = [];
 
@@ -1470,7 +1489,7 @@ ${analyticsSnippet}
     this.logger.info('Processing content files...');
     const contentData = this.getContentFiles();
     const { files: contentFiles, pageRegistry, locales, isMultilingualEnabled } = contentData;
-    
+
     // Add virtual pages from plugins (e.g., blog pagination)
     const virtualPages = this.pluginContext?.getData('blog-virtual-pages') || [];
     if (virtualPages.length > 0) {
@@ -1481,24 +1500,24 @@ ${analyticsSnippet}
         isVirtual: true
       })));
     }
-    
+
     // Store page registry for later use (language switcher, fallback logic)
     this.pageRegistry = pageRegistry;
     this.detectedLocales = locales;
     this.isMultilingualEnabled = isMultilingualEnabled;
-    
+
     if (isMultilingualEnabled) {
       this.logger.info(`Found ${contentFiles.length} markdown file(s) in ${locales.length} locale(s): ${locales.join(', ')}`);
       this.logger.info(`Page registry contains ${Object.keys(pageRegistry).length} unique page(s)`);
     } else {
       this.logger.info(`Found ${contentFiles.length} markdown file(s)`);
     }
-    
+
     // Validate we have content files
     if (contentFiles.length === 0) {
       this.logger.warn('No markdown files found in content directory');
     }
-    
+
     // PRE-SCAN: Collect page metadata (including draft status) before rendering
     // This allows sidebar filtering to work correctly across all pages
     this.logger.debug('Pre-scanning files for metadata...');
@@ -1506,7 +1525,7 @@ ${analyticsSnippet}
       if (!file.isVirtual) {
         const content = fs.readFileSync(file.path, 'utf8');
         const parsed = this.markdownParser.parse(content);
-        
+
         // Store metadata
         const markdownPath = file.filename.replace(/\.html$/, '.md');
         this.pageMetadata[markdownPath] = {
@@ -1525,29 +1544,29 @@ ${analyticsSnippet}
       }
     }
     this.logger.debug(`Pre-scanned ${Object.keys(this.pageMetadata).length} files`);
-    
+
     // Pass page metadata map to template engine
     if (this.templateEngine?.setPageMetadata) {
       this.templateEngine.setPageMetadata(this.pageMetadata);
     }
-    
+
     // Process files in parallel for better performance
     // Using Promise.allSettled to handle errors gracefully without stopping the build
     this.logger.debug('Starting parallel file processing');
     const startTime = Date.now();
-    
+
     const allResults = await Promise.allSettled(
       contentFiles.map(file => this.processMarkdownFile(file))
     );
-    
+
     const processingTime = ((Date.now() - startTime) / 1000).toFixed(2);
     this.logger.debug(`Parallel processing completed in ${processingTime}s`);
-    
+
     // Collect successful results
     const pages = allResults
       .filter(r => r.status === 'fulfilled' && r.value !== null)
       .map(r => r.value);
-    
+
     // Handle rejected promises (errors during processing)
     const failures = allResults.filter(r => r.status === 'rejected');
     failures.forEach((failure, index) => {
@@ -1562,7 +1581,7 @@ ${analyticsSnippet}
         error: error.message
       });
     });
-    
+
     this.logger.info(`Successfully processed: ${pages.length}/${contentFiles.length} files (${processingTime}s)`);
 
     // Process fallback entries for missing translations
@@ -1575,13 +1594,13 @@ ${analyticsSnippet}
           }
         }
       }
-      
+
       if (fallbackEntries.length > 0) {
         this.logger.info(`Processing ${fallbackEntries.length} fallback entries...`);
         const fallbackResults = await Promise.allSettled(
           fallbackEntries.map(entry => this.processFallbackEntry(entry))
         );
-        
+
         const successfulFallbacks = fallbackResults.filter(r => r.status === 'fulfilled').length;
         this.logger.info(`Generated ${successfulFallbacks}/${fallbackEntries.length} fallback pages`);
       }
@@ -1622,14 +1641,14 @@ ${analyticsSnippet}
       this.logger.error('Error copying assets', { error: error.message });
       this.buildErrors.push({ file: 'assets', error: error.message });
     }
-    
+
     try {
       this.copyStaticFiles();
     } catch (error) {
       this.logger.error('Error copying static files', { error: error.message });
       this.buildErrors.push({ file: 'static', error: error.message });
     }
-    
+
     try {
       await this.copyScripts();
     } catch (error) {
@@ -1657,7 +1676,7 @@ ${analyticsSnippet}
         // Filter out draft pages from sitemap
         const publishedPages = pages.filter(page => page.status !== 'draft');
         this.logger.debug(`Sitemap: ${publishedPages.length} published pages (${pages.length - publishedPages.length} drafts excluded)`);
-        
+
         generateSitemap(this.config, publishedPages, this.rootDir);
         this.logger.info('Sitemap generated');
       } catch (error) {
@@ -1687,16 +1706,16 @@ ${analyticsSnippet}
       try {
         const outputDir = this.getOutputDir();
         const cacheManager = new CacheManager(this.config, this.themeConfig, outputDir);
-        
+
         // Scan assets from output directory
         await cacheManager.scanAssets();
-        
+
         // Generate Service Worker
         await cacheManager.generateServiceWorker();
-        
+
         // Generate PWA Manifest
         await cacheManager.generateManifest();
-        
+
         this.logger.info('PWA assets generated successfully');
       } catch (error) {
         this.logger.error('Error generating PWA assets', { error: error.message });
@@ -1714,7 +1733,7 @@ ${analyticsSnippet}
         }
       });
       this.logger.info('Set DEBUG=true for full stack traces');
-      
+
       // Exit with error in strict mode
       const args = process.argv.slice(2);
       const isStrict = args.includes('--strict') || args.includes('-s');
@@ -1726,7 +1745,7 @@ ${analyticsSnippet}
       const buildTime = ((Date.now() - buildStartTime) / 1000).toFixed(2);
       this.logger.info(`Build completed successfully in ${buildTime}s`);
     }
-    
+
     // Execute build:end hook
     if (this.pluginManager) {
       try {
@@ -1735,7 +1754,7 @@ ${analyticsSnippet}
         this.logger.error('Error in build:end hook', { error: error.message });
       }
     }
-    
+
     this.logger.info('Build summary', {
       outputDir: this.config.build.output_dir,
       pagesGenerated: pages.length,
@@ -1751,38 +1770,83 @@ ${analyticsSnippet}
 
   /**
    * Watch mode for development
-   * Watches config, content, and templates for changes and rebuilds automatically
+   * Watches config, content, templates, theme, assets, and plugins for changes
+   * and rebuilds automatically with fast incremental builds.
    */
   async watch() {
-    this.logger.info('Watching for changes...');
-    
+    this.logger.info('🔍 Dev mode started with live reload');
+    this.logger.info('Starting development server...');
+    this.logger.info('');
+
     // Initialize config if not already loaded
     if (!this.config) {
       await this.init();
     }
-    
+
     const chokidar = require('chokidar');
     const contentDir = this.getContentDir();
-    
+    const templatesDir = path.join(this.rootDir, this.config.build.templates_dir);
+    const coreTemplatesDir = path.join(this.rootDir, this.config.build.core_templates_dir || 'themes-core');
+    const themeTemplatesDir = this.themeLoader ? path.join(this.themeLoader.themePath, 'templates') : null;
+
     // Debounce rebuild to prevent multiple rapid rebuilds
     let rebuildTimeout = null;
-    const debouncedRebuild = (filePath) => {
+    const pendingFiles = new Set();
+
+    const debouncedRebuild = async () => {
       if (rebuildTimeout) {
         clearTimeout(rebuildTimeout);
       }
-      
-      rebuildTimeout = setTimeout(() => {
-        this.logger.info('File changed', { file: path.relative(this.rootDir, filePath) });
-        this.build();
+
+      rebuildTimeout = setTimeout(async () => {
+        const files = Array.from(pendingFiles);
+        pendingFiles.clear();
         rebuildTimeout = null;
+
+        try {
+          await this.handleIncrementalBuild(files);
+        } catch (error) {
+          this.logger.error('Incremental build failed', { error: error.message });
+        }
       }, BUILD_CONFIG.DEBOUNCE_DELAY);
     };
-    
-    const watcher = chokidar.watch([
+
+    const onFileChange = (filePath) => {
+      pendingFiles.add(filePath);
+      debouncedRebuild();
+    };
+
+    // Watch paths with expanded coverage
+    const watchPaths = [
       this.configPath,
       contentDir,
-      path.join(this.rootDir, this.config.build.templates_dir)
-    ], {
+      templatesDir,
+      coreTemplatesDir
+    ];
+
+    if (themeTemplatesDir) {
+      watchPaths.push(themeTemplatesDir);
+    }
+
+    // Watch theme directory (includes styles.css, theme.js, assets/)
+    if (this.themeLoader && this.themeLoader.themePath) {
+      // Watch the entire theme directory to catch styles.css, theme.js, and assets
+      watchPaths.push(this.themeLoader.themePath);
+    }
+
+    // Watch global assets directory
+    const assetsDir = path.join(this.rootDir, 'assets');
+    if (require('fs').existsSync(assetsDir)) {
+      watchPaths.push(assetsDir);
+    }
+
+    // Watch plugins directory
+    const pluginsDir = path.join(this.rootDir, this.config.build.plugins_dir || 'plugins');
+    if (require('fs').existsSync(pluginsDir)) {
+      watchPaths.push(pluginsDir);
+    }
+
+    const watcher = chokidar.watch(watchPaths, {
       persistent: true,
       ignoreInitial: true,
       awaitWriteFinish: {
@@ -1791,18 +1855,220 @@ ${analyticsSnippet}
       }
     });
 
-    watcher.on('change', debouncedRebuild);
+    watcher.on('change', onFileChange);
+    watcher.on('add', onFileChange);
+    watcher.on('unlink', onFileChange);
+
+    // Initial build
+    await this.build();
+    
+    this.logger.info('');
+    this.logger.info('👀 Watching for changes...');
+    this.logger.info('');
 
     // Cleanup on process exit
     process.on('SIGINT', () => {
-      this.logger.info('Stopping watch mode...');
+      this.logger.info('');
+      this.logger.info('Stopping watcher...');
       watcher.close();
-      if (rebuildTimeout) {clearTimeout(rebuildTimeout);}
+      if (rebuildTimeout) { clearTimeout(rebuildTimeout); }
       process.exit(0);
     });
+  }
 
-    // Initial build
-    this.build();
+  /**
+   * Handle incremental build based on changed files
+   * @param {Array<string>} changedFiles - List of changed file paths
+   */
+  async handleIncrementalBuild(changedFiles) {
+    const startTime = Date.now();
+    let fullRebuildNeeded = false;
+    const filesToRebuild = new Set();
+
+    // Log what changed
+    const changeTypes = {
+      content: changedFiles.filter(f => f.endsWith('.md')).length,
+      templates: changedFiles.filter(f => f.endsWith('.ejs')).length,
+      styles: changedFiles.filter(f => f.endsWith('.css')).length,
+      scripts: changedFiles.filter(f => f.endsWith('.js') && !f.includes('plugins')).length,
+      assets: changedFiles.filter(f => f.includes('assets')).length,
+      plugins: changedFiles.filter(f => f.includes('plugins') && f.endsWith('.js')).length,
+      config: changedFiles.filter(f => f.endsWith('.yaml') || f === this.configPath).length
+    };
+
+    const changeLog = Object.entries(changeTypes)
+      .filter(([_, count]) => count > 0)
+      .map(([type, count]) => `${count} ${type}`)
+      .join(', ');
+
+    this.logger.info(`🔄 Changes detected: ${changeLog}`);
+
+    for (const filePath of changedFiles) {
+      const relativePath = path.relative(this.rootDir, filePath);
+
+      // Config change -> Full rebuild
+      if (filePath === this.configPath || filePath.endsWith('.yaml')) {
+        this.logger.info(`Config changed (${relativePath}), triggering full rebuild...`);
+        fullRebuildNeeded = true;
+        break;
+      }
+
+      // Template change -> Rebuild dependents
+      if (filePath.endsWith('.ejs')) {
+        this.logger.info(`Template changed (${relativePath}), finding dependents...`);
+        
+        // Invalidate template cache for this specific template
+        if (this.templateEngine && this.templateEngine.templateCache) {
+          const templateName = path.basename(filePath, '.ejs');
+          if (this.templateEngine.templateCache.has(templateName)) {
+            this.templateEngine.templateCache.delete(templateName);
+            this.logger.debug(`Invalidated cache for template: ${templateName}`);
+          }
+        }
+
+        const dependents = this.dependencyGraph.getDependents(filePath);
+        if (dependents.length > 0) {
+          this.logger.info(`Found ${dependents.length} dependent(s) for ${relativePath}`);
+          dependents.forEach(dep => filesToRebuild.add(dep));
+        } else {
+          this.logger.warn(`No dependents found for template ${relativePath}. This might be a layout or partial used globally.`);
+          // If it's a base layout/partial with no tracked dependents, trigger full rebuild
+          // This is safer than missing updates
+          if (relativePath.includes('layout') || relativePath.includes('partial') || relativePath.includes('base')) {
+            this.logger.info('Layout/partial template changed, triggering full rebuild for safety...');
+            fullRebuildNeeded = true;
+            break;
+          }
+        }
+      }
+
+      // Asset change -> Copy assets only (no full rebuild needed)
+      if (filePath.includes('assets') && !filePath.endsWith('.md')) {
+        this.logger.info(`Asset changed (${relativePath}), copying assets...`);
+        // Mark for asset copy, but don't trigger full rebuild
+        // Assets will be copied at the end of incremental build
+        continue;
+      }
+
+      // Theme CSS/JS change -> Copy theme files
+      if ((filePath.endsWith('.css') || filePath.endsWith('.js')) && 
+          (filePath.includes('themes') || filePath.includes('styles') || filePath.includes('scripts'))) {
+        this.logger.info(`Theme file changed (${relativePath}), copying theme files...`);
+        
+        // Copy theme files immediately
+        try {
+          const outputDir = this.config.build.output_dir || 'docs';
+          await this.themeLoader.copyThemeFiles(outputDir);
+          this.logger.info(`✓ Theme files copied`);
+        } catch (error) {
+          this.logger.error(`Error copying theme files: ${error.message}`);
+        }
+        
+        // No need to rebuild HTML pages for non-critical theme files
+        continue;
+      }
+
+      // Plugin change -> Full rebuild (plugins may affect page generation)
+      if (filePath.includes('plugins') && filePath.endsWith('.js')) {
+        this.logger.info(`Plugin changed (${relativePath}), triggering full rebuild...`);
+        fullRebuildNeeded = true;
+        break;
+      }
+
+      // Content change -> Rebuild specific file
+      if (filePath.endsWith('.md')) {
+        this.logger.info(`Content changed (${relativePath}), rebuilding file...`);
+        filesToRebuild.add(filePath);
+      }
+    }
+
+    if (fullRebuildNeeded) {
+      await this.build();
+      return;
+    }
+
+    if (filesToRebuild.size === 0) {
+      this.logger.info('No files to rebuild.');
+      return;
+    }
+
+    this.logger.info(`Rebuilding ${filesToRebuild.size} file(s)...`);
+
+    // Re-process specific files
+    // We need to map file paths back to the file objects expected by processMarkdownFile
+    // This is tricky because processMarkdownFile expects a file object with metadata
+    // We can reuse getContentFiles logic but filter for specific paths?
+    // Or we can reconstruct the file object if we have the path.
+
+    // Better approach:
+    // 1. Get all content files (fast-glob is fast)
+    // 2. Filter the list to only include files in filesToRebuild
+    // 3. Process them
+
+    const contentData = this.getContentFiles();
+    const { files: allContentFiles } = contentData;
+
+    const targetFiles = allContentFiles.filter(f => filesToRebuild.has(f.path));
+
+    if (targetFiles.length === 0) {
+      this.logger.warn('Could not find file objects for changed paths. Doing full rebuild fallback.');
+      await this.build();
+      return;
+    }
+
+    // PRE-SCAN: Update page metadata for changed files only
+    this.logger.debug('Pre-scanning changed files for metadata...');
+    for (const file of targetFiles) {
+      if (!file.isVirtual && fs.existsSync(file.path)) {
+        try {
+          const content = fs.readFileSync(file.path, 'utf8');
+          const parsed = this.markdownParser.parse(content);
+          const markdownPath = file.filename.replace(/\.html$/, '.md');
+          this.pageMetadata[markdownPath] = {
+            status: parsed.frontmatter.status || 'publish',
+            title: parsed.frontmatter.title || '',
+            outputPath: file.outputName
+          };
+        } catch (error) {
+          this.logger.debug(`Could not pre-scan metadata for ${file.filename}`, { error: error.message });
+        }
+      }
+    }
+
+    // Pass updated metadata to template engine
+    if (this.templateEngine?.setPageMetadata) {
+      this.templateEngine.setPageMetadata(this.pageMetadata);
+    }
+
+    // Re-process target files
+    const results = await Promise.allSettled(
+      targetFiles.map(file => this.processMarkdownFile(file))
+    );
+
+    const successCount = results.filter(r => r.status === 'fulfilled' && r.value !== null).length;
+    const failureCount = results.filter(r => r.status === 'rejected').length;
+
+    // Handle asset changes (only if files were rebuilt)
+    const hasAssetChanges = changedFiles.some(f => f.includes('assets') && !f.endsWith('.md'));
+    if (hasAssetChanges) {
+      this.logger.info('Copying updated assets...');
+      try {
+        await this.copyAssets();
+      } catch (error) {
+        this.logger.error('Failed to copy assets during incremental build', { error: error.message });
+      }
+    }
+
+    // Note: Theme files are already copied in the main loop above (with continue)
+    // No need to copy them again here
+
+    const duration = ((Date.now() - startTime) / 1000).toFixed(2);
+
+    if (failureCount > 0) {
+      this.logger.warn(`Incremental build completed with errors: ${successCount}/${targetFiles.length} files updated in ${duration}s (${failureCount} failed)`);
+    } else {
+      this.logger.info(`Incremental build completed: ${successCount}/${targetFiles.length} files updated in ${duration}s`);
+    }
   }
 }
 
@@ -1820,17 +2086,17 @@ Usage:
   node builder/index.js [options]
 
 Options:
-  --watch, -w       Watch for file changes and rebuild automatically
+  --dev, -d         Watch for file changes and rebuild automatically
   --strict, -s      Exit with error on first build failure (default in production)
   --no-strict       Continue building even if some files fail (default in development)
   --help, -h        Show this help message
 
 Examples:
   node builder/index.js              # Build once
-  node builder/index.js --watch      # Watch mode for development
+  node builder/index.js --dev        # Watch mode for development
   node builder/index.js --strict     # Build with strict error handling
   npm run build                      # Same as: node builder/index.js
-  npm run dev                        # Same as: node builder/index.js --watch
+  npm run dev                        # Same as: node builder/index.js --dev
 
 Environment Variables:
   NODE_ENV=production               Enable strict mode by default
@@ -1838,11 +2104,17 @@ Environment Variables:
     process.exit(0);
   }
 
-  if (args.includes('--watch') || args.includes('-w')) {
-    builder.watch();
-  } else {
-    builder.build();
-  }
+  // Main execution - use IIFE to support async/await
+  (async () => {
+    if (args.includes('--dev') || args.includes('-d')) {
+      await builder.watch();
+    } else {
+      await builder.build();
+    }
+  })().catch(error => {
+    console.error('Fatal error:', error);
+    process.exit(1);
+  });
 }
 
 module.exports = ChironBuilder;
