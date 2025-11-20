@@ -857,7 +857,7 @@
   }
 }, {
   rootMargin: <span class="hljs-string">&#039;200px&#039;</span> <span class="hljs-comment">// Start loading 200px before visible</span>
-});</code></pre></div><h3 id="2-simple-shortcode-syntax-3">2. Simple Shortcode Syntax</h3><p>In your Markdown, just use the <code>&lt;div    class=&quot;lazy-app-container&quot;    data-lazy-app=&quot;react&quot;   data-script-src=&quot;&quot;   id=&quot;lazy-app-1763631298578&quot;&gt;   &lt;div class=&quot;app-placeholder&quot;&gt;     </code> shortcode:</p>
+});</code></pre></div><h3 id="2-simple-shortcode-syntax-3">2. Simple Shortcode Syntax</h3><p>In your Markdown, just use the <code>&lt;div    class=&quot;lazy-app-container&quot;    data-lazy-app=&quot;react&quot;   data-script-src=&quot;&quot;   id=&quot;lazy-app-1763641590496&quot;&gt;   &lt;div class=&quot;app-placeholder&quot;&gt;     </code> shortcode:</p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-markdown">[lazy-app framework=<span class="hljs-string">&quot;react&quot;</span> 
           src=<span class="hljs-string">&quot;assets/my-app.js&quot;</span> 
           deps=<span class="hljs-string">&quot;react,react-dom&quot;</span>]
@@ -952,7 +952,7 @@ document.<span class="hljs-title function_">addEventListener</span>(<span class=
   <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;lazy-app-container&quot;</span> 
   data-lazy-app=<span class="hljs-string">&quot;react&quot;</span>
   data-script-src=<span class="hljs-string">&quot;assets/react-app.js&quot;</span> data-dependencies=<span class="hljs-string">&quot;react,react-dom&quot;</span>
-  id=<span class="hljs-string">&quot;lazy-app-1763631298578&quot;</span>&gt;
+  id=<span class="hljs-string">&quot;lazy-app-1763641590496&quot;</span>&gt;
   &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;app-placeholder&quot;</span>&gt;
     
         &lt;div style=<span class="hljs-string">&quot;text-align: center; padding: 3rem;&quot;</span>&gt;
@@ -965,7 +965,7 @@ document.<span class="hljs-title function_">addEventListener</span>(<span class=
   <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;lazy-app-container&quot;</span> 
   data-lazy-app=<span class="hljs-string">&quot;vue&quot;</span>
   data-script-src=<span class="hljs-string">&quot;assets/vue-app.js&quot;</span> data-dependencies=<span class="hljs-string">&quot;https://unpkg.com/vue@3&quot;</span>
-  id=<span class="hljs-string">&quot;lazy-app-1763631298578&quot;</span>&gt;
+  id=<span class="hljs-string">&quot;lazy-app-1763641590496&quot;</span>&gt;
   &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;app-placeholder&quot;</span>&gt;
     
         &lt;div style=<span class="hljs-string">&quot;text-align: center; padding: 3rem;&quot;</span>&gt;
@@ -978,7 +978,7 @@ document.<span class="hljs-title function_">addEventListener</span>(<span class=
   <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;lazy-app-container&quot;</span> 
   data-lazy-app=<span class="hljs-string">&quot;svelte&quot;</span>
   data-script-src=<span class="hljs-string">&quot;assets/svelte-app.js&quot;</span>
-  id=<span class="hljs-string">&quot;lazy-app-1763631298578&quot;</span>&gt;
+  id=<span class="hljs-string">&quot;lazy-app-1763641590496&quot;</span>&gt;
   &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;app-placeholder&quot;</span>&gt;
     
         &lt;div style=<span class="hljs-string">&quot;text-align: center; padding: 3rem;&quot;</span>&gt;
@@ -1026,7 +1026,6 @@ document.<span class="hljs-title function_">addEventListener</span>(<span class=
     <li><a href="../terms-of-service.html" class="footer-legal-link">Terms of Service</a></li>
     <li><a href="../cookie-policy.html" class="footer-legal-link">Cookie Policy</a></li>
     <li><a href="https://opensource.org/licenses/MIT" class="footer-legal-link" target="_blank" rel="noopener noreferrer" aria-label="License - aria.external_link">License</a></li>
-    <li><a href="../manage-cookies.html" class="footer-legal-link">Manage Cookies</a></li>
   </ul>
                 </div>
             </div>
@@ -1109,8 +1108,6 @@ document.<span class="hljs-title function_">addEventListener</span>(<span class=
 
 
     <!-- Scripts -->
-    <!-- Scripts -->
-
 
 
 <!-- i18n Configuration -->
@@ -1267,7 +1264,6 @@ window.CHIRON_I18N = {
 window.CHIRON_LOCALE = 'en';
 </script>
 
-
 <script src="../base.js"></script>
 <script>
 // Component: code-blocks
@@ -1380,23 +1376,46 @@ document.addEventListener('click', async (e) => {
  * - Comprehensive error handling
  */
 
+/* global URL */
+
 (function() {
   'use strict';
 
   // Configuration
   const CONFIG = {
-    SCRIPT_TIMEOUT: 10000, // 10 seconds
+    SCRIPT_TIMEOUT: 15000, // 15 seconds (increased for slow connections)
     INTERSECTION_THRESHOLD: 0.01,
-    INTERSECTION_MARGIN: '50px', // Load slightly before entering viewport
+    INTERSECTION_MARGIN: '200px', // Load 200px before visible (better UX on slow connections)
     RETRY_DELAY: 1000,
     MAX_RETRIES: 3,
-    DEBOUNCE_DELAY: 100 // Debounce intersection events
+    DEBOUNCE_DELAY: 100, // Debounce intersection events (legacy, not used)
+    VISIBILITY_CHECK_DELAY: 100 // Wait before checking visibility after load
   };
 
-  // Global state
+  // Global state (Symbol keys for true privacy)
   const loadedScripts = new Set();
   const loadingScripts = new Map(); // URL -> Promise
   const loadingApps = new Set();
+  const abortControllers = new Map(); // appId -> AbortController
+  
+  // Unique lock symbol to prevent tampering
+  const LOCK_SYMBOL = Symbol('lazyAppLock');
+
+  /**
+ * Normalize script URL for comparison (removes query params for cache busting)
+ * @param {string} url - Script URL
+ * @returns {string} - Normalized URL
+ */
+  function normalizeScriptUrl(url) {
+    try {
+      const urlObj = new URL(url, window.location.href);
+      // Keep protocol, host, and pathname only (ignore query params)
+      return `${urlObj.protocol}//${urlObj.host}${urlObj.pathname}`;
+    } catch (_e) {
+      // Fallback to original if URL parsing fails
+      return url;
+    }
+  }
 
   /**
  * Load a single script with timeout and deduplication
@@ -1404,25 +1423,34 @@ document.addEventListener('click', async (e) => {
  * @param {Object} options - Loading options
  * @param {number} options.timeout - Timeout in ms
  * @param {boolean} options.async - Load async (default: true)
+ * @param {AbortSignal} options.signal - Abort signal for cancellation
  * @returns {Promise<void>}
  */
   function loadScript(src, options = {}) {
-    const { timeout = CONFIG.SCRIPT_TIMEOUT, async = true } = options;
+    const { timeout = CONFIG.SCRIPT_TIMEOUT, async = true, signal } = options;
+    const normalizedSrc = normalizeScriptUrl(src);
+
+    // Check if aborted before starting
+    if (signal?.aborted) {
+      return Promise.reject(new Error('Script loading aborted'));
+    }
 
     // Return existing promise if already loading
-    if (loadingScripts.has(src)) {
-      return loadingScripts.get(src);
+    if (loadingScripts.has(normalizedSrc)) {
+      return loadingScripts.get(normalizedSrc);
     }
 
     // Return resolved promise if already loaded
-    if (loadedScripts.has(src)) {
+    if (loadedScripts.has(normalizedSrc)) {
       return Promise.resolve();
     }
 
-    // Check if script exists in DOM
-    const existing = document.querySelector(`script[src="${src}"]`);
+    // Check if script exists in DOM (more robust check)
+    const existing = Array.from(document.querySelectorAll('script[src]')).find(
+      script => normalizeScriptUrl(script.src) === normalizedSrc
+    );
     if (existing) {
-      loadedScripts.add(src);
+      loadedScripts.add(normalizedSrc);
       return Promise.resolve();
     }
 
@@ -1432,27 +1460,56 @@ document.addEventListener('click', async (e) => {
       script.src = src;
       script.async = async;
       script.setAttribute('data-lazy-loaded', 'true');
+      script.setAttribute('crossorigin', 'anonymous'); // Better error handling for CORS
+      script.setAttribute('data-normalized-src', normalizedSrc);
 
       let timeoutId;
+      let aborted = false;
 
       const cleanup = () => {
         clearTimeout(timeoutId);
         script.onload = null;
         script.onerror = null;
+        if (signal) {
+          signal.removeEventListener('abort', abortHandler);
+        }
       };
 
-      script.onload = () => {
+      const abortHandler = () => {
+        aborted = true;
         cleanup();
-        loadedScripts.add(src);
-        loadingScripts.delete(src);
+        script.remove();
+        loadingScripts.delete(normalizedSrc);
+        const err = new Error(`Script loading aborted: ${src}`);
+        console.warn('[LazyApp]', err.message);
+        reject(err);
+      };
+
+      // Listen for abort signal
+      if (signal) {
+        signal.addEventListener('abort', abortHandler);
+        if (signal.aborted) {
+          abortHandler();
+          return;
+        }
+      }
+
+      script.onload = () => {
+        if (aborted) {return;}
+        cleanup();
+        loadedScripts.add(normalizedSrc);
+        loadingScripts.delete(normalizedSrc);
         console.debug(`[LazyApp] ✓ Loaded: ${src}`);
         resolve();
       };
 
-      script.onerror = (_error) => {
+      script.onerror = (error) => {
+        if (aborted) {return;}
         cleanup();
-        loadingScripts.delete(src);
+        script.remove(); // Remove failed script
+        loadingScripts.delete(normalizedSrc);
         const err = new Error(`Failed to load script: ${src}`);
+        err.cause = error;
         console.error('[LazyApp]', err);
         reject(err);
       };
@@ -1460,19 +1517,23 @@ document.addEventListener('click', async (e) => {
       // Timeout handler
       if (timeout > 0) {
         timeoutId = setTimeout(() => {
+          if (aborted) {return;}
           cleanup();
           script.remove();
-          loadingScripts.delete(src);
-          const err = new Error(`Script load timeout: ${src}`);
+          loadingScripts.delete(normalizedSrc);
+          const err = new Error(`Script load timeout (${timeout}ms): ${src}`);
           console.error('[LazyApp]', err);
           reject(err);
         }, timeout);
       }
 
-      document.head.appendChild(script);
+      // Only append if not aborted
+      if (!aborted) {
+        document.head.appendChild(script);
+      }
     });
 
-    loadingScripts.set(src, promise);
+    loadingScripts.set(normalizedSrc, promise);
     return promise;
   }
 
@@ -1550,6 +1611,53 @@ document.addEventListener('click', async (e) => {
   }
 
   /**
+ * Check if element is truly visible (robust check)
+ * @param {HTMLElement} element - Element to check
+ * @returns {boolean} - True if visible
+ */
+  function isElementVisible(element) {
+    if (!element || !document.body.contains(element)) {
+      return false;
+    }
+    
+    const style = window.getComputedStyle(element);
+    
+    // Check all possible ways element can be hidden
+    if (style.display === 'none' || 
+        style.visibility === 'hidden' || 
+        style.opacity === '0' ||
+        element.offsetParent === null ||
+        element.offsetWidth === 0 ||
+        element.offsetHeight === 0) {
+      return false;
+    }
+    
+    return true;
+  }
+
+  /**
+ * Acquire atomic lock for app loading
+ * @param {HTMLElement} container - Container element
+ * @returns {boolean} - True if lock acquired
+ */
+  function acquireLock(container) {
+    // Atomic check-and-set using Symbol
+    if (container[LOCK_SYMBOL]) {
+      return false; // Already locked
+    }
+    container[LOCK_SYMBOL] = true;
+    return true;
+  }
+
+  /**
+ * Release lock for app loading
+ * @param {HTMLElement} container - Container element
+ */
+  function releaseLock(container) {
+    delete container[LOCK_SYMBOL];
+  }
+
+  /**
  * Load an app with all dependencies and data
  * @param {HTMLElement} container - App container element
  * @param {Object} options - Loading options
@@ -1558,22 +1666,35 @@ document.addEventListener('click', async (e) => {
   async function loadApp(container, options = {}) {
     const appId = container.id || `app-${Date.now()}`;
 
-    // Prevent double-loading
+    // Atomic lock check - prevents ALL race conditions
+    if (!acquireLock(container)) {
+      console.debug(`[LazyApp] Already loading (locked): ${appId}`);
+      return;
+    }
+
+    // Secondary checks (belt and suspenders)
     if (loadingApps.has(appId)) {
+      releaseLock(container);
       console.debug(`[LazyApp] Already loading: ${appId}`);
       return;
     }
 
     if (container.dataset.lazyAppLoaded === 'true') {
+      releaseLock(container);
       console.debug(`[LazyApp] Already loaded: ${appId}`);
       return;
     }
 
     // Verify container is still in DOM
     if (!document.body.contains(container)) {
+      releaseLock(container);
       console.warn(`[LazyApp] Container removed from DOM, aborting: ${appId}`);
       return;
     }
+
+    // Create abort controller for this load operation
+    const abortController = new AbortController();
+    abortControllers.set(appId, abortController);
 
     loadingApps.add(appId);
 
@@ -1591,7 +1712,13 @@ document.addEventListener('click', async (e) => {
     }
 
     try {
-    // Load dependencies first
+    // Enhanced options with abort signal
+      const loadOptions = {
+        ...options,
+        signal: abortController.signal
+      };
+
+      // Load dependencies first
       if (dependencies.length > 0) {
         console.debug(`[LazyApp] Loading ${dependencies.length} dependencies...`);
       
@@ -1600,7 +1727,12 @@ document.addEventListener('click', async (e) => {
           throw new Error('Container removed from DOM during loading');
         }
       
-        await loadScripts(dependencies, options);
+        // Check if aborted
+        if (abortController.signal.aborted) {
+          throw new Error('Loading aborted');
+        }
+      
+        await loadScripts(dependencies, loadOptions);
       }
 
       // Load main app script
@@ -1610,23 +1742,37 @@ document.addEventListener('click', async (e) => {
           throw new Error('Container removed from DOM during loading');
         }
       
-        await loadScript(scriptSrc, options);
+        // Check if aborted
+        if (abortController.signal.aborted) {
+          throw new Error('Loading aborted');
+        }
+      
+        await loadScript(scriptSrc, loadOptions);
       }
 
       console.log(`[LazyApp] ✓ App loaded successfully: ${appId}`);
 
-      // Mark as loaded
+      // Mark as loaded (atomic operation)
       container.dataset.lazyAppLoaded = 'true';
+      container.dataset.lazyAppLoadedAt = Date.now();
 
-      // Verify container is still visible before removing placeholder
-      const isVisible = container.offsetParent !== null && 
-                     container.offsetWidth > 0 && 
-                     container.offsetHeight > 0;
+      // Wait a moment for framework to initialize before checking visibility
+      await new Promise(resolve => setTimeout(resolve, CONFIG.VISIBILITY_CHECK_DELAY));
+
+      // Robust visibility check
+      const isVisible = isElementVisible(container);
 
       // Remove placeholder only if container is visible
       if (placeholder) {
         if (isVisible) {
-          placeholder.remove();
+          // Fade out placeholder smoothly
+          placeholder.style.transition = 'opacity 0.3s ease-out';
+          placeholder.style.opacity = '0';
+          setTimeout(() => {
+            if (placeholder.parentNode) {
+              placeholder.remove();
+            }
+          }, 300);
         } else {
           console.warn(`[LazyApp] Container not visible, keeping placeholder: ${appId}`);
           // Keep placeholder but update its content to show success
@@ -1646,9 +1792,11 @@ document.addEventListener('click', async (e) => {
           framework,
           container,
           data: getData(appId), // Include injected data
-          visible: isVisible
+          visible: isVisible,
+          loadTime: Date.now() - (parseInt(container.dataset.lazyAppLoadStarted) || Date.now())
         },
-        bubbles: true
+        bubbles: true,
+        cancelable: false
       });
       container.dispatchEvent(event);
 
@@ -1686,7 +1834,13 @@ document.addEventListener('click', async (e) => {
       throw error; // Re-throw for caller handling
 
     } finally {
+      // Comprehensive cleanup
       loadingApps.delete(appId);
+      abortControllers.delete(appId);
+      releaseLock(container);
+      
+      // Remove loading flag (keeps lazyAppLoaded if successful)
+      container.dataset.lazyAppLoading = 'false';
     }
   }
 
@@ -1710,6 +1864,25 @@ document.addEventListener('click', async (e) => {
   }
 
   /**
+ * Cleanup function - aborts all pending loads
+ * Call this on page navigation or before SPA route changes
+ */
+  function cleanup() {
+    console.debug('[LazyApp] Cleaning up...');
+    
+    // Abort all pending loads
+    abortControllers.forEach((controller, appId) => {
+      console.debug(`[LazyApp] Aborting load: ${appId}`);
+      controller.abort();
+    });
+    
+    abortControllers.clear();
+    loadingApps.clear();
+    
+    console.debug('[LazyApp] Cleanup complete');
+  }
+
+  /**
  * Initialize lazy app loading for all containers on page
  */
   function initLazyApps() {
@@ -1729,39 +1902,44 @@ document.addEventListener('click', async (e) => {
       threshold: CONFIG.INTERSECTION_THRESHOLD
     };
 
-    // Debounce map to prevent rapid-fire triggers during fast scroll
-    const debounceTimers = new Map();
-
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const container = entry.target;
-          const containerId = container.id;
-        
-          // Clear any pending debounce timer
-          if (debounceTimers.has(containerId)) {
-            clearTimeout(debounceTimers.get(containerId));
+          
+          // Triple-check to prevent any possible race condition
+          if (container.dataset.lazyAppLoading === 'true' || 
+              container.dataset.lazyAppLoaded === 'true' ||
+              container[LOCK_SYMBOL]) {
+            return;
           }
-        
-          // Debounce the load to prevent multiple triggers during fast scroll
-          const timer = setTimeout(() => {
-            debounceTimers.delete(containerId);
           
-            // Stop observing immediately to prevent multiple triggers
-            observer.unobserve(container);
+          // Mark as loading immediately (belt and suspenders with lock)
+          container.dataset.lazyAppLoading = 'true';
+          container.dataset.lazyAppLoadStarted = Date.now();
           
-            // Load app and handle completion
-            loadApp(container).catch(err => {
-              console.error('[LazyApp] Load error:', err);
+          // Stop observing immediately to prevent multiple triggers
+          observer.unobserve(container);
+          
+          console.debug(`[LazyApp] Triggering load: ${container.id}`);
+          
+          // Load app immediately (atomic lock prevents all duplicates)
+          loadApp(container).catch(err => {
+            console.error('[LazyApp] Load error:', err);
             
-              // On error, re-observe to allow retry on next scroll
-              if (container.dataset.lazyAppLoaded !== 'true') {
-                observer.observe(container);
-              }
-            });
-          }, CONFIG.DEBOUNCE_DELAY);
-        
-          debounceTimers.set(containerId, timer);
+            // On error, comprehensive cleanup and re-observe
+            container.dataset.lazyAppLoading = 'false';
+            releaseLock(container);
+            
+            if (container.dataset.lazyAppLoaded !== 'true') {
+              // Re-observe after a short delay to prevent immediate re-trigger
+              setTimeout(() => {
+                if (document.body.contains(container)) {
+                  observer.observe(container);
+                }
+              }, CONFIG.RETRY_DELAY / 2);
+            }
+          });
         }
       });
     }, observerOptions);
@@ -1790,6 +1968,8 @@ document.addEventListener('click', async (e) => {
       loadApp,
       retryApp,
       initLazyApps,
+      cleanup,
+      isElementVisible,
       CONFIG
     };
   }
@@ -1800,6 +1980,28 @@ document.addEventListener('click', async (e) => {
       document.addEventListener('DOMContentLoaded', initLazyApps);
     } else {
       initLazyApps();
+    }
+    
+    // Cleanup on page unload (prevents memory leaks)
+    window.addEventListener('beforeunload', cleanup);
+    
+    // Cleanup on visibility change (user switched tabs during load)
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        console.debug('[LazyApp] Page hidden, aborting pending loads');
+        cleanup();
+      }
+    });
+    
+    // Expose cleanup for SPA frameworks
+    if (!window.LazyAppLoader) {
+      window.LazyAppLoader = {
+        cleanup,
+        initLazyApps,
+        loadApp,
+        injectData,
+        getData
+      };
     }
   }
 })();
@@ -2224,7 +2426,6 @@ document.addEventListener('click', async (e) => {
   }
 })();
 </script>
-
 
 <div id="cookie-consent-banner" class="cookie-consent-banner" style="display: none;">
   <div class="cookie-consent-content">

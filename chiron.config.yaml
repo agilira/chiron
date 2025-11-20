@@ -140,11 +140,18 @@ analytics:
 # Navigation Structure
 navigation:
   # Pagination Configuration (Previous/Next links)
-  # Global default for all pages
-  # Can be overridden at sidebar level or page level (frontmatter)
+  # OPT-IN approach: Disabled by default, enable per-page via frontmatter
+  # Blog posts have automatic chronological pagination (always enabled)
+  # For docs: add 'pagination: true' in frontmatter for sequential tutorials only
+  # 
+  # Best practice (used by HashiCorp, Stripe, Cloudflare):
+  # - Use pagination ONLY for step-by-step tutorials and getting-started guides
+  # - Regular documentation pages should NOT have pagination
+  # - Users navigate via sidebar, search, and internal links
+  # 
   # See PAGINATION.md for full documentation
   pagination:
-    enabled: true  # Default: enabled (show prev/next navigation)
+    enabled: false  # Default: disabled (opt-in per page with frontmatter)
   
   # Menus - Load from external file for better maintainability
   # Menu definitions (header, breadcrumb, footer links) are now in menus.yaml
@@ -156,12 +163,6 @@ navigation:
   # This approach scales better for large documentation sites with hundreds of links
   # See SIDEBAR.md for full documentation and examples
   sidebars_file: sidebars.yaml
-  
-  # Sidebar-specific pagination settings
-  # Override global default for specific sidebars
-  sidebar_pagination:
-    default: true   # Enabled for default sidebar
-    plugins: true   # Enabled for plugins sidebar (sequential documentation example)
 
 # Footer Configuration
 footer:

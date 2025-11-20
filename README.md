@@ -17,7 +17,7 @@ Zero runtime. Zero complexity. Just fast, beautiful websites.
 - **PWA Cache System**: Lightning-fast repeat loads (<50ms) with cache-first strategy and background updates - [See PWA-CACHE.md](PWA-CACHE.md)
 - **Custom Sidebar Templates**: WordPress-style template system for sidebars - create dashboards, marketing pages, e-commerce filters, or any custom content
 - **Nested Structure (Subpages)**: Organize content in subdirectories for complex projects
-- **Pagination (Prev/Next)**: Automatic sequential navigation between pages
+- **Pagination (Prev/Next)**: Opt-in sequential navigation for tutorials and guides (blog posts have automatic chronological pagination)
 - **Custom Templates**: Create custom page layouts with complete HTML control
 - **Multiple Templates**: Use different layouts for landing pages, docs, and custom pages
 - **Automatic Build**: Generates HTML, sitemap.xml, and robots.txt automatically
@@ -748,7 +748,7 @@ builder.watch();
 ### Configuration
 - **[Theme System](THEMES.md)** - Complete theme customization and creation
 - **[Nested Structure (Subpages)](SUBPAGES.md)** - Organize content in subdirectories
-- **[Pagination (Prev/Next)](PAGINATION.md)** - Sequential page navigation
+- **[Pagination (Prev/Next)](PAGINATION.md)** - Opt-in sequential navigation (for tutorials and step-by-step guides)
 - **[Custom Templates](CUSTOM-TEMPLATES.md)** - Override specific page templates
 - **[Templates Guide](TEMPLATES.md)** - Template syntax and placeholders
 - **[Sidebar Navigation](SIDEBAR.md)** - Configure multiple sidebars

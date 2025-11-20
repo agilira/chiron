@@ -1485,7 +1485,9 @@ class TemplateEngine {
     const { page } = context;
 
     // LEVEL 1: Frontmatter override (highest priority)
-    // Explicit true/false in page frontmatter takes absolute precedence
+    // Explicit true/false in page frontmatter for opt-in pagination
+    // Use this for sequential tutorials, getting-started guides, etc.
+    // Example: pagination: true (in frontmatter)
     if (page.pagination !== undefined) {
       const isEnabled = page.pagination === true;
       this.logger.debug('Pagination controlled by frontmatter', {
@@ -1496,25 +1498,9 @@ class TemplateEngine {
       return isEnabled;
     }
 
-    // LEVEL 2: Sidebar configuration (medium priority)
-    // Check if the sidebar this page belongs to has pagination enabled
-    // Uses navigation.sidebar_pagination map for cleaner YAML structure
-    const sidebarName = page.sidebar || 'default';
-    const sidebarPaginationConfig = this.config.navigation?.sidebar_pagination;
-
-    if (sidebarPaginationConfig && sidebarPaginationConfig[sidebarName] !== undefined) {
-      const isEnabled = sidebarPaginationConfig[sidebarName] === true;
-      this.logger.debug('Pagination controlled by sidebar config', {
-        page: page.filename,
-        sidebar: sidebarName,
-        enabled: isEnabled,
-        source: 'sidebar_pagination'
-      });
-      return isEnabled;
-    }
-
-    // LEVEL 3: Global default (lowest priority)
-    // Fall back to global navigation.pagination.enabled setting
+    // LEVEL 2: Global default (lowest priority)
+    // Default is false (opt-in approach) - best practice for documentation sites
+    // Blog posts have their own chronological pagination logic (always enabled)
     const globalEnabled = this.config.navigation?.pagination?.enabled === true;
     this.logger.debug('Pagination controlled by global default', {
       page: page.filename,
@@ -1821,6 +1807,233 @@ class TemplateEngine {
       });
     } catch (error) {
       this.logger.error('Failed to render search-modal partial', { error: error.message });
+      return ''; // Graceful fallback
+    }
+  }
+
+  /**
+   * Render header partial (WordPress-style)
+   * Pre-renders the header section with logo, navigation, and actions
+   * @param {Object} context - Page context with config and page data
+   * @param {string} _pathToRoot - Relative path to root (unused, kept for API compatibility)
+   * @returns {string} Rendered header HTML
+   */
+  renderHeader(context, _pathToRoot = './', logoImages = '', projectNameSpan = '', headerActionsData = {}, languageSwitcher = '', headerDropdownTrigger = 'hover', githubUrl = '') {
+    try {
+      const themeTemplatesDir = this.themeLoader ?
+        path.join(this.themeLoader.themePath, 'templates') : null;
+      const coreTemplatesDir = path.join(this.rootDir, this.config.build.core_templates_dir || 'themes-core');
+
+      const viewsPaths = [];
+      if (themeTemplatesDir && fs.existsSync(themeTemplatesDir)) {
+        viewsPaths.push(themeTemplatesDir);
+      }
+      if (fs.existsSync(coreTemplatesDir)) {
+        viewsPaths.push(coreTemplatesDir);
+      }
+
+      const wrapperTemplate = `<%- include('partials/header', { 
+        githubUrl,
+        logoImages,
+        projectNameSpan,
+        headerActionsData,
+        languageSwitcher,
+        headerDropdownTrigger,
+        aria,
+        context
+      }) %>`;
+      
+      // Get i18n context for aria helper
+      const { createAriaHelper } = require('./i18n/i18n-helpers');
+      const i18nStrings = context.i18n || {};
+      const aria = createAriaHelper(i18nStrings);
+      
+      return ejs.render(wrapperTemplate, { 
+        githubUrl,
+        logoImages,
+        projectNameSpan,
+        headerActionsData,
+        languageSwitcher,
+        headerDropdownTrigger,
+        aria,
+        context,
+        menu: (menuName, menuOptions = {}) => {
+          const optionsWithContext = { ...menuOptions, context };
+          return this.renderMenu(menuName, optionsWithContext);
+        }
+      }, { 
+        views: viewsPaths,
+        filename: path.join(coreTemplatesDir, '_header-wrapper.ejs')
+      });
+    } catch (error) {
+      this.logger.error('Failed to render header partial', { error: error.message });
+      return ''; // Graceful fallback
+    }
+  }
+
+  /**
+   * Render head partial (WordPress-style)
+   * Pre-renders the head section with all meta tags, styles, and scripts
+   * @param {Object} context - Page context with config and page data
+   * @param {string} pathToRoot - Relative path to root
+   * @returns {string} Rendered head HTML
+   */
+  renderHead(context, pathToRoot = './') {
+    try {
+      const themeTemplatesDir = this.themeLoader ?
+        path.join(this.themeLoader.themePath, 'templates') : null;
+      const coreTemplatesDir = path.join(this.rootDir, this.config.build.core_templates_dir || 'themes-core');
+
+      const viewsPaths = [];
+      if (themeTemplatesDir && fs.existsSync(themeTemplatesDir)) {
+        viewsPaths.push(themeTemplatesDir);
+      }
+      if (fs.existsSync(coreTemplatesDir)) {
+        viewsPaths.push(coreTemplatesDir);
+      }
+
+      // Prepare head data
+      const metaTags = this.renderMetaTags(context);
+      const structuredData = this.renderStructuredData(context);
+      const adobeFonts = this.renderAdobeFonts();
+      const analytics = context.page.analytics_snippet || '';
+      const externalStyles = this.renderExternalStyles(context.page);
+
+      const wrapperTemplate = `<%- include('partials/head', { 
+        page,
+        pathToRoot,
+        metaTags,
+        adobeFonts,
+        structuredData,
+        analytics,
+        externalStyles,
+        config
+      }) %>`;
+      
+      return ejs.render(wrapperTemplate, { 
+        page: context.page,
+        pathToRoot,
+        metaTags,
+        adobeFonts,
+        structuredData,
+        analytics,
+        externalStyles,
+        config: this.config
+      }, { 
+        views: viewsPaths,
+        filename: path.join(coreTemplatesDir, '_head-wrapper.ejs')
+      });
+    } catch (error) {
+      this.logger.error('Failed to render head partial', { error: error.message });
+      return ''; // Graceful fallback
+    }
+  }
+
+  /**
+   * Render footer partial (WordPress-style)
+   * Pre-renders the footer with all necessary data
+   * @param {Object} context - Page context with config and page data
+   * @param {string} pathToRoot - Relative path to root
+   * @returns {string} Rendered footer HTML
+   */
+  renderFooter(context, pathToRoot = './') {
+    try {
+      const themeTemplatesDir = this.themeLoader ?
+        path.join(this.themeLoader.themePath, 'templates') : null;
+      const coreTemplatesDir = path.join(this.rootDir, this.config.build.core_templates_dir || 'themes-core');
+
+      const viewsPaths = [];
+      if (themeTemplatesDir && fs.existsSync(themeTemplatesDir)) {
+        viewsPaths.push(themeTemplatesDir);
+      }
+      if (fs.existsSync(coreTemplatesDir)) {
+        viewsPaths.push(coreTemplatesDir);
+      }
+
+      // Prepare footer data
+      const { branding } = this.config;
+      const copyrightYear = new Date().getFullYear();
+      const copyrightHolder = this.escapeHtml(this.config.footer.copyright_holder);
+      const companyUrl = branding.company_url;
+      const logoFooterLight = this.getFooterLogo(branding.logo, 'light', pathToRoot);
+      const logoFooterDark = this.getFooterLogo(branding.logo, 'dark', pathToRoot);
+      const logoAlt = this.escapeHtml(branding.logo?.alt || '');
+
+      // i18n translation function (from context)
+      const t = context.i18n ? (key) => context.i18n[key] || key : (key) => key;
+      
+      // Menu helper function (needs to be bound with correct context)
+      const menu = (menuName, menuOptions = {}) => {
+        const optionsWithContext = { ...menuOptions, context };
+        return this.renderMenu(menuName, optionsWithContext);
+      };
+
+      const wrapperTemplate = `<%- include('partials/footer', { 
+        copyrightYear, 
+        copyrightHolder, 
+        companyUrl, 
+        logoFooterLight, 
+        logoFooterDark, 
+        logoAlt, 
+        context,
+        t,
+        menu
+      }) %>`;
+      
+      return ejs.render(wrapperTemplate, { 
+        copyrightYear,
+        copyrightHolder,
+        companyUrl,
+        logoFooterLight,
+        logoFooterDark,
+        logoAlt,
+        context,
+        t,
+        menu
+      }, { 
+        views: viewsPaths,
+        filename: path.join(coreTemplatesDir, '_footer-wrapper.ejs')
+      });
+    } catch (error) {
+      this.logger.error('Failed to render footer partial', { error: error.message });
+      return ''; // Graceful fallback
+    }
+  }
+
+  /**
+   * Render breadcrumbs partial
+   */
+  renderBreadcrumbs(context, pathToRoot) {
+    try {
+      const breadcrumbData = this.prepareBreadcrumbData(context, pathToRoot);
+      
+      // If breadcrumbs are disabled, return empty string
+      if (!breadcrumbData.enabled || !breadcrumbData.items || breadcrumbData.items.length === 0) {
+        return '';
+      }
+
+      const coreTemplatesDir = path.join(this.rootDir, this.config.build.core_templates_dir || 'themes-core');
+      const corePartialsDir = path.join(coreTemplatesDir, 'partials');
+      
+      const themeTemplatesDir = this.themeLoader ? 
+        path.join(this.themeLoader.themePath, 'templates') : null;
+
+      const viewsPaths = [];
+      if (themeTemplatesDir && fs.existsSync(themeTemplatesDir)) {
+        viewsPaths.push(themeTemplatesDir);
+      }
+      if (fs.existsSync(coreTemplatesDir)) {
+        viewsPaths.push(coreTemplatesDir);
+      }
+      
+      const breadcrumbTemplate = path.join(corePartialsDir, 'breadcrumb.ejs');
+
+      return ejs.render(fs.readFileSync(breadcrumbTemplate, 'utf-8'), breadcrumbData, {
+        views: viewsPaths,
+        filename: breadcrumbTemplate
+      });
+    } catch (error) {
+      this.logger.error('Failed to render breadcrumbs partial', { error: error.message });
       return ''; // Graceful fallback
     }
   }
@@ -3286,9 +3499,12 @@ class TemplateEngine {
       languageSwitcher: this.renderLanguageSwitcher(context, pathToRoot, i18nStrings), // For header-actions partial
       breadcrumb: this.renderBreadcrumb(context, pathToRoot), // Deprecated: kept for BC
       breadcrumbData: this.prepareBreadcrumbData(context, pathToRoot), // NEW: structured data
+      breadcrumbs: this.renderBreadcrumbs(context, pathToRoot), // Pre-rendered breadcrumbs (WordPress-style)
       pagination: this.renderPagination(context, pathToRoot),
       scrollToTop: this.renderScrollToTop(context),
       searchModal: this.renderSearchModal(context),
+      head: this.renderHead(context, pathToRoot), // Pre-rendered head (WordPress-style)
+      footer: this.renderFooter(context, pathToRoot), // Pre-rendered footer (WordPress-style)
       toc: await this.renderTableOfContents(context),
       tocDepth: context.page.toc_depth || '2',
       menus: this.config.navigation,  // Pass menus config to templates
@@ -3319,6 +3535,17 @@ class TemplateEngine {
       githubUrl: `https://github.com/${this.escapeHtml(github.owner)}/${this.escapeHtml(github.repo)}`,
       logoImages,
       projectNameSpan,
+      // Pre-rendered header (WordPress-style) - must be after logoImages, projectNameSpan, etc.
+      header: this.renderHeader(
+        context, 
+        pathToRoot, 
+        logoImages, 
+        projectNameSpan, 
+        this.prepareHeaderActionsData(context, pathToRoot),
+        this.renderLanguageSwitcher(context, pathToRoot, i18nStrings),
+        this.config.navigation?.header_dropdown_trigger || 'hover',
+        `https://github.com/${this.escapeHtml(github.owner)}/${this.escapeHtml(github.repo)}`
+      ),
       // Footer logos with smart fallback (same logic as header)
       logoFooterLight: this.getFooterLogo(branding.logo, 'light', pathToRoot),
       logoFooterDark: this.getFooterLogo(branding.logo, 'dark', pathToRoot),
@@ -3340,6 +3567,31 @@ class TemplateEngine {
       // Blog helpers (WordPress-style) - spread directly into context for clean DX
       // Pass plugin manager for context-dependent helpers (get_posts)
       ...this.loadBlogHelpers(this.pluginManager),
+
+      // Scripts helper (WordPress-style) - renders scripts section with placeholders
+      scripts: () => {
+        let output = '<!-- Scripts -->\n';
+        output += '{{HIGHLIGHT_JS}}\n\n';
+        
+        // i18n client config (if present)
+        if (i18nClientConfig && i18nClientConfig.trim()) {
+          output += '<!-- i18n Configuration -->\n';
+          output += '<script>\n';
+          output += `${i18nClientConfig  }\n`;
+          output += '</script>\n\n';
+        }
+        
+        // Component scripts placeholder (filled after component detection)
+        output += '{{COMPONENT_SCRIPTS}}\n\n';
+        
+        // External scripts (from frontmatter or page config)
+        const externalScripts = this.renderExternalScripts(context.page);
+        if (externalScripts) {
+          output += externalScripts;
+        }
+        
+        return output;
+      },
 
       // Blog identity (from plugin config, injected by blog plugin)
       blogName: context.blogName,

@@ -16,7 +16,7 @@
  * Cache version - changes on every build
  * When this changes, old caches are automatically cleaned up
  */
-const CACHE_VERSION = '9427965e';
+const CACHE_VERSION = 'ccf2b728';
 
 /**
  * Cache names with version

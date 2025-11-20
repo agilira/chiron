@@ -222,13 +222,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Configuration
 
-- **Global Default**: `navigation.pagination.enabled` (default: false)
-- **Sidebar Config**: `navigation.sidebar_pagination.{sidebar_name}` (true/false per sidebar)
+- **Global Default**: `navigation.pagination.enabled` (default: false - opt-in approach)
 - **Frontmatter Override**: `pagination: true/false` (per-page control)
+- **Blog Posts**: Automatic chronological pagination (always enabled via plugin)
 
 ### Technical Details
 
-- Added `shouldShowPagination()` method with 3-level precedence logic
+- Added `shouldShowPagination()` method with 2-level precedence logic (frontmatter > global)
 - Added `calculatePrevNext()` method in template engine
 - Added `flattenSidebarPages()` helper for sidebar traversal
 - Added `renderPagination()` method for HTML generation with enable/disable check

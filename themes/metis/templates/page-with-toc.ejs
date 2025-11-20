@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="<%- page.lang || 'en' %>" data-theme="light">
 <head>
-    <%- include('partials/head', { page, pathToRoot, metaTags, adobeFonts, structuredData, analytics, externalStyles }) %>
+    <%- head %>
 </head>
 <body id="<%- bodyId %>" class="<%- bodyClasses.join(' ') %>">
     <!-- Skip Link -->
@@ -11,7 +11,7 @@
     {{SVG_SPRITE}}
     
     <!-- Header -->
-    <%- include('partials/header', { githubUrl, logoImages, projectNameSpan, headerActionsData, languageSwitcher, headerDropdownTrigger, aria, context }) %>
+    <%- header %>
 
     <!-- Main Layout with Double Sidebar -->
     <div class="layout layout-with-toc<% if (hideSidebar) { %> no-sidebar<% } %>">
@@ -40,7 +40,7 @@
         <!-- Main Content -->
         <main class="main-content" id="main-content" role="main">
             <div class="content-container">
-                <%- include('partials/breadcrumb', breadcrumbData) %>
+                <%- breadcrumbs %>
 
                 <!-- Page Content -->
                 <div class="content">
@@ -59,7 +59,7 @@
     </div>
 
     <!-- Footer -->
-    <%- include('partials/footer', { copyrightYear, copyrightHolder, companyUrl, logoFooterLight, logoFooterDark, logoAlt, context }) %>
+    <%- footer %>
 
     <!-- Mobile Overlay -->
     <div class="mobile-overlay" id="mobileOverlay"></div>
@@ -68,7 +68,6 @@
 
     <%- searchModal %>
 
-    <!-- Scripts -->
-    <%- include('partials/scripts', { pathToRoot, i18nClientConfig, componentScripts, externalScripts }) %>
+    <%- scripts() %>
 </body>
 </html>
