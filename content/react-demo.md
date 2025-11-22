@@ -35,15 +35,9 @@ Instead of loading 130KB of React code immediately when you open this page, Chir
 
 ---
 
-[lazy-app framework="react" src="assets/react-api-explorer.js" deps="https://unpkg.com/react@18/umd/react.production.min.js,https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" id="react-api-root"]
-<div style="text-align: center; padding: 3rem;">
-  <p style="margin-bottom: 1rem; font-size: 1.125rem;"><strong>🚀 Interactive React API Explorer</strong></p>
-  <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Scroll here to load the app</p>
-  <button style="padding: 0.75rem 1.5rem; font-size: 1rem; background: var(--accent-primary); color: white; border: none; border-radius: 8px; cursor: pointer;">
-    Load Demo
-  </button>
-</div>
-[/lazy-app]
+<App id="react-api-root" framework="react" src="assets/react-api-explorer.js" deps="https://unpkg.com/react@18/umd/react.production.min.js,https://unpkg.com/react-dom@18/umd/react-dom.production.min.js">
+<Skeleton />
+</App>
 
 ---
 
@@ -66,16 +60,16 @@ const observer = new IntersectionObserver((entries) => {
 });
 ```
 
-### 2. Simple Shortcode Syntax
+### 2. Simple Component Syntax
 
-In your Markdown, just use the `[lazy-app]` shortcode:
+In your Markdown, just use the `<App>` component:
 
-```markdown
-[lazy-app framework="react" 
-          src="assets/my-app.js" 
-          deps="react,react-dom"]
+```jsx
+<App framework="react" 
+     src="assets/my-app.js" 
+     deps="react,react-dom">
   Custom loading placeholder...
-[/lazy-app]
+</App>
 ```
 
 ### 3. Dynamic Script Loading
@@ -160,26 +154,23 @@ document.addEventListener('lazy-app-loaded', (e) => {
 ## Try Different Frameworks
 
 ### React (This Page)
-```markdown
-[lazy-app framework="react" 
-          src="assets/react-app.js" 
-          deps="react,react-dom"]
-[/lazy-app]
+```jsx
+<App framework="react" 
+     src="assets/react-app.js" 
+     deps="react,react-dom" />
 ```
 
 ### Vue
-```markdown
-[lazy-app framework="vue" 
-          src="assets/vue-app.js" 
-          deps="https://unpkg.com/vue@3"]
-[/lazy-app]
+```jsx
+<App framework="vue" 
+     src="assets/vue-app.js" 
+     deps="https://unpkg.com/vue@3" />
 ```
 
 ### Svelte
-```markdown
-[lazy-app framework="svelte" 
-          src="assets/svelte-app.js"]
-[/lazy-app]
+```jsx
+<App framework="svelte" 
+     src="assets/svelte-app.js" />
 ```
 
 ---

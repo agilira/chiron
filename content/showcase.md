@@ -387,29 +387,29 @@ This is content under a level 6 heading.
 > Always remember: `const` is better than `let`, and `let` is better than `var`. 
 > <cite>Modern JavaScript Best Practices</cite>
 
-### Info Quote
+### Info Callout
 
-<blockquote class="info">
-<p><strong>Info:</strong> You can use HTML directly in markdown files for advanced formatting options.</p>
-</blockquote>
+<Callout variant="info">
+You can use HTML directly in markdown files for advanced formatting options.
+</Callout>
 
-### Warning Quote
+### Warning Callout
 
-<blockquote class="warning">
-<p><strong>Warning:</strong> This feature is experimental and may change in future versions. Use with caution in production environments.</p>
-</blockquote>
+<Callout variant="warning">
+This feature is experimental and may change in future versions. Use with caution in production environments.
+</Callout>
 
-### Error Quote
+### Error Callout
 
-<blockquote class="error">
-<p><strong>Error:</strong> Invalid configuration detected. Please check your <code>chiron.config.yaml</code> file for syntax errors.</p>
-</blockquote>
+<Callout variant="error">
+Invalid configuration detected. Please check your `chiron.config.yaml` file for syntax errors.
+</Callout>
 
-### Success Quote
+### Success Callout
 
-<blockquote class="success">
-<p><strong>Success:</strong> Your documentation has been built and is ready for deployment!</p>
-</blockquote>
+<Callout variant="success">
+Your documentation has been built and is ready for deployment!
+</Callout>
 
 ## Badges
 
@@ -517,15 +517,11 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 
 ### Basic Accordion
 
-<details>
-<summary>What is Chiron?</summary>
-
+<Accordion title="What is Chiron?">
 Chiron is a modern static site generator specifically designed for creating beautiful documentation websites. It combines the simplicity of Markdown with powerful templating and theming capabilities.
+</Accordion>
 
-</details>
-
-<details>
-<summary>How do I get started?</summary>
+<Accordion title="How do I get started?">
 
 Getting started is easy:
 
@@ -534,46 +530,31 @@ Getting started is easy:
 3. Add your content in Markdown files
 4. Run `chiron build` to generate your site
 
-</details>
+</Accordion>
 
-<details open>
-<summary>Can I customize the theme?</summary>
-
+<Accordion title="Can I customize the theme?" open>
 Absolutely! Chiron supports custom CSS, custom JavaScript, and full template customization. You can override any aspect of the default theme to match your brand.
-
-</details>
+</Accordion>
 
 ### Accordion Group (consecutive items)
 
-<details>
-<summary>Installation</summary>
-
+<Accordion title="Installation">
 Install Chiron globally using npm or yarn.
+</Accordion>
 
-</details>
-
-<details>
-<summary>Configuration</summary>
-
+<Accordion title="Configuration">
 Configure your site using the `chiron.config.yaml` file.
+</Accordion>
 
-</details>
-
-<details>
-<summary>Deployment</summary>
-
+<Accordion title="Deployment">
 Deploy to any static hosting provider like GitHub Pages, Netlify, or Vercel.
-
-</details>
+</Accordion>
 
 ### Single Item
 
-<details>
-<summary>What languages are supported?</summary>
-
+<Accordion title="What languages are supported?">
 Chiron supports syntax highlighting for over 100 programming languages including JavaScript, TypeScript, Python, Go, Rust, and many more.
-
-</details>
+</Accordion>
 
 ---
 

@@ -3016,7 +3016,7 @@ class TemplateEngine {
     html = html.replace(/\{\{HIGHLIGHT_JS\}\}/g, '');
 
     // Inject inline SVG sprite for <use> references
-    // This avoids CORS issues with external SVG files
+    // Inline sprite avoids CORS issues and ensures icons work reliably
     const escapedSvgSprite = svgSprite.replace(/\$/g, '$$$$');
     html = html.replace(/\{\{SVG_SPRITE\}\}/g, escapedSvgSprite);
 
@@ -3052,11 +3052,11 @@ class TemplateEngine {
       });
     }
 
-    // Fix SVG icon paths to use inline references (change external to internal)
-    // Converts: <use href="./assets/icons.svg#icon-name"/>
+    // Fix SVG icon paths to use inline sprite references
+    // Converts: <use href="assets/icons.svg#icon-name"/>
     // To:       <use href="#icon-name"/> (uses inline sprite)
     html = html.replace(
-      /<use\s+href="[./]*assets\/icons\.svg#/g,
+      /<use\s+href="[^"]*assets\/icons\.svg#/g,
       '<use href="#'
     );
 

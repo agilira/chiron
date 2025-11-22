@@ -88,14 +88,14 @@ describe('Plugin Dependencies Integration', () => {
   describe('Multiple Plugins with Dependencies', () => {
     test('should load mermaid and cookie plugins together', async () => {
       const plugins = await loader.loadAllPluginsWithDependencies([
-        { name: 'mermaid', enabled: true },
+        { name: 'components', enabled: true },
         { name: 'cookie-consent', enabled: true }
       ]);
       
       expect(plugins.length).toBe(3);
       
       const pluginNames = plugins.map(p => p.name);
-      expect(pluginNames).toContain('mermaid');
+      expect(pluginNames).toContain('components');
       expect(pluginNames).toContain('cookies-scanner');
       expect(pluginNames).toContain('cookie-consent');
       
@@ -164,7 +164,7 @@ describe('Plugin Dependencies Integration', () => {
   describe('Real-World Scenarios', () => {
     test('should handle typical documentation site setup', async () => {
       const plugins = await loader.loadAllPluginsWithDependencies([
-        { name: 'mermaid', enabled: true },
+        { name: 'components', enabled: true },
         { name: 'cookie-consent', enabled: true, config: { position: 'bottom' } }
       ]);
       
@@ -193,7 +193,7 @@ describe('Plugin Dependencies Integration', () => {
       const start = Date.now();
       
       await loader.loadAllPluginsWithDependencies([
-        { name: 'mermaid', enabled: true },
+        { name: 'components', enabled: true },
         { name: 'cookie-consent', enabled: true }
       ]);
       

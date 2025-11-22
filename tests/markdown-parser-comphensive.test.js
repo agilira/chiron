@@ -18,15 +18,7 @@ jest.mock('../builder/logger', () => ({
   }
 }));
 
-// Mock shortcode parser
-jest.mock('../builder/shortcode-parser', () => {
-  return jest.fn().mockImplementation(() => ({
-    parse: jest.fn((content) => content),
-    register: jest.fn(),
-    getRegisteredShortcodes: jest.fn().mockReturnValue([]),
-    hasShortcodes: jest.fn().mockReturnValue(false)
-  }));
-});
+// Note: Shortcode parser removed - using component processor instead
 
 describe('MarkdownParser Additional Coverage', () => {
   let parser;

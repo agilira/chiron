@@ -283,20 +283,11 @@ class ChironBuilder {
         this.logger.error('Error in config:loaded hook', { error: error.message });
       }
 
-      // Register plugin shortcodes with the MarkdownParser
-      const shortcodes = this.pluginManager.getShortcodes();
-      this.logger.debug('Registering plugin shortcodes with MarkdownParser', { count: shortcodes.length });
-
-      for (const shortcodeName of shortcodes) {
-        // Wrap the plugin's shortcode handler to match MarkdownParser's expected signature
-        // MarkdownParser expects: (content, attrs) => string
-        // PluginManager provides: (attrs, content, context) => string
-        this.markdownParser.shortcode.register(shortcodeName, (content, attrs) => {
-          return this.pluginManager.executeShortcode(shortcodeName, attrs, content);
-        });
-
-        this.logger.debug('Registered plugin shortcode', { name: shortcodeName });
-      }
+      // Note: Plugin shortcodes are now handled via component processor
+      // after markdown parsing, not during markdown-to-HTML conversion
+      
+      // Set plugin manager in markdown parser for component processing
+      this.markdownParser.setPluginManager(this.pluginManager);
     }
 
     this.templateEngine = new TemplateEngine(

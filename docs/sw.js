@@ -16,7 +16,7 @@
  * Cache version - changes on every build
  * When this changes, old caches are automatically cleaned up
  */
-const CACHE_VERSION = '02b09171';
+const CACHE_VERSION = 'ddea5291';
 
 /**
  * Cache names with version
@@ -41,6 +41,7 @@ const CRITICAL_ASSETS = [
   '/',
   '/404.html',
   '/api-reference.html',
+  '/assets/nivo/index.html',
   '/blog/author/marco-rossi.html',
   '/blog/building-modern-documentation.html',
   '/blog/category/tutorials.html',
@@ -51,6 +52,20 @@ const CRITICAL_ASSETS = [
   '/blog/third-post.html',
   '/blog/welcome-to-chiron.html',
   '/buttons-showcase.html',
+  '/components/accordions.html',
+  '/components/app.html',
+  '/components/badges.html',
+  '/components/buttons.html',
+  '/components/callouts.html',
+  '/components/charts.html',
+  '/components/embeds.html',
+  '/components/feature-cards.html',
+  '/components/grid.html',
+  '/components/images.html',
+  '/components/mermaid.html',
+  '/components/skeleton.html',
+  '/components/tabs.html',
+  '/components/tooltips.html',
   '/custom-template-test.html',
   '/dashboard-demo.html',
   '/data-island-docs.html',
@@ -89,6 +104,20 @@ const CRITICAL_ASSETS = [
   '/it/blog/third-post.html',
   '/it/blog/welcome-to-chiron.html',
   '/it/buttons-showcase.html',
+  '/it/components/accordions.html',
+  '/it/components/app.html',
+  '/it/components/badges.html',
+  '/it/components/buttons.html',
+  '/it/components/callouts.html',
+  '/it/components/charts.html',
+  '/it/components/embeds.html',
+  '/it/components/feature-cards.html',
+  '/it/components/grid.html',
+  '/it/components/images.html',
+  '/it/components/mermaid.html',
+  '/it/components/skeleton.html',
+  '/it/components/tabs.html',
+  '/it/components/tooltips.html',
   '/it/custom-template-test.html',
   '/it/dashboard-demo.html',
   '/it/data-island-docs.html',
@@ -117,6 +146,7 @@ const CRITICAL_ASSETS = [
   '/it/test-no-base.html',
   '/it/test-no-dropdown.html',
   '/it/test-shortcodes.html',
+  '/it/test-skeleton.html',
   '/it/toc-depth-test.html',
   '/landing-demo.html',
   '/manage-cookies.html',
@@ -128,7 +158,6 @@ const CRITICAL_ASSETS = [
   '/plugins/index.html',
   '/privacy-policy.html',
   '/react-demo.html',
-  '/shortcodes-showcase.html',
   '/showcase.html',
   '/slideshow-demo.html',
   '/tabs-demo.html',
@@ -138,8 +167,8 @@ const CRITICAL_ASSETS = [
   '/test-no-base.html',
   '/test-no-dropdown.html',
   '/test-shortcodes.html',
+  '/test-skeleton.html',
   '/toc-depth-test.html',
-  '/custom.css',
   '/fonts.css',
   '/styles.css'
   
@@ -210,7 +239,6 @@ const STATIC_ASSETS = [
   '/assets/test-data-island.js',
   '/base-minimal.js',
   '/base.js',
-  '/custom.js',
   '/search-client.js',
   '/sw.js'
   

@@ -10,7 +10,6 @@
 const matter = require('gray-matter');
 const { marked } = require('marked');
 const { logger } = require('./logger');
-const ShortcodeParser = require('./shortcode-parser');
 const { abbreviationExtension, definitionListExtension, replaceAbbreviations } = require('./markdown-extensions');
 const { Worker } = require('worker_threads');
 const path = require('path');
@@ -29,21 +28,17 @@ class MarkdownParser {
     this.toc = []; // Table of Contents entries
     this.abbreviations = new Map(); // Store abbreviations
     this.logger = logger.child('MarkdownParser');
-    
+
     // Worker thread pool configuration
     this.maxWorkers = Math.max(1, os.cpus().length - 1); // Leave 1 CPU for main thread
     this.workerPool = [];
     this.availableWorkers = [];
     this.workersAvailable = true;
     this.workerTimeout = 30000; // 30 seconds default
-    
-    // Initialize shortcode parser
-    this.shortcode = new ShortcodeParser();
-    this.registerBuiltInShortcodes();
-    
+
     // Register markdown extensions
     marked.use({ extensions: [abbreviationExtension, definitionListExtension] });
-    
+
     // Configure marked options
     marked.setOptions({
       gfm: true, // GitHub Flavored Markdown
@@ -61,15 +56,15 @@ class MarkdownParser {
       // In marked v16+, text is already a string (not HTML)
       // But we still sanitize for extra safety
       const sanitizedText = String(text).replace(/<[^>]*>/g, '');
-      
+
       // Check if heading should be excluded from TOC BEFORE processing
       // Supports: ## Heading {data-toc-ignore} or ## Heading {.toc-ignore}
       const shouldIgnoreToc = /\{(?:data-toc-ignore|\.toc-ignore)\}/.test(sanitizedText);
-      
+
       // Remove the ignore marker from the text BEFORE generating ID
       const cleanText = sanitizedText.replace(/\s*\{(?:data-toc-ignore|\.toc-ignore)\}\s*/g, '');
       const cleanHtmlText = text.replace(/\s*\{(?:data-toc-ignore|\.toc-ignore)\}\s*/g, '');
-      
+
       // SECURITY: Generate safe ID - only alphanumeric, spaces, and hyphens
       // Optimized: combine multiple replace operations
       const baseId = cleanText
@@ -79,20 +74,20 @@ class MarkdownParser {
         .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric sequences with single hyphen
         .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
         .substring(0, PARSER_CONFIG.MAX_ID_LENGTH); // Limit ID length
-      
+
       const level = depth; // depth is the heading level in v16
-      
+
       // Handle duplicate IDs
       let finalId = baseId || `heading-${level}-${Math.random().toString(36).substr(2, 9)}`;
       let counter = 1;
-      
+
       while (this.usedIds.has(finalId)) {
         finalId = `${baseId}-${counter}`;
         counter++;
       }
-      
+
       this.usedIds.add(finalId);
-      
+
       // Build TOC entry (collect all headings for table of contents, unless ignored)
       if (!shouldIgnoreToc) {
         this.toc.push({
@@ -101,10 +96,10 @@ class MarkdownParser {
           id: finalId
         });
       }
-      
+
       // Add data-toc-ignore attribute to the heading if it should be excluded from TOC
       const tocIgnoreAttr = shouldIgnoreToc ? ' data-toc-ignore' : '';
-      
+
       // Note: text already contains properly escaped HTML from marked
       return `<h${level} id="${finalId}"${tocIgnoreAttr}>${cleanHtmlText}</h${level}>`;
     };
@@ -115,22 +110,22 @@ class MarkdownParser {
       if (!href || typeof href !== 'string') {
         return text || '';
       }
-      
+
       // Block dangerous protocols
       const dangerousProtocols = ['javascript:', 'data:', 'vbscript:', 'file:'];
       const lowerHref = href.toLowerCase().trim();
-      
+
       if (dangerousProtocols.some(proto => lowerHref.startsWith(proto))) {
         this.logger.warn('Blocked dangerous link protocol', { href });
         return text || '';
       }
-      
+
       // Build link HTML manually
       const titleAttr = title ? ` title="${this.escapeHtml(title)}"` : '';
-      const externalAttrs = (href.startsWith('http://') || href.startsWith('https://')) 
-        ? ' target="_blank" rel="noopener noreferrer"' 
+      const externalAttrs = (href.startsWith('http://') || href.startsWith('https://'))
+        ? ' target="_blank" rel="noopener noreferrer"'
         : '';
-      
+
       return `<a href="${this.escapeHtml(href)}"${titleAttr}${externalAttrs}>${text}</a>`;
     };
 
@@ -139,7 +134,7 @@ class MarkdownParser {
       // In marked v16+, we need to manually render header and rows
       // Use the Renderer.parser to parse inline tokens
       const parser = new marked.Parser();
-      
+
       let header = '<tr>\n';
       for (const cell of token.header) {
         const content = parser.parseInline(cell.tokens || []);
@@ -171,10 +166,10 @@ class MarkdownParser {
     renderer.code = ({ text, lang }) => {
       const language = lang || 'text';
       const trimmedCode = String(text).trim();
-      
+
       // Validate language string to prevent XSS
       const safeLang = this.escapeHtml(language.replace(/[^a-zA-Z0-9\-_]/g, ''));
-      
+
       // Skip highlighting for plain text
       let codeContent;
       if (['text', 'plaintext', 'txt'].includes(language.toLowerCase())) {
@@ -183,474 +178,134 @@ class MarkdownParser {
         // Apply simple pattern-based syntax highlighting on raw text, then escape
         codeContent = this.highlightCode(trimmedCode, language);
       }
-      
+
       // Return with copy button
       return `<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-${safeLang}">${codeContent}</code></pre></div>`;
     };
 
     marked.use({ renderer });
+
+    // Plugin manager (set after initialization)
+    this.pluginManager = null;
   }
 
   /**
-   * Register built-in shortcodes
-   * Provides WordPress-compatible syntax for common components
+   * Set plugin manager for component processing
+   * @param {Object} pluginManager - Plugin manager instance
    */
-  registerBuiltInShortcodes() {
-    // TABS shortcode - creates tabbed interface
-    // Usage: [tabs][tab title="JavaScript"]code[/tab][tab title="Python"]code[/tab][/tabs]
-    this.shortcode.register('tabs', (content, _attrs) => {
-      const groupId = `tabs-${Math.random().toString(36).substr(2, 9)}`;
-      
-      // Parse individual [tab] shortcodes from content
-      const tabRegex = /\[tab\s+title="([^"]+)"\]([\s\S]*?)\[\/tab\]/g;
-      const tabs = [];
-      let tabMatch;
-      
-      while ((tabMatch = tabRegex.exec(content)) !== null) {
-        tabs.push({
-          title: this.escapeHtml(tabMatch[1]),
-          content: tabMatch[2].trim()
-        });
-      }
-      
-      if (tabs.length === 0) {
-        this.logger.warn('Empty tabs container');
-        return '';
-      }
-      
-      // Generate tab HTML
-      let html = `<div class="tabs-container" data-tabs-id="${groupId}">\n`;
-      
-      // Tab buttons
-      html += '  <div class="tabs-header" role="tablist">\n';
-      tabs.forEach((tab, index) => {
-        const tabId = `${groupId}-tab-${index}`;
-        const panelId = `${groupId}-panel-${index}`;
-        const isActive = index === 0;
-        const activeClass = isActive ? ' active' : '';
-        
-        html += `    <button class="tab-button${activeClass}" role="tab" `;
-        html += `id="${tabId}" `;
-        html += `aria-selected="${isActive}" `;
-        html += `aria-controls="${panelId}" `;
-        html += `tabindex="${isActive ? '0' : '-1'}">\n`;
-        html += `      ${tab.title}\n`;
-        html += '    </button>\n';
-      });
-      html += '  </div>\n';
-      
-      // Tab panels - parse shortcodes first, then markdown
-      tabs.forEach((tab, index) => {
-        const tabId = `${groupId}-tab-${index}`;
-        const panelId = `${groupId}-panel-${index}`;
-        const isActive = index === 0;
-        const activeClass = isActive ? ' active' : '';
-        const hiddenAttr = isActive ? '' : ' hidden=""';
-        
-        html += `  <div class="tab-panel${activeClass}" role="tabpanel" `;
-        html += `id="${panelId}" `;
-        html += `aria-labelledby="${tabId}"${hiddenAttr}>\n`;
-        
-        // IMPORTANT: Process shortcodes first, then markdown
-        let content = tab.content;
-        if (this.shortcode.hasShortcodes(content)) {
-          content = this.shortcode.parse(content);
+  setPluginManager(pluginManager) {
+    this.pluginManager = pluginManager;
+    this.logger.debug('Plugin manager set for component processing');
+  }
+
+  /**
+   * Process a single component string
+   * @param {string} componentText - Component string (e.g., '<Button>Click</Button>')
+   * @returns {string} Processed HTML
+   */
+  /**
+   * Parse component attributes from string
+   * @param {string} attrsStr - Attribute string (e.g., ' variant="primary" size="lg"')
+   * @returns {Object} Parsed attributes
+   */
+  parseComponentAttributes(attrsStr) {
+    const attrs = {};
+
+    if (!attrsStr || !attrsStr.trim()) {
+      return attrs;
+    }
+
+    // Match: name="value" or name (boolean)
+    const attrRegex = /([a-zA-Z][a-zA-Z0-9-]*)(?:="([^"]*)")?/g;
+    let match;
+
+    while ((match = attrRegex.exec(attrsStr)) !== null) {
+      const [, name, value] = match;
+      // Boolean attribute (no value) or string value
+      attrs[name] = value !== undefined ? value : true;
+    }
+
+    return attrs;
+  }
+
+  /**
+   * Process JSX-like components in markdown BEFORE marked.parse()
+   * Handles nested components correctly by processing from innermost to outermost
+   * @param {string} markdown - Markdown content with components
+   * @returns {string} - Markdown with components converted to HTML
+   */
+  processComponents(markdown) {
+    if (!this.pluginManager) {
+      return markdown; // No plugin manager, skip component processing
+    }
+
+    let processed = markdown;
+    let iterationCount = 0;
+    const MAX_ITERATIONS = 20; // Safety limit for deeply nested components
+
+    // Process components from innermost to outermost
+    // Each iteration processes one level of nesting
+    while (iterationCount < MAX_ITERATIONS) {
+      let hasMatches = false;
+
+      // Match components that don't contain other components (innermost first)
+      // Self-closing: <Component attr="value" />
+      // With content: <Component attr="value">content</Component>
+      processed = processed.replace(
+        /<([A-Z][a-zA-Z0-9]*)((?:\s+[a-zA-Z][a-zA-Z0-9-]*(?:="[^"]*")?)*)\s*\/>/g,
+        (match, componentName, attrsStr) => {
+          hasMatches = true;
+          return this.executeComponent(componentName, attrsStr, '');
         }
-        const parsedContent = marked.parse(content).trim();
-        html += parsedContent;
-        
-        html += '\n  </div>\n';
-      });
-      
-      html += '</div>\n';
-      return html;
-    });
+      );
 
-    // ACCORDION shortcode - creates collapsible content
-    // Usage: [accordion title="Question"]Answer[/accordion]
-    this.shortcode.register('accordion', (content, attrs) => {
-      const title = this.escapeHtml(attrs.title || 'Accordion');
-      const open = attrs.open === 'true' ? ' open' : '';
-      
-      // Process shortcodes first, then markdown
-      let processedContent = content;
-      if (this.shortcode.hasShortcodes(content)) {
-        processedContent = this.shortcode.parse(content);
-      }
-      const parsedContent = marked.parse(processedContent).trim();
-      
-      return `<details class="accordion-item"${open}>
-        <summary class="accordion-header">${title}<span class="accordion-header-icon"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></span></summary>
-        <div class="accordion-content">${parsedContent}</div>
-      </details>`;
-    });
-
-    // BUTTON shortcode - creates styled button/link (Helios Design System)
-    // Usage: [button url="/docs" color="primary"]Get Started[/button]
-    // Colors: primary (default), secondary, critical, tertiary
-    this.shortcode.register('button', (content, attrs) => {
-      const url = this.escapeHtml(attrs.url || '#');
-      const color = attrs.color || attrs.style || 'primary'; // Support both 'color' and 'style'
-      const safeColor = color.replace(/[^a-z-]/g, '');
-      const size = attrs.size ? ` btn-${attrs.size.replace(/[^a-z]/g, '')}` : '';
-      const target = attrs.external === 'true' ? ' target="_blank" rel="noopener noreferrer"' : '';
-      
-      return `<a href="${url}" class="btn btn-${safeColor}${size}"${target}>${this.escapeHtml(content)}</a>`;
-    });
-
-    // CALLOUT shortcode - creates highlighted info boxes
-    // Usage: [callout type="info"]Important information[/callout]
-    this.shortcode.register('callout', (content, attrs) => {
-      const type = attrs.type || 'info';
-      const safeType = type.replace(/[^a-z-]/g, '');
-      const title = attrs.title ? `<div class="callout-title">${this.escapeHtml(attrs.title)}</div>` : '';
-      
-      // Parse content as markdown
-      const parsedContent = marked.parse(content).trim();
-      
-      return `<div class="callout callout-${safeType}">
-${title}
-<div class="callout-content">${parsedContent}</div>
-</div>`;
-    });
-
-    // BADGE shortcode - creates inline badges/tags
-    // Usage: [badge type="success"]New[/badge]
-    this.shortcode.register('badge', (content, attrs) => {
-      const type = attrs.type || 'default';
-      const safeType = type.replace(/[^a-z-]/g, '');
-      
-      return `<span class="badge badge-${safeType}">${this.escapeHtml(content)}</span>`;
-    });
-
-    // GRID shortcode - creates responsive grid layout
-    // Usage: [grid cols="3"][grid-item]Content[/grid-item][grid-item]Content[/grid-item][/grid]
-    this.shortcode.register('grid', (content, attrs) => {
-      const cols = attrs.cols || '2';
-      const safeCols = cols.replace(/[^0-9]/g, '');
-      const gap = attrs.gap || 'normal';
-      const safeGap = gap.replace(/[^a-z-]/g, '');
-      
-      // Parse individual [grid-item] shortcodes from content
-      const itemRegex = /\[grid-item\]([\s\S]*?)\[\/grid-item\]/g;
-      const items = [];
-      let itemMatch;
-      
-      while ((itemMatch = itemRegex.exec(content)) !== null) {
-        items.push(itemMatch[1].trim());
-      }
-      
-      if (items.length === 0) {
-        this.logger.warn('Empty grid container');
-        return '';
-      }
-      
-      let html = `<div class="grid grid-cols-${safeCols} grid-gap-${safeGap}">\n`;
-      items.forEach(item => {
-        // Process shortcodes first, then markdown
-        let processedItem = item;
-        if (this.shortcode.hasShortcodes(item)) {
-          processedItem = this.shortcode.parse(item);
+      processed = processed.replace(
+        /<([A-Z][a-zA-Z0-9]*)((?:\s+[a-zA-Z][a-zA-Z0-9-]*(?:="[^"]*")?)*)\s*>((?:(?!<\1[ >])[\s\S])*?)<\/\1>/g,
+        (match, componentName, attrsStr, content) => {
+          hasMatches = true;
+          return this.executeComponent(componentName, attrsStr, content);
         }
-        const parsedContent = marked.parse(processedItem).trim();
-        html += `  <div class="grid-item">${parsedContent}</div>\n`;
+      );
+
+      if (!hasMatches) {
+        break; // No more components to process
+      }
+
+      iterationCount++;
+    }
+
+    if (iterationCount >= MAX_ITERATIONS) {
+      this.logger.warn('Component processing reached max iterations - possible circular nesting');
+    }
+
+    return processed;
+  }
+
+  /**
+   * Execute a single component via plugin manager
+   * @param {string} componentName - Component name (e.g., 'Button')
+   * @param {string} attrsStr - Attributes string
+   * @param {string} content - Component content
+   * @returns {string} - Processed HTML or original if component not found
+   */
+  executeComponent(componentName, attrsStr, content) {
+    if (!this.pluginManager || !this.pluginManager.hasComponent(componentName)) {
+      this.logger.warn('Unknown component', { name: componentName });
+      return `<${componentName}${attrsStr}>${content}</${componentName}>`; // Return as-is
+    }
+
+    const attrs = this.parseComponentAttributes(attrsStr);
+
+    try {
+      const result = this.pluginManager.executeComponent(componentName, attrs, content);
+      return result || '';
+    } catch (error) {
+      this.logger.error('Component execution error', {
+        name: componentName,
+        error: error.message
       });
-      html += '</div>\n';
-      
-      return html;
-    });
-
-    // HERO shortcode - creates hero section
-    // Usage: [hero title="Welcome" subtitle="Get started" image="hero.jpg"]Content[/hero]
-    this.shortcode.register('hero', (content, attrs) => {
-      const title = this.escapeHtml(attrs.title || '');
-      const subtitle = attrs.subtitle ? `<p class="hero-subtitle">${this.escapeHtml(attrs.subtitle)}</p>` : '';
-      const image = attrs.image ? `<div class="hero-image"><img src="${this.escapeHtml(attrs.image)}" alt="${this.escapeHtml(attrs.title || 'Hero')}"></div>` : '';
-      const align = attrs.align || 'center';
-      const safeAlign = align.replace(/[^a-z-]/g, '');
-      
-      // Process shortcodes first, then markdown
-      let parsedContent = '';
-      if (content) {
-        let processedContent = content;
-        if (this.shortcode.hasShortcodes(content)) {
-          processedContent = this.shortcode.parse(content);
-        }
-        parsedContent = marked.parse(processedContent).trim();
-      }
-      
-      return `<div class="hero hero-${safeAlign}">
-<div class="hero-content">
-${title ? `<h1 class="hero-title">${title}</h1>` : ''}
-${subtitle}
-${parsedContent ? `<div class="hero-body">${parsedContent}</div>` : ''}
-</div>
-${image}
-</div>`;
-    });
-
-    // FEATURE-CARD shortcode - creates feature card
-    // Usage: [feature-card icon="⚡" title="Fast"]Lightning fast builds[/feature-card]
-    this.shortcode.register('feature-card', (content, attrs) => {
-      const icon = attrs.icon ? `<div class="feature-icon">${this.escapeHtml(attrs.icon)}</div>` : '';
-      const title = attrs.title ? `<h3 class="feature-title">${this.escapeHtml(attrs.title)}</h3>` : '';
-      
-      // Process shortcodes first, then markdown
-      let processedContent = content;
-      if (this.shortcode.hasShortcodes(content)) {
-        processedContent = this.shortcode.parse(content);
-      }
-      const parsedContent = marked.parse(processedContent).trim();
-      
-      return `<div class="feature-card">
-${icon}
-${title}
-<div class="feature-content">${parsedContent}</div>
-</div>`;
-    });
-
-    // INFO-BOX shortcode - creates styled info box (different from callout)
-    // Usage: [info-box type="tip" icon="💡"]Pro tip here[/info-box]
-    this.shortcode.register('info-box', (content, attrs) => {
-      const type = attrs.type || 'info';
-      const safeType = type.replace(/[^a-z-]/g, '');
-      const icon = attrs.icon ? `<span class="info-box-icon">${this.escapeHtml(attrs.icon)}</span>` : '';
-      const title = attrs.title ? `<div class="info-box-title">${this.escapeHtml(attrs.title)}</div>` : '';
-      
-      // Process shortcodes first, then markdown
-      let processedContent = content;
-      if (this.shortcode.hasShortcodes(content)) {
-        processedContent = this.shortcode.parse(content);
-      }
-      const parsedContent = marked.parse(processedContent).trim();
-      
-      return `<div class="info-box info-box-${safeType}">
-${icon}
-<div class="info-box-body">
-${title}
-<div class="info-box-content">${parsedContent}</div>
-</div>
-</div>`;
-    });
-
-    // BLOCKQUOTE shortcode - creates styled blockquote
-    // Usage: [blockquote author="John Doe" source="Book Title"]Quote text[/blockquote]
-    this.shortcode.register('blockquote', (content, attrs) => {
-      const author = attrs.author ? `<cite class="blockquote-author">${this.escapeHtml(attrs.author)}</cite>` : '';
-      const source = attrs.source ? `<span class="blockquote-source">${this.escapeHtml(attrs.source)}</span>` : '';
-      const citation = (author || source) ? `<footer class="blockquote-footer">${author}${author && source ? ', ' : ''}${source}</footer>` : '';
-      
-      // Process shortcodes first, then markdown
-      let processedContent = content;
-      if (this.shortcode.hasShortcodes(content)) {
-        processedContent = this.shortcode.parse(content);
-      }
-      const parsedContent = marked.parse(processedContent).trim();
-      
-      return `<blockquote class="blockquote-styled">
-<div class="blockquote-content">${parsedContent}</div>
-${citation}
-</blockquote>`;
-    });
-
-    // CODE-BLOCK shortcode - advanced code block with title, filename, highlights
-    // Usage: [code-block lang="javascript" title="Example" filename="app.js" highlight="2,5-7"]code here[/code-block]
-    this.shortcode.register('code-block', (content, attrs) => {
-      const lang = attrs.lang || 'text';
-      const safeLang = lang.replace(/[^a-zA-Z0-9\-_]/g, '');
-      const showLineNumbers = attrs.lines === 'true';
-      
-      // Escape code content
-      const escapedCode = this.escapeHtml(content.trim());
-      
-      const lineNumbersClass = showLineNumbers ? ' line-numbers' : '';
-      
-      // Simplified: no header, copy button positioned absolutely in top-right
-      return `<div class="code-block${lineNumbersClass}"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-${safeLang}">${escapedCode}</code></pre></div>`;
-    });
-
-    // FORM shortcode - creates contact/feedback forms
-    // Usage: [form action="/api/contact" method="POST"]...[/form]
-    this.shortcode.register('form', (content, attrs) => {
-      const action = this.escapeHtml(attrs.action || '#');
-      const method = (attrs.method || 'POST').toUpperCase();
-      const safeMethod = method === 'GET' ? 'GET' : 'POST';
-      const id = attrs.id ? ` id="${this.escapeHtml(attrs.id)}"` : '';
-      const className = attrs.class ? ` ${this.escapeHtml(attrs.class)}` : '';
-      
-      // Process shortcodes first, then markdown (for form fields)
-      let processedContent = content;
-      if (this.shortcode.hasShortcodes(content)) {
-        processedContent = this.shortcode.parse(content);
-      }
-      const parsedContent = marked.parse(processedContent).trim();
-      
-      return `<form action="${action}" method="${safeMethod}" class="form-component${className}"${id}>
-${parsedContent}
-</form>`;
-    });
-
-    // FORM-FIELD shortcode - creates form input fields
-    // Usage: [form-field type="text" name="email" label="Email" required="true"][/form-field]
-    this.shortcode.register('form-field', (content, attrs) => {
-      const type = attrs.type || 'text';
-      const safeType = type.replace(/[^a-z]/g, '');
-      const name = this.escapeHtml(attrs.name || '');
-      const label = attrs.label ? `<label for="${name}">${this.escapeHtml(attrs.label)}${attrs.required === 'true' ? ' <span class="required">*</span>' : ''}</label>` : '';
-      const placeholder = attrs.placeholder ? ` placeholder="${this.escapeHtml(attrs.placeholder)}"` : '';
-      const required = attrs.required === 'true' ? ' required' : '';
-      const value = attrs.value ? ` value="${this.escapeHtml(attrs.value)}"` : '';
-      
-      let field = '';
-      if (safeType === 'textarea') {
-        field = `<textarea name="${name}" id="${name}"${placeholder}${required}>${content}</textarea>`;
-      } else if (safeType === 'select') {
-        // Parse options from content
-        const parsedContent = marked.parse(content).trim();
-        field = `<select name="${name}" id="${name}"${required}>${parsedContent}</select>`;
-      } else {
-        field = `<input type="${safeType}" name="${name}" id="${name}"${placeholder}${required}${value}>`;
-      }
-      
-      return `<div class="form-field">
-${label}
-${field}
-</div>`;
-    });
-
-    // TABLE shortcode - advanced table with sorting, filtering
-    // Usage: [table sortable="true" filterable="true"]...[/table]
-    this.shortcode.register('table', (content, attrs) => {
-      const sortable = attrs.sortable === 'true' ? ' data-sortable="true"' : '';
-      const filterable = attrs.filterable === 'true' ? ' data-filterable="true"' : '';
-      const responsive = attrs.responsive !== 'false'; // Default true
-      const className = attrs.class ? ` ${this.escapeHtml(attrs.class)}` : '';
-      
-      // Process shortcodes first, then markdown to get table HTML
-      let processedContent = content;
-      if (this.shortcode.hasShortcodes(content)) {
-        processedContent = this.shortcode.parse(content);
-      }
-      const parsedContent = marked.parse(processedContent).trim();
-      
-      // Wrap in responsive container if needed
-      if (responsive) {
-        return `<div class="table-wrapper${className}"${sortable}${filterable}>
-          ${parsedContent}
-        </div>`;
-      } else {
-        return `<div class="table-container${className}"${sortable}${filterable}>
-          ${parsedContent}
-        </div>`;
-      }
-    });
-
-    // VIDEO shortcode - embed videos (YouTube, Vimeo, local)
-    // Usage: [video src="video.mp4" poster="poster.jpg"][/video] or [video youtube="VIDEO_ID"][/video]
-    this.shortcode.register('video', (content, attrs) => {
-      // YouTube embed
-      if (attrs.youtube) {
-        const videoId = this.escapeHtml(attrs.youtube);
-        const title = attrs.title ? this.escapeHtml(attrs.title) : 'YouTube video';
-        return `<div class="video-container">
-          <iframe 
-            width="560" 
-            height="315" 
-            src="https://www.youtube.com/embed/${videoId}" 
-            title="${title}"
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen>
-          </iframe>
-        </div>`;
-      }
-      
-      // Vimeo embed
-      if (attrs.vimeo) {
-        const videoId = this.escapeHtml(attrs.vimeo);
-        const title = attrs.title ? this.escapeHtml(attrs.title) : 'Vimeo video';
-        return `<div class="video-container">
-          <iframe 
-            src="https://player.vimeo.com/video/${videoId}" 
-            width="640" 
-            height="360" 
-            frameborder="0" 
-            allow="autoplay; fullscreen; picture-in-picture" 
-            allowfullscreen
-            title="${title}">
-          </iframe>
-        </div>`;
-      }
-      
-      // Local video
-      const src = this.escapeHtml(attrs.src || '');
-      const poster = attrs.poster ? ` poster="${this.escapeHtml(attrs.poster)}"` : '';
-      const controls = attrs.controls !== 'false' ? ' controls' : '';
-      const autoplay = attrs.autoplay === 'true' ? ' autoplay' : '';
-      const loop = attrs.loop === 'true' ? ' loop' : '';
-      const muted = attrs.muted === 'true' ? ' muted' : '';
-      
-      return `<div class="video-container">
-        <video${controls}${autoplay}${loop}${muted}${poster}>
-          <source src="${src}" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-      </div>`;
-    });
-
-    // IMAGE shortcode - advanced image with caption, lightbox
-    // Usage: [image src="image.jpg" alt="Description" caption="Caption text" lightbox="true"][/image]
-    this.shortcode.register('image', (content, attrs) => {
-      const src = this.escapeHtml(attrs.src || '');
-      const alt = this.escapeHtml(attrs.alt || '');
-      const caption = attrs.caption ? `<figcaption>${this.escapeHtml(attrs.caption)}</figcaption>` : '';
-      const lightbox = attrs.lightbox === 'true' ? ' data-lightbox="true"' : '';
-      const align = attrs.align ? ` align-${attrs.align.replace(/[^a-z]/g, '')}` : '';
-      const width = attrs.width ? ` width="${attrs.width.replace(/[^0-9%]/g, '')}"` : '';
-      const height = attrs.height ? ` height="${attrs.height.replace(/[^0-9%]/g, '')}"` : '';
-      
-      return `<figure class="image-figure${align}"${lightbox}>
-        <img src="${src}" alt="${alt}"${width}${height}>
-        ${caption}
-      </figure>`;
-    });
-
-    // LAZY-APP shortcode - Lazy load React/Vue/Svelte apps with Intersection Observer
-    // Usage: [lazy-app framework="react" src="assets/my-app.js" deps="react,react-dom"]Loading...[/lazy-app]
-    this.shortcode.register('lazy-app', (content, attrs) => {
-      const framework = this.escapeHtml(attrs.framework || 'react');
-      const src = this.escapeHtml(attrs.src || '');
-      const deps = attrs.deps || '';
-      const id = attrs.id || `lazy-app-${Date.now()}`;
-      
-      // Parse dependencies (comma-separated URLs)
-      const dependencies = deps.split(',').map(dep => dep.trim()).filter(Boolean);
-      
-      // Build dependencies attribute (escaped)
-      const depsAttr = dependencies.length > 0 ? ` data-dependencies="${this.escapeHtml(dependencies.join(','))}"` : '';
-      
-      // Placeholder content (user-provided or default)
-      const placeholderContent = content.trim() || `
-        <div style="text-align: center; padding: 3rem;">
-          <p style="margin-bottom: 1rem;"><strong>Interactive ${framework} App</strong></p>
-          <button class="button" style="cursor: pointer;">Load App</button>
-        </div>
-      `;
-      
-      return `<div 
-  class="lazy-app-container" 
-  data-lazy-app="${framework}"
-  data-script-src="${src}"${depsAttr}
-  id="${id}">
-  <div class="app-placeholder">
-    ${placeholderContent}
-  </div>
-</div>`;
-    });
-
-    this.logger.debug('Built-in shortcodes registered', {
-      shortcodes: this.shortcode.getRegisteredShortcodes()
-    });
+      return `<${componentName}${attrsStr}>${content}</${componentName}>`; // Return as-is on error
+    }
   }
 
   /**
@@ -698,7 +353,7 @@ ${field}
       (match) => {
         // Count how many details elements
         const detailsCount = (match.match(/<details/gi) || []).length;
-        
+
         // If already wrapped in accordion div, skip
         if (match.includes('<div class="accordion')) {
           return match;
@@ -731,6 +386,91 @@ ${field}
   }
 
   /**
+   * Process new <Tabs> components
+   * Syntax: <Tabs><Tab title="...">content</Tab></Tabs>
+   * @param {string} tabsBlock - The <Tabs>...</Tabs> block
+   * @returns {string} - HTML for the tabs component
+   */
+  processNewTabs(tabsBlock) {
+    // Counter for unique IDs (static to persist across calls)
+    if (!this.newTabsCounter) {
+      this.newTabsCounter = 0;
+    }
+    this.newTabsCounter++;
+    const tabsId = `tabs-${this.newTabsCounter}`;
+
+    // Extract individual <Tab> elements
+    const tabRegex = /<Tab\s+([^>]*?)>([\s\S]*?)<\/Tab>/gi;
+    const tabs = [];
+    let tabMatch;
+
+    while ((tabMatch = tabRegex.exec(tabsBlock)) !== null) {
+      const [, attrs, content] = tabMatch;
+
+      // Extract title attribute
+      const titleMatch = attrs.match(/title=(["'])([^\1]*?)\1/);
+      if (!titleMatch) {
+        this.logger.warn('Tab component requires a "title" attribute');
+        continue;
+      }
+
+      tabs.push({
+        title: this.escapeHtml(titleMatch[2]),
+        content
+      });
+    }
+
+    if (tabs.length === 0) {
+      this.logger.warn('Tabs component must contain at least one Tab');
+      return '';
+    }
+
+    // Generate tab HTML
+    let html = `<div class="tabs-container" data-tabs-id="${tabsId}">\n`;
+
+    // Tab buttons
+    html += '  <div class="tabs-header" role="tablist" aria-label="Content tabs">\n';
+    tabs.forEach((tab, index) => {
+      const tabId = `${tabsId}-tab-${index}`;
+      const panelId = `${tabsId}-panel-${index}`;
+      const isActive = index === 0 ? 'true' : 'false';
+      const activeClass = index === 0 ? ' active' : '';
+
+      html += `    <button class="tab-button${activeClass}" role="tab" `;
+      html += `id="${tabId}" `;
+      html += `aria-selected="${isActive}" `;
+      html += `aria-controls="${panelId}" `;
+      html += `tabindex="${index === 0 ? '0' : '-1'}">\n`;
+      html += `      ${tab.title}\n`;
+      html += '    </button>\n';
+    });
+    html += '  </div>\n';
+
+    // Tab panels - parse each tab's markdown content separately
+    tabs.forEach((tab, index) => {
+      const tabId = `${tabsId}-tab-${index}`;
+      const panelId = `${tabsId}-panel-${index}`;
+      const isActive = index === 0;
+      const activeClass = isActive ? ' active' : '';
+      const hiddenAttr = isActive ? '' : ' hidden';
+
+      html += `  <div class="tab-panel${activeClass}" role="tabpanel" `;
+      html += `id="${panelId}" `;
+      html += `aria-labelledby="${tabId}"${hiddenAttr}>\n`;
+
+      // Parse the tab content as markdown
+      const parsedContent = marked.parse(tab.content).trim();
+      html += parsedContent;
+
+      html += '\n  </div>\n';
+    });
+
+    html += '</div>\n';
+
+    return html;
+  }
+
+  /**
    * Process tab containers in markdown
    * Syntax: :::tabs ... ::tab{title="..."} ... :::
    * @param {string} markdown - Markdown content
@@ -739,33 +479,33 @@ ${field}
   processTabs(markdown) {
     // Generate unique ID for this tab group
     const generateTabId = () => `tab-${Math.random().toString(36).substr(2, 9)}`;
-    
+
     // Match :::tabs ... ::: blocks
     const tabsRegex = /:::tabs\s*\n([\s\S]*?)\n:::/g;
-    
+
     return markdown.replace(tabsRegex, (match, content) => {
       const groupId = generateTabId();
-      
+
       // Parse individual tabs: ::tab{title="..."} content
       const tabRegex = /::tab\{title="([^"]+)"\}\s*\n([\s\S]*?)(?=\n::tab\{|$)/g;
       const tabs = [];
       let tabMatch;
-      
+
       while ((tabMatch = tabRegex.exec(content)) !== null) {
         tabs.push({
           title: this.escapeHtml(tabMatch[1]),
           content: tabMatch[2].trim()
         });
       }
-      
+
       if (tabs.length === 0) {
         this.logger.warn('Empty tabs container found');
         return '';
       }
-      
+
       // Generate tab HTML with placeholders for content
       let html = `<div class="tabs-container" data-tabs-id="${groupId}">\n`;
-      
+
       // Tab buttons
       html += '  <div class="tabs-header" role="tablist">\n';
       tabs.forEach((tab, index) => {
@@ -773,7 +513,7 @@ ${field}
         const panelId = `${groupId}-panel-${index}`;
         const isActive = index === 0 ? 'true' : 'false';
         const activeClass = index === 0 ? ' active' : '';
-        
+
         html += `    <button class="tab-button${activeClass}" role="tab" `;
         html += `id="${tabId}" `;
         html += `aria-selected="${isActive}" `;
@@ -783,7 +523,7 @@ ${field}
         html += '    </button>\n';
       });
       html += '  </div>\n';
-      
+
       // Tab panels - parse each tab's markdown content separately
       tabs.forEach((tab, index) => {
         const tabId = `${groupId}-tab-${index}`;
@@ -791,20 +531,20 @@ ${field}
         const isActive = index === 0;
         const activeClass = isActive ? ' active' : '';
         const hiddenAttr = isActive ? '' : ' hidden=""';
-        
+
         html += `  <div class="tab-panel${activeClass}" role="tabpanel" `;
         html += `id="${panelId}" `;
         html += `aria-labelledby="${tabId}"${hiddenAttr}>\n`;
-        
+
         // Parse the tab content as markdown
         const parsedContent = marked.parse(tab.content).trim();
         html += parsedContent;
-        
+
         html += '\n  </div>\n';
       });
-      
+
       html += '</div>\n';
-      
+
       return html;
     });
   }
@@ -819,7 +559,8 @@ ${field}
     this.usedIds.clear();
     this.toc = []; // Reset TOC for each document
     this.abbreviations.clear(); // Reset abbreviations for each document
-    
+    this.newTabsPlaceholders = []; // Reset tabs placeholders for each document
+
     // ENHANCED INPUT VALIDATION
     // 1. Check for null/undefined
     if (content === null || content === undefined) {
@@ -866,17 +607,45 @@ ${field}
       }
       // Remove abbreviation definitions from markdown
       processedMarkdown = processedMarkdown.replace(abbrRegex, '');
-      
-      // STEP 2: Process shortcodes BEFORE markdown parsing
-      // This allows shortcodes to contain markdown that will be parsed
-      // Check if content has shortcodes to optimize performance
-      if (this.shortcode.hasShortcodes(processedMarkdown)) {
-        this.logger.debug('Processing shortcodes in markdown');
-        processedMarkdown = this.shortcode.parse(processedMarkdown);
-      }
 
-      // STEP 3: BACKWARD COMPATIBILITY - Support old :::tabs syntax
-      // Convert :::tabs to [tabs] shortcode syntax for migration
+      // STEP 1.5: Extract <Tabs> components BEFORE code block protection
+      // This allows markdown inside tabs to be processed correctly
+      processedMarkdown = processedMarkdown.replace(/<Tabs([^>]*)>([\s\S]*?)<\/Tabs>/gi, (match) => {
+        const placeholder = `<!--NEW_TABS_PLACEHOLDER_${this.newTabsPlaceholders.length}-->`;
+        this.newTabsPlaceholders.push(match);
+        return placeholder;
+      });
+
+      // STEP 2: Protect code blocks from processing
+      const codeBlockPlaceholders = [];
+      // Protect fenced code blocks (```...```)
+      processedMarkdown = processedMarkdown.replace(/```[\s\S]*?```/g, (match) => {
+        const placeholder = `<!--CODE_BLOCK_${codeBlockPlaceholders.length}-->`;
+        codeBlockPlaceholders.push(match);
+        return placeholder;
+      });
+      // Protect inline code (`...`)
+      processedMarkdown = processedMarkdown.replace(/`[^`\n]+`/g, (match) => {
+        const placeholder = `<!--CODE_INLINE_${codeBlockPlaceholders.length}-->`;
+        codeBlockPlaceholders.push(match);
+        return placeholder;
+      });
+
+      // STEP 4: Process JSX-like components BEFORE marked.parse()
+      // This happens BEFORE restoring code blocks so components in code blocks are NOT processed
+      processedMarkdown = this.processComponents(processedMarkdown);
+
+      // STEP 5: Restore code blocks AFTER component processing
+      // This ensures components in code examples are shown as-is
+      codeBlockPlaceholders.forEach((codeBlock, index) => {
+        const placeholder = `<!--CODE_BLOCK_${index}-->`;
+        processedMarkdown = processedMarkdown.replace(placeholder, codeBlock);
+        const inlinePlaceholder = `<!--CODE_INLINE_${index}-->`;
+        processedMarkdown = processedMarkdown.replace(inlinePlaceholder, codeBlock);
+      });
+
+      // STEP 6: BACKWARD COMPATIBILITY - Support old :::tabs syntax
+      // Convert :::tabs syntax for migration
       const tabsPlaceholders = [];
       processedMarkdown = processedMarkdown.replace(/:::tabs\s*\n[\s\S]*?\n:::/g, (match) => {
         const placeholder = `<!--TAB_PLACEHOLDER_${tabsPlaceholders.length}-->`;
@@ -884,20 +653,27 @@ ${field}
         return placeholder;
       });
 
-      // STEP 3: Convert markdown to HTML
+      // STEP 7: Convert markdown to HTML
       let html = marked.parse(processedMarkdown);
 
-      // STEP 4: Process old :::tabs syntax (backward compatibility)
+      // STEP 8: Process old :::tabs syntax (backward compatibility)
       tabsPlaceholders.forEach((tabBlock, index) => {
         const placeholder = `<!--TAB_PLACEHOLDER_${index}-->`;
         const tabHtml = this.processTabs(tabBlock);
         html = html.replace(placeholder, tabHtml);
       });
 
-      // STEP 5: Post-process native HTML <details> elements for accordion styling
+      // STEP 8.5: Process new <Tabs> components (after marked.parse so markdown inside tabs is processed)
+      this.newTabsPlaceholders.forEach((tabBlock, index) => {
+        const placeholder = `<!--NEW_TABS_PLACEHOLDER_${index}-->`;
+        const tabHtml = this.processNewTabs(tabBlock);
+        html = html.replace(placeholder, tabHtml);
+      });
+
+      // STEP 9: Post-process native HTML <details> elements for accordion styling
       html = this.processAccordions(html);
 
-      // STEP 6: Replace abbreviations in HTML
+      // STEP 10: Replace abbreviations in HTML
       if (this.abbreviations.size > 0) {
         html = replaceAbbreviations(html, this.abbreviations);
       }
@@ -928,31 +704,31 @@ ${field}
       { regex: /(\/\*[\s\S]*?\*\/)/g, type: 'comment' }, // Block comments
       { regex: /(\/\/[^\n]*)/g, type: 'comment' }, // Line comments
       { regex: /(#[^\n]*)/g, type: 'comment' }, // Python/Shell comments
-      
+
       // Strings e template literals
       { regex: /("(?:[^"\\]|\\.)*")/g, type: 'string' },
       { regex: /('(?:[^'\\]|\\.)*')/g, type: 'string' },
       { regex: /(`(?:[^`\\]|\\.)*`)/g, type: 'template-literal' },
-      
+
       // Keywords (solo i più importanti per JS/Python)
       { regex: /\b(function|const|let|var|if|else|for|while|return|class|def|import|from|export|async|await|new|try|catch|throw|switch|case|break|continue)\b/g, type: 'keyword' },
-      
+
       // Built-in commands (solo comandi principali npm/yarn/git)
       { regex: /\b(npm|yarn|pnpm|git|docker|node|python|pip)\b/g, type: 'built_in' },
-      
+
       // Literals
       { regex: /\b(true|false|null|undefined|None|True|False)\b/g, type: 'literal' },
-      
+
       // Numbers
       { regex: /\b(0x[a-fA-F0-9]+|\d+\.?\d*)\b/g, type: 'number' },
-      
+
       // Function calls
       { regex: /\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*(?=\()/g, type: 'title function_' }
     ];
 
     // Tokenize code
     const matches = [];
-    
+
     patterns.forEach(({ regex, type }) => {
       let match;
       const re = new RegExp(regex.source, regex.flags);
@@ -965,34 +741,34 @@ ${field}
         });
       }
     });
-    
+
     // Sort matches by position
     matches.sort((a, b) => a.start - b.start);
-    
+
     // Build output, avoiding overlapping matches
     let result = '';
     let pos = 0;
-    
+
     for (const match of matches) {
       // Skip if overlapping with previous match
-      if (match.start < pos) {continue;}
-      
+      if (match.start < pos) { continue; }
+
       // Add text before match (escaped)
       if (match.start > pos) {
         result += this.escapeHtml(code.substring(pos, match.start));
       }
-      
+
       // Add highlighted match (escaped)
       result += `<span class="hljs-${match.type}">${this.escapeHtml(match.text)}</span>`;
-      
+
       pos = match.end;
     }
-    
+
     // Add remaining text (escaped)
     if (pos < code.length) {
       result += this.escapeHtml(code.substring(pos));
     }
-    
+
     return result;
   }
 
@@ -1003,10 +779,10 @@ ${field}
    */
   detectUsedComponents(html) {
     const components = new Set();
-    
+
     // Always include core (required for all pages)
     components.add('core');
-    
+
     // Component detection patterns (look for class="" or id="" attributes)
     const patterns = {
       'sidebar': /id=["']sidebar|id=["']sidebarToggle|id=["']mobileOverlay|class=["'][^"']*nav-section-title[^"']*collapsible/i,
@@ -1023,7 +799,7 @@ ${field}
       'developer-tools': /id=["']developerTools/i,
       'lazy-app-loader': /data-lazy-app=["']|class=["'][^"']*lazy-app-container/i
     };
-    
+
     // Scan HTML for patterns
     for (const [component, pattern] of Object.entries(patterns)) {
       if (pattern.test(html)) {
@@ -1031,7 +807,7 @@ ${field}
         this.logger.debug(`Component detected: ${component}`);
       }
     }
-    
+
     return Array.from(components);
   }
 
@@ -1064,7 +840,7 @@ ${field}
 
       worker.once('message', (result) => {
         clearTimeout(timeout);
-        
+
         if (result.success) {
           resolve({
             html: result.html,
@@ -1074,7 +850,7 @@ ${field}
         } else {
           reject(new Error(result.error));
         }
-        
+
         this.releaseWorker(worker);
       });
 
@@ -1145,10 +921,10 @@ ${field}
     if (this.workerPool.length < this.maxWorkers) {
       const workerPath = path.join(__dirname, 'workers', 'markdown-worker.js');
       const worker = new Worker(workerPath);
-      
+
       // Increase max listeners to avoid warnings with multiple parallel operations
       worker.setMaxListeners(20);
-      
+
       this.workerPool.push(worker);
       return worker;
     }

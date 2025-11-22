@@ -66,14 +66,14 @@ describe('MarkdownParser Worker Threads', () => {
       await expect(parser.parseInWorker(invalidContent)).rejects.toThrow();
     });
 
-    test('should support shortcodes in worker threads', async () => {
-      // GREEN: Shortcode processing works in workers
-      const content = '[button url="/test"]Click me[/button]';
+    test('should parse basic markdown in worker threads', async () => {
+      // GREEN: Basic markdown processing works in workers
+      const content = '**Bold text** and *italic text*';
       
       const result = await parser.parseInWorker(content);
       
-      expect(result.html).toContain('button-primary'); // Worker uses simplified button class
-      expect(result.html).toContain('Click me');
+      expect(result.html).toContain('<strong>Bold text</strong>');
+      expect(result.html).toContain('<em>italic text</em>');
     });
 
     test('should generate TOC in worker threads', async () => {

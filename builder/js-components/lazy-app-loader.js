@@ -345,7 +345,10 @@
     // Show skeleton loading state
     const placeholder = container.querySelector('.app-placeholder');
     if (placeholder) {
-      placeholder.innerHTML = '<div class="lazy-app-skeleton" role="status" aria-label="Loading application"></div>';
+      placeholder.innerHTML = `<div class="skeleton-loader" role="status" aria-label="Loading">
+  <div class="skeleton-line skeleton-line--full"></div>
+  <div class="skeleton-line skeleton-line--short"></div>
+</div>`;
     }
 
     try {

@@ -1309,6 +1309,12 @@ button.btn-lg {
   margin: var(--space-06) 0;
 }
 
+/* Full-width buttons in paragraphs need spacing */
+p > .btn[style*="width: 100%"] {
+  display: block;
+  margin-bottom: var(--space-4);
+}
+
 /* --- 18.10 Header Action Buttons (Icon Buttons) --- */
 .header-action-btn {
   /* Sizing - Square 44x44 for accessibility */
@@ -2536,73 +2542,6 @@ hr {
   content: "— ";
 }
 
-/* Blockquote variants - use classes for colored variants */
-/* Usage: <blockquote class="note"> or <blockquote class="warning"> */
-
-/* Note / Info - Blue (vivid) */
-.content blockquote.note,
-.content blockquote.info {
-  border-left-color: var(--color-blue-300);
-  background: var(--color-blue-100);
-}
-
-.content blockquote.note p,
-.content blockquote.info p,
-.content blockquote.note ul li,
-.content blockquote.info ul li,
-.content blockquote.note ol li,
-.content blockquote.info ol li {
-  color: var(--color-blue-500);
-}
-
-/* Warning - Orange (vivid) */
-.content blockquote.warning {
-  border-left-color: var(--color-foreground-warning);
-  background: var(--color-amber-100);
-}
-
-.content blockquote.warning p,
-.content blockquote.warning ul li,
-.content blockquote.warning ol li {
-  color: var(--color-foreground-warning-high-contrast);
-}
-
-/* Success / Tip - Green (vivid) */
-.content blockquote.success,
-.content blockquote.tip {
-  border-left-color: var(--color-foreground-success);
-  background: var(--color-green-100);
-}
-
-.content blockquote.success p,
-.content blockquote.tip p,
-.content blockquote.success ul li,
-.content blockquote.tip ul li,
-.content blockquote.success ol li,
-.content blockquote.tip ol li {
-  color: var(--color-foreground-success-high-contrast);
-}
-
-/* Error / Danger - Red (vivid) */
-.content blockquote.error,
-.content blockquote.danger,
-.content blockquote.important {
-  border-left-color: var(--color-foreground-critical);
-  background: var(--color-red-100);
-}
-
-.content blockquote.error p,
-.content blockquote.danger p,
-.content blockquote.important p,
-.content blockquote.error ul li,
-.content blockquote.danger ul li,
-.content blockquote.important ul li,
-.content blockquote.error ol li,
-.content blockquote.danger ol li,
-.content blockquote.important ol li {
-  color: var(--color-foreground-critical-high-contrast);
-}
-
 /* Info Boxes - Dismissible alerts */
 .info-box {
   position: relative;
@@ -2698,6 +2637,21 @@ hr {
   color: var(--color-foreground-success-high-contrast);
 }
 
+/* Info Box Icon */
+.info-box-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: var(--space-2);
+  vertical-align: text-top;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  display: inline-block;
+}
+
 /* ============================================================================
    CARD SYSTEM - Flexible & DRY
    ============================================================================ */
@@ -2726,6 +2680,12 @@ a.card {
   transition: box-shadow var(--transition-normal), border-color var(--transition-normal);
 }
 
+/* Horizontal links must respect row layout and top alignment */
+a.card.card-horizontal {
+  flex-direction: row !important;
+  align-items: flex-start !important;
+}
+
 a.card:hover {
   text-decoration: none;
   border-color: var(--color-border-strong) !important;
@@ -2740,7 +2700,7 @@ a.card:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-surface-faint);
+  background: var(--color-surface-strong);
   border-radius: var(--border-radius-medium);
   color: var(--color-foreground-action);
 }
@@ -2808,10 +2768,6 @@ a.card.card-bordered {
 }
 
 /* Primary - Accent color */
-.card-primary {
-  border-color: var(--color-foreground-action);
-}
-
 .card-primary .card-icon {
   background: var(--color-foreground-action);
   color: var(--color-foreground-high-contrast);
@@ -2821,13 +2777,30 @@ a.card.card-bordered {
 .card-horizontal {
   flex-direction: row;
   align-items: flex-start;
-  gap: var(--space-4);
+  gap: var(--space-5); /* 20px - proportional to icon width (48px × 0.4) */
+  text-align: left; /* Left-aligned text for horizontal cards */
+  padding-bottom: var(--space-5); /* 20px - compensate for paragraph margin */
 }
 
 .card-horizontal .card-icon,
 .card-horizontal .card-image {
   flex-shrink: 0;
   margin-bottom: 0;
+  align-self: flex-start;
+}
+
+/* Force top alignment for content wrapper in horizontal cards */
+.card-horizontal > div:not(.card-icon):not(.card-image) {
+  align-self: flex-start;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* Remove any top spacing from title in horizontal cards */
+.card-horizontal .card-title {
+  margin-top: 0;
+  padding-top: 0;
+  line-height: 1.3;
 }
 
 .card-horizontal .card-image {
@@ -3109,6 +3082,7 @@ details.accordion-item[open] .accordion-header-icon {
     transform: translateY(0);
   }
 }
+
 .header {
   position: fixed;
   top: 0;
@@ -6775,3 +6749,250 @@ a.blog-post-card:hover .blog-post-title {
 [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
   background: var(--color-neutral-400);
 }
+
+/* ============================================
+   Skeleton Loader (Lazy App Loading)
+   ============================================ */
+
+.skeleton-loader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  width: 100%;
+}
+
+.skeleton-line {
+  height: 40px;
+  background: linear-gradient(
+    90deg,
+    var(--color-neutral-200) 0%,
+    var(--color-neutral-100) 50%,
+    var(--color-neutral-200) 100%
+  );
+  background-size: 200% 100%;
+  border-radius: 4px;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+.skeleton-line--full {
+  width: 100%;
+}
+
+.skeleton-line--short {
+  width: 75%;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Dark mode skeleton */
+[data-theme="dark"] .skeleton-line {
+  background: linear-gradient(
+    90deg,
+    var(--color-neutral-700) 0%,
+    var(--color-neutral-600) 50%,
+    var(--color-neutral-700) 100%
+  );
+  background-size: 200% 100%;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-line {
+    animation: none;
+    background: var(--color-neutral-200);
+  }
+  
+  [data-theme="dark"] .skeleton-line {
+    background: var(--color-neutral-700);
+  }
+}
+
+/* ============================================================================
+   CHART COMPONENT - Simple Responsive Bar Charts
+   ============================================================================ */
+
+.chart {
+  --chart-color: #3B82F6;
+  --chart-bar-height: 32px;
+  --chart-gap: 0.75rem;
+  
+  display: flex;
+  width: 100%;
+  font-size: 0.875rem;
+}
+
+/* Horizontal orientation (default) */
+.chart-horizontal {
+  flex-direction: column;
+  gap: var(--chart-gap);
+}
+
+.chart-horizontal .chart-bar {
+  width: 100%;
+}
+
+.chart-horizontal .chart-bar-track {
+  position: relative;
+  background: var(--color-surface-weak);
+  border-radius: 4px;
+  height: var(--chart-bar-height);
+  width: 100%;
+  overflow: hidden;
+}
+
+.chart-horizontal .chart-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 4px;
+  transition: filter 0.2s ease;
+}
+
+.chart-horizontal .chart-bar:hover .chart-bar-fill {
+  filter: brightness(1.1);
+}
+
+/* Vertical orientation */
+.chart-vertical {
+  flex-direction: row;
+  gap: var(--chart-gap);
+  align-items: flex-end;
+  height: 200px;
+  padding: 0;
+  align-self: flex-end;
+}
+
+.chart-vertical .chart-bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: stretch;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+}
+
+.chart-vertical .chart-bar-fill {
+  width: 100%;
+  background: var(--chart-color);
+  border-radius: 4px 4px 0 0;
+  transition: filter 0.2s ease;
+  min-height: 4px;
+}
+
+.chart-vertical .chart-bar:hover .chart-bar-fill {
+  filter: brightness(1.1);
+}
+
+/* Bar cursor for interactivity */
+.chart-bar {
+  cursor: pointer;
+}
+
+/* Loading state for fetch */
+.chart-loading {
+  padding: 2rem;
+  text-align: center;
+  color: var(--color-foreground-secondary);
+  font-size: 0.875rem;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .chart-vertical {
+    height: 150px;
+  }
+}
+
+/* =============================================================================
+   Tooltip Component
+   Pure CSS tooltips using data attributes
+   ============================================================================ */
+
+.tooltip {
+  position: relative;
+  cursor: help;
+}
+
+/* Tooltip bubble */
+.tooltip::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  background: var(--color-neutral-700);
+  color: var(--color-neutral-0);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--border-radius-small);
+  font-size: var(--font-size-body-100);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+  z-index: var(--z-index-tooltip);
+  box-shadow: var(--shadow-mid);
+}
+
+/* Show on hover */
+.tooltip:hover::before {
+  opacity: 1;
+}
+
+/* Position: top (default) */
+.tooltip[data-tooltip-pos="top"]::before {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: var(--space-2);
+}
+
+/* Position: bottom */
+.tooltip[data-tooltip-pos="bottom"]::before {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: var(--space-2);
+}
+
+/* Position: left */
+.tooltip[data-tooltip-pos="left"]::before {
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: var(--space-2);
+}
+
+/* Position: right */
+.tooltip[data-tooltip-pos="right"]::before {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: var(--space-2);
+}
+
+/* Dark mode */
+[data-theme="dark"] .tooltip::before {
+  background: var(--color-neutral-0);
+  color: var(--color-neutral-700);
+  box-shadow: var(--shadow-high);
+}
+
+/* Disable tooltips on mobile (touch devices) */
+@media (max-width: 768px) {
+  .tooltip::before {
+    display: none;
+  }
+  .tooltip {
+    cursor: default;
+  }
+}
+
+

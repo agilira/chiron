@@ -18,36 +18,36 @@ const PluginLoader = require('./plugin-loader');
 const AVAILABLE_HOOKS = [
   // Configuration
   'config:loaded',
-  
+
   // Build lifecycle
   'build:start',
   'build:end',
   'build:error',
-  
+
   // Theme lifecycle
   'theme:loaded',
-  
+
   // File discovery
   'files:discovered',
-  
+
   // Markdown processing
   'markdown:before-parse',
   'markdown:after-parse',
-  
+
   // Page processing
   'page:before-render',
   'page:after-render',
   'page:before-write',
   'page:after-write',
-  
+
   // Sidebar rendering
   'sidebar:before-render',
   'sidebar:after-render',
-  
+
   // Assets
   'assets:before-copy',
   'assets:after-copy',
-  
+
   // Search index
   'search:before-index',
   'search:after-index'
@@ -75,11 +75,11 @@ class PluginManager {
     this.config = config;
     this.chironRootDir = chironRootDir || rootDir;
     this.logger = logger.child('PluginManager');
-    
+
     this.loader = null;
     this.plugins = [];
     this.hookRegistry = new Map(); // hookName -> [plugin functions]
-    this.shortcodeRegistry = new Map(); // shortcodeName -> plugin function
+    this.componentRegistry = new Map(); // componentName -> plugin function
     this._staticAssets = new Map(); // pluginName -> assets (legacy declaration)
     this.initialized = false;
   }
@@ -125,7 +125,7 @@ class PluginManager {
       this.logger.info('Plugin system initialized', {
         plugins: this.plugins.length,
         hooks: this.hookRegistry.size,
-        shortcodes: this.shortcodeRegistry.size
+        components: this.componentRegistry.size
       });
 
       // Save state of ALL loaded plugins (including dependencies)
@@ -170,7 +170,7 @@ class PluginManager {
 
     // Get registered handlers for this hook
     const handlers = this.hookRegistry.get(hookName) || [];
-    
+
     if (handlers.length === 0) {
       this.logger.debug('No handlers registered for hook', { hookName });
       return args[0]; // Return first argument unchanged
@@ -188,7 +188,7 @@ class PluginManager {
     for (const handler of handlers) {
       try {
         const startTime = Date.now();
-        
+
         // Special handling for config:loaded - inject plugin config
         let handlerResult;
         if (hookName === 'config:loaded') {
@@ -202,9 +202,9 @@ class PluginManager {
           const extraArgs = this._prepareHookArgs(result, args.slice(1));
           handlerResult = await handler.fn(result, ...extraArgs);
         }
-        
+
         const duration = Date.now() - startTime;
-        
+
         // Update result if handler returned something
         if (handlerResult !== undefined) {
           result = handlerResult;
@@ -249,27 +249,27 @@ class PluginManager {
   }
 
   /**
-   * Execute a shortcode registered by a plugin
+   * Execute a component registered by a plugin
    * 
-   * @param {string} shortcodeName - Name of the shortcode
-   * @param {Object} attrs - Shortcode attributes
-   * @param {string} content - Shortcode content (if block shortcode)
-   * @returns {string} Rendered shortcode output
+   * @param {string} componentName - Name of the component
+   * @param {Object} attrs - Component attributes
+   * @param {string} content - Component content (if block component)
+   * @returns {string} Rendered component output
    * 
    * @example
-   * const html = manager.executeShortcode('contact-form', { id: 'main' }, '');
+   * const html = manager.executeComponent('contact-form', { id: 'main' }, '');
    */
-  executeShortcode(shortcodeName, attrs = {}, content = '', context = {}) {
-    const handler = this.shortcodeRegistry.get(shortcodeName);
-    
+  executeComponent(componentName, attrs = {}, content = '', context = {}) {
+    const handler = this.componentRegistry.get(componentName);
+
     if (!handler) {
-      this.logger.warn('Unknown shortcode', { shortcodeName });
+      this.logger.warn('Unknown component', { componentName });
       return null;
     }
 
     try {
-      this.logger.debug('Executing shortcode', {
-        shortcodeName,
+      this.logger.debug('Executing component', {
+        componentName,
         plugin: handler.plugin
       });
 
@@ -277,8 +277,8 @@ class PluginManager {
       return result;
 
     } catch (error) {
-      this.logger.error('Shortcode execution error', {
-        shortcodeName,
+      this.logger.error('Component execution error', {
+        componentName,
         plugin: handler.plugin,
         error: error.message,
         stack: error.stack
@@ -290,22 +290,46 @@ class PluginManager {
   }
 
   /**
-   * Check if a shortcode is registered
-   * 
-   * @param {string} shortcodeName - Shortcode name to check
-   * @returns {boolean}
+   * Legacy alias for executeComponent
+   * @deprecated Use executeComponent instead
    */
-  hasShortcode(shortcodeName) {
-    return this.shortcodeRegistry.has(shortcodeName);
+  executeShortcode(shortcodeName, attrs = {}, content = '', context = {}) {
+    return this.executeComponent(shortcodeName, attrs, content, context);
   }
 
   /**
-   * Get all registered shortcode names
+   * Check if a component is registered
+   * 
+   * @param {string} componentName - Component name to check
+   * @returns {boolean}
+   */
+  hasComponent(componentName) {
+    return this.componentRegistry.has(componentName);
+  }
+
+  /**
+   * Legacy alias for hasComponent
+   * @deprecated Use hasComponent instead
+   */
+  hasShortcode(shortcodeName) {
+    return this.hasComponent(shortcodeName);
+  }
+
+  /**
+   * Get all registered component names
    * 
    * @returns {Array<string>}
    */
+  getComponents() {
+    return Array.from(this.componentRegistry.keys());
+  }
+
+  /**
+   * Legacy alias for getComponents
+   * @deprecated Use getComponents instead
+   */
   getShortcodes() {
-    return Array.from(this.shortcodeRegistry.keys());
+    return this.getComponents();
   }
 
   /**
@@ -339,7 +363,7 @@ class PluginManager {
     return {
       pluginCount: this.plugins.length,
       hookCount: this.hookRegistry.size,
-      shortcodeCount: this.shortcodeRegistry.size,
+      componentCount: this.componentRegistry.size,
       hookHandlers
     };
   }
@@ -358,10 +382,11 @@ class PluginManager {
       }
     }
 
-    // Register shortcodes
-    if (plugin.shortcodes) {
-      for (const [shortcodeName, shortcodeFn] of Object.entries(plugin.shortcodes)) {
-        this._registerShortcode(shortcodeName, shortcodeFn, plugin.name);
+    // Register components (formerly shortcodes)
+    if (plugin.shortcodes || plugin.components) {
+      const components = plugin.components || plugin.shortcodes;
+      for (const [name, fn] of Object.entries(components)) {
+        this._registerComponent(name, fn, plugin.name);
       }
     }
 
@@ -372,7 +397,7 @@ class PluginManager {
         plugin: plugin.name,
         assets: plugin.assets
       });
-      
+
       // Store for later processing
       if (!this._staticAssets) {
         this._staticAssets = new Map();
@@ -383,7 +408,7 @@ class PluginManager {
     // Log plugin components
     const components = {
       hooks: Object.keys(plugin.hooks || {}).length,
-      shortcodes: Object.keys(plugin.shortcodes || {}).length,
+      components: Object.keys(plugin.components || plugin.shortcodes || {}).length,
       assets: plugin.assets ? Object.keys(plugin.assets).length : 0
     };
 
@@ -415,30 +440,38 @@ class PluginManager {
   }
 
   /**
-   * Register a shortcode handler
+   * Register a component handler
    * @private
    */
-  _registerShortcode(shortcodeName, shortcodeFn, pluginName) {
+  _registerComponent(name, fn, pluginName) {
     // Check for conflicts
-    if (this.shortcodeRegistry.has(shortcodeName)) {
-      const existing = this.shortcodeRegistry.get(shortcodeName);
-      this.logger.warn('Shortcode name conflict', {
-        shortcodeName,
+    if (this.componentRegistry.has(name)) {
+      const existing = this.componentRegistry.get(name);
+      this.logger.warn('Component name conflict', {
+        name,
         existing: existing.plugin,
         new: pluginName
       });
       // Last registered wins (allows overriding)
     }
 
-    this.shortcodeRegistry.set(shortcodeName, {
+    this.componentRegistry.set(name, {
       plugin: pluginName,
-      fn: shortcodeFn
+      fn: fn
     });
 
-    this.logger.debug('Shortcode registered', {
-      shortcodeName,
+    this.logger.debug('Component registered', {
+      name,
       plugin: pluginName
     });
+  }
+
+  /**
+   * Legacy alias for _registerComponent
+   * @deprecated Use _registerComponent instead
+   */
+  _registerShortcode(name, fn, pluginName) {
+    this._registerComponent(name, fn, pluginName);
   }
 
   /**
@@ -456,7 +489,7 @@ class PluginManager {
 
     // Clear registries
     this.hookRegistry.clear();
-    this.shortcodeRegistry.clear();
+    this.componentRegistry.clear();
     this.plugins = [];
     this.initialized = false;
 
@@ -491,10 +524,10 @@ class PluginManager {
   async _cleanupDisabledPlugins(pluginsConfig) {
     const fs = require('fs');
     const path = require('path');
-    
+
     // Track enabled plugins in a state file
     const stateFile = path.join(this.chironRootDir, '.chiron-plugin-state.json');
-    
+
     // Read previous state (ALL plugins that were loaded, including dependencies)
     let previousPlugins = [];
     if (fs.existsSync(stateFile)) {
@@ -505,28 +538,28 @@ class PluginManager {
         this.logger.warn('Failed to read plugin state', { error: error.message });
       }
     }
-    
+
     // Get currently requested plugins (will be resolved with dependencies later)
     const requestedPlugins = pluginsConfig
       .filter(p => p.enabled !== false)
       .map(p => p.name);
-    
+
     // For now, we don't know which plugins will be loaded (dependencies not resolved yet)
     // So we check if any previously loaded plugin is NOT in the requested list
     // This is a simple heuristic - disabled plugins won't be loaded
     const potentiallyDisabled = previousPlugins.filter(name => !requestedPlugins.includes(name));
-    
+
     if (potentiallyDisabled.length > 0) {
       this.logger.info('Detected potentially disabled plugins', { plugins: potentiallyDisabled });
-      
+
       // Load and run cleanup for each disabled plugin
       for (const pluginName of potentiallyDisabled) {
         try {
           const plugin = await this.loader.loadPlugin(pluginName, {});
-          
+
           if (plugin && typeof plugin.cleanup === 'function') {
             this.logger.info(`Running cleanup for disabled plugin: ${pluginName}`);
-            
+
             // Create minimal context for cleanup
             const cleanupContext = {
               logger: this.logger,
@@ -534,7 +567,7 @@ class PluginManager {
               rootDir: this.rootDir,
               chironRootDir: this.chironRootDir
             };
-            
+
             await plugin.cleanup(cleanupContext);
           } else {
             this.logger.debug(`Plugin ${pluginName} has no cleanup function`);
@@ -555,18 +588,18 @@ class PluginManager {
   async _savePluginState() {
     const fs = require('fs');
     const path = require('path');
-    
+
     const stateFile = path.join(this.chironRootDir, '.chiron-plugin-state.json');
-    
+
     // Save ALL loaded plugins (including dependencies)
     const loadedPluginNames = this.plugins.map(p => p.name);
-    
+
     try {
       fs.writeFileSync(stateFile, JSON.stringify({
         loaded: loadedPluginNames,
         timestamp: Date.now()
       }, null, 2), 'utf8');
-      
+
       this.logger.debug('Plugin state saved', { plugins: loadedPluginNames });
     } catch (error) {
       this.logger.warn('Failed to save plugin state', { error: error.message });

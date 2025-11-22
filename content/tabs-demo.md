@@ -21,8 +21,9 @@ The tabs component provides an accessible, responsive interface for displaying m
 
 Here's a simple example showing code snippets in different languages:
 
-:::tabs
-::tab{title="JavaScript"}
+<Tabs>
+<Tab title="JavaScript">
+
 ```javascript
 // Hello World in JavaScript
 console.log('Hello, World!');
@@ -33,7 +34,10 @@ function greet(name) {
 
 greet('Chiron');
 ```
-::tab{title="Python"}
+
+</Tab>
+<Tab title="Python">
+
 ```python
 # Hello World in Python
 print('Hello, World!')
@@ -43,7 +47,10 @@ def greet(name):
 
 greet('Chiron')
 ```
-::tab{title="Go"}
+
+</Tab>
+<Tab title="Go">
+
 ```go
 // Hello World in Go
 package main
@@ -58,7 +65,10 @@ func greet(name string) string {
     return fmt.Sprintf("Hello, %s!", name)
 }
 ```
-::tab{title="Rust"}
+
+</Tab>
+<Tab title="Rust">
+
 ```rust
 // Hello World in Rust
 fn main() {
@@ -69,14 +79,17 @@ fn greet(name: &str) -> String {
     format!("Hello, {}!", name)
 }
 ```
-:::
+
+</Tab>
+</Tabs>
 
 ## Installation Instructions
 
 You can use tabs for multi-step installation guides:
 
-:::tabs
-::tab{title="npm"}
+<Tabs>
+<Tab title="npm">
+
 ```bash
 # Install via npm
 npm install chiron --save-dev
@@ -84,7 +97,10 @@ npm install chiron --save-dev
 # Run the build
 npm run build
 ```
-::tab{title="yarn"}
+
+</Tab>
+<Tab title="yarn">
+
 ```bash
 # Install via yarn
 yarn add chiron --dev
@@ -92,7 +108,10 @@ yarn add chiron --dev
 # Run the build
 yarn build
 ```
-::tab{title="pnpm"}
+
+</Tab>
+<Tab title="pnpm">
+
 ```bash
 # Install via pnpm
 pnpm add -D chiron
@@ -100,7 +119,9 @@ pnpm add -D chiron
 # Run the build
 pnpm build
 ```
-:::
+
+</Tab>
+</Tabs>
 
 ## Configuration Examples
 
@@ -258,15 +279,18 @@ export default {
 
 Use the following syntax to create tabs in your markdown:
 
-```markdown
-:::tabs
-::tab{title="Tab 1"}
-Content for tab 1
-::tab{title="Tab 2"}
-Content for tab 2
-::tab{title="Tab 3"}
-Content for tab 3
-:::
+```jsx
+<Tabs>
+  <Tab title="Tab 1">
+  Content for tab 1
+  </Tab>
+  <Tab title="Tab 2">
+  Content for tab 2
+  </Tab>
+  <Tab title="Tab 3">
+  Content for tab 3
+  </Tab>
+</Tabs>
 ```
 
 ## Guidelines

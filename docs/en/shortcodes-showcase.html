@@ -808,318 +808,263 @@
 
                 <!-- Page Content -->
                 <div class="content">
-                    <h1 id="shortcodes-showcase-3">Shortcodes Showcase</h1><p>This page demonstrates all available shortcodes in Chiron. Use this as a reference and testing ground.</p>
-<div class="callout callout-info">
-<div class="callout-title">What are Shortcodes?</div>
-<div class="callout-content"><p>Shortcodes are WordPress-compatible syntax elements that let you add rich components to your markdown content. They&#39;re processed before markdown parsing, so you can use markdown inside them!</p></div>
-</div>
-
+                    <h1 id="shortcodes-showcase-1">Shortcodes Showcase</h1><p>This page demonstrates all available shortcodes in Chiron. Use this as a reference and testing ground.</p>
+<p>[callout type=&quot;info&quot; title=&quot;What are Shortcodes?&quot;]<br>Shortcodes are WordPress-compatible syntax elements that let you add rich components to your markdown content. They&#39;re processed before markdown parsing, so you can use markdown inside them!<br>[/callout]</p>
 <hr>
-<h2 id="tabs-3">Tabs</h2><p>Perfect for code examples, installation guides, or platform-specific instructions.</p>
-<div class="tabs-container" data-tabs-id="tabs-rojhqsvi0">
-  <div class="tabs-header" role="tablist">
-    <button class="tab-button active" role="tab" id="tabs-rojhqsvi0-tab-0" aria-selected="true" aria-controls="tabs-rojhqsvi0-panel-0" tabindex="0">
-      JavaScript
-    </button>
-    <button class="tab-button" role="tab" id="tabs-rojhqsvi0-tab-1" aria-selected="false" aria-controls="tabs-rojhqsvi0-panel-1" tabindex="-1">
-      Python
-    </button>
-    <button class="tab-button" role="tab" id="tabs-rojhqsvi0-tab-2" aria-selected="false" aria-controls="tabs-rojhqsvi0-panel-2" tabindex="-1">
-      Ruby
-    </button>
-  </div>
-  <div class="tab-panel active" role="tabpanel" id="tabs-rojhqsvi0-panel-0" aria-labelledby="tabs-rojhqsvi0-tab-0">
+<h2 id="tabs-1">Tabs</h2><p>Perfect for code examples, installation guides, or platform-specific instructions.</p>
+<p>[tabs]<br>[tab title=&quot;JavaScript&quot;]</p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript"><span class="hljs-comment">// JavaScript example</span>
 <span class="hljs-keyword">const</span> greeting = <span class="hljs-string">&#039;Hello, World!&#039;</span>;
-console.<span class="hljs-title function_">log</span>(greeting);</code></pre></div>
-  </div>
-  <div class="tab-panel" role="tabpanel" id="tabs-rojhqsvi0-panel-1" aria-labelledby="tabs-rojhqsvi0-tab-1" hidden="">
+console.<span class="hljs-title function_">log</span>(greeting);</code></pre></div><p>[/tab]<br>[tab title=&quot;Python&quot;]</p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-python"><span class="hljs-comment"># Python example</span>
 greeting = <span class="hljs-string">&#039;Hello, World!&#039;</span>
-<span class="hljs-title function_">print</span>(greeting)</code></pre></div>
-  </div>
-  <div class="tab-panel" role="tabpanel" id="tabs-rojhqsvi0-panel-2" aria-labelledby="tabs-rojhqsvi0-tab-2" hidden="">
+<span class="hljs-title function_">print</span>(greeting)</code></pre></div><p>[/tab]<br>[tab title=&quot;Ruby&quot;]</p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-ruby"><span class="hljs-comment"># Ruby example</span>
 greeting = <span class="hljs-string">&#039;Hello, World!&#039;</span>
-puts greeting</code></pre></div>
-  </div>
-</div>
-
-
+puts greeting</code></pre></div><p>[/tab]<br>[/tabs]</p>
 <hr>
-<h2 id="accordion-3">Accordion</h2><p>Great for FAQs, detailed explanations, or collapsible content.</p>
-<details class="accordion-item">
-        <summary class="accordion-header">What is Chiron?<span class="accordion-header-icon"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></span></summary>
-        <div class="accordion-content"><p>Chiron is a modern static site generator designed specifically for documentation. It combines the simplicity of markdown with powerful features like shortcodes, i18n support, and advanced theming.</p></div>
-      </details>
-
-<details class="accordion-item" open>
-        <summary class="accordion-header">Why use shortcodes?<span class="accordion-header-icon"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></span></summary>
-        <div class="accordion-content"><p>Shortcodes provide a <strong>WordPress-compatible</strong> way to add rich components without writing HTML. They&#39;re:</p>
+<h2 id="accordion-1">Accordion</h2><p>Great for FAQs, detailed explanations, or collapsible content.</p>
+<p>[accordion title=&quot;What is Chiron?&quot;]<br>Chiron is a modern static site generator designed specifically for documentation. It combines the simplicity of markdown with powerful features like shortcodes, i18n support, and advanced theming.<br>[/accordion]</p>
+<p>[accordion title=&quot;Why use shortcodes?&quot; open=&quot;true&quot;]<br>Shortcodes provide a <strong>WordPress-compatible</strong> way to add rich components without writing HTML. They&#39;re:</p>
 <ul>
 <li>Easy to use</li>
 <li>Secure by default</li>
 <li>Extensible</li>
-<li>Familiar to millions of users</li>
-</ul></div>
-      </details>
-
-<details class="accordion-item">
-        <summary class="accordion-header">Can I create custom shortcodes?<span class="accordion-header-icon"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></span></summary>
-        <div class="accordion-content"><p>Yes! You can register custom shortcodes programmatically. See the <a href="SHORTCODES.md#custom-shortcodes">documentation</a> for details.</p></div>
-      </details>
-
+<li>Familiar to millions of users<br>[/accordion]</li>
+</ul>
+<p>[accordion title=&quot;Can I create custom shortcodes?&quot;]<br>Yes! You can register custom shortcodes programmatically. See the <a href="SHORTCODES.md#custom-shortcodes">documentation</a> for details.<br>[/accordion]</p>
 <hr>
-<h2 id="buttons-3">Buttons</h2><p>Call-to-action buttons with different styles.</p>
-<p><a href="/docs" class="btn btn-primary">Primary Button</a><br><a href="/examples" class="btn btn-secondary">Secondary Button</a><br><a href="/api" class="btn btn-success">Success Button</a><br><a href="/download" class="btn btn-danger">Danger Button</a><br><a href="https://github.com" class="btn btn-outline" target="_blank" rel="noopener noreferrer">External Link</a></p>
+<h2 id="buttons-1">Buttons</h2><p>Call-to-action buttons with different styles.</p>
+<p>[button url=&quot;/docs&quot; style=&quot;primary&quot;]Primary Button[/button]<br>[button url=&quot;/examples&quot; style=&quot;secondary&quot;]Secondary Button[/button]<br>[button url=&quot;/api&quot; style=&quot;success&quot;]Success Button[/button]<br>[button url=&quot;/download&quot; style=&quot;danger&quot;]Danger Button[/button]<br>[button url=&quot;<a href="https://github.com" target="_blank" rel="noopener noreferrer">https://github.com</a>&quot; style=&quot;outline&quot; external=&quot;true&quot;]External Link[/button]</p>
 <hr>
-<h2 id="callouts-3">Callouts</h2><p>Highlight important information with different severity levels.</p>
-<div class="callout callout-info">
-
-<div class="callout-content"><p><strong>Information</strong>: This is a standard informational callout with markdown support.</p></div>
-</div>
-
-<div class="callout callout-success">
-<div class="callout-title">Success!</div>
-<div class="callout-content"><p>Your build completed successfully in 0.12 seconds.</p></div>
-</div>
-
-<div class="callout callout-warning">
-<div class="callout-title">Warning</div>
-<div class="callout-content"><p>This feature is experimental and may change in future versions.</p></div>
-</div>
-
-<div class="callout callout-danger">
-<div class="callout-title">Breaking Change</div>
-<div class="callout-content"><p>Version 2.0 introduces breaking changes. Please review the migration guide before upgrading.</p></div>
-</div>
-
-<div class="callout callout-tip">
-
-<div class="callout-content"><p>💡 <strong>Pro Tip</strong>: Use callouts to draw attention to important information without breaking the flow of your content.</p></div>
-</div>
-
+<h2 id="callouts-1">Callouts</h2><p>Highlight important information with different severity levels.</p>
+<p>[callout type=&quot;info&quot;]<br><strong>Information</strong>: This is a standard informational callout with markdown support.<br>[/callout]</p>
+<p>[callout type=&quot;success&quot; title=&quot;Success!&quot;]<br>Your build completed successfully in 0.12 seconds.<br>[/callout]</p>
+<p>[callout type=&quot;warning&quot; title=&quot;Warning&quot;]<br>This feature is experimental and may change in future versions.<br>[/callout]</p>
+<p>[callout type=&quot;danger&quot; title=&quot;Breaking Change&quot;]<br>Version 2.0 introduces breaking changes. Please review the migration guide before upgrading.<br>[/callout]</p>
+<p>[callout type=&quot;tip&quot;]<br>💡 <strong>Pro Tip</strong>: Use callouts to draw attention to important information without breaking the flow of your content.<br>[/callout]</p>
 <hr>
-<h2 id="badges-6">Badges</h2><p>Inline badges for status, versions, or categories.</p>
-<h1 id="api-reference-v2-0-3">API Reference <span class="badge badge-success">v2.0</span></h1><p>This feature is <span class="badge badge-warning">Experimental</span> and requires <span class="badge badge-info">Node 18+</span>.</p>
-<p>Status: <span class="badge badge-success">Stable</span> | <span class="badge badge-danger">Deprecated</span> | <span class="badge badge-primary">New</span></p>
+<h2 id="badges-4">Badges</h2><p>Inline badges for status, versions, or categories.</p>
+<h1 id="api-reference-badge-type-success-v2-0-badge-1">API Reference [badge type="success"]v2.0[/badge]</h1><p>This feature is [badge type=&quot;warning&quot;]Experimental[/badge] and requires [badge type=&quot;info&quot;]Node 18+[/badge].</p>
+<p>Status: [badge type=&quot;success&quot;]Stable[/badge] | [badge type=&quot;danger&quot;]Deprecated[/badge] | [badge type=&quot;primary&quot;]New[/badge]</p>
 <hr>
-<h2 id="grid-layout-3">Grid Layout</h2><p>Create responsive multi-column layouts.</p>
-<div class="grid grid-cols-3 grid-gap-large">
-  <div class="grid-item"><h3 id="fast-3">⚡ Fast</h3><p>Lightning-fast builds with parallel processing. Process hundreds of pages in seconds.</p></div>
-  <div class="grid-item"><h3 id="secure-3">🔒 Secure</h3><p>Enterprise-grade security with XSS and DoS protection built-in.</p></div>
-  <div class="grid-item"><h3 id="simple-3">📝 Simple</h3><p>WordPress-compatible syntax that&#39;s familiar and easy to learn.</p></div>
-</div>
-
-
-<h3 id="two-column-layout-3">Two Column Layout</h3><div class="grid grid-cols-2 grid-gap-normal">
-  <div class="grid-item"><h4 id="left-column-3">Left Column</h4><p>This is the left column with <strong>markdown</strong> support.</p>
+<h2 id="grid-layout-1">Grid Layout</h2><p>Create responsive multi-column layouts.</p>
+<p>[grid cols=&quot;3&quot; gap=&quot;large&quot;]<br>[grid-item]</p>
+<h3 id="fast-1">⚡ Fast</h3><p>Lightning-fast builds with parallel processing. Process hundreds of pages in seconds.<br>[/grid-item]<br>[grid-item]</p>
+<h3 id="secure-1">🔒 Secure</h3><p>Enterprise-grade security with XSS and DoS protection built-in.<br>[/grid-item]<br>[grid-item]</p>
+<h3 id="simple-1">📝 Simple</h3><p>WordPress-compatible syntax that&#39;s familiar and easy to learn.<br>[/grid-item]<br>[/grid]</p>
+<h3 id="two-column-layout-1">Two Column Layout</h3><p>[grid cols=&quot;2&quot;]<br>[grid-item]</p>
+<h4 id="left-column-1">Left Column</h4><p>This is the left column with <strong>markdown</strong> support.</p>
 <ul>
 <li>Bullet points work</li>
 <li>Lists are supported</li>
-<li>Everything renders correctly</li>
-</ul></div>
-  <div class="grid-item"><h4 id="right-column-3">Right Column</h4><p>This is the right column.</p>
+<li>Everything renders correctly<br>[/grid-item]<br>[grid-item]</li>
+</ul>
+<h4 id="right-column-1">Right Column</h4><p>This is the right column.</p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript"><span class="hljs-comment">// Code blocks work too</span>
-<span class="hljs-keyword">const</span> example = <span class="hljs-literal">true</span>;</code></pre></div></div>
-</div>
-
-
+<span class="hljs-keyword">const</span> example = <span class="hljs-literal">true</span>;</code></pre></div><p>[/grid-item]<br>[/grid]</p>
 <hr>
-<h2 id="hero-section-3">Hero Section</h2><p>Create impactful hero sections for landing pages.</p>
-<div class="hero hero-center">
-<div class="hero-content">
-<h1 class="hero-title">Welcome to Chiron</h1>
-<p class="hero-subtitle">Modern Documentation Made Easy</p>
-<div class="hero-body"><p>Build beautiful documentation sites with WordPress-compatible shortcodes, i18n support, and blazing-fast builds.</p>
-<p><a href="/docs" class="btn btn-primary">Get Started</a><br><a href="/examples" class="btn btn-outline">View Examples</a></p></div>
-</div>
-
-</div>
-
+<h2 id="hero-section-1">Hero Section</h2><p>Create impactful hero sections for landing pages.</p>
+<p>[hero title=&quot;Welcome to Chiron&quot; subtitle=&quot;Modern Documentation Made Easy&quot; align=&quot;center&quot;]<br>Build beautiful documentation sites with WordPress-compatible shortcodes, i18n support, and blazing-fast builds.</p>
+<p>[button url=&quot;/docs&quot; style=&quot;primary&quot;]Get Started[/button]<br>[button url=&quot;/examples&quot; style=&quot;outline&quot;]View Examples[/button]<br>[/hero]</p>
 <hr>
 <h2 id="feature-cards-3">Feature Cards</h2><p>Showcase features with icons and descriptions.</p>
-<div class="grid grid-cols-3 grid-gap-normal">
-  <div class="grid-item"><div class="feature-card">
-<div class="feature-icon">⚡</div>
-<h3 class="feature-title">Lightning Fast</h3>
-<div class="feature-content"><p>Parallel processing ensures your site builds in milliseconds, not minutes.</p></div>
-</div></div>
-  <div class="grid-item"><div class="feature-card">
-<div class="feature-icon">🔒</div>
-<h3 class="feature-title">Secure by Default</h3>
-<div class="feature-content"><p>Built-in XSS and DoS protection keeps your site and users safe.</p></div>
-</div></div>
-  <div class="grid-item"><div class="feature-card">
-<div class="feature-icon">🌍</div>
-<h3 class="feature-title">i18n Ready</h3>
-<div class="feature-content"><p>Multi-language support out of the box with automatic locale detection.</p></div>
-</div></div>
-</div>
-
-
+<p>[grid cols=&quot;3&quot;]<br>[grid-item]<br>[feature-card icon=&quot;⚡&quot; title=&quot;Lightning Fast&quot;]<br>Parallel processing ensures your site builds in milliseconds, not minutes.<br>[/feature-card]<br>[/grid-item]<br>[grid-item]<br>[feature-card icon=&quot;🔒&quot; title=&quot;Secure by Default&quot;]<br>Built-in XSS and DoS protection keeps your site and users safe.<br>[/feature-card]<br>[/grid-item]<br>[grid-item]<br>[feature-card icon=&quot;🌍&quot; title=&quot;i18n Ready&quot;]<br>Multi-language support out of the box with automatic locale detection.<br>[/feature-card]<br>[/grid-item]<br>[/grid]</p>
 <hr>
-<h2 id="info-boxes-6">Info Boxes</h2><p>Styled information boxes with icons.</p>
-<div class="info-box info-box-tip">
-<span class="info-box-icon">💡</span>
-<div class="info-box-body">
-<div class="info-box-title">Pro Tip</div>
-<div class="info-box-content"><p>Combine shortcodes to create rich, interactive content. For example, use grids with feature cards for a professional feature showcase.</p></div>
-</div>
-</div>
-
-<div class="info-box info-box-note">
-<span class="info-box-icon">📝</span>
-<div class="info-box-body">
-
-<div class="info-box-content"><p><strong>Note</strong>: All shortcodes support markdown, so you can use formatting, links, lists, and even code blocks inside them.</p></div>
-</div>
-</div>
-
-<div class="info-box info-box-warning">
-<span class="info-box-icon">⚠️</span>
-<div class="info-box-body">
-<div class="info-box-title">Important</div>
-<div class="info-box-content"><p>Always validate user input when creating custom shortcodes to prevent security vulnerabilities.</p></div>
-</div>
-</div>
-
+<h2 id="info-boxes-4">Info Boxes</h2><p>Styled information boxes with icons.</p>
+<p>[info-box type=&quot;tip&quot; icon=&quot;💡&quot; title=&quot;Pro Tip&quot;]<br>Combine shortcodes to create rich, interactive content. For example, use grids with feature cards for a professional feature showcase.<br>[/info-box]</p>
+<p>[info-box type=&quot;note&quot; icon=&quot;📝&quot;]<br><strong>Note</strong>: All shortcodes support markdown, so you can use formatting, links, lists, and even code blocks inside them.<br>[/info-box]</p>
+<p>[info-box type=&quot;warning&quot; icon=&quot;⚠️&quot; title=&quot;Important&quot;]<br>Always validate user input when creating custom shortcodes to prevent security vulnerabilities.<br>[/info-box]</p>
 <hr>
-<h2 id="blockquotes-9">Blockquotes</h2><p>Styled quotes with attribution.</p>
-<blockquote class="blockquote-styled">
-<div class="blockquote-content"><p>Stay hungry. Stay foolish.</p></div>
-<footer class="blockquote-footer"><cite class="blockquote-author">Steve Jobs</cite>, <span class="blockquote-source">Stanford Commencement, 2005</span></footer>
-</blockquote>
-
-<blockquote class="blockquote-styled">
-<div class="blockquote-content"><p>Imagination is more important than knowledge.</p></div>
-<footer class="blockquote-footer"><cite class="blockquote-author">Albert Einstein</cite></footer>
-</blockquote>
-
-<blockquote class="blockquote-styled">
-<div class="blockquote-content"><p>A journey of a thousand miles begins with a single step.</p></div>
-<footer class="blockquote-footer"><span class="blockquote-source">Ancient Proverb</span></footer>
-</blockquote>
-
+<h2 id="blockquotes-6">Blockquotes</h2><p>Styled quotes with attribution.</p>
+<p>[blockquote author=&quot;Steve Jobs&quot; source=&quot;Stanford Commencement, 2005&quot;]<br>Stay hungry. Stay foolish.<br>[/blockquote]</p>
+<p>[blockquote author=&quot;Albert Einstein&quot;]<br>Imagination is more important than knowledge.<br>[/blockquote]</p>
+<p>[blockquote source=&quot;Ancient Proverb&quot;]<br>A journey of a thousand miles begins with a single step.<br>[/blockquote]</p>
 <hr>
-<h2 id="complex-example-3">Complex Example</h2><p>Combining multiple shortcodes for rich content.</p>
-<div class="callout callout-info">
-<div class="callout-title">Complete Example</div>
-<div class="callout-content"><p>This section demonstrates how to combine multiple shortcodes for maximum impact.</p></div>
-</div>
-
-<div class="grid grid-cols-2 grid-gap-normal">
-  <div class="grid-item"><h3 id="installation-9">Installation</h3><p>Choose your package manager:</p>
-<div class="tabs-container" data-tabs-id="tabs-s5yglza2j">
-  <div class="tabs-header" role="tablist">
-    <button class="tab-button active" role="tab" id="tabs-s5yglza2j-tab-0" aria-selected="true" aria-controls="tabs-s5yglza2j-panel-0" tabindex="0">
-      npm
-    </button>
-    <button class="tab-button" role="tab" id="tabs-s5yglza2j-tab-1" aria-selected="false" aria-controls="tabs-s5yglza2j-panel-1" tabindex="-1">
-      yarn
-    </button>
-    <button class="tab-button" role="tab" id="tabs-s5yglza2j-tab-2" aria-selected="false" aria-controls="tabs-s5yglza2j-panel-2" tabindex="-1">
-      pnpm
-    </button>
-  </div>
-  <div class="tab-panel active" role="tabpanel" id="tabs-s5yglza2j-panel-0" aria-labelledby="tabs-s5yglza2j-tab-0">
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-built_in">npm</span> install chiron</code></pre></div>
-  </div>
-  <div class="tab-panel" role="tabpanel" id="tabs-s5yglza2j-panel-1" aria-labelledby="tabs-s5yglza2j-tab-1" hidden="">
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-built_in">yarn</span> add chiron</code></pre></div>
-  </div>
-  <div class="tab-panel" role="tabpanel" id="tabs-s5yglza2j-panel-2" aria-labelledby="tabs-s5yglza2j-tab-2" hidden="">
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-built_in">pnpm</span> add chiron</code></pre></div>
-  </div>
-</div></div>
-  <div class="grid-item"><h3 id="quick-start-9">Quick Start</h3><details class="accordion-item">
-        <summary class="accordion-header">Step 1: Initialize<span class="accordion-header-icon"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></span></summary>
-        <div class="accordion-content"><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash">chiron init my-docs
-cd my-docs</code></pre></div></div>
-      </details>
-
-<details class="accordion-item">
-        <summary class="accordion-header">Step 2: Configure<span class="accordion-header-icon"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></span></summary>
-        <div class="accordion-content"><p>Edit <code>chiron.config.yaml</code> with your settings.</p></div>
-      </details>
-
-<details class="accordion-item">
-        <summary class="accordion-header">Step 3: Build<span class="accordion-header-icon"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></span></summary>
-        <div class="accordion-content"><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-built_in">npm</span> run build</code></pre></div></div>
-      </details></div>
-</div>
-
-
-<div class="info-box info-box-tip">
-<span class="info-box-icon">🚀</span>
-<div class="info-box-body">
-
-<div class="info-box-content"><p><strong>Ready to launch?</strong> Check out our <a href="/deployment">deployment guide</a> for hosting options.</p></div>
-</div>
-</div>
-
+<h2 id="complex-example-1">Complex Example</h2><p>Combining multiple shortcodes for rich content.</p>
+<p>[callout type=&quot;info&quot; title=&quot;Complete Example&quot;]<br>This section demonstrates how to combine multiple shortcodes for maximum impact.<br>[/callout]</p>
+<p>[grid cols=&quot;2&quot;]<br>[grid-item]</p>
+<h3 id="installation-7">Installation</h3><p>Choose your package manager:</p>
+<p>[tabs]<br>[tab title=&quot;npm&quot;]</p>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-built_in">npm</span> install chiron</code></pre></div><p>[/tab]<br>[tab title=&quot;yarn&quot;]</p>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-built_in">yarn</span> add chiron</code></pre></div><p>[/tab]<br>[tab title=&quot;pnpm&quot;]</p>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-built_in">pnpm</span> add chiron</code></pre></div><p>[/tab]<br>[/tabs]<br>[/grid-item]<br>[grid-item]</p>
+<h3 id="quick-start-7">Quick Start</h3><p>[accordion title=&quot;Step 1: Initialize&quot;]</p>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash">chiron init my-docs
+cd my-docs</code></pre></div><p>[/accordion]</p>
+<p>[accordion title=&quot;Step 2: Configure&quot;]<br>Edit <code>chiron.config.yaml</code> with your settings.<br>[/accordion]</p>
+<p>[accordion title=&quot;Step 3: Build&quot;]</p>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-built_in">npm</span> run build</code></pre></div><p>[/accordion]<br>[/grid-item]<br>[/grid]</p>
+<p>[info-box type=&quot;tip&quot; icon=&quot;🚀&quot;]<br><strong>Ready to launch?</strong> Check out our <a href="/deployment">deployment guide</a> for hosting options.<br>[/info-box]</p>
 <hr>
-<h2 id="nesting-example-3">Nesting Example</h2><p>Shortcodes support nesting up to 5 levels deep.</p>
-<div class="callout callout-info">
-
-<div class="callout-content"><h3 id="nested-content-6">Nested Content</h3><div class="tabs-container" data-tabs-id="tabs-c8huct5h5">
-  <div class="tabs-header" role="tablist">
-    <button class="tab-button active" role="tab" id="tabs-c8huct5h5-tab-0" aria-selected="true" aria-controls="tabs-c8huct5h5-panel-0" tabindex="0">
-      Features
-    </button>
-    <button class="tab-button" role="tab" id="tabs-c8huct5h5-tab-1" aria-selected="false" aria-controls="tabs-c8huct5h5-panel-1" tabindex="-1">
-      Benefits
-    </button>
-  </div>
-  <div class="tab-panel active" role="tabpanel" id="tabs-c8huct5h5-panel-0" aria-labelledby="tabs-c8huct5h5-tab-0">
-<div class="grid grid-cols-2 grid-gap-normal">
-  <div class="grid-item"><div class="feature-card">
-<div class="feature-icon">⚡</div>
-<h3 class="feature-title">Fast</h3>
-<div class="feature-content"><p>Blazing fast builds</p></div>
-</div></div>
-  <div class="grid-item"><div class="feature-card">
-<div class="feature-icon">🔒</div>
-<h3 class="feature-title">Secure</h3>
-<div class="feature-content"><p>Enterprise security</p></div>
-</div></div>
-</div>
-  </div>
-  <div class="tab-panel" role="tabpanel" id="tabs-c8huct5h5-panel-1" aria-labelledby="tabs-c8huct5h5-tab-1" hidden="">
+<h2 id="nesting-example-1">Nesting Example</h2><p>Shortcodes support nesting up to 5 levels deep.</p>
+<p>[callout type=&quot;info&quot;]</p>
+<h3 id="nested-content-4">Nested Content</h3><p>[tabs]<br>[tab title=&quot;Features&quot;]<br>[grid cols=&quot;2&quot;]<br>[grid-item]<br>[feature-card icon=&quot;⚡&quot; title=&quot;Fast&quot;]<br>Blazing fast builds<br>[/feature-card]<br>[/grid-item]<br>[grid-item]<br>[feature-card icon=&quot;🔒&quot; title=&quot;Secure&quot;]<br>Enterprise security<br>[/feature-card]<br>[/grid-item]<br>[/grid]<br>[/tab]<br>[tab title=&quot;Benefits&quot;]</p>
 <ul>
 <li>Easy to use</li>
 <li>WordPress-compatible</li>
-<li>Extensible</li>
+<li>Extensible<br>[/tab]<br>[/tabs]<br>[/callout]</li>
 </ul>
-  </div>
-</div></div>
-</div>
-
 <hr>
 <h2 id="migration-from-old-syntax-3">Migration from Old Syntax</h2><p>The old <code>:::tabs</code> syntax is still supported for backward compatibility:</p>
-<p>:::tabs<br>::tab{title=&quot;Old Syntax&quot;}<br>This still works!<br>::tab{title=&quot;But...&quot;}<br>We recommend migrating to the new `<div class="tabs-container" data-tabs-id="tabs-z4bkhrngy"><br>  <div class="tabs-header" role="tablist"><br>    <button class="tab-button active" role="tab" id="tabs-z4bkhrngy-tab-0" aria-selected="true" aria-controls="tabs-z4bkhrngy-panel-0" tabindex="0"><br>      cURL<br>    </button><br>    <button class="tab-button" role="tab" id="tabs-z4bkhrngy-tab-1" aria-selected="false" aria-controls="tabs-z4bkhrngy-panel-1" tabindex="-1"><br>      JavaScript<br>    </button><br>    <button class="tab-button" role="tab" id="tabs-z4bkhrngy-tab-2" aria-selected="false" aria-controls="tabs-z4bkhrngy-panel-2" tabindex="-1"><br>      Python<br>    </button><br>  </div><br>  <div class="tab-panel active" role="tabpanel" id="tabs-z4bkhrngy-panel-0" aria-labelledby="tabs-z4bkhrngy-tab-0"></p>
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash">curl -H &quot;Authorization: Bearer YOUR_API_KEY&quot; \
-  https://api.example.com/v2/users</code></pre></div>
+<div class="tabs-container" data-tabs-id="tab-0ybjyd5f6">
+  <div class="tabs-header" role="tablist">
+    <button class="tab-button active" role="tab" id="tab-0ybjyd5f6-tab-0" aria-selected="true" aria-controls="tab-0ybjyd5f6-panel-0" tabindex="0">
+      Old Syntax
+    </button>
+    <button class="tab-button" role="tab" id="tab-0ybjyd5f6-tab-1" aria-selected="false" aria-controls="tab-0ybjyd5f6-panel-1" tabindex="-1">
+      But...
+    </button>
   </div>
-  <div class="tab-panel" role="tabpanel" id="tabs-z4bkhrngy-panel-1" aria-labelledby="tabs-z4bkhrngy-tab-1" hidden="">
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript">fetch(&#039;https://api.example.com/v2/users&#039;, {
-  headers: {
-    &#039;Authorization&#039;: &#039;Bearer YOUR_API_KEY&#039;
-  }
-})
-.then(res =&gt; res.json())
-.then(data =&gt; console.log(data));</code></pre></div>
+  <div class="tab-panel active" role="tabpanel" id="tab-0ybjyd5f6-panel-0" aria-labelledby="tab-0ybjyd5f6-tab-0">
+<p>This still works!</p>
   </div>
-  <div class="tab-panel" role="tabpanel" id="tabs-z4bkhrngy-panel-2" aria-labelledby="tabs-z4bkhrngy-tab-2" hidden="">
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-python">import requests
-
-<p>headers = {&#039;Authorization&#039;: &#039;Bearer YOUR_API_KEY&#039;}<br>response = requests.get(&#039;<a href="https://api.example.com/v2/users&amp;#039" target="_blank" rel="noopener noreferrer">https://api.example.com/v2/users&#039</a>;, headers=headers)<br>print(response.json())</code></pre></div></p>
+  <div class="tab-panel" role="tabpanel" id="tab-0ybjyd5f6-panel-1" aria-labelledby="tab-0ybjyd5f6-tab-1" hidden="">
+<p>We recommend migrating to the new <code>[tabs]</code> syntax for better compatibility.</p>
   </div>
 </div>
 
 
-<h3 id="endpoints-3">Endpoints</h3><div class="table-wrapper" data-sortable="true">
-          <div class="table-wrapper">
+<p>[callout type=&quot;warning&quot; title=&quot;Deprecation Notice&quot;]<br>The <code>:::tabs</code> syntax will be deprecated in version 3.0. Please migrate to <code>[tabs]</code> shortcode syntax.<br>[/callout]</p>
+<hr>
+<h2 id="performance-tips-4">Performance Tips</h2><p>[info-box type=&quot;tip&quot; icon=&quot;⚡&quot;]<br><strong>Optimization Tips</strong>:</p>
+<ol>
+<li>Shortcodes are only processed if detected in content</li>
+<li>Build uses parallel processing for maximum speed</li>
+<li>Template caching reduces build times</li>
+<li>Limit nesting depth to 3 levels for best performance<br>[/info-box]</li>
+</ol>
+<hr>
+<h2 id="security-10">Security</h2><p>[callout type=&quot;success&quot; title=&quot;Built-in Security&quot;]<br>All shortcodes include:</p>
+<ul>
+<li>XSS prevention through HTML escaping</li>
+<li>DoS protection with nesting limits (max 5 levels)</li>
+<li>Input validation for all attributes</li>
+<li>Safe defaults for all parameters<br>[/callout]</li>
+</ul>
+<hr>
+<h2 id="next-steps-4">Next Steps</h2><p>[grid cols=&quot;3&quot;]<br>[grid-item]<br>[button url=&quot;/docs/shortcodes&quot; style=&quot;primary&quot;]Read Full Docs[/button]<br>[/grid-item]<br>[grid-item]<br>[button url=&quot;/examples&quot; style=&quot;outline&quot;]More Examples[/button]<br>[/grid-item]<br>[grid-item]<br>[button url=&quot;<a href="https://github.com/user/chiron" target="_blank" rel="noopener noreferrer">https://github.com/user/chiron</a>&quot; style=&quot;outline&quot; external=&quot;true&quot;]GitHub Repo[/button]<br>[/grid-item]<br>[/grid]</p>
+<hr>
+<h2 id="advanced-code-blocks-1">Advanced Code Blocks</h2><p>Enhanced code blocks with titles, filenames, and line numbers.</p>
+<p>[code-block lang=&quot;javascript&quot; filename=&quot;server.js&quot; title=&quot;Express Server&quot;]<br>const express = require(&#39;express&#39;);<br>const app = express();</p>
+<p>app.get(&#39;/&#39;, (req, res) =&gt; {<br>  res.send(&#39;Hello World!&#39;);<br>});</p>
+<p>app.listen(3000, () =&gt; {<br>  console.log(&#39;Server running on port 3000&#39;);<br>});<br>[/code-block]</p>
+<p>[code-block lang=&quot;python&quot; lines=&quot;true&quot;]<br>def fibonacci(n):<br>    if n &lt;= 1:<br>        return n<br>    return fibonacci(n-1) + fibonacci(n-2)</p>
+<p>print(fibonacci(10))<br>[/code-block]</p>
+<hr>
+<h2 id="forms-1">Forms</h2><p>Create interactive forms for contact, feedback, or data collection.</p>
+<p>[callout type=&quot;info&quot;]<br><strong>Note</strong>: Forms require backend integration. The examples below show the markup only.<br>[/callout]</p>
+<p>[form action=&quot;/api/contact&quot; method=&quot;POST&quot; id=&quot;contact-form&quot;]</p>
+<p>[form-field type=&quot;text&quot; name=&quot;name&quot; label=&quot;Your Name&quot; placeholder=&quot;John Doe&quot; required=&quot;true&quot;][/form-field]</p>
+<p>[form-field type=&quot;email&quot; name=&quot;email&quot; label=&quot;Email Address&quot; placeholder=&quot;<a href="mailto:john@example.com">john@example.com</a>&quot; required=&quot;true&quot;][/form-field]</p>
+<p>[form-field type=&quot;textarea&quot; name=&quot;message&quot; label=&quot;Message&quot; placeholder=&quot;Your message here...&quot;][/form-field]</p>
+<p>[button url=&quot;#&quot; style=&quot;primary&quot;]Send Message[/button]</p>
+<p>[/form]</p>
+<hr>
+<h2 id="advanced-tables-1">Advanced Tables</h2><p>Tables with enhanced functionality.</p>
+<h3 id="basic-table-4">Basic Table</h3><p>[table]</p>
+<div class="table-wrapper">
+        <table>
+          <thead><tr>
+<th>Feature</th>
+<th>Chiron</th>
+<th>Competitor A</th>
+<th>Competitor B</th>
+</tr>
+</thead>
+          <tbody><tr>
+<td>Speed</td>
+<td>⚡ Fast</td>
+<td>🐌 Slow</td>
+<td>🐢 Medium</td>
+</tr>
+<tr>
+<td>Security</td>
+<td>🔒 High</td>
+<td>⚠️ Medium</td>
+<td>⚠️ Medium</td>
+</tr>
+<tr>
+<td>Price</td>
+<td>💰 Free</td>
+<td>💰💰 Paid</td>
+<td>💰 Free</td>
+</tr>
+<tr>
+<td>Support</td>
+<td>✅ Yes</td>
+<td>❌ No</td>
+<td>⚠️ Limited</td>
+</tr>
+<tr>
+<td>[/table]</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+        </table>
+      </div><h3 id="sortable-table-1">Sortable Table</h3><p>[table sortable=&quot;true&quot;]</p>
+<div class="table-wrapper">
+        <table>
+          <thead><tr>
+<th>Package</th>
+<th>Downloads</th>
+<th>Stars</th>
+<th>License</th>
+</tr>
+</thead>
+          <tbody><tr>
+<td>React</td>
+<td>18M/week</td>
+<td>200k</td>
+<td>MIT</td>
+</tr>
+<tr>
+<td>Vue</td>
+<td>4M/week</td>
+<td>200k</td>
+<td>MIT</td>
+</tr>
+<tr>
+<td>Angular</td>
+<td>3M/week</td>
+<td>90k</td>
+<td>MIT</td>
+</tr>
+<tr>
+<td>Svelte</td>
+<td>500k/week</td>
+<td>70k</td>
+<td>MIT</td>
+</tr>
+<tr>
+<td>[/table]</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+        </table>
+      </div><hr>
+<h2 id="video-embeds-1">Video Embeds</h2><p>Embed videos from various sources.</p>
+<h3 id="youtube-video-1">YouTube Video</h3><p>[video youtube=&quot;dQw4w9WgXcQ&quot; title=&quot;Example YouTube Video&quot;][/video]</p>
+<h3 id="vimeo-video-1">Vimeo Video</h3><p>[video vimeo=&quot;76979871&quot; title=&quot;Example Vimeo Video&quot;][/video]</p>
+<p>[callout type=&quot;tip&quot;]<br>💡 <strong>Tip</strong>: Videos are automatically responsive and support accessibility features.<br>[/callout]</p>
+<hr>
+<h2 id="advanced-images-1">Advanced Images</h2><p>Images with captions and enhanced features.</p>
+<p>[grid cols=&quot;2&quot;]<br>[grid-item]</p>
+<h3 id="simple-image-1">Simple Image</h3><p>[image src=&quot;<a href="https://via.placeholder.com/400x300" target="_blank" rel="noopener noreferrer">https://via.placeholder.com/400x300</a>&quot; alt=&quot;Placeholder image&quot;][/image]<br>[/grid-item]<br>[grid-item]</p>
+<h3 id="image-with-caption-1">Image with Caption</h3><p>[image src=&quot;<a href="https://via.placeholder.com/400x300" target="_blank" rel="noopener noreferrer">https://via.placeholder.com/400x300</a>&quot; alt=&quot;Architecture diagram&quot; caption=&quot;Figure 1: System Architecture&quot;][/image]<br>[/grid-item]<br>[/grid]</p>
+<h3 id="centered-image-with-custom-size-1">Centered Image with Custom Size</h3><p>[image src=&quot;<a href="https://via.placeholder.com/600x200" target="_blank" rel="noopener noreferrer">https://via.placeholder.com/600x200</a>&quot; alt=&quot;Banner&quot; align=&quot;center&quot; width=&quot;600&quot;][/image]</p>
+<hr>
+<h2 id="real-world-example-documentation-page-1">Real-World Example: Documentation Page</h2><p>Combining multiple shortcodes for a complete documentation page.</p>
+<p>[hero title=&quot;API Documentation&quot; subtitle=&quot;RESTful API v2.0&quot; align=&quot;center&quot;]<br>Complete reference for our REST API with examples in multiple languages.<br>[/hero]</p>
+<p>[callout type=&quot;info&quot; title=&quot;Getting Started&quot;]<br>Before using the API, you&#39;ll need an API key. <a href="/signup">Sign up here</a> to get started.<br>[/callout]</p>
+<h3 id="authentication-1">Authentication</h3><p>[tabs]<br>[tab title=&quot;cURL&quot;]<br>[code-block lang=&quot;bash&quot; filename=&quot;auth.sh&quot;]<br>curl -H &quot;Authorization: Bearer YOUR_API_KEY&quot; <br>  <a href="https://api.example.com/v2/users" target="_blank" rel="noopener noreferrer">https://api.example.com/v2/users</a><br>[/code-block]<br>[/tab]<br>[tab title=&quot;JavaScript&quot;]<br>[code-block lang=&quot;javascript&quot; filename=&quot;auth.js&quot;]<br>fetch(&#39;<a href="https://api.example.com/v2/users" target="_blank" rel="noopener noreferrer">https://api.example.com/v2/users</a>&#39;, {<br>  headers: {<br>    &#39;Authorization&#39;: &#39;Bearer YOUR_API_KEY&#39;<br>  }<br>})<br>.then(res =&gt; res.json())<br>.then(data =&gt; console.log(data));<br>[/code-block]<br>[/tab]<br>[tab title=&quot;Python&quot;]<br>[code-block lang=&quot;python&quot; filename=&quot;auth.py&quot;]<br>import requests</p>
+<p>headers = {&#39;Authorization&#39;: &#39;Bearer YOUR_API_KEY&#39;}<br>response = requests.get(&#39;<a href="https://api.example.com/v2/users" target="_blank" rel="noopener noreferrer">https://api.example.com/v2/users</a>&#39;, headers=headers)<br>print(response.json())<br>[/code-block]<br>[/tab]<br>[/tabs]</p>
+<h3 id="endpoints-1">Endpoints</h3><p>[table sortable=&quot;true&quot;]</p>
+<div class="table-wrapper">
         <table>
           <thead><tr>
 <th>Method</th>
@@ -1152,58 +1097,28 @@ cd my-docs</code></pre></div></div>
 <td>/users/:id</td>
 <td>Delete user</td>
 </tr>
+<tr>
+<td>[/table]</td>
+<td></td>
+<td></td>
+</tr>
 </tbody>
         </table>
-      </div>
-        </div>
-
-<h3 id="response-codes-3">Response Codes</h3><div class="grid grid-cols-2 grid-gap-normal">
-  <div class="grid-item"><div class="info-box info-box-tip">
-<span class="info-box-icon">✅</span>
-<div class="info-box-body">
-<div class="info-box-title">Success Codes</div>
-<div class="info-box-content"><ul>
+      </div><h3 id="response-codes-1">Response Codes</h3><p>[grid cols=&quot;2&quot;]<br>[grid-item]<br>[info-box type=&quot;tip&quot; icon=&quot;✅&quot; title=&quot;Success Codes&quot;]</p>
+<ul>
 <li><strong>200</strong> - OK</li>
 <li><strong>201</strong> - Created</li>
-<li><strong>204</strong> - No Content</li>
-</ul></div>
-</div>
-</div></div>
-  <div class="grid-item"><div class="info-box info-box-warning">
-<span class="info-box-icon">⚠️</span>
-<div class="info-box-body">
-<div class="info-box-title">Error Codes</div>
-<div class="info-box-content"><ul>
+<li><strong>204</strong> - No Content<br>[/info-box]<br>[/grid-item]<br>[grid-item]<br>[info-box type=&quot;warning&quot; icon=&quot;⚠️&quot; title=&quot;Error Codes&quot;]</li>
 <li><strong>400</strong> - Bad Request</li>
 <li><strong>401</strong> - Unauthorized</li>
 <li><strong>404</strong> - Not Found</li>
-<li><strong>500</strong> - Server Error</li>
-</ul></div>
-</div>
-</div></div>
-</div>
-
-
-<h3 id="faq-3">FAQ</h3><details class="accordion-item">
-        <summary class="accordion-header">What is rate limiting?<span class="accordion-header-icon"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></span></summary>
-        <div class="accordion-content"><p>Rate limiting restricts the number of API calls you can make per hour. Free tier: 100 requests/hour. Pro tier: 10,000 requests/hour.</p></div>
-      </details>
-
-<details class="accordion-item">
-        <summary class="accordion-header">How do I upgrade my plan?<span class="accordion-header-icon"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></span></summary>
-        <div class="accordion-content"><p>Visit your <a href="/dashboard">dashboard</a> and click &quot;Upgrade Plan&quot; to see available options.</p></div>
-      </details>
-
-<details class="accordion-item">
-        <summary class="accordion-header">Is there a sandbox environment?<span class="accordion-header-icon"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></span></summary>
-        <div class="accordion-content"><p>Yes! Use <code>https://sandbox.api.example.com</code> for testing without affecting production data.</p></div>
-      </details>
-
+<li><strong>500</strong> - Server Error<br>[/info-box]<br>[/grid-item]<br>[/grid]</li>
+</ul>
+<h3 id="faq-5">FAQ</h3><p>[accordion title=&quot;What is rate limiting?&quot;]<br>Rate limiting restricts the number of API calls you can make per hour. Free tier: 100 requests/hour. Pro tier: 10,000 requests/hour.<br>[/accordion]</p>
+<p>[accordion title=&quot;How do I upgrade my plan?&quot;]<br>Visit your <a href="/dashboard">dashboard</a> and click &quot;Upgrade Plan&quot; to see available options.<br>[/accordion]</p>
+<p>[accordion title=&quot;Is there a sandbox environment?&quot;]<br>Yes! Use <code>https://sandbox.api.example.com</code> for testing without affecting production data.<br>[/accordion]</p>
 <hr>
-<blockquote class="blockquote-styled">
-<div class="blockquote-content"><p>Build better documentation, faster.</p></div>
-<footer class="blockquote-footer"><cite class="blockquote-author">Chiron Team</cite></footer>
-</blockquote>
+<p>[blockquote author=&quot;Chiron Team&quot;]<br>Build better documentation, faster.<br>[/blockquote]</p>
 
                 </div>
 
@@ -1233,6 +1148,7 @@ cd my-docs</code></pre></div></div>
     <li><a href="../terms-of-service.html" class="footer-legal-link">Terms of Service</a></li>
     <li><a href="../cookie-policy.html" class="footer-legal-link">Cookie Policy</a></li>
     <li><a href="https://opensource.org/licenses/MIT" class="footer-legal-link" target="_blank" rel="noopener noreferrer" aria-label="License - aria.external_link">License</a></li>
+    <li><a href="../manage-cookies.html" class="footer-legal-link">Manage Cookies</a></li>
   </ul>
                 </div>
             </div>
@@ -1696,510 +1612,11 @@ document.addEventListener('click', async (e) => {
   window.addEventListener('scroll', debounce(updateTOCHighlight, 100), { passive: true });
 })();
 
-
-// Component: info-boxes
-/**
- * Info Boxes Component - Dismissible alerts with localStorage
- * Detects: .info-box[data-dismissible]
- * 
- * @component info-boxes
- */
-
-(() => {
-  const infoBoxes = document.querySelectorAll('.info-box');
-  if (infoBoxes.length === 0) {return;}
-    
-  infoBoxes.forEach(box => {
-    const dismissibleId = box.getAttribute('data-dismissible');
-    if (dismissibleId === null) {return;}
-        
-    const boxId = dismissibleId || `info-box-${hashCode(box.textContent)}`;
-        
-    if (localStorage.getItem(`dismissed-${boxId}`) === 'true') {
-      box.style.display = 'none';
-      return;
-    }
-        
-    const closeBtn = document.createElement('button');
-    closeBtn.className = 'info-box-close';
-    closeBtn.setAttribute('aria-label', t('aria_infobox_close', 'Close'));
-    closeBtn.innerHTML = `
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-        `;
-        
-    closeBtn.addEventListener('click', () => {
-      box.classList.add('dismissing');
-      localStorage.setItem(`dismissed-${boxId}`, 'true');
-      setTimeout(() => box.remove(), 300);
-    });
-        
-    box.appendChild(closeBtn);
-  });
-})();
-
-
-// Component: blockquotes
-/**
- * Blockquotes Component - Auto-detect type from first bold word
- * Detects: .content blockquote
- * 
- * @component blockquotes
- */
-
-(() => {
-  const blockquotes = document.querySelectorAll('.content blockquote');
-  if (blockquotes.length === 0) {return;}
-    
-  blockquotes.forEach(blockquote => {
-    const firstP = blockquote.querySelector('p:first-child');
-    if (!firstP) {return;}
-        
-    const firstStrong = firstP.querySelector('strong:first-child');
-    if (!firstStrong) {return;}
-        
-    const keyword = firstStrong.textContent.trim().toLowerCase().replace(':', '');
-        
-    const typeMap = {
-      'note': 'note',
-      'info': 'info',
-      'warning': 'warning',
-      'caution': 'warning',
-      'success': 'success',
-      'tip': 'tip',
-      'error': 'error',
-      'danger': 'danger',
-      'important': 'important'
-    };
-        
-    if (typeMap[keyword]) {
-      blockquote.classList.add(typeMap[keyword]);
-    }
-  });
-})();
-
 </script>
 
 
     <!-- External Scripts -->
     <script src="/search-client.js"></script>
-    <!-- External Scripts - Initialization -->
-    <script type="module">/**
- * @fileoverview Universal embed loader with responsive containers, lazy loading, and GDPR compliance
- * Provides shared utilities for all embed types (YouTube, Asciinema, CodePen, Gist, etc.)
- */
-
-(function() {
-  'use strict';
-
-  /**
-   * Responsive embed container CSS with aspect ratio support
-   * Mobile-first approach with support for custom classes
-   */
-  const embedStyles = `
-    <style>
-      /* Base responsive embed container */
-      .embed-container {
-        position: relative;
-        width: 100%;
-        height: 0;
-        overflow: hidden;
-        margin: 1.5rem 0;
-        border-radius: 8px;
-        background: #f5f5f5;
-      }
-
-      /* Aspect ratio variants */
-      .embed-container.aspect-16-9 {
-        padding-bottom: 56.25%; /* 16:9 ratio */
-      }
-
-      .embed-container.aspect-4-3 {
-        padding-bottom: 75%; /* 4:3 ratio */
-      }
-
-      .embed-container.aspect-1-1 {
-        padding-bottom: 100%; /* 1:1 ratio */
-      }
-
-      .embed-container.aspect-21-9 {
-        padding-bottom: 42.857%; /* 21:9 ultrawide */
-      }
-
-      /* Embedded iframe/content */
-      .embed-container iframe,
-      .embed-container object,
-      .embed-container embed,
-      .embed-container video {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border: 0;
-      }
-
-      /* Privacy placeholder (before user clicks) */
-      .embed-placeholder {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
-
-      /* Dark overlay for better contrast when using background images (thumbnails) */
-      .embed-placeholder::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.4);
-        z-index: 0;
-      }
-
-      .embed-placeholder:hover::before {
-        background: rgba(0, 0, 0, 0.3);
-      }
-
-      /* Ensure content is above overlay */
-      .embed-placeholder > * {
-        position: relative;
-        z-index: 1;
-      }
-
-      .embed-placeholder:focus {
-        outline: 3px solid #4299e1;
-        outline-offset: 2px;
-      }
-
-      /* Reduced motion support */
-      @media (prefers-reduced-motion: reduce) {
-        .embed-placeholder {
-          transition: none;
-        }
-      }
-
-      /* Play button icon */
-      .embed-play-btn {
-        width: 80px;
-        height: 80px;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1rem;
-        transition: all 0.3s ease;
-      }
-
-      .embed-placeholder:hover .embed-play-btn {
-        background: white;
-        transform: scale(1.1);
-      }
-
-      .embed-play-btn::after {
-        content: '';
-        width: 0;
-        height: 0;
-        border-left: 20px solid #333;
-        border-top: 12px solid transparent;
-        border-bottom: 12px solid transparent;
-        margin-left: 5px;
-      }
-
-      /* Privacy notice */
-      .embed-privacy-notice {
-        color: white;
-        font-size: 0.875rem;
-        text-align: center;
-        max-width: 80%;
-        line-height: 1.5;
-      }
-
-      /* Loading state */
-      .embed-loading {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 1rem;
-        color: #666;
-      }
-
-      /* Mobile optimizations */
-      @media (max-width: 640px) {
-        .embed-container {
-          margin: 1rem 0;
-          border-radius: 4px;
-        }
-
-        .embed-play-btn {
-          width: 60px;
-          height: 60px;
-        }
-
-        .embed-play-btn::after {
-          border-left-width: 15px;
-          border-top-width: 9px;
-          border-bottom-width: 9px;
-        }
-
-        .embed-privacy-notice {
-          font-size: 0.75rem;
-        }
-      }
-
-      /* Tablet optimizations */
-      @media (min-width: 641px) and (max-width: 1024px) {
-        .embed-container {
-          margin: 1.25rem 0;
-        }
-      }
-
-      /* Large screens */
-      @media (min-width: 1025px) {
-        .embed-container {
-          margin: 2rem 0;
-        }
-      }
-
-      /* Twitter embed container */
-      .twitter-embed-container {
-        margin: 1.5rem 0;
-        width: 100%;
-      }
-
-      /* Override content blockquote styles for Twitter embeds */
-      .content .twitter-embed-container .twitter-tweet,
-      .twitter-embed-container .twitter-tweet {
-        margin: 0 !important;
-        padding: 0 !important;
-        border: none !important;
-        background: transparent !important;
-        font-size: inherit !important;
-        line-height: inherit !important;
-      }
-
-      /* High contrast mode support */
-      @media (prefers-contrast: high) {
-        .embed-placeholder {
-          border: 2px solid white;
-        }
-      }
-    </style>
-  `;
-
-  /**
-   * Creates a responsive embed container with lazy loading
-   * @param {Object} options - Embed configuration
-   * @param {string} options.type - Embed type (youtube, asciinema, codepen, gist)
-   * @param {string} options.src - Embed source URL
-   * @param {string} options.aspectRatio - Aspect ratio (16-9, 4-3, 1-1, 21-9)
-   * @param {string} options.customClass - Additional CSS classes
-   * @param {string} options.title - Accessibility title
-   * @param {string} options.privacyNotice - Privacy notice text
-   * @returns {string} HTML for embed container
-   */
-  function createEmbedContainer(options) {
-    const {
-      type = 'video',
-      src = '',
-      aspectRatio = '16-9',
-      customClass = '',
-      title = 'Embedded content',
-      privacyNotice = 'Click to load content. This will connect to external servers.'
-    } = options;
-
-    const containerId = `embed-${type}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    const containerClass = `embed-container aspect-${aspectRatio} ${type}-embed ${customClass}`.trim();
-
-    return `
-      <div class="${containerClass}" id="${containerId}" data-embed-src="${src}" data-embed-type="${type}">
-        <div class="embed-placeholder" 
-             role="button" 
-             tabindex="0"
-             aria-label="${title} - ${privacyNotice}"
-             data-embed-trigger>
-          <div class="embed-play-btn" aria-hidden="true"></div>
-          <p class="embed-privacy-notice">${privacyNotice}</p>
-        </div>
-      </div>
-    `;
-  }
-
-  /**
-   * Loads embed content when user clicks placeholder
-   * GDPR compliant - no external connections until user consent via click
-   */
-  function initEmbedLoaders() {
-    // Inject styles once
-    if (!document.getElementById('embed-loader-styles')) {
-      const styleTag = document.createElement('div');
-      styleTag.id = 'embed-loader-styles';
-      styleTag.innerHTML = embedStyles;
-      document.head.appendChild(styleTag.querySelector('style'));
-    }
-
-    // Attach click handlers to all embed placeholders
-    document.querySelectorAll('[data-embed-trigger]').forEach(trigger => {
-      trigger.addEventListener('click', loadEmbed);
-      trigger.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          loadEmbed.call(trigger, e);
-        }
-      });
-    });
-
-    // Initialize Twitter embeds immediately (no click-to-load)
-    initTwitterEmbeds();
-  }
-
-  /**
-   * Initialize Twitter embeds by creating blockquotes and loading widgets.js
-   */
-  function initTwitterEmbeds() {
-    const containers = document.querySelectorAll('.twitter-embed-container[data-tweet-url]');
-    
-    if (containers.length === 0) {
-      return;
-    }
-
-    // Load Twitter widgets script
-    if (!window.twttr) {
-      const script = document.createElement('script');
-      script.src = 'https://platform.twitter.com/widgets.js';
-      script.async = true;
-      script.charset = 'utf-8';
-      script.onload = () => {
-        containers.forEach(createTwitterBlockquote);
-      };
-      document.head.appendChild(script);
-    } else {
-      containers.forEach(createTwitterBlockquote);
-    }
-  }
-
-  /**
-   * Create Twitter blockquote element and render widget
-   * @param {HTMLElement} container - Twitter embed container
-   */
-  function createTwitterBlockquote(container) {
-    const tweetUrl = container.getAttribute('data-tweet-url');
-    const tweetAttrs = container.getAttribute('data-tweet-attrs') || '';
-    
-    // Create blockquote element
-    const blockquote = document.createElement('blockquote');
-    blockquote.className = 'twitter-tweet';
-    
-    // Add data attributes
-    if (tweetAttrs) {
-      const attrs = tweetAttrs.split(' ');
-      attrs.forEach(attr => {
-        const match = attr.match(/^(data-\w+)="([^"]+)"$/);
-        if (match) {
-          blockquote.setAttribute(match[1], match[2]);
-        }
-      });
-    }
-    
-    // Add link
-    const link = document.createElement('a');
-    link.href = tweetUrl;
-    link.textContent = t('embed_view_tweet', 'View tweet');
-    blockquote.appendChild(link);
-    
-    // Add to container
-    container.appendChild(blockquote);
-    
-    // Render with Twitter widgets
-    if (window.twttr && window.twttr.widgets) {
-      window.twttr.widgets.load(container);
-    }
-  }
-
-  /**
-   * Loads the actual embed content
-   * @param {Event} event - Click or keyboard event
-   */
-  function loadEmbed(event) {
-    const trigger = event.currentTarget;
-    const container = trigger.closest('[data-embed-src]');
-    
-    if (!container) {
-      return;
-    }
-
-    const src = container.dataset.embedSrc;
-    const type = container.dataset.embedType;
-
-    // Show loading state
-    trigger.innerHTML = `<div class="embed-loading">${t('embed_loading', 'Loading...')}</div>`;
-
-    // Create iframe based on embed type
-    const iframe = document.createElement('iframe');
-    iframe.src = src;
-    iframe.title = trigger.getAttribute('aria-label').split(' - ')[0];
-    iframe.allowFullscreen = true;
-    iframe.loading = 'lazy';
-
-    // Type-specific iframe attributes
-    switch (type) {
-    case 'youtube':
-      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-      iframe.setAttribute('frameborder', '0');
-      break;
-    case 'codepen':
-      iframe.setAttribute('scrolling', 'no');
-      iframe.allow = 'accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking';
-      break;
-    case 'stackblitz':
-      iframe.setAttribute('frameborder', '0');
-      iframe.allow = 'accelerometer; camera; encrypted-media; geolocation; gyroscope; microphone';
-      break;
-    }
-
-    // Replace placeholder with iframe
-    trigger.remove();
-    container.appendChild(iframe);
-
-    // Announce to screen readers
-    const announcement = document.createElement('div');
-    announcement.setAttribute('role', 'status');
-    announcement.setAttribute('aria-live', 'polite');
-    announcement.className = 'sr-only';
-    announcement.textContent = t('embed_content_loaded', 'Content loaded');
-    container.appendChild(announcement);
-    setTimeout(() => announcement.remove(), 1000);
-  }
-
-  // Auto-initialize on DOM ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initEmbedLoaders);
-  } else {
-    initEmbedLoaders();
-  }
-
-  // Export for use in plugins
-  if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { createEmbedContainer };
-  } else {
-    window.ChironEmbedLoader = { createEmbedContainer };
-  }
-})();
-</script>
 
 <div id="cookie-consent-banner" class="cookie-consent-banner" style="display: none;">
   <div class="cookie-consent-content">

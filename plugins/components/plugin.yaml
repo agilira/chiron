@@ -1,0 +1,12 @@
+name: components
+version: 1.0.0
+description: Core UI components with JSX-like syntax
+author: AGILira
+builtin: true
+required: true
+category: core
+tags:
+  - components
+  - ui
+  - jsx
+  - button

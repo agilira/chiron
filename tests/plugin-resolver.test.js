@@ -26,9 +26,9 @@ describe('PluginResolver', () => {
     });
 
     test('should load mermaid plugin', () => {
-      expect(resolver.hasPlugin('mermaid')).toBe(true);
-      const plugin = resolver.getPlugin('mermaid');
-      expect(plugin.name).toBe('mermaid');
+      expect(resolver.hasPlugin('components')).toBe(true);
+      const plugin = resolver.getPlugin('components');
+      expect(plugin.name).toBe('components');
       expect(plugin.version).toBe('1.0.0');
     });
 
@@ -49,8 +49,8 @@ describe('PluginResolver', () => {
 
   describe('Dependency Resolution', () => {
     test('should resolve plugin with no dependencies', async () => {
-      const resolved = await resolver.resolve(['mermaid']);
-      expect(resolved).toEqual(['mermaid']);
+      const resolved = await resolver.resolve(['components']);
+      expect(resolved).toEqual(['components']);
     });
 
     test('should resolve plugin with dependencies', async () => {
@@ -67,9 +67,9 @@ describe('PluginResolver', () => {
     });
 
     test('should resolve multiple plugins', async () => {
-      const resolved = await resolver.resolve(['mermaid', 'cookie-consent']);
+      const resolved = await resolver.resolve(['components', 'cookie-consent']);
       
-      expect(resolved).toContain('mermaid');
+      expect(resolved).toContain('components');
       expect(resolved).toContain('cookies-scanner');
       expect(resolved).toContain('cookie-consent');
       
@@ -152,7 +152,7 @@ describe('PluginResolver', () => {
 
   describe('Validation', () => {
     test('should validate valid configuration', async () => {
-      const validation = await resolver.validate(['mermaid', 'cookie-consent']);
+      const validation = await resolver.validate(['components', 'cookie-consent']);
       
       expect(validation.valid).toBe(true);
       expect(validation.errors).toHaveLength(0);

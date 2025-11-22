@@ -37,7 +37,7 @@ describe('Plugin System Integration', () => {
       // Initialize with mermaid plugin
       await manager.initialize([
         {
-          name: 'mermaid',
+          name: 'components',
           enabled: true,
           config: {
             theme: 'dark',
@@ -56,10 +56,10 @@ describe('Plugin System Integration', () => {
     });
 
     test('should load mermaid plugin', () => {
-      const plugin = manager.getPlugin('mermaid');
+      const plugin = manager.getPlugin('components');
       
       expect(plugin).toBeDefined();
-      expect(plugin.name).toBe('mermaid');
+      expect(plugin.name).toBe('components');
       expect(plugin.version).toBeDefined();
     });
 
@@ -128,12 +128,13 @@ Regular content without diagrams.
       expect(context.currentPage._hasMermaid).toBeUndefined();
     });
 
-    test('should handle mermaid shortcode', () => {
+    test('should handle mermaid shortcode', async () => {
       const content = 'graph LR\n  A --> B';
-      const result = manager.executeShortcode('mermaid', {}, content, context);
+      const result = await manager.executeShortcode('Mermaid', {}, content, context);
 
-      expect(result).toContain('<pre class="mermaid">');
-      expect(result).toContain('graph LR');
+      // Mermaid component returns SVG wrapped in div (build-time rendering via mermaid.ink)
+      expect(result).toContain('<div class="mermaid-diagram"');
+      expect(result).toContain('<svg'); // Should contain actual SVG from mermaid.ink
     });
 
     test('should execute build:end hook with statistics', async () => {
@@ -152,7 +153,7 @@ Regular content without diagrams.
       const manager = new PluginManager(testRootDir);
       
       await manager.initialize([
-        { name: 'mermaid', enabled: true, config: {} }
+        { name: 'components', enabled: true, config: {} }
         // Add more plugins when available
       ]);
 
@@ -174,7 +175,7 @@ Regular content without diagrams.
       await expect(
         manager.initialize([
           { name: 'non-existent-plugin', enabled: true, config: {} },
-          { name: 'mermaid', enabled: true, config: {} }
+          { name: 'components', enabled: true, config: {} }
         ])
       ).rejects.toThrow('Plugin dependency validation failed');
 
@@ -190,7 +191,7 @@ Regular content without diagrams.
     beforeEach(async () => {
       manager = new PluginManager(testRootDir);
       await manager.initialize([
-        { name: 'mermaid', enabled: true, config: { theme: 'default' } }
+        { name: 'components', enabled: true, config: { theme: 'default' } }
       ]);
 
       context = new PluginContext({
@@ -223,16 +224,16 @@ Regular content without diagrams.
       
       const page = {
         _hasMermaid: true,
-        content: '<pre class="mermaid">graph LR\n  A --> B</pre>',
+        content: '<figure class="mermaid-diagram"><svg>...</svg></figure>',
         outputName: 'test.html',
         customScripts: []
       };
 
       await manager.executeHook('page:before-render', page, context);
 
-      // Should have registered mermaid script
-      const scripts = context.getRegisteredScripts();
-      expect(scripts.some(s => s.spec === 'mermaid')).toBe(true);
+      // Mermaid now uses build-time rendering (static SVG)
+      // No client-side scripts needed - zero JS in production
+      expect(page.customScripts).toBeDefined();
     });
   });
 
@@ -247,7 +248,7 @@ Regular content without diagrams.
       };
 
       await manager.initialize([
-        { name: 'mermaid', enabled: true, config: customConfig }
+        { name: 'components', enabled: true, config: customConfig }
       ]);
 
       const context = new PluginContext({
@@ -270,7 +271,7 @@ Regular content without diagrams.
     test('should execute all major lifecycle hooks', async () => {
       const manager = new PluginManager(testRootDir);
       await manager.initialize([
-        { name: 'mermaid', enabled: true, config: {} }
+        { name: 'components', enabled: true, config: {} }
       ]);
 
       const context = new PluginContext({
@@ -292,7 +293,7 @@ Regular content without diagrams.
     test('should execute hooks efficiently', async () => {
       const manager = new PluginManager(testRootDir);
       await manager.initialize([
-        { name: 'mermaid', enabled: true, config: {} }
+        { name: 'components', enabled: true, config: {} }
       ]);
 
       const context = new PluginContext({

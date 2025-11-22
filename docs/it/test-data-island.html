@@ -809,7 +809,7 @@
                 <!-- Page Content -->
                 <div class="content">
                     <h1 id="data-island-pattern-demo-3">Data Island Pattern Demo</h1><p>This page demonstrates the <strong>Data Island Pattern</strong> - injecting data at build-time for lazy-loaded apps.</p>
-<h2 id="how-it-works-33">How it Works</h2><ol>
+<h2 id="how-it-works-36">How it Works</h2><ol>
 <li><strong>Build Time</strong>: Chiron generates a <code>&lt;script type=&quot;application/json&quot;&gt;</code> with page data</li>
 <li><strong>Load Time</strong>: The app script loads only when scrolled into view (Intersection Observer)</li>
 <li><strong>Runtime</strong>: App reads data from JSON script - <strong>zero HTTP requests</strong>!</li>
@@ -844,21 +844,8 @@
 </tr>
 </tbody>
         </table>
-      </div><h2 id="technical-details-9">Technical Details</h2><p>The <code>data</code> attribute in the shortcode specifies which variables to inject:</p>
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-markdown">&lt;div 
-  <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;lazy-app-container&quot;</span> 
-  data-lazy-app=<span class="hljs-string">&quot;react&quot;</span>
-  data-script-src=<span class="hljs-string">&quot;&quot;</span>
-  id=<span class="hljs-string">&quot;lazy-app-1763652070888&quot;</span>&gt;
-  &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;app-placeholder&quot;</span>&gt;
-    
-        &lt;div style=<span class="hljs-string">&quot;text-align: center; padding: 3rem;&quot;</span>&gt;
-          &lt;p style=<span class="hljs-string">&quot;margin-bottom: 1rem;&quot;</span>&gt;&lt;strong&gt;Interactive react App&lt;/strong&gt;&lt;/p&gt;
-          &lt;button <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;button&quot;</span> style=<span class="hljs-string">&quot;cursor: pointer;&quot;</span>&gt;Load App&lt;/button&gt;
-        &lt;/div&gt;
-      
-  &lt;/div&gt;
-&lt;/div&gt;</code></pre></div><p>Chiron generates:</p>
+      </div><h2 id="technical-details-21">Technical Details</h2><p>The <code>data</code> attribute in the shortcode specifies which variables to inject:</p>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-jsx">&lt;App data=<span class="hljs-string">&quot;page.title,config.site.name&quot;</span> /&gt;</code></pre></div><p>Chiron generates:</p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-html">&lt;script type=<span class="hljs-string">&quot;application/json&quot;</span> id=<span class="hljs-string">&quot;my-app-data&quot;</span>&gt;
 {
   <span class="hljs-string">&quot;title&quot;</span>: <span class="hljs-string">&quot;Page Title&quot;</span>,
@@ -868,19 +855,22 @@
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript"><span class="hljs-keyword">const</span> data = JSON.<span class="hljs-title function_">parse</span>(
   document.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#039;my-app-data&#039;</span>).textContent
 );</code></pre></div><p><strong>Zero runtime overhead. Maximum performance.</strong> 🎯</p>
-<h2 id="live-demo-3">Live Demo</h2><p><strong>Scroll down to see the Intersection Observer in action!</strong> 👇</p>
-<div 
-  class="lazy-app-container" 
-  data-lazy-app="vanilla"
-  data-script-src="/assets/test-data-island.js"
-  id="data-island-demo">
-  <div class="app-placeholder">
-    <div style="text-align: center; padding: 3rem; background: #f7fafc; border-radius: 8px;">
-  <div style="font-size: 3rem; margin-bottom: 1rem;">📦</div>
-  <p style="margin: 0; font-weight: 600; color: #2d3748;">Interactive App Loading...</p>
-  <p style="margin: 0.5rem 0 0 0; font-size: 0.875rem; color: #718096;">This app will receive data without fetching!</p>
+<h2 id="live-demo-6">Live Demo</h2><p><strong>Scroll down to see the Intersection Observer in action!</strong> 👇</p>
+<script type="application/json" id="data-island-demo-data">
+{
+  "title": "Data Island Pattern - Test",
+  "description": "Testing build-time data injection for lazy-loaded apps"
+}
+</script>
+<div class="lazy-app-container" data-lazy-app="vanilla" data-script-src="/assets/test-data-island.js" id="data-island-demo">
+<div class="app-placeholder">
+
+<div class="skeleton-loader" role="status" aria-label="Loading">
+  <div class="skeleton-line skeleton-line--full"></div>
+  <div class="skeleton-line skeleton-line--short"></div>
 </div>
-  </div>
+
+</div>
 </div>
 
 <h3 id="what-just-happened-3">What Just Happened?</h3><p>When you scrolled down:</p>
@@ -915,6 +905,7 @@
     <li><a href="../terms-of-service.html" class="footer-legal-link">Terms of Service</a></li>
     <li><a href="../cookie-policy.html" class="footer-legal-link">Cookie Policy</a></li>
     <li><a href="https://opensource.org/licenses/MIT" class="footer-legal-link" target="_blank" rel="noopener noreferrer" aria-label="License - aria.external_link">License</a></li>
+    <li><a href="../manage-cookies.html" class="footer-legal-link">Manage Cookies</a></li>
   </ul>
                 </div>
             </div>
@@ -1557,7 +1548,10 @@ document.addEventListener('click', async (e) => {
     // Show skeleton loading state
     const placeholder = container.querySelector('.app-placeholder');
     if (placeholder) {
-      placeholder.innerHTML = '<div class="lazy-app-skeleton" role="status" aria-label="Loading application"></div>';
+      placeholder.innerHTML = `<div class="skeleton-loader" role="status" aria-label="Loading">
+  <div class="skeleton-line skeleton-line--full"></div>
+  <div class="skeleton-line skeleton-line--short"></div>
+</div>`;
     }
 
     try {
@@ -1860,421 +1854,6 @@ document.addEventListener('click', async (e) => {
 
     <!-- External Scripts -->
     <script src="/search-client.js"></script>
-    <!-- External Scripts - Initialization -->
-    <script type="module">/**
- * @fileoverview Universal embed loader with responsive containers, lazy loading, and GDPR compliance
- * Provides shared utilities for all embed types (YouTube, Asciinema, CodePen, Gist, etc.)
- */
-
-(function() {
-  'use strict';
-
-  /**
-   * Responsive embed container CSS with aspect ratio support
-   * Mobile-first approach with support for custom classes
-   */
-  const embedStyles = `
-    <style>
-      /* Base responsive embed container */
-      .embed-container {
-        position: relative;
-        width: 100%;
-        height: 0;
-        overflow: hidden;
-        margin: 1.5rem 0;
-        border-radius: 8px;
-        background: #f5f5f5;
-      }
-
-      /* Aspect ratio variants */
-      .embed-container.aspect-16-9 {
-        padding-bottom: 56.25%; /* 16:9 ratio */
-      }
-
-      .embed-container.aspect-4-3 {
-        padding-bottom: 75%; /* 4:3 ratio */
-      }
-
-      .embed-container.aspect-1-1 {
-        padding-bottom: 100%; /* 1:1 ratio */
-      }
-
-      .embed-container.aspect-21-9 {
-        padding-bottom: 42.857%; /* 21:9 ultrawide */
-      }
-
-      /* Embedded iframe/content */
-      .embed-container iframe,
-      .embed-container object,
-      .embed-container embed,
-      .embed-container video {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border: 0;
-      }
-
-      /* Privacy placeholder (before user clicks) */
-      .embed-placeholder {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
-
-      /* Dark overlay for better contrast when using background images (thumbnails) */
-      .embed-placeholder::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.4);
-        z-index: 0;
-      }
-
-      .embed-placeholder:hover::before {
-        background: rgba(0, 0, 0, 0.3);
-      }
-
-      /* Ensure content is above overlay */
-      .embed-placeholder > * {
-        position: relative;
-        z-index: 1;
-      }
-
-      .embed-placeholder:focus {
-        outline: 3px solid #4299e1;
-        outline-offset: 2px;
-      }
-
-      /* Reduced motion support */
-      @media (prefers-reduced-motion: reduce) {
-        .embed-placeholder {
-          transition: none;
-        }
-      }
-
-      /* Play button icon */
-      .embed-play-btn {
-        width: 80px;
-        height: 80px;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1rem;
-        transition: all 0.3s ease;
-      }
-
-      .embed-placeholder:hover .embed-play-btn {
-        background: white;
-        transform: scale(1.1);
-      }
-
-      .embed-play-btn::after {
-        content: '';
-        width: 0;
-        height: 0;
-        border-left: 20px solid #333;
-        border-top: 12px solid transparent;
-        border-bottom: 12px solid transparent;
-        margin-left: 5px;
-      }
-
-      /* Privacy notice */
-      .embed-privacy-notice {
-        color: white;
-        font-size: 0.875rem;
-        text-align: center;
-        max-width: 80%;
-        line-height: 1.5;
-      }
-
-      /* Loading state */
-      .embed-loading {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 1rem;
-        color: #666;
-      }
-
-      /* Mobile optimizations */
-      @media (max-width: 640px) {
-        .embed-container {
-          margin: 1rem 0;
-          border-radius: 4px;
-        }
-
-        .embed-play-btn {
-          width: 60px;
-          height: 60px;
-        }
-
-        .embed-play-btn::after {
-          border-left-width: 15px;
-          border-top-width: 9px;
-          border-bottom-width: 9px;
-        }
-
-        .embed-privacy-notice {
-          font-size: 0.75rem;
-        }
-      }
-
-      /* Tablet optimizations */
-      @media (min-width: 641px) and (max-width: 1024px) {
-        .embed-container {
-          margin: 1.25rem 0;
-        }
-      }
-
-      /* Large screens */
-      @media (min-width: 1025px) {
-        .embed-container {
-          margin: 2rem 0;
-        }
-      }
-
-      /* Twitter embed container */
-      .twitter-embed-container {
-        margin: 1.5rem 0;
-        width: 100%;
-      }
-
-      /* Override content blockquote styles for Twitter embeds */
-      .content .twitter-embed-container .twitter-tweet,
-      .twitter-embed-container .twitter-tweet {
-        margin: 0 !important;
-        padding: 0 !important;
-        border: none !important;
-        background: transparent !important;
-        font-size: inherit !important;
-        line-height: inherit !important;
-      }
-
-      /* High contrast mode support */
-      @media (prefers-contrast: high) {
-        .embed-placeholder {
-          border: 2px solid white;
-        }
-      }
-    </style>
-  `;
-
-  /**
-   * Creates a responsive embed container with lazy loading
-   * @param {Object} options - Embed configuration
-   * @param {string} options.type - Embed type (youtube, asciinema, codepen, gist)
-   * @param {string} options.src - Embed source URL
-   * @param {string} options.aspectRatio - Aspect ratio (16-9, 4-3, 1-1, 21-9)
-   * @param {string} options.customClass - Additional CSS classes
-   * @param {string} options.title - Accessibility title
-   * @param {string} options.privacyNotice - Privacy notice text
-   * @returns {string} HTML for embed container
-   */
-  function createEmbedContainer(options) {
-    const {
-      type = 'video',
-      src = '',
-      aspectRatio = '16-9',
-      customClass = '',
-      title = 'Embedded content',
-      privacyNotice = 'Click to load content. This will connect to external servers.'
-    } = options;
-
-    const containerId = `embed-${type}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    const containerClass = `embed-container aspect-${aspectRatio} ${type}-embed ${customClass}`.trim();
-
-    return `
-      <div class="${containerClass}" id="${containerId}" data-embed-src="${src}" data-embed-type="${type}">
-        <div class="embed-placeholder" 
-             role="button" 
-             tabindex="0"
-             aria-label="${title} - ${privacyNotice}"
-             data-embed-trigger>
-          <div class="embed-play-btn" aria-hidden="true"></div>
-          <p class="embed-privacy-notice">${privacyNotice}</p>
-        </div>
-      </div>
-    `;
-  }
-
-  /**
-   * Loads embed content when user clicks placeholder
-   * GDPR compliant - no external connections until user consent via click
-   */
-  function initEmbedLoaders() {
-    // Inject styles once
-    if (!document.getElementById('embed-loader-styles')) {
-      const styleTag = document.createElement('div');
-      styleTag.id = 'embed-loader-styles';
-      styleTag.innerHTML = embedStyles;
-      document.head.appendChild(styleTag.querySelector('style'));
-    }
-
-    // Attach click handlers to all embed placeholders
-    document.querySelectorAll('[data-embed-trigger]').forEach(trigger => {
-      trigger.addEventListener('click', loadEmbed);
-      trigger.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          loadEmbed.call(trigger, e);
-        }
-      });
-    });
-
-    // Initialize Twitter embeds immediately (no click-to-load)
-    initTwitterEmbeds();
-  }
-
-  /**
-   * Initialize Twitter embeds by creating blockquotes and loading widgets.js
-   */
-  function initTwitterEmbeds() {
-    const containers = document.querySelectorAll('.twitter-embed-container[data-tweet-url]');
-    
-    if (containers.length === 0) {
-      return;
-    }
-
-    // Load Twitter widgets script
-    if (!window.twttr) {
-      const script = document.createElement('script');
-      script.src = 'https://platform.twitter.com/widgets.js';
-      script.async = true;
-      script.charset = 'utf-8';
-      script.onload = () => {
-        containers.forEach(createTwitterBlockquote);
-      };
-      document.head.appendChild(script);
-    } else {
-      containers.forEach(createTwitterBlockquote);
-    }
-  }
-
-  /**
-   * Create Twitter blockquote element and render widget
-   * @param {HTMLElement} container - Twitter embed container
-   */
-  function createTwitterBlockquote(container) {
-    const tweetUrl = container.getAttribute('data-tweet-url');
-    const tweetAttrs = container.getAttribute('data-tweet-attrs') || '';
-    
-    // Create blockquote element
-    const blockquote = document.createElement('blockquote');
-    blockquote.className = 'twitter-tweet';
-    
-    // Add data attributes
-    if (tweetAttrs) {
-      const attrs = tweetAttrs.split(' ');
-      attrs.forEach(attr => {
-        const match = attr.match(/^(data-\w+)="([^"]+)"$/);
-        if (match) {
-          blockquote.setAttribute(match[1], match[2]);
-        }
-      });
-    }
-    
-    // Add link
-    const link = document.createElement('a');
-    link.href = tweetUrl;
-    link.textContent = t('embed_view_tweet', 'View tweet');
-    blockquote.appendChild(link);
-    
-    // Add to container
-    container.appendChild(blockquote);
-    
-    // Render with Twitter widgets
-    if (window.twttr && window.twttr.widgets) {
-      window.twttr.widgets.load(container);
-    }
-  }
-
-  /**
-   * Loads the actual embed content
-   * @param {Event} event - Click or keyboard event
-   */
-  function loadEmbed(event) {
-    const trigger = event.currentTarget;
-    const container = trigger.closest('[data-embed-src]');
-    
-    if (!container) {
-      return;
-    }
-
-    const src = container.dataset.embedSrc;
-    const type = container.dataset.embedType;
-
-    // Show loading state
-    trigger.innerHTML = `<div class="embed-loading">${t('embed_loading', 'Loading...')}</div>`;
-
-    // Create iframe based on embed type
-    const iframe = document.createElement('iframe');
-    iframe.src = src;
-    iframe.title = trigger.getAttribute('aria-label').split(' - ')[0];
-    iframe.allowFullscreen = true;
-    iframe.loading = 'lazy';
-
-    // Type-specific iframe attributes
-    switch (type) {
-    case 'youtube':
-      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-      iframe.setAttribute('frameborder', '0');
-      break;
-    case 'codepen':
-      iframe.setAttribute('scrolling', 'no');
-      iframe.allow = 'accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking';
-      break;
-    case 'stackblitz':
-      iframe.setAttribute('frameborder', '0');
-      iframe.allow = 'accelerometer; camera; encrypted-media; geolocation; gyroscope; microphone';
-      break;
-    }
-
-    // Replace placeholder with iframe
-    trigger.remove();
-    container.appendChild(iframe);
-
-    // Announce to screen readers
-    const announcement = document.createElement('div');
-    announcement.setAttribute('role', 'status');
-    announcement.setAttribute('aria-live', 'polite');
-    announcement.className = 'sr-only';
-    announcement.textContent = t('embed_content_loaded', 'Content loaded');
-    container.appendChild(announcement);
-    setTimeout(() => announcement.remove(), 1000);
-  }
-
-  // Auto-initialize on DOM ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initEmbedLoaders);
-  } else {
-    initEmbedLoaders();
-  }
-
-  // Export for use in plugins
-  if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { createEmbedContainer };
-  } else {
-    window.ChironEmbedLoader = { createEmbedContainer };
-  }
-})();
-</script>
 
 <div id="cookie-consent-banner" class="cookie-consent-banner" style="display: none;">
   <div class="cookie-consent-content">

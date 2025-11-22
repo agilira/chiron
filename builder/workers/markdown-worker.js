@@ -11,11 +11,9 @@
 const { parentPort } = require('worker_threads');
 const matter = require('gray-matter');
 const { marked } = require('marked');
-const ShortcodeParser = require('../shortcode-parser');
 const { abbreviationExtension, definitionListExtension } = require('../markdown-extensions');
 
 // Initialize parser components
-const shortcode = new ShortcodeParser();
 const usedIds = new Set();
 const toc = [];
 
@@ -74,13 +72,6 @@ renderer.heading = ({ text, depth }) => {
 
 marked.use({ renderer });
 
-// Register built-in shortcodes (minimal set for workers)
-shortcode.register('button', (content, attrs) => {
-  const url = attrs.url || '#';
-  const color = attrs.color || 'primary';
-  return `<a href="${url}" class="button button-${color}">${content}</a>`;
-});
-
 // Listen for messages from main thread
 parentPort.on('message', async (message) => {
   try {
@@ -101,14 +92,8 @@ parentPort.on('message', async (message) => {
     // Parse frontmatter
     const { data: frontmatter, content: markdownContent } = matter(content);
 
-    // Process shortcodes if present
-    let processedContent = markdownContent;
-    if (shortcode.hasShortcodes(markdownContent)) {
-      processedContent = shortcode.parse(markdownContent);
-    }
-
     // Parse markdown
-    const html = marked.parse(processedContent).trim();
+    const html = marked.parse(markdownContent).trim();
 
     // Send result back to main thread
     parentPort.postMessage({

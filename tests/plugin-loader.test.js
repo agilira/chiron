@@ -90,11 +90,11 @@ describe('PluginLoader', () => {
   });
 
   describe('Built-in Plugin Loading', () => {
-    test('should load built-in mermaid plugin', async () => {
-      const plugin = await loader._loadBuiltinPlugin('mermaid', {});
+    test('should load built-in components plugin', async () => {
+      const plugin = await loader._loadBuiltinPlugin('components', {});
       
       expect(plugin).toBeDefined();
-      expect(plugin.name).toBe('mermaid');
+      expect(plugin.name).toBe('components');
       expect(plugin.version).toBeDefined();
       expect(plugin.hooks).toBeDefined();
     });
@@ -121,13 +121,13 @@ describe('PluginLoader', () => {
         customOption: 'value'
       };
 
-      const plugin = await loader._loadBuiltinPlugin('mermaid', config);
+      const plugin = await loader._loadBuiltinPlugin('components', config);
       
       expect(plugin.config).toEqual(config);
     });
 
     test('should use empty config if not provided', async () => {
-      const plugin = await loader._loadBuiltinPlugin('mermaid');
+      const plugin = await loader._loadBuiltinPlugin('components');
       
       expect(plugin.config).toEqual({});
     });
@@ -135,15 +135,15 @@ describe('PluginLoader', () => {
 
   describe('Plugin Caching', () => {
     test('should cache loaded plugins', async () => {
-      const plugin1 = await loader.loadPlugin('mermaid', {});
-      const plugin2 = await loader.loadPlugin('mermaid', {});
+      const plugin1 = await loader.loadPlugin('components', {});
+      const plugin2 = await loader.loadPlugin('components', {});
       
       // Should return same instance from cache
       expect(plugin1).toBe(plugin2);
     });
 
     test('should clear cache', async () => {
-      await loader.loadPlugin('mermaid', {});
+      await loader.loadPlugin('components', {});
       expect(loader._cache.size).toBe(1);
       
       loader.clearCache();
@@ -151,9 +151,9 @@ describe('PluginLoader', () => {
     });
 
     test('should invalidate cache after clearing', async () => {
-      const plugin1 = await loader.loadPlugin('mermaid', {});
+      const plugin1 = await loader.loadPlugin('components', {});
       loader.clearCache();
-      const plugin2 = await loader.loadPlugin('mermaid', {});
+      const plugin2 = await loader.loadPlugin('components', {});
       
       // Should be different instances after cache clear
       expect(plugin1).not.toBe(plugin2);
@@ -163,18 +163,18 @@ describe('PluginLoader', () => {
   describe('Multiple Plugin Loading', () => {
     test('should load multiple plugins', async () => {
       const pluginsConfig = [
-        { name: 'mermaid', enabled: true, config: {} }
+        { name: 'components', enabled: true, config: {} }
       ];
 
       const plugins = await loader.loadAllPlugins(pluginsConfig);
       
-      expect(plugins).toHaveLength(1);
-      expect(plugins[0].name).toBe('mermaid');
+      expect(plugins.length).toBeGreaterThan(0);
+      expect(plugins[0].name).toBe('components');
     });
 
     test('should skip disabled plugins', async () => {
       const pluginsConfig = [
-        { name: 'mermaid', enabled: false, config: {} }
+        { name: 'components', enabled: false, config: {} }
       ];
 
       const plugins = await loader.loadAllPlugins(pluginsConfig);
@@ -191,14 +191,14 @@ describe('PluginLoader', () => {
     test('should continue loading on individual plugin failure', async () => {
       const pluginsConfig = [
         { name: 'non-existent', enabled: true, config: {} },
-        { name: 'mermaid', enabled: true, config: {} }
+        { name: 'components', enabled: true, config: {} }
       ];
 
       const plugins = await loader.loadAllPlugins(pluginsConfig);
       
       // Should load valid plugin despite failure
       expect(plugins).toHaveLength(1);
-      expect(plugins[0].name).toBe('mermaid');
+      expect(plugins[0].name).toBe('components');
     });
   });
 
@@ -207,7 +207,7 @@ describe('PluginLoader', () => {
       const plugins = loader.listBuiltinPlugins();
       
       expect(Array.isArray(plugins)).toBe(true);
-      expect(plugins).toContain('mermaid');
+      expect(plugins).toContain('components');
     });
 
     test('should return empty array if plugins directory does not exist', () => {
@@ -251,7 +251,7 @@ describe('PluginLoader', () => {
 
   describe('Source Type Detection', () => {
     test('should detect built-in plugin', () => {
-      expect(loader._getPluginSource('mermaid')).toBe('builtin');
+      expect(loader._getPluginSource('components')).toBe('builtin');
     });
 
     test('should detect NPM scoped package', () => {

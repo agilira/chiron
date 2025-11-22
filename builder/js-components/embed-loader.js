@@ -191,6 +191,14 @@
       .twitter-embed-container {
         margin: 1.5rem 0;
         width: 100%;
+        overflow: hidden !important;
+        border-radius: 12px !important;
+      }
+      
+      /* Force rounded corners on Twitter iframe and blockquote */
+      .twitter-embed-container iframe,
+      .twitter-embed-container .twitter-tweet {
+        border-radius: 12px !important;
       }
 
       /* Override content blockquote styles for Twitter embeds */

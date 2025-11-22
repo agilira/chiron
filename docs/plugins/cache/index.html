@@ -794,13 +794,13 @@
                 <!-- Page Content -->
                 <div class="content">
                     <h1 id="cache-plugin-3">Cache Plugin</h1><p>The Cache Plugin provides a flexible caching layer with support for multiple storage backends.</p>
-<h2 id="features-15">Features</h2><ul>
+<h2 id="features-29">Features</h2><ul>
 <li><strong>Multiple Backends</strong>: Redis, Memcached, In-Memory, and File-based caching</li>
 <li><strong>TTL Support</strong>: Automatic expiration with time-to-live</li>
 <li><strong>Cache Invalidation</strong>: Smart invalidation strategies</li>
 <li><strong>Compression</strong>: Optional compression for large values</li>
 </ul>
-<h2 id="quick-start-11">Quick Start</h2><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript"><span class="hljs-keyword">const</span> cache = <span class="hljs-title function_">require</span>(<span class="hljs-string">&#039;@mylib/plugin-cache&#039;</span>);
+<h2 id="quick-start-9">Quick Start</h2><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript"><span class="hljs-keyword">const</span> cache = <span class="hljs-title function_">require</span>(<span class="hljs-string">&#039;@mylib/plugin-cache&#039;</span>);
 
 cache.<span class="hljs-title function_">configure</span>({
   backend: <span class="hljs-string">&#039;redis&#039;</span>,
@@ -815,7 +815,7 @@ cache.<span class="hljs-title function_">configure</span>({
 <span class="hljs-keyword">const</span> user = <span class="hljs-keyword">await</span> cache.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#039;user:123&#039;</span>);</code></pre></div><h2 id="documentation-3">Documentation</h2><ul>
 <li><a href="api-reference.html">API Reference</a> - Complete API documentation</li>
 </ul>
-<h2 id="performance-3">Performance</h2><p>The Cache Plugin is designed for high performance:</p>
+<h2 id="performance-9">Performance</h2><p>The Cache Plugin is designed for high performance:</p>
 <ul>
 <li><strong>Sub-millisecond</strong> access times with Redis</li>
 <li><strong>Automatic connection pooling</strong></li>
@@ -846,6 +846,7 @@ cache.<span class="hljs-title function_">configure</span>({
     <li><a href="../../terms-of-service.html" class="footer-legal-link">Terms of Service</a></li>
     <li><a href="../../cookie-policy.html" class="footer-legal-link">Cookie Policy</a></li>
     <li><a href="https://opensource.org/licenses/MIT" class="footer-legal-link" target="_blank" rel="noopener noreferrer" aria-label="License - aria.external_link">License</a></li>
+    <li><a href="../../manage-cookies.html" class="footer-legal-link">Manage Cookies</a></li>
   </ul>
                 </div>
             </div>
@@ -1338,6 +1339,14 @@ document.addEventListener('click', async (e) => {
       .twitter-embed-container {
         margin: 1.5rem 0;
         width: 100%;
+        overflow: hidden !important;
+        border-radius: 12px !important;
+      }
+      
+      /* Force rounded corners on Twitter iframe and blockquote */
+      .twitter-embed-container iframe,
+      .twitter-embed-container .twitter-tweet {
+        border-radius: 12px !important;
       }
 
       /* Override content blockquote styles for Twitter embeds */

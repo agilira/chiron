@@ -1,0 +1,9 @@
+{
+  "name": "@chiron/plugin-components",
+  "version": "1.0.0",
+  "description": "Core UI components with JSX-like syntax",
+  "main": "index.js",
+  "keywords": ["chiron", "plugin", "components", "ui", "jsx"],
+  "author": "AGILira",
+  "license": "MPL-2.0"
+}
