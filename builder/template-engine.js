@@ -2612,7 +2612,8 @@ class TemplateEngine {
       'info-boxes',     // Only if info-boxes present
       'blockquotes',    // Only if blockquotes present
       'lazy-app-loader', // Only if lazy apps present
-      'developer-tools' // Only if developer tools present
+      'developer-tools', // Only if developer tools present
+      'lumos-player'    // Only if video/audio elements present
     ];
 
     // Determine which components to load

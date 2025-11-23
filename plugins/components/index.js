@@ -32,6 +32,8 @@ const tooltipComponent = require('./tooltip');
 const formFieldComponent = require('./form-field');
 const checkboxGroupComponent = require('./checkbox-group');
 const radioGroupComponent = require('./radio-group');
+const videoComponent = require('./video');
+const audioComponent = require('./audio');
 
 module.exports = {
   name: 'components',
@@ -115,6 +117,12 @@ module.exports = {
     },
     'RadioGroup': (attrs = {}, content = '', context = {}) => {
       return radioGroupComponent.processRadioGroup(`<RadioGroup${attrsToString(attrs)}>${content}</RadioGroup>`);
+    },
+    'Video': (attrs = {}, content = '', context = {}) => {
+      return videoComponent(attrs, content, context);
+    },
+    'Audio': (attrs = {}, content = '', context = {}) => {
+      return audioComponent(attrs, content, context);
     }
   },
   

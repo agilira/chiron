@@ -16,7 +16,7 @@
  * Cache version - changes on every build
  * When this changes, old caches are automatically cleaned up
  */
-const CACHE_VERSION = '6edf165c';
+const CACHE_VERSION = '78f3d246';
 
 /**
  * Cache names with version
@@ -41,6 +41,7 @@ const CRITICAL_ASSETS = [
   '/',
   '/404.html',
   '/api-reference.html',
+  '/assets/audio-video/index.html',
   '/assets/nivo/index.html',
   '/blog/author/marco-rossi.html',
   '/blog/building-modern-documentation.html',
@@ -63,6 +64,7 @@ const CRITICAL_ASSETS = [
   '/components/form-fields.html',
   '/components/grid.html',
   '/components/images.html',
+  '/components/media-players.html',
   '/components/mermaid.html',
   '/components/skeleton.html',
   '/components/tabs.html',
@@ -116,6 +118,7 @@ const CRITICAL_ASSETS = [
   '/it/components/form-fields.html',
   '/it/components/grid.html',
   '/it/components/images.html',
+  '/it/components/media-players.html',
   '/it/components/mermaid.html',
   '/it/components/skeleton.html',
   '/it/components/tabs.html',
@@ -130,6 +133,7 @@ const CRITICAL_ASSETS = [
   '/it/index.html',
   '/it/landing-demo.html',
   '/it/manage-cookies.html',
+  '/it/media-player-demo.html',
   '/it/plugins/auth/api-reference.html',
   '/it/plugins/auth/guide.html',
   '/it/plugins/auth/index.html',
@@ -152,6 +156,7 @@ const CRITICAL_ASSETS = [
   '/it/toc-depth-test.html',
   '/landing-demo.html',
   '/manage-cookies.html',
+  '/media-player-demo.html',
   '/plugins/auth/api-reference.html',
   '/plugins/auth/guide.html',
   '/plugins/auth/index.html',

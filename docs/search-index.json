@@ -1,7 +1,7 @@
 {
   "version": "2.0",
-  "generated": "2025-11-23T00:43:41.720Z",
-  "totalPages": 75,
+  "generated": "2025-11-23T02:23:35.400Z",
+  "totalPages": 77,
   "languages": [
     "en",
     "it"
@@ -395,6 +395,21 @@
         "Manage Cookie Preferences",
         "Necessary Cookies",
         "Preference Cookies"
+      ],
+      "keywords": []
+    },
+    {
+      "id": "media-player-demo",
+      "title": "Media Player Demo",
+      "description": "Testing Lumos Player with video and audio components",
+      "url": "media-player-demo.html",
+      "language": "en",
+      "content": "Media Player Demo Video Player &lt;Video src=&quot;/assets/sample-video.mp4&quot; poster=&quot;/assets/video-poster.jpg&quot; width=&quot;800&quot; height=&quot;450&quot; aria-label=&quot;Sample product demonstration video&quot; Your browser doesn&#39;t support video playback. Audio Player &lt;Audio src=&quot;/assets/sample-audio.mp3&quot; title=&quot;Sample Track&quot; artist=&quot;Demo Artist&quot; album=&quot;Demo Album&quot; cover=&quot;/assets/audio-cover.jpg&quot; aria-label=&quot;Sample audio track&quot; Your browser doesn&#39;t support audio playback. Video with Multiple Sources &lt;Video sources=&quot;sample.webm,sample.mp4,sample.ogv&quot; poster=&quot;/assets/poster.jpg&quot; aspectRatio=&quot;16-9&quot; Download the video file .",
+      "headings": [
+        "Media Player Demo",
+        "Video Player",
+        "Audio Player",
+        "Video with Multiple Sources"
       ],
       "keywords": []
     },
@@ -1277,6 +1292,35 @@
         "FAQ",
         "Migration from Markdown",
         "Related Components"
+      ],
+      "keywords": []
+    },
+    {
+      "id": "components/media-players",
+      "title": "Media Players",
+      "description": "Video and audio player components with custom controls",
+      "url": "components/media-players.html",
+      "language": "en",
+      "content": "Media Players Chiron includes beautiful, accessible media player components powered by Lumos Player - a custom-built player with keyboard shortcuts, custom controls, and full accessibility support. Video Player Display videos with custom controls, keyboard navigation, and responsive design. &lt;Video src=&quot;/assets/Big_Buck_Bunny_720_10s_2MB.mkv&quot; poster=&quot;/assets/featured.jpg&quot; width=&quot;1280&quot; height=&quot;720&quot; aria-label=&quot;Big Buck Bunny demo video&quot; Your browser doesn&#39;t support video playback. Download the video . &lt;Video src= &quot;/assets/Big_Buck_Bunny_720_10s_2MB.mkv&quot; poster= &quot;/assets/featured.jpg&quot; width= &quot;1280&quot; height= &quot;720&quot; aria-label= &quot;Big Buck Bunny demo video&quot; &gt; Your browser doesn&#039;t support video playback. &lt;a href= &quot;/assets/Big_Buck_Bunny_720_10s_2MB.mkv&quot; download&gt;Download the video&lt;/a&gt;. &lt;/Video&gt; Video with Multiple Formats Provide multiple video formats for better browser compatibility: &lt;Video sources= &quot;video.webm,video.mp4,video.ogv&quot; poster= &quot;/assets/poster.jpg&quot; width= &quot;1280&quot; height= &quot;720&quot; /&gt; Video Attributes Attribute Type Description src string Required . Video source URL poster string Thumbnail image shown before playback width number Video width in pixels height number Video height in pixels aspectRatio string Aspect ratio class: 16-9 (default) or 4-3 sources string Comma-separated list of video sources for multiple formats captions string Path to WebVTT captions file captionLang string Caption language code (e.g., en , it ) captionLabel string Caption track label (e.g., &quot;English&quot;, &quot;Italiano&quot;) autoplay boolean Auto-start video playback loop boolean Loop video playback muted boolean Start muted preload string Preload strategy: none , metadata , auto playsinline boolean Play inline on mobile (no fullscreen) aria-label string Accessibility label class string Custom CSS classes Audio Player Display audio with album art, metadata, and custom controls. &lt;Audio src=&quot;/assets/organfinale.mp3&quot; title=&quot;Organ Finale&quot; artist=&quot;Kevin MacLeod&quot; album=&quot;Classical Collection&quot; cover=&quot;/assets/featured.jpg&quot; aria-label=&quot;Organ Finale by Kevin MacLeod&quot; Your browser doesn&#39;t support audio playback. Download the audio . &lt;Audio src= &quot;/assets/organfinale.mp3&quot; title= &quot;Organ Finale&quot; artist= &quot;Kevin MacLeod&quot; album= &quot;Classical Collection&quot; cover= &quot;/assets/featured.jpg&quot; aria-label= &quot;Organ Finale by Kevin MacLeod&quot; &gt; Your browser doesn&#039;t support audio playback. &lt;a href= &quot;/assets/organfinale.mp3&quot; download&gt;Download the audio&lt;/a&gt;. &lt;/Audio&gt; Audio with Multiple Formats &lt;Audio sources= &quot;audio.mp3,audio.ogg,audio.wav&quot; title= &quot;Sample Track&quot; artist= &quot;Artist Name&quot; /&gt; Minimal Audio Player Audio player works without metadata too: &lt;Audio src= &quot;/assets/track.mp3&quot; /&gt; Audio Attributes Attribute Type Description src string Required . Audio source URL title string Track title artist string Artist name album string Album name cover string Album art/cover image URL poster string Alias for cover sources string Comma-separated list for multiple formats autoplay boolean Auto-start playback loop boolean Loop playback muted boolean Start muted preload string Preload strategy: none , metadata , auto aria-label string Accessibility label class string Custom CSS classes Keyboard Controls Both video and audio players support full keyboard navigation: Key Action Space / K Play/Pause J Rewind 10 seconds L Forward 10 seconds ← Rewind 5 seconds → Forward 5 seconds M Toggle mute F Toggle fullscreen (video only) Features 🎨 Custom UI - Beautiful controls matching your site theme ⌨️ Keyboard Navigation - Full keyboard support ♿ Accessibility - ARIA labels and screen reader friendly 📱 Responsive - Works on all devices 🎯 Progressive Enhancement - Falls back to native controls if JavaScript fails 🚀 Conditional Loading - Player JS only loads on pages with media 🎬 Auto-hide Controls - Video controls fade out during playback 🔊 Volume Control - Smooth volume slider ⏱️ Seek Bar - Click to jump to any position 📊 Time Display - Current time and duration Browser Compatibility Video Formats MP4 (H.264) - Best compatibility, all modern browsers WebM (VP9/VP8) - Chrome, Firefox, Edge OGV (Theora) - Firefox, Chrome Audio Formats MP3 - Universal support OGG Vorbis - Chrome, Firefox, Edge WAV - All browsers (large file size) Best Practices Provide Multiple Formats - Use sources attribute for fallbacks Add Poster Images - Shows before video loads Include Fallback Content - Message for unsupported browsers Use Captions - Make videos accessible Optimize File Sizes - Compress media for faster loading Add ARIA Labels - Improve accessibility Test Keyboard Navigation - Ensure all contr",
+      "headings": [
+        "Media Players",
+        "Video Player",
+        "Video with Multiple Formats",
+        "Video Attributes",
+        "Audio Player",
+        "Audio with Multiple Formats",
+        "Minimal Audio Player",
+        "Audio Attributes",
+        "Keyboard Controls",
+        "Features",
+        "Browser Compatibility",
+        "Video Formats",
+        "Audio Formats",
+        "Best Practices",
+        "Examples",
+        "Product Demo Video",
+        "Podcast Episode",
+        "Background Video"
       ],
       "keywords": []
     },

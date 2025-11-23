@@ -797,7 +797,8 @@ class MarkdownParser {
       'blockquotes': /class=["'][^"']*content[^"']*blockquote|<blockquote/i,
       'scroll-to-top': /id=["']scrollToTop/i,
       'developer-tools': /id=["']developerTools/i,
-      'lazy-app-loader': /data-lazy-app=["']|class=["'][^"']*lazy-app-container/i
+      'lazy-app-loader': /data-lazy-app=["']|class=["'][^"']*lazy-app-container/i,
+      'lumos-player': /data-lumos-player|<video[^>]*>|<audio[^>]*>/i
     };
 
     // Scan HTML for patterns
