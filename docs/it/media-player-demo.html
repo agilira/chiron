@@ -808,13 +808,13 @@
 
                 <!-- Page Content -->
                 <div class="content">
-                    <h1 id="media-player-demo-3">Media Player Demo</h1><h2 id="video-player-6">Video Player</h2><div id="lumos-video-1763864614483-7" class="lumos-player aspect-16-9 " data-type="video" data-lumos-player style="position: relative;">
+                    <h1 id="media-player-demo-3">Media Player Demo</h1><h2 id="video-player-6">Video Player</h2><div id="lumos-video-1763903108482-7" class="lumos-player aspect-16-9 " data-type="video" data-lumos-player style="position: relative;">
   <video width="800" height="450" poster="/assets/video-poster.jpg" preload="metadata" src="/assets/sample-video.mp4">
     <p>Your browser does not support the video element. <a href="/assets/sample-video.mp4" download>Download the video</a>.</p>
   </video>
 </div>
 
-<h2 id="audio-player-6">Audio Player</h2><div id="lumos-audio-1763864614483-7" class="lumos-player " data-type="audio" data-lumos-player>
+<h2 id="audio-player-6">Audio Player</h2><div id="lumos-audio-1763903108482-7" class="lumos-player " data-type="audio" data-lumos-player>
   <div class="audio-metadata">
     <img src="/assets/audio-cover.jpg" alt="Sample Track">
     <div>
@@ -852,7 +852,6 @@
     <li><a href="../terms-of-service.html" class="footer-legal-link">Terms of Service</a></li>
     <li><a href="../cookie-policy.html" class="footer-legal-link">Cookie Policy</a></li>
     <li><a href="https://opensource.org/licenses/MIT" class="footer-legal-link" target="_blank" rel="noopener noreferrer" aria-label="License - aria.external_link">License</a></li>
-    <li><a href="../manage-cookies.html" class="footer-legal-link">Manage Cookies</a></li>
   </ul>
                 </div>
             </div>
@@ -1187,7 +1186,7 @@ class LumosPlayer {
   }
 
   formatTime(seconds) {
-    if (isNaN(seconds) || !isFinite(seconds)) return "0:00";
+    if (isNaN(seconds) || !isFinite(seconds)) {return '0:00';}
     const m = Math.floor(seconds / 60);
     const s = Math.floor(seconds % 60);
     return `${m}:${s < 10 ? '0' : ''}${s}`;
@@ -1325,7 +1324,7 @@ class LumosPlayer {
       // Per Audio: Click su intero wrapper attiva Play/Pause
       this.wrapper.addEventListener('click', (e) => {
         const target = e.target;
-        if (target.closest('button') || target.closest('input') || target.closest('a')) return;
+        if (target.closest('button') || target.closest('input') || target.closest('a')) {return;}
         this.togglePlay();
       });
       this.wrapper.style.cursor = 'pointer';
@@ -1343,13 +1342,13 @@ class LumosPlayer {
     
     // Buffer Loading Feedback
     this.media.addEventListener('waiting', () => {
-      if (this.playBtn) this.playBtn.classList.add('animate-pulse', 'opacity-50');
+      if (this.playBtn) {this.playBtn.classList.add('animate-pulse', 'opacity-50');}
     });
     this.media.addEventListener('playing', () => {
-      if (this.playBtn) this.playBtn.classList.remove('animate-pulse', 'opacity-50');
+      if (this.playBtn) {this.playBtn.classList.remove('animate-pulse', 'opacity-50');}
     });
     this.media.addEventListener('canplay', () => {
-      if (this.playBtn) this.playBtn.classList.remove('animate-pulse', 'opacity-50');
+      if (this.playBtn) {this.playBtn.classList.remove('animate-pulse', 'opacity-50');}
       this.updateDuration();
     });
 
@@ -1414,7 +1413,7 @@ class LumosPlayer {
     if (!this.isAudio) {
       this.wrapper.addEventListener('mousemove', () => this.showControls());
       this.wrapper.addEventListener('mouseleave', () => {
-        if (!this.media.paused) this.hideControls();
+        if (!this.media.paused) {this.hideControls();}
       });
     }
 
@@ -1448,11 +1447,11 @@ class LumosPlayer {
       Math.max(this.media.currentTime + seconds, 0),
       duration
     );
-    if (!this.isAudio) this.showControls();
+    if (!this.isAudio) {this.showControls();}
   }
 
   updatePlayState(isPlaying) {
-    if (!this.playBtn) return;
+    if (!this.playBtn) {return;}
     
     this.playBtn.innerHTML = isPlaying ? ICONS.pause : ICONS.play;
     this.playBtn.setAttribute('aria-label', isPlaying ? 'Pause' : 'Play');
@@ -1480,7 +1479,7 @@ class LumosPlayer {
     const current = this.media.currentTime;
     const duration = this.media.duration;
     
-    if (!duration || isNaN(duration)) return;
+    if (!duration || isNaN(duration)) {return;}
 
     if (this.timeSlider) {
       this.timeSlider.value = current.toString();
@@ -1504,7 +1503,7 @@ class LumosPlayer {
 
   updateDuration() {
     const duration = this.media.duration;
-    if (!duration || isNaN(duration)) return;
+    if (!duration || isNaN(duration)) {return;}
 
     if (this.timeSlider) {
       this.timeSlider.max = duration.toString();
@@ -1531,7 +1530,7 @@ class LumosPlayer {
   }
 
   toggleFullscreen() {
-    if (this.isAudio) return;
+    if (this.isAudio) {return;}
 
     if (!document.fullscreenElement) {
       this.wrapper.requestFullscreen().catch(err => console.error(err));
@@ -1543,7 +1542,7 @@ class LumosPlayer {
   // -- Controls Visibility (Video Only) --
 
   showControls() {
-    if (this.isAudio) return;
+    if (this.isAudio) {return;}
 
     if (this.controlsContainer) {
       this.controlsContainer.classList.remove('opacity-0', 'invisible');
@@ -1552,7 +1551,7 @@ class LumosPlayer {
   }
 
   hideControls() {
-    if (this.isAudio) return;
+    if (this.isAudio) {return;}
 
     if (this.controlsContainer && !this.media.paused) {
       this.controlsContainer.classList.add('opacity-0', 'invisible');
@@ -1560,9 +1559,9 @@ class LumosPlayer {
   }
 
   startHideTimer() {
-    if (this.isAudio) return;
+    if (this.isAudio) {return;}
 
-    if (this.controlsTimeout) window.clearTimeout(this.controlsTimeout);
+    if (this.controlsTimeout) {window.clearTimeout(this.controlsTimeout);}
     this.controlsTimeout = window.setTimeout(() => {
       this.hideControls();
     }, 2500);
@@ -1571,38 +1570,38 @@ class LumosPlayer {
   // -- Keyboard Logic --
 
   handleKey(e) {
-    switch(e.key.toLowerCase()) {
-      case ' ':
-      case 'k':
-        e.preventDefault();
-        this.togglePlay();
-        break;
-      case 'f':
-        e.preventDefault();
-        this.toggleFullscreen();
-        break;
-      case 'm':
-        e.preventDefault();
-        this.media.muted = !this.media.muted;
-        break;
-      case 'arrowright':
-        if (document.activeElement !== this.timeSlider) {
-          this.skip(5);
-        }
-        break;
-      case 'arrowleft':
-        if (document.activeElement !== this.timeSlider) {
-          this.skip(-5);
-        }
-        break;
-      case 'j': 
-        e.preventDefault();
-        this.skip(-10);
-        break;
-      case 'l': 
-        e.preventDefault();
-        this.skip(10);
-        break;
+    switch (e.key.toLowerCase()) {
+    case ' ':
+    case 'k':
+      e.preventDefault();
+      this.togglePlay();
+      break;
+    case 'f':
+      e.preventDefault();
+      this.toggleFullscreen();
+      break;
+    case 'm':
+      e.preventDefault();
+      this.media.muted = !this.media.muted;
+      break;
+    case 'arrowright':
+      if (document.activeElement !== this.timeSlider) {
+        this.skip(5);
+      }
+      break;
+    case 'arrowleft':
+      if (document.activeElement !== this.timeSlider) {
+        this.skip(-5);
+      }
+      break;
+    case 'j': 
+      e.preventDefault();
+      this.skip(-10);
+      break;
+    case 'l': 
+      e.preventDefault();
+      this.skip(10);
+      break;
     }
   }
 }

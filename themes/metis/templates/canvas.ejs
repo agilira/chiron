@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="<%- page.lang || 'en' %>" data-theme="light">
+<head>
+    <%- head %>
+</head>
+<body id="<%- bodyId %>" class="<%- bodyClasses.join(' ') %> canvas-layout">
+    <!-- Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- SVG Icon Sprite (hidden, for <use> references) -->
+    {{SVG_SPRITE}}
+    
+    <!-- Header -->
+    <%- header %>
+    
+    <!-- Canvas Content (no sidebar, no container) -->
+    <main id="main-content" role="main">
+        <%- content %>
+    </main>
+    
+    <!-- Footer -->
+    <%- footer %>
+    
+    <%- scripts() %>
+</body>
+</html>

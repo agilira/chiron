@@ -13,7 +13,7 @@ plugins:
   # ============================================================================
   
   # Core Components Plugin
-  # JSX-like UI components (Button, Tabs, Callout, Grid, FeatureCard, Mermaid, etc.)
+  # JSX-like UI components (Section, Button, Tabs, Callout, Grid, FeatureCard, Mermaid, etc.)
   # Includes build-time Mermaid rendering via mermaid.ink API (zero client-side JS!)
   # Always enabled, cannot be disabled
   # Documentation: plugins/components/README.md

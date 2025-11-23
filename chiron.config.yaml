@@ -159,7 +159,7 @@ navigation:
   menus_file: menus.yaml
   
   # Sidebars - Load from external file for better maintainability
-  # Sidebar definitions are now in sidebars.yaml (like Docusaurus)
+  # Sidebar definitions are now in sidebars.yaml
   # This approach scales better for large documentation sites with hundreds of links
   # See SIDEBAR.md for full documentation and examples
   sidebars_file: sidebars.yaml

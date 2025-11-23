@@ -16,7 +16,7 @@
  * Cache version - changes on every build
  * When this changes, old caches are automatically cleaned up
  */
-const CACHE_VERSION = '8444dffc';
+const CACHE_VERSION = '8cf41458';
 
 /**
  * Cache names with version
@@ -43,6 +43,15 @@ const CRITICAL_ASSETS = [
   '/api-reference.html',
   '/assets/audio-video/index.html',
   '/assets/nivo/index.html',
+  '/blog/author/marco-rossi.html',
+  '/blog/building-modern-documentation.html',
+  '/blog/category/tutorials.html',
+  '/blog/first-post.html',
+  '/blog/index.html',
+  '/blog/second-post.html',
+  '/blog/tag/javascript.html',
+  '/blog/third-post.html',
+  '/blog/welcome-to-chiron.html',
   '/buttons-showcase.html',
   '/components/accordions.html',
   '/components/app.html',
@@ -57,6 +66,7 @@ const CRITICAL_ASSETS = [
   '/components/images.html',
   '/components/media-players.html',
   '/components/mermaid.html',
+  '/components/section.html',
   '/components/skeleton.html',
   '/components/tabs.html',
   '/components/tooltips.html',
@@ -111,6 +121,7 @@ const CRITICAL_ASSETS = [
   '/it/components/images.html',
   '/it/components/media-players.html',
   '/it/components/mermaid.html',
+  '/it/components/section.html',
   '/it/components/skeleton.html',
   '/it/components/tabs.html',
   '/it/components/tooltips.html',
@@ -138,10 +149,12 @@ const CRITICAL_ASSETS = [
   '/it/slideshow-demo.html',
   '/it/tabs-demo.html',
   '/it/terms-of-service.html',
+  '/it/test-canvas.html',
   '/it/test-data-island.html',
   '/it/test-menu-helper.html',
   '/it/test-no-base.html',
   '/it/test-no-dropdown.html',
+  '/it/test-section.html',
   '/it/test-shortcodes.html',
   '/it/test-skeleton.html',
   '/it/toc-depth-test.html',
@@ -160,10 +173,12 @@ const CRITICAL_ASSETS = [
   '/slideshow-demo.html',
   '/tabs-demo.html',
   '/terms-of-service.html',
+  '/test-canvas.html',
   '/test-data-island.html',
   '/test-menu-helper.html',
   '/test-no-base.html',
   '/test-no-dropdown.html',
+  '/test-section.html',
   '/test-shortcodes.html',
   '/test-skeleton.html',
   '/toc-depth-test.html',
@@ -234,6 +249,7 @@ const STATIC_ASSETS = [
   '/favicon-512.png',
   '/og-image.png',
   '/assets/react-api-explorer.js',
+  '/assets/test-data-island.js',
   '/base-minimal.js',
   '/base.js',
   '/search-client.js',

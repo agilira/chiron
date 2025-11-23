@@ -808,25 +808,25 @@
 
                 <!-- Page Content -->
                 <div class="content">
-                    <h1 id="external-scripts-demo-3">External Scripts Demo</h1><p>This page demonstrates Chiron&#39;s external scripts feature with <strong>three types of scripts</strong>:</p>
+                    <h1 id="external-scripts-demo-5">External Scripts Demo</h1><p>This page demonstrates Chiron&#39;s external scripts feature with <strong>three types of scripts</strong>:</p>
 <ol>
 <li>🎨 <strong>Presets</strong> - Curated libraries like Mermaid and Chart.js</li>
 <li>🏠 <strong>Self-hosted</strong> - Your own scripts (automatically allowed)</li>
 <li>🌐 <strong>Custom CDN</strong> - External scripts from configured domains</li>
 </ol>
-<h2 id="security-model-overview-3">Security Model Overview</h2><p>Chiron uses a <strong>three-tier security model</strong> for external scripts:</p>
-<h3 id="self-hosted-scripts-always-allowed-3">✅ Self-Hosted Scripts (Always Allowed)</h3><p>Scripts in your site are <strong>automatically whitelisted</strong> - no configuration needed!</p>
+<h2 id="security-model-overview-5">Security Model Overview</h2><p>Chiron uses a <strong>three-tier security model</strong> for external scripts:</p>
+<h3 id="self-hosted-scripts-always-allowed-5">✅ Self-Hosted Scripts (Always Allowed)</h3><p>Scripts in your site are <strong>automatically whitelisted</strong> - no configuration needed!</p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">external_scripts:
   - assets/my-script.js      <span class="hljs-comment"># ✅ Auto-allowed</span>
-  - ./custom/widget.js       <span class="hljs-comment"># ✅ Auto-allowed</span></code></pre></div><h3 id="default-cdn-allowlist-3">✅ Default CDN Allowlist</h3><p>Pre-approved CDNs work out of the box:</p>
+  - ./custom/widget.js       <span class="hljs-comment"># ✅ Auto-allowed</span></code></pre></div><h3 id="default-cdn-allowlist-5">✅ Default CDN Allowlist</h3><p>Pre-approved CDNs work out of the box:</p>
 <ul>
 <li>jsdelivr.net, unpkg.com, cdnjs.cloudflare.com, esm.sh, skypack.dev</li>
 </ul>
-<h3 id="custom-cdn-configuration-3">⚙️ Custom CDN Configuration</h3><p>Need other CDNs? Add to <code>chiron.config.yaml</code>:</p>
+<h3 id="custom-cdn-configuration-5">⚙️ Custom CDN Configuration</h3><p>Need other CDNs? Add to <code>chiron.config.yaml</code>:</p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">security:
   allowed_cdn_domains:
-    - my-cdn.com</code></pre></div><h2 id="mermaid-diagrams-3">Mermaid Diagrams</h2><p>Mermaid enables you to create diagrams and visualizations using simple text syntax.</p>
-<h3 id="flowchart-example-3">Flowchart Example</h3><pre class="mermaid">
+    - my-cdn.com</code></pre></div><h2 id="mermaid-diagrams-5">Mermaid Diagrams</h2><p>Mermaid enables you to create diagrams and visualizations using simple text syntax.</p>
+<h3 id="flowchart-example-5">Flowchart Example</h3><pre class="mermaid">
 graph TD
     A[Start] --> B{Is it working?}
     B -->|Yes| C[Great!]
@@ -836,7 +836,7 @@ graph TD
     F --> B
 </pre>
 
-<h3 id="sequence-diagram-3">Sequence Diagram</h3><pre class="mermaid">
+<h3 id="sequence-diagram-5">Sequence Diagram</h3><pre class="mermaid">
 sequenceDiagram
     participant User
     participant Browser
@@ -853,7 +853,7 @@ sequenceDiagram
     Browser->>User: Display page
 </pre>
 
-<h3 id="architecture-diagram-3">Architecture Diagram</h3><pre class="mermaid">
+<h3 id="architecture-diagram-5">Architecture Diagram</h3><pre class="mermaid">
 graph LR
     subgraph "Frontend"
         A[HTML Pages]
@@ -880,7 +880,7 @@ graph LR
     A --> I
 </pre>
 
-<h2 id="chart-js-integration-3">Chart.js Integration</h2><p>Chart.js is loaded on this page and ready to use. Here&#39;s how you would create a chart:</p>
+<h2 id="chart-js-integration-5">Chart.js Integration</h2><p>Chart.js is loaded on this page and ready to use. Here&#39;s how you would create a chart:</p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-html">&lt;canvas id=<span class="hljs-string">&quot;myChart&quot;</span> width=<span class="hljs-string">&quot;400&quot;</span> height=<span class="hljs-string">&quot;200&quot;</span>&gt;&lt;/canvas&gt;
 &lt;script&gt;
 document.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#039;DOMContentLoaded&#039;</span>, () =&gt; {
@@ -920,14 +920,14 @@ document.<span class="hljs-title function_">addEventListener</span>(<span class=
         }
     });
 });
-&lt;/script&gt;</code></pre></div><h2 id="how-it-works-10">How It Works</h2><ol>
+&lt;/script&gt;</code></pre></div><h2 id="how-it-works-30">How It Works</h2><ol>
 <li><strong>Frontmatter Configuration</strong>: Add <code>external_scripts</code> array to your page&#39;s frontmatter</li>
 <li><strong>Named Presets</strong>: Use convenient preset names like <code>mermaid</code>, <code>chartjs</code>, <code>d3</code>, etc.</li>
 <li><strong>Custom URLs</strong>: Or specify full URLs from trusted CDNs</li>
 <li><strong>Automatic Loading</strong>: Scripts are loaded in the correct order</li>
 <li><strong>Opt-in</strong>: Only pages that need them load external scripts</li>
 </ol>
-<h2 id="available-presets-3">Available Presets</h2><div class="table-wrapper">
+<h2 id="available-presets-5">Available Presets</h2><div class="table-wrapper">
         <table>
           <thead><tr>
 <th>Preset</th>
@@ -972,12 +972,12 @@ document.<span class="hljs-title function_">addEventListener</span>(<span class=
 </tr>
 </tbody>
         </table>
-      </div><h2 id="frontmatter-examples-3">Frontmatter Examples</h2><h3 id="example-1-presets-only-3">Example 1: Presets Only</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">---
+      </div><h2 id="frontmatter-examples-5">Frontmatter Examples</h2><h3 id="example-1-presets-only-5">Example 1: Presets Only</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">---
 title: Diagrams Page
 external_scripts:
   - mermaid
   - chartjs
----</code></pre></div><h3 id="example-2-mixed-sources-3">Example 2: Mixed Sources</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">---
+---</code></pre></div><h3 id="example-2-mixed-sources-5">Example 2: Mixed Sources</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">---
 title: Advanced Dashboard
 external_scripts:
   <span class="hljs-comment"># Preset library</span>
@@ -989,14 +989,14 @@ external_scripts:
   
   <span class="hljs-comment"># Custom CDN (requires chiron.config.yaml setup)</span>
   - https:<span class="hljs-comment">//my-cdn.com/analytics.js</span>
----</code></pre></div><h3 id="example-3-self-hosted-only-3">Example 3: Self-Hosted Only</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">---
+---</code></pre></div><h3 id="example-3-self-hosted-only-5">Example 3: Self-Hosted Only</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">---
 title: Custom Features
 external_scripts:
   - assets/my-library.js     <span class="hljs-comment"># ✅ Automatically allowed</span>
   - scripts/custom-init.js   <span class="hljs-comment"># ✅ Automatically allowed</span>
   - /js/widgets.mjs          <span class="hljs-comment"># ✅ Automatically allowed</span>
 ---</code></pre></div><p><strong>Why self-hosted scripts are always allowed:</strong> If you&#39;re uploading a script to your site, you control it. No security configuration needed!</p>
-<h2 id="configuration-example-3">Configuration Example</h2><p>To use scripts from custom CDN domains, add them to your <code>chiron.config.yaml</code>:</p>
+<h2 id="configuration-example-5">Configuration Example</h2><p>To use scripts from custom CDN domains, add them to your <code>chiron.config.yaml</code>:</p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml"><span class="hljs-comment"># chiron.config.yaml</span>
 project:
   name: My Documentation
@@ -1011,7 +1011,7 @@ security:
     - cdn.mycompany.com
     - static.example.net</code></pre></div><p>Then use them in your pages:</p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">external_scripts:
-  - https:<span class="hljs-comment">//cdn.mycompany.com/widgets.js  # ✅ Now allowed</span></code></pre></div><h2 id="security-best-practices-6">Security & Best Practices</h2><h3 id="what-gets-validated-3">What Gets Validated?</h3><div class="table-wrapper">
+  - https:<span class="hljs-comment">//cdn.mycompany.com/widgets.js  # ✅ Now allowed</span></code></pre></div><h2 id="security-best-practices-8">Security & Best Practices</h2><h3 id="what-gets-validated-5">What Gets Validated?</h3><div class="table-wrapper">
         <table>
           <thead><tr>
 <th>Script Type</th>
@@ -1046,24 +1046,24 @@ security:
 </tr>
 </tbody>
         </table>
-      </div><h3 id="build-log-examples-3">Build Log Examples</h3><p><strong>✅ Allowed scripts:</strong></p>
+      </div><h3 id="build-log-examples-5">Build Log Examples</h3><p><strong>✅ Allowed scripts:</strong></p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-text">[INFO] Added external script { &quot;preset&quot;: &quot;mermaid&quot;, &quot;url&quot;: &quot;https://...&quot; }
 [INFO] Added external script { &quot;preset&quot;: &quot;custom&quot;, &quot;url&quot;: &quot;assets/my-script.js&quot; }</code></pre></div><p><strong>❌ Blocked scripts:</strong></p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-text">[WARN] External script rejected: https://unknown-cdn.com/lib.js (untrusted CDN)
-[WARN] External script rejected: http://insecure.com/lib.js (non-HTTPS)</code></pre></div><h3 id="security-tips-3">Security Tips</h3><ul>
+[WARN] External script rejected: http://insecure.com/lib.js (non-HTTPS)</code></pre></div><h3 id="security-tips-5">Security Tips</h3><ul>
 <li>✅ <strong>Self-host critical libraries</strong>: Put them in <code>assets/</code> folder for full control</li>
 <li>✅ <strong>Pin versions</strong>: Use <code>@1.2.3</code> instead of <code>@latest</code></li>
 <li>✅ <strong>Use HTTPS</strong>: All external URLs must be HTTPS (enforced)</li>
 <li>✅ <strong>Review custom CDNs</strong>: Only add domains you trust</li>
 <li>✅ <strong>Check build logs</strong>: Watch for warnings about rejected scripts</li>
 </ul>
-<h2 id="performance-considerations-3">Performance Considerations</h2><ul>
+<h2 id="performance-considerations-5">Performance Considerations</h2><ul>
 <li>Scripts are only loaded on pages that need them</li>
 <li>Consider self-hosting for production sites</li>
 <li>Libraries load from fast CDNs</li>
 <li>No impact on pages without <code>external_scripts</code></li>
 </ul>
-<h2 id="see-also-6">See Also</h2><ul>
+<h2 id="see-also-10">See Also</h2><ul>
 <li><a href="custom-template-test.html">Custom Templates</a> - Full template customization</li>
 <li><a href="https://github.com/yourusername/chiron" target="_blank" rel="noopener noreferrer">EXTERNAL-SCRIPTS.md</a> - Complete documentation</li>
 <li><a href="showcase.html#templates">Templates Reference</a> - All available placeholders</li>
@@ -1092,7 +1092,6 @@ security:
     <li><a href="../terms-of-service.html" class="footer-legal-link">Terms of Service</a></li>
     <li><a href="../cookie-policy.html" class="footer-legal-link">Cookie Policy</a></li>
     <li><a href="https://opensource.org/licenses/MIT" class="footer-legal-link" target="_blank" rel="noopener noreferrer" aria-label="License - aria.external_link">License</a></li>
-    <li><a href="../manage-cookies.html" class="footer-legal-link">Manage Cookies</a></li>
   </ul>
                 </div>
             </div>

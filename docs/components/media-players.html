@@ -822,7 +822,7 @@
                 <div class="content">
                     <h1 id="media-players-1">Media Players</h1><p>Chiron includes beautiful, accessible media player components powered by <strong>Lumos Player</strong> - a custom-built player with keyboard shortcuts, custom controls, and full accessibility support.</p>
 <h2 id="video-player-3">Video Player</h2><p>Display videos with custom controls, keyboard navigation, and responsive design.</p>
-<div id="lumos-video-1763864613064-4" class="lumos-player aspect-16-9 " data-type="video" data-lumos-player style="position: relative;">
+<div id="lumos-video-1763903107267-4" class="lumos-player aspect-16-9 " data-type="video" data-lumos-player style="position: relative;">
   <video width="1280" height="720" poster="/assets/featured.jpg" preload="metadata" src="/assets/Big_Buck_Bunny_720_10s_2MB.mkv">
     <p>Your browser does not support the video element. <a href="/assets/Big_Buck_Bunny_720_10s_2MB.mkv" download>Download the video</a>.</p>
   </video>
@@ -934,7 +934,7 @@
 </tbody>
         </table>
       </div><h2 id="audio-player-3">Audio Player</h2><p>Display audio with album art, metadata, and custom controls.</p>
-<div id="lumos-audio-1763864613064-4" class="lumos-player " data-type="audio" data-lumos-player>
+<div id="lumos-audio-1763903107267-4" class="lumos-player " data-type="audio" data-lumos-player>
   <div class="audio-metadata">
     <img src="/assets/featured.jpg" alt="Organ Finale">
     <div>
@@ -1098,7 +1098,7 @@
 <li><strong>OGG Vorbis</strong> - Chrome, Firefox, Edge</li>
 <li><strong>WAV</strong> - All browsers (large file size)</li>
 </ul>
-<h2 id="best-practices-30">Best Practices</h2><ol>
+<h2 id="best-practices-31">Best Practices</h2><ol>
 <li><strong>Provide Multiple Formats</strong> - Use <code>sources</code> attribute for fallbacks</li>
 <li><strong>Add Poster Images</strong> - Shows before video loads</li>
 <li><strong>Include Fallback Content</strong> - Message for unsupported browsers</li>
@@ -1107,7 +1107,7 @@
 <li><strong>Add ARIA Labels</strong> - Improve accessibility</li>
 <li><strong>Test Keyboard Navigation</strong> - Ensure all controls work without mouse</li>
 </ol>
-<h2 id="examples-17">Examples</h2><h3 id="product-demo-video-1">Product Demo Video</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-html">&lt;Video 
+<h2 id="examples-18">Examples</h2><h3 id="product-demo-video-1">Product Demo Video</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-html">&lt;Video 
   src=<span class="hljs-string">&quot;/assets/product-demo.mp4&quot;</span>
   poster=<span class="hljs-string">&quot;/assets/product-thumb.jpg&quot;</span>
   width=<span class="hljs-string">&quot;1920&quot;</span>
@@ -1153,7 +1153,6 @@
     <li><a href="../terms-of-service.html" class="footer-legal-link">Terms of Service</a></li>
     <li><a href="../cookie-policy.html" class="footer-legal-link">Cookie Policy</a></li>
     <li><a href="https://opensource.org/licenses/MIT" class="footer-legal-link" target="_blank" rel="noopener noreferrer" aria-label="License - aria.external_link">License</a></li>
-    <li><a href="../manage-cookies.html" class="footer-legal-link">Manage Cookies</a></li>
   </ul>
                 </div>
             </div>
@@ -1542,7 +1541,7 @@ class LumosPlayer {
   }
 
   formatTime(seconds) {
-    if (isNaN(seconds) || !isFinite(seconds)) return "0:00";
+    if (isNaN(seconds) || !isFinite(seconds)) {return '0:00';}
     const m = Math.floor(seconds / 60);
     const s = Math.floor(seconds % 60);
     return `${m}:${s < 10 ? '0' : ''}${s}`;
@@ -1680,7 +1679,7 @@ class LumosPlayer {
       // Per Audio: Click su intero wrapper attiva Play/Pause
       this.wrapper.addEventListener('click', (e) => {
         const target = e.target;
-        if (target.closest('button') || target.closest('input') || target.closest('a')) return;
+        if (target.closest('button') || target.closest('input') || target.closest('a')) {return;}
         this.togglePlay();
       });
       this.wrapper.style.cursor = 'pointer';
@@ -1698,13 +1697,13 @@ class LumosPlayer {
     
     // Buffer Loading Feedback
     this.media.addEventListener('waiting', () => {
-      if (this.playBtn) this.playBtn.classList.add('animate-pulse', 'opacity-50');
+      if (this.playBtn) {this.playBtn.classList.add('animate-pulse', 'opacity-50');}
     });
     this.media.addEventListener('playing', () => {
-      if (this.playBtn) this.playBtn.classList.remove('animate-pulse', 'opacity-50');
+      if (this.playBtn) {this.playBtn.classList.remove('animate-pulse', 'opacity-50');}
     });
     this.media.addEventListener('canplay', () => {
-      if (this.playBtn) this.playBtn.classList.remove('animate-pulse', 'opacity-50');
+      if (this.playBtn) {this.playBtn.classList.remove('animate-pulse', 'opacity-50');}
       this.updateDuration();
     });
 
@@ -1769,7 +1768,7 @@ class LumosPlayer {
     if (!this.isAudio) {
       this.wrapper.addEventListener('mousemove', () => this.showControls());
       this.wrapper.addEventListener('mouseleave', () => {
-        if (!this.media.paused) this.hideControls();
+        if (!this.media.paused) {this.hideControls();}
       });
     }
 
@@ -1803,11 +1802,11 @@ class LumosPlayer {
       Math.max(this.media.currentTime + seconds, 0),
       duration
     );
-    if (!this.isAudio) this.showControls();
+    if (!this.isAudio) {this.showControls();}
   }
 
   updatePlayState(isPlaying) {
-    if (!this.playBtn) return;
+    if (!this.playBtn) {return;}
     
     this.playBtn.innerHTML = isPlaying ? ICONS.pause : ICONS.play;
     this.playBtn.setAttribute('aria-label', isPlaying ? 'Pause' : 'Play');
@@ -1835,7 +1834,7 @@ class LumosPlayer {
     const current = this.media.currentTime;
     const duration = this.media.duration;
     
-    if (!duration || isNaN(duration)) return;
+    if (!duration || isNaN(duration)) {return;}
 
     if (this.timeSlider) {
       this.timeSlider.value = current.toString();
@@ -1859,7 +1858,7 @@ class LumosPlayer {
 
   updateDuration() {
     const duration = this.media.duration;
-    if (!duration || isNaN(duration)) return;
+    if (!duration || isNaN(duration)) {return;}
 
     if (this.timeSlider) {
       this.timeSlider.max = duration.toString();
@@ -1886,7 +1885,7 @@ class LumosPlayer {
   }
 
   toggleFullscreen() {
-    if (this.isAudio) return;
+    if (this.isAudio) {return;}
 
     if (!document.fullscreenElement) {
       this.wrapper.requestFullscreen().catch(err => console.error(err));
@@ -1898,7 +1897,7 @@ class LumosPlayer {
   // -- Controls Visibility (Video Only) --
 
   showControls() {
-    if (this.isAudio) return;
+    if (this.isAudio) {return;}
 
     if (this.controlsContainer) {
       this.controlsContainer.classList.remove('opacity-0', 'invisible');
@@ -1907,7 +1906,7 @@ class LumosPlayer {
   }
 
   hideControls() {
-    if (this.isAudio) return;
+    if (this.isAudio) {return;}
 
     if (this.controlsContainer && !this.media.paused) {
       this.controlsContainer.classList.add('opacity-0', 'invisible');
@@ -1915,9 +1914,9 @@ class LumosPlayer {
   }
 
   startHideTimer() {
-    if (this.isAudio) return;
+    if (this.isAudio) {return;}
 
-    if (this.controlsTimeout) window.clearTimeout(this.controlsTimeout);
+    if (this.controlsTimeout) {window.clearTimeout(this.controlsTimeout);}
     this.controlsTimeout = window.setTimeout(() => {
       this.hideControls();
     }, 2500);
@@ -1926,38 +1925,38 @@ class LumosPlayer {
   // -- Keyboard Logic --
 
   handleKey(e) {
-    switch(e.key.toLowerCase()) {
-      case ' ':
-      case 'k':
-        e.preventDefault();
-        this.togglePlay();
-        break;
-      case 'f':
-        e.preventDefault();
-        this.toggleFullscreen();
-        break;
-      case 'm':
-        e.preventDefault();
-        this.media.muted = !this.media.muted;
-        break;
-      case 'arrowright':
-        if (document.activeElement !== this.timeSlider) {
-          this.skip(5);
-        }
-        break;
-      case 'arrowleft':
-        if (document.activeElement !== this.timeSlider) {
-          this.skip(-5);
-        }
-        break;
-      case 'j': 
-        e.preventDefault();
-        this.skip(-10);
-        break;
-      case 'l': 
-        e.preventDefault();
-        this.skip(10);
-        break;
+    switch (e.key.toLowerCase()) {
+    case ' ':
+    case 'k':
+      e.preventDefault();
+      this.togglePlay();
+      break;
+    case 'f':
+      e.preventDefault();
+      this.toggleFullscreen();
+      break;
+    case 'm':
+      e.preventDefault();
+      this.media.muted = !this.media.muted;
+      break;
+    case 'arrowright':
+      if (document.activeElement !== this.timeSlider) {
+        this.skip(5);
+      }
+      break;
+    case 'arrowleft':
+      if (document.activeElement !== this.timeSlider) {
+        this.skip(-5);
+      }
+      break;
+    case 'j': 
+      e.preventDefault();
+      this.skip(-10);
+      break;
+    case 'l': 
+      e.preventDefault();
+      this.skip(10);
+      break;
     }
   }
 }

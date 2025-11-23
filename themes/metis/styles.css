@@ -869,6 +869,80 @@
 .gap-8 { gap: var(--space-8) !important; }
 
 /* ============================================
+   SECTION 8.6: CONTAINER
+   Max-width content container for layouts
+   ============================================ */
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--space-6);
+  width: 100%;
+}
+
+/* ============================================
+   SECTION 8.7: SECTION COMPONENT
+   Semantic sections with vertical spacing
+   ============================================ */
+
+/* Canvas layout - compensate for fixed header */
+.canvas-layout main {
+  padding-top: var(--header-height);
+}
+
+/* Base section element */
+.section {
+  width: 100%;
+  position: relative;
+}
+
+/* Section padding variants */
+.section-padding-none {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.section-padding-sm {
+  padding-top: var(--space-8);
+  padding-bottom: var(--space-8);
+}
+
+.section-padding-md {
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-12);
+}
+
+.section-padding-lg {
+  padding-top: var(--space-16);
+  padding-bottom: var(--space-16);
+}
+
+.section-padding-xl {
+  padding-top: var(--space-20);
+  padding-bottom: var(--space-20);
+}
+
+/* Example styling classes for canvas layouts */
+.hero-section {
+  background: linear-gradient(135deg, var(--color-blue-200) 0%, var(--color-purple-200) 100%);
+  color: var(--color-neutral-0);
+  text-align: center;
+}
+
+.cta-section {
+  background-color: var(--color-neutral-700);
+  color: var(--color-neutral-0);
+  text-align: center;
+}
+
+.footer-section {
+  background-color: var(--color-neutral-100);
+  color: var(--color-neutral-600);
+  text-align: center;
+  font-size: var(--font-size-sm);
+}
+
+/* ============================================
    SECTION 9: UTILITY CLASSES - OBJECT FIT & POSITION
    ============================================ */
 
@@ -3106,7 +3180,8 @@ details.accordion-item[open] .accordion-header-icon {
   align-items: center;
   justify-content: space-between;
   height: 100%;
-  max-width: 100%;
+  max-width: 1460px;
+  margin: 0 auto;
   padding: 0 var(--space-6);
   overflow: visible;
 }
@@ -3870,7 +3945,7 @@ details.accordion-item[open] .accordion-header-icon {
 }
 
 .footer-container {
-  max-width: 100%;
+  max-width: 1460px;
   padding: 0 var(--space-6);
   margin: 0 auto;
 }

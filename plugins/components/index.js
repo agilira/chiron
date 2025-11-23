@@ -34,6 +34,7 @@ const checkboxGroupComponent = require('./checkbox-group');
 const radioGroupComponent = require('./radio-group');
 const videoComponent = require('./video');
 const audioComponent = require('./audio');
+const sectionComponent = require('./section');
 
 module.exports = {
   name: 'components',
@@ -123,6 +124,9 @@ module.exports = {
     },
     'Audio': (attrs = {}, content = '', context = {}) => {
       return audioComponent(attrs, content, context);
+    },
+    'Section': (attrs = {}, content = '', context = {}) => {
+      return sectionComponent(attrs, content, context);
     }
   },
   
