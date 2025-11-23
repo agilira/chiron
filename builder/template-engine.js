@@ -1975,7 +1975,12 @@ class TemplateEngine {
       // Prepare footer data
       const { branding } = this.config;
       const copyrightYear = new Date().getFullYear();
-      const copyrightHolder = this.escapeHtml(this.config.footer.copyright_holder);
+      // Smart fallback: footer.copyright_holder → branding.company → project.name
+      const copyrightHolder = this.escapeHtml(
+        this.config.footer?.copyright_holder || 
+        this.config.branding?.company || 
+        this.config.project.name
+      );
       const companyUrl = branding.company_url;
       const logoFooterLight = this.getFooterLogo(branding.logo, 'light', pathToRoot);
       const logoFooterDark = this.getFooterLogo(branding.logo, 'dark', pathToRoot);

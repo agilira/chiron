@@ -206,8 +206,8 @@ function validateConfig(config) {
     'project.base_url',
     'build.output_dir',
     'build.content_dir',
-    'build.templates_dir',
-    'navigation.sidebars'
+    'build.templates_dir'
+    // navigation.sidebars is now optional
   ];
   
   validateRequiredFields(config, requiredFields);
@@ -345,18 +345,28 @@ function validateRobotsConfig(robots) {
  * @throws {ConfigurationError} If navigation config is invalid
  */
 function validateNavigationConfig(navigation) {
-  if (!navigation || typeof navigation !== 'object') {
-    throw new ConfigurationError('navigation configuration is required');
+  // navigation is optional - return early if not provided
+  if (!navigation) {
+    return;
   }
 
-  // Validate sidebars object
-  if (!navigation.sidebars || typeof navigation.sidebars !== 'object') {
-    throw new ConfigurationError('navigation.sidebars must be an object with at least one sidebar');
+  if (typeof navigation !== 'object') {
+    throw new ConfigurationError('navigation must be an object if provided');
   }
 
-  // Ensure at least 'default' sidebar exists
+  // Validate sidebars ONLY if present
+  if (!navigation.sidebars) {
+    return; // sidebars are optional
+  }
+
+  // If sidebars is present, validate its structure
+  if (typeof navigation.sidebars !== 'object') {
+    throw new ConfigurationError('navigation.sidebars must be an object if provided');
+  }
+
+  // Ensure at least 'default' sidebar exists when sidebars is configured
   if (!navigation.sidebars.default) {
-    throw new ConfigurationError('navigation.sidebars must have at least a "default" sidebar');
+    throw new ConfigurationError('navigation.sidebars must have at least a "default" sidebar when configured');
   }
 
   // Validate each sidebar
