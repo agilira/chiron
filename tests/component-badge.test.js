@@ -16,8 +16,8 @@ describe('Badge Component (JSX-like syntax)', () => {
     
     // Mock plugin manager
     mockPluginManager = {
-      hasShortcode: jest.fn((name) => name === 'Badge'),
-      executeShortcode: jest.fn((name, attrs, content) => {
+      hasComponent: jest.fn((name) => name === 'Badge'),
+      executeComponent: jest.fn((name, attrs, content) => {
         if (name === 'Badge') {
           return badgeComponent(attrs, content, {});
         }

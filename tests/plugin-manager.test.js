@@ -40,7 +40,7 @@ describe('PluginManager', () => {
     test('should initialize empty registries', () => {
       expect(manager.plugins).toEqual([]);
       expect(manager.hookRegistry.size).toBe(0);
-      expect(manager.shortcodeRegistry.size).toBe(0);
+      expect(manager.componentRegistry.size).toBe(0);
     });
   });
 
@@ -80,11 +80,11 @@ describe('PluginManager', () => {
       expect(manager.hookRegistry.get('build:end')).toHaveLength(1);
     });
 
-    test('should register shortcodes from plugins', async () => {
+    test('should register components from plugins', async () => {
       const mockPlugin = {
         name: 'test-plugin',
         version: '1.0.0',
-        shortcodes: {
+        components: {
           'custom': jest.fn()
         }
       };
@@ -93,7 +93,7 @@ describe('PluginManager', () => {
 
       await manager.initialize([{ name: 'test-plugin', enabled: true }]);
 
-      expect(manager.shortcodeRegistry.has('custom')).toBe(true);
+      expect(manager.componentRegistry.has('custom')).toBe(true);
     });
 
     test('should prevent re-initialization', async () => {
@@ -215,41 +215,41 @@ describe('PluginManager', () => {
     });
   });
 
-  describe('Shortcode Execution', () => {
-    test('should execute registered shortcode', () => {
-      const shortcodeFn = jest.fn().mockReturnValue('<div>output</div>');
-      manager.shortcodeRegistry.set('custom', {
+  describe('Component Execution', () => {
+    test('should execute registered component', () => {
+      const componentFn = jest.fn().mockReturnValue('<div>output</div>');
+      manager.componentRegistry.set('custom', {
         plugin: 'test-plugin',
-        fn: shortcodeFn
+        fn: componentFn
       });
 
       const attrs = { type: 'info' };
       const content = 'Test content';
       const context = {};
 
-      const result = manager.executeShortcode('custom', attrs, content, context);
+      const result = manager.executeComponent('custom', attrs, content, context);
 
-      expect(shortcodeFn).toHaveBeenCalledWith(attrs, content, context);
+      expect(componentFn).toHaveBeenCalledWith(attrs, content, context);
       expect(result).toBe('<div>output</div>');
     });
 
-    test('should return null for unknown shortcode', () => {
-      const result = manager.executeShortcode('unknown', {}, '', {});
+    test('should return null for unknown component', () => {
+      const result = manager.executeComponent('unknown', {}, '', {});
       
       expect(result).toBeNull();
     });
 
-    test('should handle shortcode errors gracefully', () => {
+    test('should handle component errors gracefully', () => {
       const errorFn = jest.fn().mockImplementation(() => {
-        throw new Error('Shortcode error');
+        throw new Error('Component error');
       });
       
-      manager.shortcodeRegistry.set('error-shortcode', {
+      manager.componentRegistry.set('error-component', {
         plugin: 'test-plugin',
         fn: errorFn
       });
 
-      const result = manager.executeShortcode('error-shortcode', {}, '', {});
+      const result = manager.executeComponent('error-component', {}, '', {});
 
       expect(result).toBeNull(); // Should return null on error
     });
@@ -272,23 +272,23 @@ describe('PluginManager', () => {
       expect(manager.hookRegistry.get('build:end')).toHaveLength(1);
     });
 
-    test('should warn on shortcode name conflict', () => {
+    test('should warn on component name conflict', () => {
       const plugin1 = {
         name: 'plugin1',
         version: '1.0.0',
-        shortcodes: { 'alert': jest.fn() }
+        components: { 'alert': jest.fn() }
       };
       const plugin2 = {
         name: 'plugin2',
         version: '1.0.0',
-        shortcodes: { 'alert': jest.fn() }
+        components: { 'alert': jest.fn() }
       };
 
       manager._registerPlugin(plugin1);
       manager._registerPlugin(plugin2);
 
       // Second plugin should override (last wins)
-      expect(manager.shortcodeRegistry.get('alert').plugin).toBe('plugin2');
+      expect(manager.componentRegistry.get('alert').plugin).toBe('plugin2');
     });
   });
 
@@ -324,13 +324,13 @@ describe('PluginManager', () => {
         { name: 'plugin1', version: '1.0.0' }
       ];
       manager.hookRegistry.set('build:start', [{ plugin: 'plugin1' }]);
-      manager.shortcodeRegistry.set('alert', { plugin: 'plugin1' });
+      manager.componentRegistry.set('alert', { plugin: 'plugin1' });
 
       const stats = manager.getStats();
 
       expect(stats.pluginCount).toBe(1);
       expect(stats.hookCount).toBe(1);
-      expect(stats.shortcodeCount).toBe(1);
+      expect(stats.componentCount).toBe(1);
     });
   });
 

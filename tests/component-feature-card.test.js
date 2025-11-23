@@ -33,9 +33,9 @@ describe('FeatureCard Component (JSX-like syntax)', () => {
 
     // Mock plugin manager
     mockPluginManager = {
-      hasShortcode: jest.fn((name) => name === 'FeatureCard'),
-      executeShortcode: jest.fn((name, attrs, content) => {
-        if (name === 'FeatureCard' && featureCardComponent) {
+      hasComponent: jest.fn((name) => name === 'FeatureCard'),
+      executeComponent: jest.fn((name, attrs, content) => {
+        if (name === 'FeatureCard') {
           return featureCardComponent(attrs, content, {});
         }
         return null;
@@ -232,8 +232,8 @@ describe('FeatureCard Component (JSX-like syntax)', () => {
 
       // Mock Grid component too
       const gridComponent = require('../plugins/components/grid');
-      mockPluginManager.hasShortcode = jest.fn((name) => name === 'FeatureCard' || name === 'Grid');
-      mockPluginManager.executeShortcode = jest.fn((name, attrs, content) => {
+      mockPluginManager.hasComponent = jest.fn((name) => name === 'FeatureCard' || name === 'Grid');
+      mockPluginManager.executeComponent = jest.fn((name, attrs, content) => {
         if (name === 'FeatureCard' && featureCardComponent) {
           return featureCardComponent(attrs, content, {});
         }

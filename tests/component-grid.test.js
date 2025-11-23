@@ -24,9 +24,9 @@ describe('Grid Component (JSX-like syntax)', () => {
 
     // Mock plugin manager
     mockPluginManager = {
-      hasShortcode: jest.fn((name) => name === 'Grid'),
-      executeShortcode: jest.fn((name, attrs, content) => {
-        if (name === 'Grid' && gridComponent) {
+      hasComponent: jest.fn((name) => name === 'Grid'),
+      executeComponent: jest.fn((name, attrs, content) => {
+        if (name === 'Grid') {
           return gridComponent(attrs, content, {});
         }
         return null;

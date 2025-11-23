@@ -16,8 +16,8 @@ describe('Button Component (JSX-like syntax)', () => {
     
     // Mock plugin manager
     mockPluginManager = {
-      hasShortcode: jest.fn((name) => name === 'Button'),
-      executeShortcode: jest.fn((name, attrs, content) => {
+      hasComponent: jest.fn((name) => name === 'Button'),
+      executeComponent: jest.fn((name, attrs, content) => {
         if (name === 'Button') {
           return buttonComponent(attrs, content, {});
         }

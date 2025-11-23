@@ -457,7 +457,7 @@ class PluginManager {
 
     this.componentRegistry.set(name, {
       plugin: pluginName,
-      fn: fn
+      fn
     });
 
     this.logger.debug('Component registered', {

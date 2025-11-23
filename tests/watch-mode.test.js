@@ -10,7 +10,6 @@
 
 const fs = require('fs-extra');
 const path = require('path');
-const chokidar = require('chokidar');
 
 describe('Watch Mode - File Detection', () => {
   test('ChironBuilder should have watch method', () => {
