@@ -1222,7 +1222,15 @@ class ChironBuilder {
   }
 
   /**
-   * Generate default 404 page
+   * Generate 404 page using template engine
+   * 
+   * Template priority (same as regular pages):
+   * 1. custom-templates/404.ejs (user custom template)
+   * 2. themes/{theme}/templates/404.ejs (theme template)
+   * 3. page.ejs with inline 404 content (fallback)
+   * 
+   * This allows users to customize the 404 page using EJS templates
+   * instead of hardcoded HTML.
    */
   async generate404() {
     const outputPath = path.join(
@@ -1231,13 +1239,15 @@ class ChironBuilder {
       '404.html'
     );
 
-    // Generate 404 page using template
-    const pageContext = {
-      ...this.config,
-      page: {
-        title: '404 - Page Not Found',
-        description: 'The page you are looking for could not be found.',
-        content: `
+    try {
+      // Build page context for 404 page
+      // Use inline content as fallback if no 404.ejs template exists
+      const pageContext = {
+        ...this.config,
+        page: {
+          title: '404 - Page Not Found',
+          description: 'The page you are looking for could not be found.',
+          content: `
           <div style="text-align: center; padding: 4rem 2rem;">
             <h1 style="font-size: 6rem; font-weight: 700; color: var(--text-primary); margin: 0;">404</h1>
             <h2 style="font-size: 2rem; font-weight: 600; color: var(--text-primary); margin: 1rem 0;">Page Not Found</h2>
@@ -1245,14 +1255,57 @@ class ChironBuilder {
             <a href="index.html" style="display: inline-block; padding: 0.75rem 2rem; background: var(--primary-600); color: white; text-decoration: none; border-radius: 8px; font-weight: 500; transition: background 0.2s;">Go to Homepage</a>
           </div>
         `,
-        filename: '404.html'
-      },
-      isActive: () => false
-    };
+          filename: '404.html',
+          template: '404.ejs',  // Try to use 404.ejs template
+          depth: 0,              // Root level page
+          lang: this.config.language?.locale || 'en'
+        },
+        isActive: () => false
+      };
 
-    const html = await this.templateEngine.render(pageContext);
-    fs.writeFileSync(outputPath, html, 'utf8');
-    this.logger.info('Generated: 404.html (default)');
+      // Try to render with template engine
+      // If 404.ejs doesn't exist, it will fallback to page.ejs with inline content
+      const html = await this.templateEngine.render(pageContext);
+      fs.writeFileSync(outputPath, html, 'utf8');
+
+      // Log appropriate message based on whether custom template was used
+      const customTemplateExists = typeof this.templateEngine.templateExists === 'function' 
+        ? this.templateEngine.templateExists('404.ejs') 
+        : false;
+      
+      if (customTemplateExists) {
+        this.logger.info('Generated: 404.html (using custom 404.ejs template)', {
+          template: '404.ejs'
+        });
+      } else {
+        this.logger.info('Generated: 404.html (using default content)', {
+          fallback: 'page.ejs'
+        });
+      }
+    } catch (error) {
+      this.logger.error('Error generating 404 page', {
+        error: error.message,
+        stack: error.stack
+      });
+      
+      // Fallback: generate minimal 404 page
+      const fallbackHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Page Not Found</title>
+</head>
+<body>
+  <h1>404 - Page Not Found</h1>
+  <p>The page you are looking for could not be found.</p>
+  <a href="index.html">Go to Homepage</a>
+</body>
+</html>`;
+      
+      fs.writeFileSync(outputPath, fallbackHtml, 'utf8');
+      this.logger.info('Generated: 404.html (fallback due to error)');
+    }
   }
 
   /**

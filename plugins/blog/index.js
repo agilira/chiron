@@ -153,7 +153,7 @@ module.exports = {
         
         if (posts.length === 0) {
           context.logger.debug('No blog posts found');
-          return data;
+          return;
         }
         
         // Assign unique numeric IDs to posts

@@ -244,6 +244,44 @@ class TemplateEngine {
   }
 
   /**
+   * Check if a template exists in any of the search paths
+   * @param {string} templateName - Name of template file (e.g., '404.ejs')
+   * @returns {boolean} True if template exists, false otherwise
+   */
+  templateExists(templateName) {
+    // SECURITY: Validate template name
+    if (!templateName || typeof templateName !== 'string') {
+      return false;
+    }
+
+    // Prevent directory traversal
+    if (templateName.includes('..') ||
+      templateName.includes('/') ||
+      templateName.includes('\\') ||
+      templateName.includes('\0')) {
+      return false;
+    }
+
+    // Validate extension
+    if (!templateName.endsWith('.ejs')) {
+      return false;
+    }
+
+    const coreTemplatesDir = this.config.build.core_templates_dir || 'themes-core';
+
+    // Same search order as loadTemplate
+    const searchPaths = [
+      path.join(this.rootDir, coreTemplatesDir, 'templates', templateName),
+      this.themeLoader ? path.join(this.themeLoader.themePath, 'templates', templateName) : null,
+      path.join(this.rootDir, this.config.build.templates_dir, templateName),
+      path.join(this.chironRootDir, this.config.build.templates_dir, templateName)
+    ].filter(Boolean);
+
+    // Check if any of the paths exist
+    return searchPaths.some(searchPath => fs.existsSync(searchPath));
+  }
+
+  /**
    * Load template file from disk with LRU caching
    * Only supports .ejs template format
    * 

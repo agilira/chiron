@@ -29,7 +29,7 @@ Zero runtime. Zero complexity. Just fast, beautiful websites.
 - **Internationalization**: Built-in i18n for UI strings (English, Italian, French + custom)
 - **SEO Optimized**: Complete meta tags, Open Graph, Schema.org
 - **GitHub Pages Ready**: Output optimized for static hosting
-- **Custom Pages**: Support for custom `index.html` and `404.html`
+- **Custom 404 Template**: Customize your 404 page with EJS templates
 - **Analytics**: Optional integration with Google Analytics 4 and GTM
 - **Code Blocks**: Copy-to-clipboard functionality for code snippets
 - **External Scripts**: Integrate external JavaScript libraries and CSS per-page or globally
@@ -571,54 +571,59 @@ Modify `templates/page.html` to customize the layout:
 
 Modify `styles.css` to customize the site's appearance.
 
-## Custom Pages (index.html & 404.html)
+## Custom 404 Page Template
 
-Chiron supports custom HTML pages for `index.html` and `404.html`.
+Chiron automatically generates a 404 page for your site. You can customize it using an EJS template.
 
 ### How It Works
 
-If you create an `index.html` or `404.html` file in the **project root**, the builder will use it instead of generating the page from Markdown:
+The 404 page generation follows the same template priority system as other pages:
 
-```
-chiron/
-├── index.html          ← Custom homepage (optional)
-├── 404.html            ← Custom 404 page (optional)
-├── content/
-│   ├── index.md        ← Ignored if custom index.html exists
-│   └── ...
-└── chiron.config.yaml
+1. **Custom template**: `custom-templates/404.ejs` (highest priority)
+2. **Theme template**: `themes/{your-theme}/templates/404.ejs`
+3. **Fallback**: If no custom template exists, Chiron generates a basic HTML 404 page
+
+### Creating a Custom 404 Template
+
+Create `custom-templates/404.ejs` in your project:
+
+```ejs
+<%- include(pathToRoot + 'components/header.ejs', { page, pathToRoot, config, menus }) %>
+
+<div class="container" style="text-align: center; margin-top: 100px;">
+    <h1 style="font-size: 120px; margin: 0;">404</h1>
+    <h2 style="color: #666;">Page Not Found</h2>
+    <p>The page you're looking for doesn't exist.</p>
+    
+    <div style="margin-top: 30px;">
+        <a href="<%= pathToRoot %>index.html" class="button-primary">
+            Go to Homepage
+        </a>
+    </div>
+    
+    <!-- Optional: Add search functionality -->
+    <div style="margin-top: 50px;">
+        <input type="text" 
+               placeholder="Search documentation..." 
+               style="padding: 10px; width: 300px;" />
+    </div>
+</div>
+
+<%- include(pathToRoot + 'components/footer.ejs', { page, pathToRoot, config }) %>
 ```
 
-### Example
+### Build
 
 ```bash
-# Create a custom homepage
-echo '<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>My Custom Homepage</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <h1>Welcome!</h1>
-    <a href="api-reference.html">View Docs</a>
-    <script src="script.js"></script>
-</body>
-</html>' > index.html
-
-# Build
 npm run build
 ```
 
 Output:
 ```
-Processing content files...
-  Generated: index.html (using custom HTML)
-  Generated: api-reference.html
-  Generated: 404.html (default)
+[INFO] [Builder] Generated: 404.html (using custom 404.ejs template)
 ```
 
-**Note**: The 404.html is automatically generated if it doesn't exist. For more details, see [CUSTOM-PAGES.md](CUSTOM-PAGES.md).
+**Note**: The template has access to all standard page context variables: `page`, `pathToRoot`, `config`, `menus`, and `sidebars`.
 
 ## Customization (custom.css & custom.js)
 
@@ -756,7 +761,6 @@ builder.watch();
 - **[Header Navigation](HEADER-NAVIGATION.md)** - Configure header navigation
 - **[Table of Contents](TABLE-OF-CONTENTS.md)** - Create manual TOC in pages
 - **[Analytics Integration](ANALYTICS.md)** - Integrate Google Analytics and GTM
-- **[Custom Pages](CUSTOM-PAGES.md)** - Create custom HTML pages
 - **[Customization](CUSTOMIZATION.md)** - Customize styles and scripts (custom.css/js)
 - **[External Scripts](EXTERNAL-SCRIPTS.md)** - Load external JavaScript libraries and CSS
 - **[Feature Cards](FEATURE-CARDS.md)** - Create feature cards with SVG

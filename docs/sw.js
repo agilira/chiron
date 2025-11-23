@@ -16,7 +16,7 @@
  * Cache version - changes on every build
  * When this changes, old caches are automatically cleaned up
  */
-const CACHE_VERSION = '78f3d246';
+const CACHE_VERSION = '8444dffc';
 
 /**
  * Cache names with version
@@ -43,15 +43,6 @@ const CRITICAL_ASSETS = [
   '/api-reference.html',
   '/assets/audio-video/index.html',
   '/assets/nivo/index.html',
-  '/blog/author/marco-rossi.html',
-  '/blog/building-modern-documentation.html',
-  '/blog/category/tutorials.html',
-  '/blog/first-post.html',
-  '/blog/index.html',
-  '/blog/second-post.html',
-  '/blog/tag/javascript.html',
-  '/blog/third-post.html',
-  '/blog/welcome-to-chiron.html',
   '/buttons-showcase.html',
   '/components/accordions.html',
   '/components/app.html',
@@ -243,7 +234,6 @@ const STATIC_ASSETS = [
   '/favicon-512.png',
   '/og-image.png',
   '/assets/react-api-explorer.js',
-  '/assets/test-data-island.js',
   '/base-minimal.js',
   '/base.js',
   '/search-client.js',

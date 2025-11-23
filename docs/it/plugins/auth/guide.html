@@ -30,7 +30,7 @@
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://agilira.github.io/chiron/it/pluginsauthguide.html">
+    <meta property="og:url" content="https://agilira.github.io/chiron/it/plugins/auth/guide.html">
     <meta property="og:title" content="Auth Plugin - Configuration Guide">
     <meta property="og:description" content="Step-by-step guide to configure the Authentication Plugin">
     <meta property="og:image" content="https://agilira.github.io/chiron/og-image.png">
@@ -42,7 +42,7 @@
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://agilira.github.io/chiron/it/pluginsauthguide.html">
+    <meta name="twitter:url" content="https://agilira.github.io/chiron/it/plugins/auth/guide.html">
     <meta name="twitter:title" content="Auth Plugin - Configuration Guide">
     <meta name="twitter:description" content="Step-by-step guide to configure the Authentication Plugin">
     <meta name="twitter:image" content="https://agilira.github.io/chiron/og-image.png">
@@ -50,7 +50,7 @@
     <meta name="twitter:creator" content="@agilirax">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://agilira.github.io/chiron/it/pluginsauthguide.html">
+    <link rel="canonical" href="https://agilira.github.io/chiron/it/plugins/auth/guide.html">
     <link rel="alternate" hreflang="it" href="https://agilira.github.io/chiron/it/plugins/auth/guide.html">
     <link rel="alternate" hreflang="x-default" href="https://agilira.github.io/chiron/it/plugins/auth/guide.html">
 
@@ -184,7 +184,7 @@
 }
 </style>
 </head>
-<body id="page-plugins-auth-guide" class="page has-sidebar">
+<body id="page-guide" class="page has-sidebar">
     <!-- Skip Link -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
@@ -794,7 +794,7 @@
                 <!-- Page Content -->
                 <div class="content">
                     <h1 id="authentication-plugin-configuration-guide-3">Authentication Plugin - Configuration Guide</h1><p>This guide will walk you through setting up and configuring the Authentication Plugin.</p>
-<h2 id="installation-15">Installation</h2><p>Install the plugin via npm:</p>
+<h2 id="installation-11">Installation</h2><p>Install the plugin via npm:</p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-built_in">npm</span> install @mylib/plugin-auth</code></pre></div><h2 id="basic-configuration-3">Basic Configuration</h2><h3 id="step-1-initialize-the-plugin-3">Step 1: Initialize the Plugin</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript"><span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">require</span>(<span class="hljs-string">&#039;@mylib/plugin-auth&#039;</span>);
 
 auth.<span class="hljs-title function_">configure</span>({
@@ -853,14 +853,14 @@ OAUTH_CALLBACK_URL=https:<span class="hljs-comment">//yourapp.com/auth/callback<
 
 <span class="hljs-comment"># Session Configuration</span>
 SESSION_SECRET=your_session_secret
-SESSION_DURATION=<span class="hljs-number">3600</span></code></pre></div><h2 id="security-best-practices-9">Security Best Practices</h2><ol>
+SESSION_DURATION=<span class="hljs-number">3600</span></code></pre></div><h2 id="security-best-practices-7">Security Best Practices</h2><ol>
 <li><strong>Always use HTTPS</strong> in production</li>
 <li><strong>Store secrets in environment variables</strong>, never in code</li>
 <li><strong>Implement rate limiting</strong> on authentication endpoints</li>
 <li><strong>Enable 2FA</strong> for sensitive applications</li>
 <li><strong>Regularly rotate secrets</strong> and tokens</li>
 </ol>
-<h2 id="troubleshooting-17">Troubleshooting</h2><h3 id="common-issues-3">Common Issues</h3><p><strong>Issue: &quot;Invalid callback URL&quot;</strong></p>
+<h2 id="troubleshooting-7">Troubleshooting</h2><h3 id="common-issues-3">Common Issues</h3><p><strong>Issue: &quot;Invalid callback URL&quot;</strong></p>
 <ul>
 <li>Ensure your callback URL matches exactly what&#39;s configured in your OAuth provider</li>
 <li>Check for trailing slashes</li>
@@ -875,7 +875,7 @@ SESSION_DURATION=<span class="hljs-number">3600</span></code></pre></div><h2 id=
 <li>Check error event listeners</li>
 <li>Enable debug logging: <code>auth.setLogLevel(&#39;debug&#39;)</code></li>
 </ul>
-<h2 id="next-steps-11">Next Steps</h2><ul>
+<h2 id="next-steps-3">Next Steps</h2><ul>
 <li>Read the <a href="api-reference.html">API Reference</a> for detailed method documentation</li>
 <li>Check out <a href="https://github.com/example/auth-plugin/tree/main/examples" target="_blank" rel="noopener noreferrer">example implementations</a></li>
 <li>Join our <a href="https://forum.example.com" target="_blank" rel="noopener noreferrer">community forum</a> for support</li>

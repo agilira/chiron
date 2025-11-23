@@ -51,8 +51,8 @@
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://agilira.github.io/chiron/react-demo.html">
-    <link rel="alternate" hreflang="en" href="https://agilira.github.io/chiron/en/react-demo.html">
-    <link rel="alternate" hreflang="x-default" href="https://agilira.github.io/chiron/en/react-demo.html">
+    <link rel="alternate" hreflang="en" href="https://agilira.github.io/chiron/react-demo.html">
+    <link rel="alternate" hreflang="x-default" href="https://agilira.github.io/chiron/react-demo.html">
 
 <!-- Favicon -->
 <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png">
@@ -808,13 +808,13 @@
 
                 <!-- Page Content -->
                 <div class="content">
-                    <h1 id="interactive-api-explorer-2">Interactive API Explorer</h1><blockquote>
+                    <h1 id="interactive-api-explorer-1">Interactive API Explorer</h1><blockquote>
 <p><strong>Live Demo</strong>: Test API endpoints directly in your browser with this React-powered interactive tool.</p>
 </blockquote>
 <p>This page demonstrates how Chiron enables rich interactivity <strong>only when you need it</strong> while keeping the rest of your documentation fast and lightweight.</p>
 <p><strong>Scroll down to see the lazy loading in action!</strong> The React app below won&#39;t load until you scroll near it.</p>
 <hr>
-<h2 id="what-is-lazy-loading-2">What is Lazy Loading?</h2><p>Instead of loading 130KB of React code immediately when you open this page, Chiron uses <strong>Intersection Observer</strong> to load the app only when it enters your viewport.</p>
+<h2 id="what-is-lazy-loading-1">What is Lazy Loading?</h2><p>Instead of loading 130KB of React code immediately when you open this page, Chiron uses <strong>Intersection Observer</strong> to load the app only when it enters your viewport.</p>
 <p><strong>Benefits:</strong></p>
 <ul>
 <li>⚡ <strong>Faster initial load</strong> - Page loads in ~50ms instead of ~200ms</li>
@@ -823,7 +823,7 @@
 <li>🚀 <strong>Better UX</strong> - Users who don&#39;t scroll down don&#39;t pay the cost</li>
 </ul>
 <hr>
-<h2 id="try-it-yourself-2">Try It Yourself</h2><p><strong>Instructions:</strong></p>
+<h2 id="try-it-yourself-1">Try It Yourself</h2><p><strong>Instructions:</strong></p>
 <ol>
 <li>Open your browser&#39;s DevTools (F12)</li>
 <li>Go to the Network tab</li>
@@ -843,8 +843,8 @@
 </div>
 
 <hr>
-<h2 id="how-lazy-loading-works-2">How Lazy Loading Works</h2><p>This interactive API explorer is a <strong>real React application</strong> that loads <strong>only when you scroll to it</strong>.</p>
-<h3 id="1-intersection-observer-magic-2">1. Intersection Observer Magic</h3><p>Chiron watches for when the app container enters the viewport:</p>
+<h2 id="how-lazy-loading-works-1">How Lazy Loading Works</h2><p>This interactive API explorer is a <strong>real React application</strong> that loads <strong>only when you scroll to it</strong>.</p>
+<h3 id="1-intersection-observer-magic-1">1. Intersection Observer Magic</h3><p>Chiron watches for when the app container enters the viewport:</p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript"><span class="hljs-keyword">const</span> observer = <span class="hljs-keyword">new</span> <span class="hljs-title function_">IntersectionObserver</span>((entries) =&gt; {
   <span class="hljs-keyword">if</span> (entries[<span class="hljs-number">0</span>].isIntersecting) {
     <span class="hljs-comment">// User scrolled to app - load it now!</span>
@@ -852,12 +852,12 @@
   }
 }, {
   rootMargin: <span class="hljs-string">&#039;200px&#039;</span> <span class="hljs-comment">// Start loading 200px before visible</span>
-});</code></pre></div><h3 id="2-simple-component-syntax-2">2. Simple Component Syntax</h3><p>In your Markdown, just use the <code>&lt;App&gt;</code> component:</p>
+});</code></pre></div><h3 id="2-simple-component-syntax-1">2. Simple Component Syntax</h3><p>In your Markdown, just use the <code>&lt;App&gt;</code> component:</p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-jsx">&lt;App framework=<span class="hljs-string">&quot;react&quot;</span> 
      src=<span class="hljs-string">&quot;assets/my-app.js&quot;</span> 
      deps=<span class="hljs-string">&quot;react,react-dom&quot;</span>&gt;
   Custom loading placeholder...
-&lt;/App&gt;</code></pre></div><h3 id="3-dynamic-script-loading-2">3. Dynamic Script Loading</h3><p>When the app enters viewport, Chiron:</p>
+&lt;/App&gt;</code></pre></div><h3 id="3-dynamic-script-loading-1">3. Dynamic Script Loading</h3><p>When the app enters viewport, Chiron:</p>
 <ol>
 <li>Shows loading spinner</li>
 <li>Loads React &amp; ReactDOM in parallel</li>
@@ -865,7 +865,7 @@
 <li>Dispatches <code>lazy-app-loaded</code> event</li>
 <li>Your app initializes!</li>
 </ol>
-<h3 id="4-framework-agnostic-2">4. Framework Agnostic</h3><p>Works with <strong>any framework</strong>:</p>
+<h3 id="4-framework-agnostic-1">4. Framework Agnostic</h3><p>Works with <strong>any framework</strong>:</p>
 <ul>
 <li>React</li>
 <li>Vue</li>
@@ -875,7 +875,7 @@
 <li>Or anything from CDN!</li>
 </ul>
 <hr>
-<h2 id="performance-comparison-2">Performance Comparison</h2><div class="table-wrapper">
+<h2 id="performance-comparison-1">Performance Comparison</h2><div class="table-wrapper">
         <table>
           <thead><tr>
 <th>Metric</th>
@@ -907,7 +907,7 @@
         </table>
       </div><p><strong>Key Insight</strong>: Users who never scroll to the app don&#39;t pay the React cost!</p>
 <hr>
-<h2 id="real-world-use-cases-2">Real-World Use Cases</h2><p>Perfect for:</p>
+<h2 id="real-world-use-cases-1">Real-World Use Cases</h2><p>Perfect for:</p>
 <ul>
 <li>🔧 <strong>API Documentation</strong> - Interactive testing tools</li>
 <li>📝 <strong>Form Builders</strong> - Complex configuration generators</li>
@@ -917,7 +917,7 @@
 <li>🎓 <strong>Interactive Tutorials</strong> - Step-by-step guides</li>
 </ul>
 <hr>
-<h2 id="the-code-2">The Code</h2><p>The API explorer uses React hooks:</p>
+<h2 id="the-code-1">The Code</h2><p>The API explorer uses React hooks:</p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript"><span class="hljs-keyword">const</span> { useState } = React;
 
 <span class="hljs-keyword">function</span> <span class="hljs-title function_">APIExplorer</span>() {
@@ -942,13 +942,13 @@ document.<span class="hljs-title function_">addEventListener</span>(<span class=
     root.<span class="hljs-title function_">render</span>(React.<span class="hljs-title function_">createElement</span>(APIExplorer));
   }
 });</code></pre></div><hr>
-<h2 id="try-different-frameworks-2">Try Different Frameworks</h2><h3 id="react-this-page-2">React (This Page)</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-jsx">&lt;App framework=<span class="hljs-string">&quot;react&quot;</span> 
+<h2 id="try-different-frameworks-1">Try Different Frameworks</h2><h3 id="react-this-page-1">React (This Page)</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-jsx">&lt;App framework=<span class="hljs-string">&quot;react&quot;</span> 
      src=<span class="hljs-string">&quot;assets/react-app.js&quot;</span> 
-     deps=<span class="hljs-string">&quot;react,react-dom&quot;</span> /&gt;</code></pre></div><h3 id="vue-2">Vue</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-jsx">&lt;App framework=<span class="hljs-string">&quot;vue&quot;</span> 
+     deps=<span class="hljs-string">&quot;react,react-dom&quot;</span> /&gt;</code></pre></div><h3 id="vue-1">Vue</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-jsx">&lt;App framework=<span class="hljs-string">&quot;vue&quot;</span> 
      src=<span class="hljs-string">&quot;assets/vue-app.js&quot;</span> 
-     deps=<span class="hljs-string">&quot;https://unpkg.com/vue@3&quot;</span> /&gt;</code></pre></div><h3 id="svelte-2">Svelte</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-jsx">&lt;App framework=<span class="hljs-string">&quot;svelte&quot;</span> 
+     deps=<span class="hljs-string">&quot;https://unpkg.com/vue@3&quot;</span> /&gt;</code></pre></div><h3 id="svelte-1">Svelte</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-jsx">&lt;App framework=<span class="hljs-string">&quot;svelte&quot;</span> 
      src=<span class="hljs-string">&quot;assets/svelte-app.js&quot;</span> /&gt;</code></pre></div><hr>
-<h2 id="the-chiron-philosophy-2">The Chiron Philosophy</h2><p>This demo proves you can have:</p>
+<h2 id="the-chiron-philosophy-1">The Chiron Philosophy</h2><p>This demo proves you can have:</p>
 <ul>
 <li>⚡ <strong>Rich interactivity</strong> where you need it</li>
 <li>🚀 <strong>Blazing speed</strong> everywhere else</li>
@@ -957,7 +957,7 @@ document.<span class="hljs-title function_">addEventListener</span>(<span class=
 </ul>
 <p><strong>Use what you need, where you need it.</strong> That&#39;s Chiron.</p>
 <hr>
-<h2 id="see-also-5">See Also</h2><ul>
+<h2 id="see-also-3">See Also</h2><ul>
 <li><a href="external-scripts-demo.html">External Scripts Documentation</a> - Mermaid, Chart.js, and more</li>
 <li><a href="custom-template-test.html">Custom Templates</a> - Full page customization</li>
 <li><a href="showcase.html#performance">Performance</a> - Why speed matters</li>

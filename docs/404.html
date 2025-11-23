@@ -90,7 +90,7 @@
 
 
 </head>
-<body id="page-404" class="page has-sidebar">
+<body id="page-404" class="page has-sidebar page-404">
     <!-- Skip Link -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
@@ -567,165 +567,20 @@
 </header>
 
 
-    <!-- Main Layout -->
-    <div class="layout">
-        
-        <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar" role="complementary" aria-label="Sidebar">
-            <!-- Mobile Header Navigation -->
-            <nav class="mobile-header-nav" aria-label="Main navigation (mobile)">
-                <a href="./index.html" class="nav-item">Home</a>
-                    <div class="nav-section">
-                      <button class="nav-section-title collapsible" aria-expanded="false">
-                        <span class="nav-section-title-text">Docs</span>
-                        <svg class="nav-section-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                          <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                      </button>
-                      <ul class="nav-list">
-                        <li><a href="./showcase.html" class="nav-item">Getting Started</a></li>
-                      <li><a href="./custom-template-test.html" class="nav-item">Templates</a></li>
-                      <li class="menu-divider"><hr /></li>
-                      <li><a href="./external-scripts-demo.html" class="nav-item">External Scripts</a></li>
-                      <li><a href="./forms-demo.html" class="nav-item">Forms</a></li>
-                      </ul>
-                    </div>
-                    <a href="./react-demo.html" class="nav-item">React Demo</a>
-            </nav>
-            
-            <!-- Sidebar Navigation -->
-            <nav class="sidebar-nav" aria-label=&#34;aria_nav_sidebar&#34;>
-                <div class="nav-section">
-                    <div class="nav-section-title">Documentation</div>
-                    <ul class="nav-list">
-                        <li><a href="./index.html" class="nav-item">Overview</a></li>
-                        <li><a href="./react-demo.html" class="nav-item">React Demo</a></li>
-                        <li><a href="./tabs-demo.html" class="nav-item">Tabs Demo</a></li>
-                        <li><a href="./api-reference.html" class="nav-item">API Reference</a></li>
-                        <li><a href="./showcase.html" class="nav-item">UI Showcase</a></li>
-                    </ul>
-                </div>
-                <div class="nav-section expanded">
-                    <div class="nav-section-title collapsible" role="button" tabindex="0" aria-expanded="true">
-                        <span class="nav-section-title-text">Plugins</span>
-                        <svg class="nav-section-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </div>
-                    <ul class="nav-list">
-                        <li><a href="./plugins/index.html" class="nav-item">Plugins Overview</a></li>
-                        <li><a href="./plugins/auth/index.html" class="nav-item">Authentication Plugin</a></li>
-                        <li><a href="./plugins/auth/api-reference.html" class="nav-item">Auth API Reference</a></li>
-                        <li><a href="./plugins/auth/guide.html" class="nav-item">Auth Configuration</a></li>
-                        <li><a href="./plugins/cache/index.html" class="nav-item">Cache Plugin</a></li>
-                        <li><a href="./plugins/cache/api-reference.html" class="nav-item">Cache API Reference</a></li>
-                    </ul>
-                </div>
-                <div class="nav-section">
-                    <div class="nav-section-title collapsible" role="button" tabindex="0" aria-expanded="false">
-                        <span class="nav-section-title-text">Legal</span>
-                        <svg class="nav-section-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </div>
-                    <ul class="nav-list">
-                        <li><a href="./privacy-policy.html" class="nav-item">Privacy Policy</a></li>
-                        <li><a href="./terms-of-service.html" class="nav-item">Terms of Service</a></li>
-                        <li><a href="./cookie-policy.html" class="nav-item">Cookie Policy</a></li>
-                    </ul>
-                </div>
-                <div class="nav-section expanded">
-                    <div class="nav-section-title collapsible" role="button" tabindex="0" aria-expanded="true">
-                        <span class="nav-section-title-text">Resources</span>
-                        <svg class="nav-section-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </div>
-                    <ul class="nav-list">
-                        <li><a href="https://github.com/agilira/chiron" class="nav-item sidebar-github" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
-                        <li><a href="./CHANGELOG.html" class="nav-item">Changelog</a></li>
-                        <li><a href="./ACCESSIBILITY.html" class="nav-item sidebar-accessibility">Accessibility Guide</a></li>
-                    </ul>
-                </div>
-            </nav>
-        </aside>
-        
-
+    <!-- Main Layout (no sidebar for 404) -->
+    <div class="layout no-sidebar">
         <!-- Main Content -->
         <main class="main-content" id="main-content" role="main">
             <div class="content-container">
-                
-<nav class="breadcrumb" aria-label="Breadcrumb">
-    <ol class="breadcrumb-list">
-        
-            
-            
-            
-                
-                <li class="breadcrumb-item breadcrumb-company">
-                    <a href="https://github.com/agilira" target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;>AGILira</a>
-                </li>
-            
-
-            
-                <li class="breadcrumb-separator" aria-hidden="true">/</li>
-            
-        
-            
-            
-            
-                
-                <li class="breadcrumb-item breadcrumb-project">
-                    <a href="https://github.com/agilira/chiron" target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;>Chiron</a>
-                </li>
-            
-
-            
-                <li class="breadcrumb-separator" aria-hidden="true">/</li>
-            
-        
-            
-            
-            
-                
-                <li class="breadcrumb-item breadcrumb-home">
-                    <a href="./index.html">Documentation</a>
-                </li>
-            
-
-            
-                <li class="breadcrumb-separator" aria-hidden="true">/</li>
-            
-        
-            
-            
-            
-                <li class="breadcrumb-item current" aria-current=&#34;page&#34;>
-                    404 - Page Not Found
-                </li>
-            
-
-            
-        
-    </ol>
-</nav>
-
-
-
-                <!-- Page Content -->
-                <div class="content">
-                    
-          <div style="text-align: center; padding: 4rem 2rem;">
-            <h1 style="font-size: 6rem; font-weight: 700; color: var(--text-primary); margin: 0;">404</h1>
-            <h2 style="font-size: 2rem; font-weight: 600; color: var(--text-primary); margin: 1rem 0;">Page Not Found</h2>
-            <p style="font-size: 1.125rem; color: var(--text-secondary); margin: 1rem 0 2rem;">The page you are looking for doesn't exist or has been moved.</p>
-            <a href="index.html" style="display: inline-block; padding: 0.75rem 2rem; background: var(--primary-600); color: white; text-decoration: none; border-radius: 8px; font-weight: 500; transition: background 0.2s;">Go to Homepage</a>
-          </div>
-        
+                <!-- 404 Content -->
+                <div class="content content-404">
+                    <div style="text-align: center; padding: 4rem 2rem;">
+                        <h1 style="font-size: 6rem; font-weight: 700; color: var(--text-primary); margin: 0;">404</h1>
+                        <h2 style="font-size: 2rem; font-weight: 600; color: var(--text-primary); margin: 1rem 0;">Page Not Found</h2>
+                        <p style="font-size: 1.125rem; color: var(--text-secondary); margin: 1rem 0 2rem;">The page you are looking for doesn't exist or has been moved.</p>
+                        <a href="./index.html" style="display: inline-block; padding: 0.75rem 2rem; background: var(--primary-600); color: white; text-decoration: none; border-radius: 8px; font-weight: 500; transition: background 0.2s;">Go to Homepage</a>
+                    </div>
                 </div>
-
-                <!-- Pagination (Previous/Next) -->
-                
             </div>
         </main>
     </div>
@@ -760,10 +615,8 @@
     </div>
 </footer>
 
-
-    <!-- Mobile Overlay -->
-    <div class="mobile-overlay" id="mobileOverlay"></div>
-
+    
+    <!-- Scroll to Top Button -->
     
 <!-- Scroll to Top Button -->
 <button 
@@ -777,6 +630,7 @@
 </button>
 
 
+    <!-- Search Modal -->
     
 <!-- Search Modal -->
 <div class="search-modal" id="searchModal" aria-hidden="true">
@@ -826,166 +680,30 @@
     </div>
 </div>
 
-
+    
     <!-- Scripts -->
+    () => {
+        let output = '<!-- Scripts -->\n';
+        output += '\n\n';
 
+        // i18n client config (if present)
+        if (i18nClientConfig && i18nClientConfig.trim()) {
+          output += '<!-- i18n Configuration -->\n';
+          output += '<script>\n';
+          output += `${i18nClientConfig}\n`;
+          output += '</script>\n\n';
+        }
 
-<!-- i18n Configuration -->
-<script>
-// i18n Configuration
-window.CHIRON_I18N = {
-  "_comment": "Default Theme Strings - Used by theme templates only",
-  "_comment_search": "=== Search Modal (Theme UI) ===",
-  "search_no_results": "No results found",
-  "search_loading": "Loading...",
-  "search_error": "Search unavailable",
-  "search_timeout": "Search request timeout",
-  "_comment_nav": "=== Navigation (Theme) ===",
-  "skip_to_content": "Skip to main content",
-  "_comment_theme": "=== Theme Toggle ===",
-  "theme_switch_success": "Switched to {theme} mode",
-  "_comment_sidebar": "=== Sidebar ===",
-  "sidebar_toggle_aria": "Toggle sidebar navigation",
-  "_comment_toc": "=== Table of Contents ===",
-  "toc_title": "On This Page",
-  "toc_aria": "Table of contents",
-  "_comment_code": "=== Code Blocks ===",
-  "code_copy_failed": "Failed to copy code",
-  "code_copy_success": "Code copied to clipboard!",
-  "_comment_infobox": "=== Info Boxes ===",
-  "aria_infobox_close": "Close",
-  "_comment_embed": "=== Embeds ===",
-  "embed_loading": "Loading...",
-  "embed_view_tweet": "View tweet",
-  "embed_content_loaded": "Content loaded",
-  "_comment_aria_core": "=== Core ARIA Labels ===",
-  "aria_search": "Search documentation",
-  "search_modal_title": "Search Documentation",
-  "search_modal_close": "Close search",
-  "search_placeholder": "Search documentation...",
-  "search_clear": "Clear search",
-  "search_results_label": "Search results",
-  "nav_main": "Main navigation",
-  "nav_home": "Home",
-  "nav_previous": "Previous",
-  "nav_next": "Next",
-  "nav_menu": "Menu",
-  "nav_close": "Close",
-  "nav_expand": "Expand",
-  "nav_collapse": "Collapse",
-  "_comment_nav_sidebar": "=== Sidebar Navigation Labels ===",
-  "nav_section_documentation": "Documentation",
-  "nav_section_getting_started": "Getting Started",
-  "nav_section_guides": "Guides",
-  "nav_section_api": "API Reference",
-  "nav_section_plugins": "Plugins",
-  "nav_section_legal": "Legal",
-  "nav_section_resources": "Resources",
-  "nav_getting_started": "Getting Started",
-  "nav_installation": "Installation",
-  "nav_quick_start": "Quick Start",
-  "nav_configuration": "Configuration",
-  "nav_overview": "Overview",
-  "nav_api_reference": "API Reference",
-  "nav_react_demo": "React Demo",
-  "nav_tabs_demo": "Tabs Demo",
-  "nav_ui_showcase": "UI Showcase",
-  "nav_plugins_overview": "Plugins Overview",
-  "nav_auth_plugin": "Authentication Plugin",
-  "nav_auth_api": "Auth API Reference",
-  "nav_auth_config": "Auth Configuration",
-  "nav_cache_plugin": "Cache Plugin",
-  "nav_cache_api": "Cache API Reference",
-  "nav_privacy_policy": "Privacy Policy",
-  "nav_terms_of_service": "Terms of Service",
-  "nav_cookie_policy": "Cookie Policy",
-  "nav_github_repo": "GitHub Repository",
-  "nav_changelog": "Changelog",
-  "nav_accessibility": "Accessibility Guide",
-  "_comment_theme_ui": "=== Theme UI Elements ===",
-  "theme_toggle_aria": "Toggle dark mode",
-  "theme_toggle_aria_dark": "Switch to light mode",
-  "theme_toggle_aria_light": "Switch to dark mode",
-  "theme_light": "Light theme",
-  "theme_dark": "Dark theme",
-  "_comment_sidebar_ui": "=== Sidebar UI ===",
-  "sidebar_aria_hidden_true": "Sidebar hidden",
-  "sidebar_aria_hidden_false": "Sidebar visible",
-  "sidebar_aria_expanded_true": "Sidebar expanded",
-  "sidebar_aria_expanded_false": "Sidebar collapsed",
-  "_comment_code_ui": "=== Code Blocks UI ===",
-  "code_copy": "Copy code",
-  "code_copied": "Copied!",
-  "_comment_toast": "=== Toast Messages ===",
-  "toast_success": "Success",
-  "toast_error": "Error",
-  "toast_warning": "Warning",
-  "toast_info": "Info",
-  "_comment_cookie": "=== Cookie Consent ===",
-  "cookie_message": "This site uses cookies to ensure you get the best experience.",
-  "cookie_accept": "Accept",
-  "cookie_decline": "Decline",
-  "cookie_learn_more": "Learn more",
-  "_comment_aria": "=== Theme ARIA Labels ===",
-  "aria_search_input": "Search documentation",
-  "aria_search_close": "Close search",
-  "aria_search_clear": "Clear search",
-  "aria_search_results": "Search results",
-  "aria_nav_main": "Main navigation",
-  "aria_nav_previous": "Previous page",
-  "aria_nav_next": "Next page",
-  "aria_close": "Close",
-  "aria_expand": "Expand section",
-  "aria_collapse": "Collapse section",
-  "aria_menu": "Navigation menu",
-  "aria_code_copy": "Copy code to clipboard",
-  "aria_language_switcher": "Language selection",
-  "aria_language_current": "Current language",
-  "aria_language_switch_to": "Switch to {language}",
-  "_comment_footer": "=== Footer ===",
-  "footer_copyright": "All rights reserved",
-  "footer_legal": "Legal",
-  "footer_privacy": "Privacy Policy",
-  "footer_terms": "Terms of Service",
-  "_comment_pagination": "=== Pagination ===",
-  "pagination_previous": "Previous",
-  "pagination_next": "Next",
-  "pagination_page": "Page",
-  "_comment_errors": "=== Error Messages ===",
-  "error_generic": "An error occurred",
-  "error_not_found": "Page not found",
-  "error_network": "Network error",
-  "error_timeout": "Request timeout",
-  "_comment_success": "=== Success Messages ===",
-  "success_generic": "Operation successful",
-  "success_saved": "Changes saved",
-  "success_updated": "Updated successfully",
-  "_comment_loading": "=== Loading States ===",
-  "loading": "Loading...",
-  "loading_content": "Loading content...",
-  "loading_search": "Searching...",
-  "_comment_misc": "=== Miscellaneous ===",
-  "read_more": "Read more",
-  "show_more": "Show more",
-  "show_less": "Show less",
-  "edit_page": "Edit this page",
-  "last_updated": "Last updated",
-  "table_of_contents": "Table of Contents",
-  "on_this_page": "On This Page",
-  "_comment_language": "=== Language Switcher ===",
-  "language_english": "English",
-  "language_italian": "Italiano",
-  "language_french": "Français",
-  "language_spanish": "Español",
-  "language_german": "Deutsch",
-  "language_switch": "Switch language",
-  "language_current": "Current language"
-};
-window.CHIRON_LOCALE = 'en';
-</script>
+        // Component scripts placeholder (filled after component detection)
+        output += '<script src="./base.js"></script>\n\n';
 
-<script src="./base.js"></script>
+        // External scripts (from frontmatter or page config)
+        const externalScripts = this.renderExternalScripts(context.page);
+        if (externalScripts) {
+          output += externalScripts;
+        }
 
-
+        return output;
+      }
 </body>
 </html>

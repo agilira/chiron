@@ -763,8 +763,8 @@
 
                 <!-- Page Content -->
                 <div class="content">
-                    <h1 id="api-reference-11">API Reference</h1><p>This page documents the Chiron builder API and configuration options.</p>
-<h2 id="table-of-contents-5">Table of Contents</h2><ul>
+                    <h1 id="api-reference-3">API Reference</h1><p>This page documents the Chiron builder API and configuration options.</p>
+<h2 id="table-of-contents-3">Table of Contents</h2><ul>
 <li><a href="#configuration-file">Configuration File</a><ul>
 <li><a href="#project-configuration">Project Configuration</a></li>
 <li><a href="#branding-configuration">Branding Configuration</a></li>
@@ -773,13 +773,13 @@
 <li><a href="#build-commands">Build Commands</a></li>
 <li><a href="#template-variables">Template Variables</a></li>
 </ul>
-<h2 id="configuration-file-5">Configuration File</h2><p>The <code>chiron.config.yaml</code> file is the heart of your documentation site.</p>
-<h3 id="project-configuration-5">Project Configuration</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">project:
+<h2 id="configuration-file-3">Configuration File</h2><p>The <code>chiron.config.yaml</code> file is the heart of your documentation site.</p>
+<h3 id="project-configuration-3">Project Configuration</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">project:
   name: string          <span class="hljs-comment"># Project name</span>
   title: string         <span class="hljs-comment"># Page title (for &lt;title&gt; tag)</span>
   description: string   <span class="hljs-comment"># Project description</span>
   language: string      <span class="hljs-comment"># Language code (e.g., &#039;en&#039;, &#039;it&#039;)</span>
-  base_url: string      <span class="hljs-comment"># Full base URL of your site</span></code></pre></div><h3 id="branding-configuration-5">Branding Configuration</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">branding:
+  base_url: string      <span class="hljs-comment"># Full base URL of your site</span></code></pre></div><h3 id="branding-configuration-3">Branding Configuration</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">branding:
   company: string       <span class="hljs-comment"># Company/organization name</span>
   company_url: string   <span class="hljs-comment"># Company website URL</span>
   tagline: string       <span class="hljs-comment"># Project tagline</span>
@@ -789,7 +789,7 @@
     dark: string        <span class="hljs-comment"># Logo for dark theme</span>
     alt: string         <span class="hljs-comment"># Alt text for logo</span>
     footer_light: string
-    footer_dark: string</code></pre></div><h3 id="navigation-configuration-5">Navigation Configuration</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">navigation:
+    footer_dark: string</code></pre></div><h3 id="navigation-configuration-3">Navigation Configuration</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">navigation:
   header:
     - label: string
       url: string
@@ -808,7 +808,7 @@
     items:
       - label: string
         url: string
-        external: boolean</code></pre></div><h3 id="seo-configuration-5">SEO Configuration</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">seo:
+        external: boolean</code></pre></div><h3 id="seo-configuration-3">SEO Configuration</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">seo:
   keywords:
     - string
   
@@ -824,7 +824,7 @@
   twitter:
     card: string
     site: string
-    creator: string</code></pre></div><h3 id="features-toggle-5">Features Toggle</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">features:
+    creator: string</code></pre></div><h3 id="features-toggle-3">Features Toggle</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">features:
   search: boolean
   code_copy: boolean
   table_of_contents: boolean
@@ -833,7 +833,7 @@
   dark_mode: boolean
   print_styles: boolean
   scroll_to_top: boolean
-  syntax_highlighting: boolean</code></pre></div><h3 id="build-configuration-5">Build Configuration</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">build:
+  syntax_highlighting: boolean</code></pre></div><h3 id="build-configuration-3">Build Configuration</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">build:
   output_dir: string    <span class="hljs-comment"># Output directory (default: &#039;docs&#039;)</span>
   content_dir: string   <span class="hljs-comment"># Content directory (default: &#039;content&#039;)</span>
   assets_dir: string    <span class="hljs-comment"># Assets directory (default: &#039;assets&#039;)</span>
@@ -849,7 +849,7 @@
   
   robots:
     enabled: boolean
-    allow_all: boolean</code></pre></div><h2 id="markdown-frontmatter-5">Markdown Frontmatter</h2><p>Each Markdown file can include YAML frontmatter:</p>
+    allow_all: boolean</code></pre></div><h2 id="markdown-frontmatter-3">Markdown Frontmatter</h2><p>Each Markdown file can include YAML frontmatter:</p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-markdown">---
 title: Page Title
 description: Page description
@@ -858,7 +858,7 @@ date: <span class="hljs-number">2025</span>-<span class="hljs-number">01</span>-
 custom_field: Custom value
 ---
 
-<span class="hljs-comment"># Content starts here</span></code></pre></div><h3 id="supported-frontmatter-fields-5">Supported Frontmatter Fields</h3><div class="table-wrapper">
+<span class="hljs-comment"># Content starts here</span></code></pre></div><h3 id="supported-frontmatter-fields-3">Supported Frontmatter Fields</h3><div class="table-wrapper">
         <table>
           <thead><tr>
 <th>Field</th>
@@ -888,11 +888,11 @@ custom_field: Custom value
 </tr>
 </tbody>
         </table>
-      </div><h2 id="cli-commands-5">CLI Commands</h2><h3 id="build-5">Build</h3><p>Build the documentation site:</p>
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-built_in">npm</span> run build</code></pre></div><h3 id="watch-mode-9">Watch Mode</h3><p>Build and watch for changes:</p>
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-built_in">npm</span> run dev</code></pre></div><h3 id="preview-9">Preview</h3><p>Preview the built site:</p>
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-built_in">npm</span> run preview</code></pre></div><h3 id="clean-5">Clean</h3><p>Remove the output directory:</p>
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-built_in">npm</span> run clean</code></pre></div><h2 id="programmatic-api-5">Programmatic API</h2><p>You can also use Chiron programmatically:</p>
+      </div><h2 id="cli-commands-3">CLI Commands</h2><h3 id="build-3">Build</h3><p>Build the documentation site:</p>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-built_in">npm</span> run build</code></pre></div><h3 id="watch-mode-6">Watch Mode</h3><p>Build and watch for changes:</p>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-built_in">npm</span> run dev</code></pre></div><h3 id="preview-6">Preview</h3><p>Preview the built site:</p>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-built_in">npm</span> run preview</code></pre></div><h3 id="clean-3">Clean</h3><p>Remove the output directory:</p>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-built_in">npm</span> run clean</code></pre></div><h2 id="programmatic-api-3">Programmatic API</h2><p>You can also use Chiron programmatically:</p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript"><span class="hljs-keyword">const</span> ChironBuilder = <span class="hljs-title function_">require</span>(<span class="hljs-string">&#039;./builder&#039;</span>);
 
 <span class="hljs-keyword">const</span> builder = <span class="hljs-keyword">new</span> <span class="hljs-title function_">ChironBuilder</span>(<span class="hljs-string">&#039;chiron.config.yaml&#039;</span>);
@@ -901,36 +901,36 @@ custom_field: Custom value
 <span class="hljs-keyword">await</span> builder.<span class="hljs-title function_">build</span>();
 
 <span class="hljs-comment">// Watch mode</span>
-builder.<span class="hljs-title function_">watch</span>();</code></pre></div><h2 id="template-variables-5">Template Variables</h2><p>When creating custom templates, these variables are available:</p>
-<h3 id="page-variables-5">Page Variables</h3><ul>
+builder.<span class="hljs-title function_">watch</span>();</code></pre></div><h2 id="template-variables-3">Template Variables</h2><p>When creating custom templates, these variables are available:</p>
+<h3 id="page-variables-3">Page Variables</h3><ul>
 <li><code>{{PAGE_TITLE}}</code> - Page title</li>
 <li><code>{{PAGE_LANG}}</code> - Page language</li>
 <li><code>{{PAGE_CONTENT}}</code> - Rendered page content</li>
 </ul>
-<h3 id="project-variables-5">Project Variables</h3><ul>
+<h3 id="project-variables-3">Project Variables</h3><ul>
 <li><code>{{PROJECT_NAME}}</code> - Project name</li>
 <li><code>{{PROJECT_DESCRIPTION}}</code> - Project description</li>
 <li><code>{{COMPANY_NAME}}</code> - Company name</li>
 <li><code>{{COMPANY_URL}}</code> - Company URL</li>
 </ul>
-<h3 id="github-variables-5">GitHub Variables</h3><ul>
+<h3 id="github-variables-3">GitHub Variables</h3><ul>
 <li><code>{{GITHUB_OWNER}}</code> - GitHub repository owner</li>
 <li><code>{{GITHUB_REPO}}</code> - GitHub repository name</li>
 <li><code>{{GITHUB_URL}}</code> - Full GitHub repository URL</li>
 </ul>
-<h3 id="navigation-variables-5">Navigation Variables</h3><ul>
+<h3 id="navigation-variables-3">Navigation Variables</h3><ul>
 <li><code>{{NAVIGATION}}</code> - Rendered sidebar navigation</li>
 <li><code>{{BREADCRUMB}}</code> - Rendered breadcrumb</li>
 </ul>
-<h3 id="meta-variables-5">Meta Variables</h3><ul>
+<h3 id="meta-variables-3">Meta Variables</h3><ul>
 <li><code>{{META_TAGS}}</code> - All meta tags (SEO, OG, Twitter)</li>
 <li><code>{{STRUCTURED_DATA}}</code> - JSON-LD structured data</li>
 </ul>
-<h2 id="markdown-extensions-5">Markdown Extensions</h2><p>Chiron supports GitHub Flavored Markdown with these extensions:</p>
-<h3 id="code-blocks-with-copy-button-5">Code Blocks with Copy Button</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript"><span class="hljs-comment">// Code blocks automatically get a copy button</span>
+<h2 id="markdown-extensions-3">Markdown Extensions</h2><p>Chiron supports GitHub Flavored Markdown with these extensions:</p>
+<h3 id="code-blocks-with-copy-button-3">Code Blocks with Copy Button</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript"><span class="hljs-comment">// Code blocks automatically get a copy button</span>
 <span class="hljs-keyword">function</span> <span class="hljs-title function_">example</span>() {
   <span class="hljs-keyword">return</span> <span class="hljs-string">&#039;Hello, World!&#039;</span>;
-}</code></pre></div><h3 id="tables-9">Tables</h3><p>Tables are automatically wrapped in a responsive container:</p>
+}</code></pre></div><h3 id="tables-6">Tables</h3><p>Tables are automatically wrapped in a responsive container:</p>
 <div class="table-wrapper">
         <table>
           <thead><tr>
@@ -946,9 +946,9 @@ builder.<span class="hljs-title function_">watch</span>();</code></pre></div><h2
 </tr>
 </tbody>
         </table>
-      </div><h3 id="external-links-5">External Links</h3><p>External links automatically get <code>target=&quot;_blank&quot;</code> and <code>rel=&quot;noopener&quot;</code>:</p>
+      </div><h3 id="external-links-3">External Links</h3><p>External links automatically get <code>target=&quot;_blank&quot;</code> and <code>rel=&quot;noopener&quot;</code>:</p>
 <p><a href="https://example.com" target="_blank" rel="noopener noreferrer">External Link</a></p>
-<h3 id="syntax-highlighting-8">Syntax Highlighting</h3><p>Supported languages:</p>
+<h3 id="syntax-highlighting-3">Syntax Highlighting</h3><p>Supported languages:</p>
 <ul>
 <li>JavaScript/TypeScript</li>
 <li>Python</li>
@@ -958,7 +958,7 @@ builder.<span class="hljs-title function_">watch</span>();</code></pre></div><h2
 <li>Markdown</li>
 <li>And many more via Prism.js</li>
 </ul>
-<h2 id="examples-29">Examples</h2><h3 id="minimal-configuration-5">Minimal Configuration</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">project:
+<h2 id="examples-3">Examples</h2><h3 id="minimal-configuration-3">Minimal Configuration</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">project:
   name: My Docs
   title: My Documentation
   base_url: https:<span class="hljs-comment">//example.github.io/docs</span>
@@ -968,26 +968,26 @@ navigation:
     - section: Docs
       items:
         - label: Home
-          file: index.md</code></pre></div><h3 id="full-configuration-5">Full Configuration</h3><p>See <code>chiron.config.yaml</code> in the repository root for a complete example with all available options.</p>
-<h2 id="troubleshooting-14">Troubleshooting</h2><h3 id="build-errors-5">Build Errors</h3><p>If you encounter build errors:</p>
+          file: index.md</code></pre></div><h3 id="full-configuration-3">Full Configuration</h3><p>See <code>chiron.config.yaml</code> in the repository root for a complete example with all available options.</p>
+<h2 id="troubleshooting-6">Troubleshooting</h2><h3 id="build-errors-3">Build Errors</h3><p>If you encounter build errors:</p>
 <ol>
 <li>Check your YAML syntax in <code>chiron.config.yaml</code></li>
 <li>Ensure all referenced Markdown files exist in <code>content/</code></li>
 <li>Verify file paths are correct (relative to project root)</li>
 </ol>
-<h3 id="missing-pages-5">Missing Pages</h3><p>If pages don&#39;t appear:</p>
+<h3 id="missing-pages-3">Missing Pages</h3><p>If pages don&#39;t appear:</p>
 <ol>
 <li>Check the file is in the <code>content/</code> directory</li>
 <li>Verify it&#39;s referenced in <code>navigation.sidebar</code></li>
 <li>Ensure the file has a <code>.md</code> extension</li>
 </ol>
-<h3 id="styling-issues-5">Styling Issues</h3><p>If styles don&#39;t apply:</p>
+<h3 id="styling-issues-3">Styling Issues</h3><p>If styles don&#39;t apply:</p>
 <ol>
 <li>Ensure <code>styles.css</code> is in the project root</li>
 <li>Check the file is being copied to the output directory</li>
 <li>Clear browser cache</li>
 </ol>
-<h2 id="support-13">Support</h2><p>For issues and questions:</p>
+<h2 id="support-9">Support</h2><p>For issues and questions:</p>
 <ul>
 <li><strong>GitHub Issues</strong>: <a href="https://github.com/agilira/chiron/issues" target="_blank" rel="noopener noreferrer">github.com/agilira/chiron/issues</a></li>
 <li><strong>Documentation</strong>: This site</li>
