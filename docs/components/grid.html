@@ -821,7 +821,7 @@
                 <!-- Page Content -->
                 <div class="content">
                     <h1 id="grid-system-1">Grid System</h1><p>The Grid component provides a powerful and flexible grid layout system with precise CSS class mapping. It supports equal columns, asymmetric fractions, and auto-fit responsive grids.</p>
-<h2 id="basic-usage-15">Basic Usage</h2><h3 id="equal-column-grids-1">Equal Column Grids</h3><p>Create grids with 2, 3, 4, or 6 equal columns:</p>
+<h2 id="basic-usage-16">Basic Usage</h2><h3 id="equal-column-grids-1">Equal Column Grids</h3><p>Create grids with 2, 3, 4, or 6 equal columns:</p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-jsx">&lt;!-- <span class="hljs-number">2</span>-column grid --&gt;
 &lt;Grid cols=<span class="hljs-string">&quot;2&quot;</span>&gt;
   &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;card&quot;</span>&gt;Column <span class="hljs-number">1</span>&lt;/div&gt;
@@ -1014,7 +1014,7 @@
 
 </div>
 
-<h2 id="custom-attributes-1">Custom Attributes</h2><h3 id="custom-classes-4">Custom Classes</h3><p>Add custom CSS classes to grids:</p>
+<h2 id="custom-attributes-1">Custom Attributes</h2><h3 id="custom-classes-3">Custom Classes</h3><p>Add custom CSS classes to grids:</p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-jsx">&lt;Grid cols=<span class="hljs-string">&quot;3&quot;</span> <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;my-custom-grid&quot;</span>&gt;
   &lt;div&gt;Item <span class="hljs-number">1</span>&lt;/div&gt;
   &lt;div&gt;Item <span class="hljs-number">2</span>&lt;/div&gt;
@@ -1025,7 +1025,7 @@
 &lt;Grid cols=<span class="hljs-string">&quot;2&quot;</span> className=<span class="hljs-string">&quot;featured-grid&quot;</span>&gt;
   &lt;div&gt;Featured <span class="hljs-number">1</span>&lt;/div&gt;
   &lt;div&gt;Featured <span class="hljs-number">2</span>&lt;/div&gt;
-&lt;/Grid&gt;</code></pre></div><h3 id="ids-2">IDs</h3><p>Add unique identifiers for styling or JavaScript:</p>
+&lt;/Grid&gt;</code></pre></div><h3 id="ids-1">IDs</h3><p>Add unique identifiers for styling or JavaScript:</p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-jsx">&lt;Grid cols=<span class="hljs-string">&quot;3&quot;</span> id=<span class="hljs-string">&quot;product-grid&quot;</span>&gt;
   &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;card&quot;</span>&gt;Product <span class="hljs-number">1</span>&lt;/div&gt;
   &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;card&quot;</span>&gt;Product <span class="hljs-number">2</span>&lt;/div&gt;
@@ -1142,7 +1142,7 @@
 <li><strong>Mobile</strong>: Stacks all items vertically (1 column)</li>
 </ul>
 <p>This ensures content remains readable and accessible on all device sizes without requiring additional CSS.</p>
-<h2 id="api-reference-7">API Reference</h2><h3 id="attributes-4">Attributes</h3><div class="table-wrapper">
+<h2 id="api-reference-6">API Reference</h2><h3 id="attributes-3">Attributes</h3><div class="table-wrapper">
         <table>
           <thead><tr>
 <th>Attribute</th>
@@ -1237,7 +1237,7 @@
 </tr>
 </tbody>
         </table>
-      </div><h2 id="best-practices-27">Best Practices</h2><h3 id="do-9">✅ Do</h3><ul>
+      </div><h2 id="best-practices-28">Best Practices</h2><h3 id="do-8">✅ Do</h3><ul>
 <li><strong>Use semantic HTML inside grids</strong>: Wrap content in appropriate tags (<code>&lt;div&gt;</code>, <code>&lt;article&gt;</code>, etc.)</li>
 <li><strong>Choose appropriate column counts</strong>: Use 2-3 columns for text-heavy content, 4-6 for cards</li>
 <li><strong>Test on mobile</strong>: All grids collapse to 1 column - ensure content flows well</li>
@@ -1245,20 +1245,20 @@
 <li><strong>Combine with Cards</strong>: Grid + Card is a powerful combination for structured content</li>
 <li><strong>Use auto-fit for dynamic content</strong>: Perfect for product grids, image galleries, feature showcases</li>
 </ul>
-<h3 id="don-t-9">❌ Don't</h3><ul>
+<h3 id="don-t-8">❌ Don't</h3><ul>
 <li><strong>Don&#39;t nest grids excessively</strong>: Keep layouts simple and maintainable</li>
 <li><strong>Don&#39;t use invalid <code>cols</code> values</strong>: Grid will fallback to <code>grid-2</code> but it&#39;s better to use valid values</li>
 <li><strong>Don&#39;t force desktop layouts on mobile</strong>: Trust the responsive behavior</li>
 <li><strong>Don&#39;t mix grid systems</strong>: Stick to Grid component for consistent layouts</li>
 <li><strong>Don&#39;t override gap with custom CSS</strong>: Use the <code>gap</code> attribute for predictable spacing</li>
 </ul>
-<h3 id="performance-tips-3">Performance Tips</h3><ul>
+<h3 id="performance-tips-2">Performance Tips</h3><ul>
 <li>Grid uses CSS Grid with minimal JavaScript overhead</li>
 <li>All classes are pre-defined in theme CSS (no runtime style generation)</li>
 <li>Responsive behavior is handled by CSS media queries (no JavaScript)</li>
 <li>Grids are SSR-friendly and work without JavaScript</li>
 </ul>
-<h2 id="accessibility-16">Accessibility</h2><ul>
+<h2 id="accessibility-17">Accessibility</h2><ul>
 <li>Grid maintains document flow and reading order</li>
 <li>Screen readers navigate grid content in source order</li>
 <li>Keyboard navigation works naturally (tab order follows HTML structure)</li>
@@ -1274,7 +1274,7 @@
 <li>All modern browsers</li>
 </ul>
 <p>Fallback: Older browsers display content in single column (graceful degradation).</p>
-<h2 id="related-components-11">Related Components</h2><ul>
+<h2 id="related-components-10">Related Components</h2><ul>
 <li><a href="/components/card.html">Card</a> - Perfect companion for grid layouts</li>
 <li><a href="/components/badges.html">Badge</a> - Add status indicators to grid items</li>
 <li><a href="/components/buttons.html">Button</a> - Action buttons in grid layouts</li>

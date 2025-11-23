@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Blog</title>
+    <link>https://example.com/blog/</link>
+    <description></description>
+    <language>en</language>
+    <lastBuildDate>Sat, 25 Jan 2025 00:00:00 GMT</lastBuildDate>
+    <pubDate>Sat, 25 Jan 2025 00:00:00 GMT</pubDate>
+    <atom:link href="https://example.com/blog/feed.xml" rel="self" type="application/rss+xml" />
+    <generator>Chiron SSG</generator>
+
+    <item>
+      <title>Building a Custom Blog Theme</title>
+      <link>https://example.com/blog/third-post.html</link>
+      <guid isPermaLink="true">https://example.com/blog/third-post.html</guid>
+      <pubDate>Sat, 25 Jan 2025 00:00:00 GMT</pubDate>
+      <dc:creator>Giuseppe Verdi</dc:creator>
+      <description>Learn how to create stunning custom themes for your Chiron blog with CSS variables and template overrides.</description>
+      <content:encoded><![CDATA[
+# Building a Custom Blog Theme
+
+One of Chiron's most powerful features is its theming system. Let's create a custom blog theme from scratch.
+
+## Understanding the Theme System
+
+Chiron uses CSS variables from the Carbon Design System:
+
+```css
+:root {
+  --color-primary: #0f62fe;
+  --color-text: #161616;
+  --space-md: 1rem;
+  --radius-sm: 0.25rem;
+}
+```
+
+Your custom styles automatically inherit these, ensuring consistency.
+
+## Overriding Blog Styles
+
+Create a `custom.css` file:
+
+```css
+.blog-post-card {
+  border: 2px solid var(--color-primary);
+  transition: transform var(--duration-fast);
+}
+
+.blog-post-card:hover {
+  transform: translateY(-8px);
+}
+```
+
+The plugin's CSS is modular and easy to override.
+
+## Custom Template Example
+
+Here's a minimal custom `blog-post.ejs`:
+
+```html
+<%- include('head', { title: post.title }) %>
+<%- include('header') %>
+
+<article class="my-custom-post">
+  <h1><%= post.title %></h1>
+  <div class="meta">
+    By <%= post.author %> on <%= post.date %>
+  </div>
+  <%- post.content %>
+</article>
+
+<%- include('footer') %>
+```
+
+Simple, powerful, yours.
+
+## Responsive Design
+
+All blog templates are mobile-first:
+
+- Grid layouts that adapt to screen size
+- Touch-friendly navigation
+- Optimized image loading
+- Readable typography at any scale
+
+## Dark Mode Support
+
+The theme system includes automatic dark mode:
+
+```css
+@media (prefers-color-scheme: dark) {
+  .blog-post {
+    background: var(--color-background-dark);
+    color: var(--color-text-dark);
+  }
+}
+```
+
+Works without any extra configuration! 🌙
+
+## Next Steps
+
+Try these exercises:
+
+1. Change the primary color
+2. Add custom fonts
+3. Create a unique card layout
+4. Implement gradient backgrounds
+
+Share your creations with the community! 🎉
+]]></content:encoded>
+    <category>Tutorial</category>
+    <category>Design</category>
+    </item>
+
+    <item>
+      <title>Advanced Blog Features in Chiron</title>
+      <link>https://example.com/blog/second-post.html</link>
+      <guid isPermaLink="true">https://example.com/blog/second-post.html</guid>
+      <pubDate>Mon, 20 Jan 2025 00:00:00 GMT</pubDate>
+      <dc:creator>Laura Bianchi</dc:creator>
+      <description>Explore the advanced features of Chiron&apos;s blog plugin including categories, tags, and multilingual support.</description>
+      <content:encoded><![CDATA[
+# Advanced Blog Features in Chiron
+
+Now that you're familiar with the basics, let's dive into some advanced features that make Chiron's blog plugin truly powerful.
+
+## Categories and Tags
+
+Organize your content effectively:
+
+- **Categories**: Broad topics (Tutorial, News, Updates)
+- **Tags**: Specific keywords for granular filtering
+
+Both are automatically indexed and linked, creating a rich navigation structure.
+
+## Multilingual Support
+
+Chiron detects languages automatically:
+
+```
+content/
+  blog/
+    en/
+      post.md
+    it/
+      post.md
+```
+
+No configuration needed! The plugin adapts to your structure.
+
+## Custom Templates
+
+Power users can override default templates by creating files in `custom-templates/`:
+
+- `blog-post.ejs` - Single post layout
+- `blog-index.ejs` - Post listing
+- `blog-category.ejs` - Category archive
+- `blog-archive.ejs` - Date-based archive
+
+## Performance Optimizations
+
+The blog plugin includes several performance features:
+
+- **Lazy Loading**: Images load on demand
+- **Pagination**: Configurable posts per page
+- **Static Generation**: No runtime overhead
+- **CSS Variables**: Theme integration without conflicts
+
+## Accessibility First
+
+Every template includes:
+
+- Semantic HTML5 elements
+- ARIA labels for screen readers
+- Keyboard navigation support
+- High contrast ratios
+
+Try it yourself and see the difference! 🎨
+]]></content:encoded>
+    <category>Advanced</category>
+    <category>Features</category>
+    </item>
+
+    <item>
+      <title>Getting Started with Chiron Blog</title>
+      <link>https://example.com/blog/first-post.html</link>
+      <guid isPermaLink="true">https://example.com/blog/first-post.html</guid>
+      <pubDate>Wed, 15 Jan 2025 00:00:00 GMT</pubDate>
+      <dc:creator>Marco Rossi</dc:creator>
+      <description>Discover how easy it is to create a blog with Chiron&apos;s powerful static site generator. This is your first step into content creation.</description>
+      <content:encoded><![CDATA[
+# Getting Started with Chiron Blog
+
+Welcome to your first blog post! This demonstrates the power and simplicity of Chiron's blog plugin.
+
+## Why Choose Chiron?
+
+Chiron makes creating a blog incredibly simple:
+
+- **Zero Configuration**: Works out of the box with sensible defaults
+- **Fully Customizable**: Power users can override templates and styles
+- **SEO Optimized**: Built-in meta tags and structured data
+- **Accessible**: ARIA labels and semantic HTML throughout
+- **Performance**: Static files mean blazing fast load times
+
+## Writing Your First Post
+
+Creating a blog post is as simple as creating a Markdown file in `content/blog/`:
+
+```markdown
+---
+title: "My First Post"
+date: 2025-01-15
+author: "Your Name"
+---
+
+Your content here!
+```
+
+That's it! The blog plugin handles the rest.
+
+## What's Next?
+
+In the next posts, we'll explore:
+
+1. Customizing templates
+2. Adding categories and tags
+3. Multilingual content
+4. Advanced features
+
+Happy blogging! 🚀
+]]></content:encoded>
+    <category>Tutorial</category>
+    <category>Getting Started</category>
+    </item>
+
+    <item>
+      <title>Welcome to Chiron Static Site Generator</title>
+      <link>https://example.com/blog/welcome-to-chiron.html</link>
+      <guid isPermaLink="true">https://example.com/blog/welcome-to-chiron.html</guid>
+      <pubDate>Fri, 05 Jan 2024 00:00:00 GMT</pubDate>
+      <dc:creator>Sofia Bianchi</dc:creator>
+      <description>Discover how Chiron makes static site generation simple, fast, and flexible with its plugin architecture and EJS templating.</description>
+      <content:encoded><![CDATA[
+# Welcome to Chiron
+
+Chiron is a modern static site generator built with Node.js and EJS templating. Whether you're building documentation, a blog, or a complete website, Chiron provides the tools you need.
+
+## Why Chiron?
+
+### 🚀 Fast and Lightweight
+Chiron generates static HTML files that load instantly. No server-side processing, no databases, just pure speed.
+
+### 🧩 Plugin Architecture
+Extend functionality with plugins. The blog plugin you're reading this on? That's a first-class plugin using the same architecture available to you.
+
+### 🎨 Theme System
+Complete control over design with EJS templates and CSS. Themes are just templates - no lock-in, no complexity.
+
+### 🌍 Multilingual Support
+Built-in i18n support with language detection, fallback chains, and per-language content organization.
+
+## Key Features
+
+### WordPress-Style Template Helpers
+If you've worked with WordPress, you'll feel right at home:
+
+```ejs
+<%= the_date(page, 'long') %>
+<%= the_author(page, {avatar: true, showSocial: true}) %>
+<%= the_categories(page) %>
+<%= the_tags(page) %>
+```
+
+### Flexible Plugin System
+15 lifecycle hooks give you complete control:
+- `content:before-scan` - Register custom content types
+- `markdown:after-parse` - Enrich metadata
+- `build:before-start` - Initialize generators
+- `build:end` - Generate feeds, sitemaps, archives
+
+### Developer Experience
+Clean, intuitive APIs with sensible defaults and full customization:
+
+```javascript
+// Get posts with filtering
+const posts = get_posts({
+  category: 'tutorials',
+  limit: 5,
+  language: 'en'
+});
+
+// Count posts
+const count = get_posts_count({
+  tag: 'javascript'
+});
+```
+
+## Getting Started
+
+1. **Install Chiron**
+   ```bash
+   npm install -g chiron-ssg
+   ```
+
+2. **Create a New Project**
+   ```bash
+   chiron init my-site
+   cd my-site
+   ```
+
+3. **Start Building**
+   ```bash
+   chiron build
+   chiron serve
+   ```
+
+## What's Next?
+
+Check out these resources:
+- [Documentation](../../index.html) - Complete guides and API reference
+- [Plugin Development](../../index.html) - Build your own plugins
+- [Theme Customization](../../index.html) - Create custom themes
+
+---
+
+**Ready to build something amazing?** Chiron is here to help. Fast, flexible, and built for developers who value simplicity.
+]]></content:encoded>
+    <category>Announcements</category>
+    <category>Documentation</category>
+    </item>
+
+    <item>
+      <title>Building Modern Documentation Sites</title>
+      <link>https://example.com/blog/building-modern-documentation.html</link>
+      <guid isPermaLink="true">https://example.com/blog/building-modern-documentation.html</guid>
+      <pubDate>Wed, 20 Dec 2023 00:00:00 GMT</pubDate>
+      <dc:creator>Marco Rossi</dc:creator>
+      <description>Learn how to create beautiful, fast documentation sites with Chiron&apos;s powerful features and clean architecture.</description>
+      <content:encoded><![CDATA[
+# Building Modern Documentation Sites
+
+Documentation is the backbone of any successful project. With Chiron, creating beautiful, maintainable documentation has never been easier.
+
+## Why Static for Documentation?
+
+Static sites offer several advantages for documentation:
+
+1. **Speed**: No database queries, no server processing
+2. **Security**: No attack surface, just HTML files
+3. **Versioning**: Documentation lives with your code
+4. **Portability**: Deploy anywhere, from GitHub Pages to CDNs
+
+## Chiron's Documentation Features
+
+### Automatic Table of Contents
+Every page gets a dynamically generated TOC based on your heading structure:
+
+```markdown
+# Main Title
+## Section 1
+### Subsection 1.1
+## Section 2
+```
+
+The sidebar automatically reflects your content structure.
+
+### Syntax Highlighting
+Code blocks are beautifully highlighted with Prism.js:
+
+```javascript
+function greet(name) {
+  console.log(`Hello, ${name}!`);
+}
+
+greet('Chiron');
+```
+
+```python
+def calculate_fibonacci(n):
+    if n <= 1:
+        return n
+    return calculate_fibonacci(n-1) + calculate_fibonacci(n-2)
+```
+
+### Breadcrumb Navigation
+Users always know where they are with automatic breadcrumbs:
+Home > Documentation > Building Modern Documentation Sites
+
+### Search Integration
+Full-text search powered by Lunr.js (via plugin) helps users find what they need instantly.
+
+## Best Practices
+
+### 1. Clear Structure
+Organize content logically:
+```
+content/
+  ├── getting-started/
+  │   ├── index.md
+  │   ├── installation.md
+  │   └── quick-start.md
+  ├── guides/
+  │   ├── configuration.md
+  │   └── deployment.md
+  └── api/
+      └── reference.md
+```
+
+### 2. Consistent Frontmatter
+Use metadata consistently across pages:
+```yaml
+---
+title: "Page Title"
+description: "Brief description for SEO"
+category: "Guides"
+order: 1
+---
+```
+
+### 3. Cross-Linking
+Link between related pages to improve navigation and SEO:
+```markdown
+See also: [Configuration Guide](../guides/configuration.html)
+```
+
+### 4. Code Examples
+Provide working examples with explanations:
+```javascript
+// Good: Explain what the code does
+const config = loadConfig(); // Load from chiron.config.yaml
+```
+
+## Multilingual Documentation
+
+Chiron makes multilingual docs effortless:
+
+```
+content/
+  ├── en/
+  │   └── getting-started.md
+  ├── it/
+  │   └── getting-started.md
+  └── es/
+      └── getting-started.md
+```
+
+Language detection and fallbacks are automatic.
+
+## Advanced Features
+
+### Custom Shortcodes
+Extend Markdown with reusable components:
+```markdown
+{{< alert type="warning" >}}
+This feature is experimental
+{{< /alert >}}
+
+{{< tabs >}}
+  {{< tab name="JavaScript" >}}
+  ```javascript
+  console.log('Hello');
+  ```
+  {{< /tab >}}
+  {{< tab name="Python" >}}
+  ```python
+  print('Hello')
+  ```
+  {{< /tab >}}
+{{< /tabs >}}
+```
+
+### Custom Templates
+Create specialized layouts for API docs, tutorials, or changelogs:
+```yaml
+---
+template: "api-reference.ejs"
+---
+```
+
+### Analytics Integration
+Track documentation usage with privacy-respecting analytics:
+```yaml
+# chiron.config.yaml
+analytics:
+  provider: "plausible"
+  domain: "docs.example.com"
+```
+
+## Deployment
+
+Deploy your documentation anywhere:
+
+**GitHub Pages:**
+```yaml
+# .github/workflows/deploy.yml
+- name: Build docs
+  run: npm run build
+- name: Deploy
+  uses: peaceiris/actions-gh-pages@v3
+```
+
+**Netlify:**
+```toml
+# netlify.toml
+[build]
+  command = "npm run build"
+  publish = "docs"
+```
+
+**Vercel:**
+```json
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "docs"
+}
+```
+
+## Conclusion
+
+Chiron provides everything you need for modern documentation:
+- Fast static generation
+- Clean, maintainable structure
+- Powerful customization
+- Easy deployment
+
+Start building better docs today! 📚
+]]></content:encoded>
+    <category>Tutorials</category>
+    <category>Documentation</category>
+    </item>
+  </channel>
+</rss>

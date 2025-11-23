@@ -830,7 +830,7 @@
 <li>✅ <strong>Performance</strong> - Respects <code>prefers-reduced-motion</code></li>
 <li>✅ <strong>Zero Config</strong> - Works out of the box</li>
 </ul>
-<h2 id="basic-usage-36">Basic Usage</h2><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-jsx">&lt;Skeleton /&gt;</code></pre></div><div class="skeleton-loader" role="status" aria-label="Loading">
+<h2 id="basic-usage-37">Basic Usage</h2><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-jsx">&lt;Skeleton /&gt;</code></pre></div><div class="skeleton-loader" role="status" aria-label="Loading">
   <div class="skeleton-line skeleton-line--full"></div>
   <div class="skeleton-line skeleton-line--short"></div>
 </div>
@@ -905,7 +905,7 @@
   &lt;Skeleton lines=<span class="hljs-string">&quot;1&quot;</span> /&gt;  &lt;!-- Title --&gt;
   &lt;Skeleton lines=<span class="hljs-string">&quot;5&quot;</span> /&gt;  &lt;!-- Content --&gt;
   &lt;Skeleton lines=<span class="hljs-string">&quot;2&quot;</span> /&gt;  &lt;!-- Metadata --&gt;
-&lt;/article&gt;</code></pre></div><h2 id="accessibility-38">Accessibility</h2><p>The component includes proper ARIA attributes for assistive technologies:</p>
+&lt;/article&gt;</code></pre></div><h2 id="accessibility-39">Accessibility</h2><p>The component includes proper ARIA attributes for assistive technologies:</p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-html">&lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;skeleton-loader&quot;</span> 
      role=<span class="hljs-string">&quot;status&quot;</span> 
      aria-label=<span class="hljs-string">&quot;Loading&quot;</span>&gt;
@@ -927,7 +927,7 @@
     animation: none;
   }
 }</code></pre></div><p>Users who prefer reduced motion see a static placeholder instead of the animated shimmer.</p>
-<h2 id="styling-23">Styling</h2><p>The component generates this HTML structure:</p>
+<h2 id="styling-27">Styling</h2><p>The component generates this HTML structure:</p>
 <div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-html">&lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;skeleton-loader&quot;</span> role=<span class="hljs-string">&quot;status&quot;</span> aria-label=<span class="hljs-string">&quot;Loading&quot;</span>&gt;
   &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;skeleton-line skeleton-line--full&quot;</span>&gt;&lt;/div&gt;
   &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;skeleton-line skeleton-line--full&quot;</span>&gt;&lt;/div&gt;
@@ -1006,14 +1006,14 @@ Memory usage:   Negligible</code></pre></div><h3 id="benchmarks-3">Benchmarks</h
 </tbody>
         </table>
       </div><p>Even with 100 lines, the skeleton renders instantly.</p>
-<h2 id="best-practices-59">Best Practices</h2><h3 id="do-22">✅ DO</h3><ul>
+<h2 id="best-practices-60">Best Practices</h2><h3 id="do-19">✅ DO</h3><ul>
 <li>Use for async content loading</li>
 <li>Match skeleton height to actual content</li>
 <li>Show skeleton as early as possible</li>
 <li>Remove skeleton when content is ready</li>
 <li>Use appropriate line count</li>
 </ul>
-<h3 id="don-t-22">❌ DON'T</h3><ul>
+<h3 id="don-t-19">❌ DON'T</h3><ul>
 <li>Don&#39;t overuse (too many skeletons look busy)</li>
 <li>Don&#39;t leave skeletons visible indefinitely</li>
 <li>Don&#39;t nest skeletons inside each other</li>
@@ -1125,7 +1125,7 @@ The API documentation loads asynchronously.</code></pre></div><h2 id="browser-su
 &lt;vue-skeleton-loader type=<span class="hljs-string">&quot;text@3&quot;</span> /&gt;
 
 &lt;!-- <span class="hljs-title function_">New </span>(Chiron) --&gt;
-&lt;Skeleton lines=<span class="hljs-string">&quot;3&quot;</span> /&gt;</code></pre></div><h2 id="troubleshooting-19">Troubleshooting</h2><h3 id="skeleton-not-showing-3">Skeleton not showing?</h3><ol>
+&lt;Skeleton lines=<span class="hljs-string">&quot;3&quot;</span> /&gt;</code></pre></div><h2 id="troubleshooting-16">Troubleshooting</h2><h3 id="skeleton-not-showing-3">Skeleton not showing?</h3><ol>
 <li>Check that the skeleton tag is in markdown content</li>
 <li>Verify the build processed the file</li>
 <li>Check browser console for errors</li>
@@ -1143,7 +1143,7 @@ The API documentation loads asynchronously.</code></pre></div><h2 id="browser-su
 <li>Use valid numbers (&gt; 0)</li>
 <li>Check browser developer tools</li>
 </ol>
-<h2 id="related-components-29">Related Components</h2><ul>
+<h2 id="related-components-26">Related Components</h2><ul>
 <li><a href="/components/app">App Component</a> - Lazy-loaded apps (perfect with Skeleton)</li>
 <li><a href="/components/callouts">Callout Component</a> - Highlight important info</li>
 <li><a href="/components/badges">Badge Component</a> - Status indicators</li>

@@ -24,12 +24,14 @@ const embedComponent = require('./embed');
 const badgeComponent = require('./badge');
 const gridComponent = require('./grid');
 const featureCardComponent = require('./feature-card');
-const mermaidComponent = require('./mermaid');
 const appComponent = require('./app');
 const skeletonComponent = require('./skeleton');
 const imageComponent = require('./image');
 const chartComponent = require('./chart');
 const tooltipComponent = require('./tooltip');
+const formFieldComponent = require('./form-field');
+const checkboxGroupComponent = require('./checkbox-group');
+const radioGroupComponent = require('./radio-group');
 
 module.exports = {
   name: 'components',
@@ -42,7 +44,7 @@ module.exports = {
     builtin: true,
     required: true,      // Cannot be disabled
     category: 'core',
-    tags: ['components', 'ui', 'jsx', 'button', 'badge', 'callout', 'alert', 'accordion', 'tabs', 'embed', 'youtube', 'twitter', 'codepen', 'gist', 'grid', 'layout', 'card', 'feature', 'mermaid', 'diagram', 'app', 'lazy-loading', 'intersection-observer', 'react', 'vue']
+    tags: ['components', 'ui', 'jsx', 'button', 'badge', 'callout', 'alert', 'accordion', 'tabs', 'embed', 'youtube', 'twitter', 'codepen', 'gist', 'grid', 'layout', 'card', 'feature', 'app', 'lazy-loading', 'intersection-observer', 'react', 'vue', 'forms', 'form-field', 'checkbox-group', 'input', 'textarea', 'select', 'accessibility', 'wcag']
   },
   
   requires: '^0.7.0',
@@ -94,11 +96,6 @@ module.exports = {
     'FeatureCard': (attrs = {}, content = '', context = {}) => {
       return featureCardComponent(attrs, content, context);
     },
-    'Mermaid': (attrs = {}, content = '', context = {}) => {
-      // Note: Mermaid components are processed directly by mermaidComponent.process
-      // This shortcode is here for compatibility but actual processing happens via markdown:after-parse
-      return mermaidComponent.process(`<Mermaid${attrsToString(attrs)}>${content}</Mermaid>`);
-    },
     'App': (attrs = {}, content = '', context = {}) => {
       // Note: App components are processed directly by appComponent.process
       // This shortcode is here for compatibility but actual processing happens via markdown:before-parse
@@ -109,6 +106,15 @@ module.exports = {
     },
     'Tooltip': (attrs = {}, content = '', context = {}) => {
       return tooltipComponent.processTooltip(`<Tooltip${attrsToString(attrs)}>${content}</Tooltip>`);
+    },
+    'FormField': (attrs = {}, content = '', context = {}) => {
+      return formFieldComponent.processFormField(`<FormField${attrsToString(attrs)}>${content}</FormField>`);
+    },
+    'CheckboxGroup': (attrs = {}, content = '', context = {}) => {
+      return checkboxGroupComponent.processCheckboxGroup(`<CheckboxGroup${attrsToString(attrs)}>${content}</CheckboxGroup>`);
+    },
+    'RadioGroup': (attrs = {}, content = '', context = {}) => {
+      return radioGroupComponent.processRadioGroup(`<RadioGroup${attrsToString(attrs)}>${content}</RadioGroup>`);
     }
   },
   
@@ -118,12 +124,6 @@ module.exports = {
       
       // Track pages with embeds
       context.setData('pagesWithEmbeds', new Set());
-      
-      // Track pages with mermaid diagrams
-      context.setData('pagesWithMermaid', new Set());
-      
-      // Store mermaid config
-      context.setData('mermaidConfig', pluginConfig || {});
     },
     
     /**
@@ -152,28 +152,17 @@ module.exports = {
         });
       }
       
-      // Check if this page has mermaid diagrams (```mermaid or <Mermaid>)
-      const hasMermaid = /```mermaid|<Mermaid[\s>]/.test(markdown);
-      
-      if (hasMermaid && context.currentPage) {
-        context.currentPage._hasMermaid = true;
-        
-        const pagesWithMermaid = context.getData('pagesWithMermaid');
-        pagesWithMermaid.add(context.currentPage.outputName);
-        
-        context.logger.debug('Mermaid diagrams detected', {
-          page: context.currentPage.outputName
-        });
-      }
-      
       // Process Skeleton components (loading placeholders)
       markdown = skeletonComponent.process(markdown);
       
       // Process App components (lazy-loaded applications)
       markdown = await appComponent.process(markdown);
       
-      // Process Mermaid components (build-time rendering to static SVG)
-      markdown = await mermaidComponent.process(markdown);
+      // Process CheckboxGroup components (form checkbox groups)
+      markdown = checkboxGroupComponent.processCheckboxGroup(markdown);
+      
+      // Process RadioGroup components (form radio groups)
+      markdown = radioGroupComponent.processRadioGroup(markdown);
       
       return markdown;
     },

@@ -16,7 +16,7 @@
  * Cache version - changes on every build
  * When this changes, old caches are automatically cleaned up
  */
-const CACHE_VERSION = 'ddea5291';
+const CACHE_VERSION = '6edf165c';
 
 /**
  * Cache names with version
@@ -60,6 +60,7 @@ const CRITICAL_ASSETS = [
   '/components/charts.html',
   '/components/embeds.html',
   '/components/feature-cards.html',
+  '/components/form-fields.html',
   '/components/grid.html',
   '/components/images.html',
   '/components/mermaid.html',
@@ -112,6 +113,7 @@ const CRITICAL_ASSETS = [
   '/it/components/charts.html',
   '/it/components/embeds.html',
   '/it/components/feature-cards.html',
+  '/it/components/form-fields.html',
   '/it/components/grid.html',
   '/it/components/images.html',
   '/it/components/mermaid.html',

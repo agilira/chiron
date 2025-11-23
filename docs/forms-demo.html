@@ -809,41 +809,94 @@
                 <!-- Page Content -->
                 <div class="content">
                     <h1 id="form-elements-showcase-2">Form Elements Showcase</h1><p>This page demonstrates all form elements available in Chiron.</p>
-<h2 id="text-inputs-2">Text Inputs</h2><h3 id="basic-text-input-2">Basic Text Input</h3><div class="form-field">
+<h2 id="using-the-formfield-component-1">Using the FormField Component</h2><p>Chiron provides a <code>&lt;FormField&gt;</code> component that simplifies form markup by automatically handling labels, helper text, error messages, IDs, and ARIA attributes.</p>
+<h3 id="basic-example-3">Basic Example</h3><p>Instead of writing verbose HTML:</p>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-html">&lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;form-field&quot;</span>&gt;
+  &lt;label <span class="hljs-keyword">for</span>=<span class="hljs-string">&quot;email-input&quot;</span>&gt;Email Address&lt;/label&gt;
+  &lt;input type=<span class="hljs-string">&quot;email&quot;</span> id=<span class="hljs-string">&quot;email-input&quot;</span> name=<span class="hljs-string">&quot;email&quot;</span> aria-describedby=<span class="hljs-string">&quot;email-helper&quot;</span> /&gt;
+  &lt;span <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;form-helper-text&quot;</span> id=<span class="hljs-string">&quot;email-helper&quot;</span>&gt;We&#039;ll never share your email&lt;/span&gt;
+&lt;/div&gt;</code></pre></div><p>You can use:</p>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-markdown">&lt;FormField label=<span class="hljs-string">&quot;Email Address&quot;</span> helper=<span class="hljs-string">&quot;We&#039;ll never share your email&quot;</span>&gt;
+  &lt;input type=<span class="hljs-string">&quot;email&quot;</span> name=<span class="hljs-string">&quot;email&quot;</span> /&gt;
+&lt;/FormField&gt;</code></pre></div><h3 id="quick-examples-1">Quick Examples</h3><div class="form-field">
+  <label for="form-field-35">Full Name</label>
+  <input type="text" name="fullname" placeholder="John Doe" id="form-field-35" aria-describedby="form-field-35-helper" />
+  <span class="form-helper-text" id="form-field-35-helper">Enter your first and last name</span>
+</div>
+
+<div class="form-field">
+  <label for="form-field-36">Email</label>
+  <input type="email" name="email" required id="form-field-36" aria-describedby="form-field-36-helper" />
+  <span class="form-helper-text" id="form-field-36-helper">We&#039;ll never share your email</span>
+</div>
+
+<div class="form-field">
+  <label for="form-field-37">Bio</label>
+  <textarea name="bio" rows="4" maxlength="500" id="form-field-37" aria-describedby="form-field-37-helper"></textarea>
+  <span class="form-helper-text" id="form-field-37-helper">Tell us about yourself (max 500 characters)</span>
+</div>
+
+<div class="form-field">
+  <label for="form-field-38">Country</label>
+  <select name="country" id="form-field-38">
+    <option value="">Choose...</option>
+    <option value="it">Italy</option>
+    <option value="fr">France</option>
+    <option value="de">Germany</option>
+  </select>
+</div>
+
+<h3 id="with-error-state-1">With Error State</h3><div class="form-field has-error">
+  <label for="form-field-39">Email</label>
+  <input type="email" name="email" value="invalid-email" id="form-field-39" aria-describedby="form-field-39-helper" />
+  <div class="form-error" id="form-field-39-helper">Please enter a valid email address</div>
+</div>
+
+<h3 id="benefits-4">Benefits</h3><ul>
+<li><strong>Automatic ID generation</strong>: No need to manually manage IDs</li>
+<li><strong>ARIA attributes</strong>: Automatic <code>aria-describedby</code> for accessibility</li>
+<li><strong>Label connection</strong>: Automatic <code>for</code>/<code>id</code> linking</li>
+<li><strong>Error handling</strong>: <code>.has-error</code> class applied automatically</li>
+<li><strong>Clean syntax</strong>: Less code, fewer errors</li>
+</ul>
+<hr>
+<h2 id="text-inputs-2">Text Inputs</h2><p>All text inputs now use the <code>&lt;FormField&gt;</code> component for cleaner markup.</p>
+<h3 id="basic-text-input-2">Basic Text Input</h3><div class="form-field">
   <label for="text-input">Text Input</label>
-  <input type="text" id="text-input" placeholder="Enter your text here..." />
-  <span class="form-helper-text">This is helper text to provide additional context.</span>
+  <input type="text" id="text-input" placeholder="Enter your text here..." aria-describedby="text-input-helper" />
+  <span class="form-helper-text" id="text-input-helper">This is helper text to provide additional context.</span>
 </div>
 
-<h3 id="email-input-2">Email Input</h3><div class="form-field">
-  <label for="email-input">Email Address</label>
-  <input type="email" id="email-input" placeholder="user@example.com" />
+<p><strong>Note</strong>: ID generato automaticamente, ma puoi specificare un ID personalizzato se necessario (come <code>id=&quot;text-input&quot;</code> sopra).</p>
+<h3 id="email-input-3">Email Input</h3><div class="form-field">
+  <label for="form-field-40">Email Address</label>
+  <input type="email" placeholder="user@example.com" id="form-field-40" />
 </div>
 
-<h3 id="password-input-2">Password Input</h3><div class="form-field">
-  <label for="password-input">Password</label>
-  <input type="password" id="password-input" placeholder="Enter password" />
+<h3 id="password-input-3">Password Input</h3><div class="form-field">
+  <label for="form-field-41">Password</label>
+  <input type="password" placeholder="Enter password" id="form-field-41" />
 </div>
 
-<h3 id="url-input-2">URL Input</h3><div class="form-field">
-  <label for="url-input">Website URL</label>
-  <input type="url" id="url-input" placeholder="https://example.com" />
+<h3 id="url-input-3">URL Input</h3><div class="form-field">
+  <label for="form-field-42">Website URL</label>
+  <input type="url" placeholder="https://example.com" id="form-field-42" />
 </div>
 
 <h3 id="telephone-input-2">Telephone Input</h3><div class="form-field">
-  <label for="tel-input">Phone Number</label>
-  <input type="tel" id="tel-input" placeholder="+1 (555) 123-4567" />
+  <label for="form-field-43">Phone Number</label>
+  <input type="tel" placeholder="+1 (555) 123-4567" id="form-field-43" />
 </div>
 
-<h3 id="number-input-2">Number Input</h3><div class="form-field">
-  <label for="number-input">Number Input</label>
-  <input type="number" id="number-input" placeholder="42" min="0" max="100" />
+<h3 id="number-input-3">Number Input</h3><div class="form-field">
+  <label for="form-field-44">Number Input</label>
+  <input type="number" placeholder="42" min="0" max="100" id="form-field-44" />
 </div>
 
 <h3 id="search-input-2">Search Input</h3><div class="form-field">
-  <label for="search-input">Search</label>
-  <input type="search" id="search-input" placeholder="Search for something..." />
-  <span class="form-helper-text">Search input with icon and clear button.</span>
+  <label for="form-field-45">Search</label>
+  <input type="search" placeholder="Search for something..." id="form-field-45" aria-describedby="form-field-45-helper" />
+  <span class="form-helper-text" id="form-field-45-helper">Search input with icon and clear button.</span>
 </div>
 
 <h2 id="input-states-2">Input States</h2><h3 id="read-only-input-2">Read-Only Input</h3><div class="form-field">
@@ -853,28 +906,28 @@
 
 <h3 id="disabled-input-2">Disabled Input</h3><div class="form-field">
   <label for="disabled-input">Disabled Input</label>
-  <input type="text" id="disabled-input" value="This field is disabled" disabled />
-  <span class="form-helper-text">This input cannot be modified.</span>
+  <input type="text" id="disabled-input" value="This field is disabled" disabled aria-describedby="disabled-input-helper" />
+  <span class="form-helper-text" id="disabled-input-helper">This input cannot be modified.</span>
 </div>
 
-<h3 id="invalid-input-2">Invalid Input</h3><div class="form-field">
+<h3 id="invalid-input-2">Invalid Input</h3><div class="form-field has-error">
   <label for="invalid-input">Invalid Input</label>
-  <input type="email" id="invalid-input" class="invalid" value="not-an-email" />
-  <div class="form-error">Please enter a valid email address.</div>
+  <input type="email" id="invalid-input" value="not-an-email" aria-describedby="invalid-input-helper" />
+  <div class="form-error" id="invalid-input-helper">Please enter a valid email address.</div>
 </div>
 
-<h2 id="date-time-inputs-2">Date & Time Inputs</h2><h3 id="date-input-2">Date Input</h3><div class="form-field">
+<h2 id="date-time-inputs-2">Date & Time Inputs</h2><h3 id="date-input-3">Date Input</h3><div class="form-field">
   <label for="date-input">Date</label>
   <input type="date" id="date-input" />
 </div>
 
-<h3 id="time-input-2">Time Input</h3><div class="form-field">
+<h3 id="time-input-3">Time Input</h3><div class="form-field">
   <label for="time-input">Time</label>
   <input type="time" id="time-input" />
 </div>
 
 <h3 id="datetime-local-input-2">DateTime Local Input</h3><div class="form-field">
-  <label for="datetime-input">Date & Time</label>
+  <label for="datetime-input">Date &amp; Time</label>
   <input type="datetime-local" id="datetime-input" />
 </div>
 
@@ -888,10 +941,10 @@
   <input type="week" id="week-input" />
 </div>
 
-<h2 id="textarea-2">Textarea</h2><h3 id="basic-textarea-2">Basic Textarea</h3><div class="form-field">
+<h2 id="textarea-3">Textarea</h2><h3 id="basic-textarea-2">Basic Textarea</h3><div class="form-field">
   <label for="textarea-basic">Message</label>
-  <textarea id="textarea-basic" rows="4" placeholder="Enter your message here..."></textarea>
-  <span class="form-helper-text">Maximum 500 characters.</span>
+  <textarea id="textarea-basic" rows="4" placeholder="Enter your message here..." aria-describedby="textarea-basic-helper"></textarea>
+  <span class="form-helper-text" id="textarea-basic-helper">Maximum 500 characters.</span>
 </div>
 
 <h3 id="read-only-textarea-2">Read-Only Textarea</h3><div class="form-field">
@@ -906,25 +959,25 @@ But it cannot be edited.</textarea>
   <textarea id="textarea-disabled" rows="3" disabled>This textarea is disabled and cannot be edited.</textarea>
 </div>
 
-<h3 id="invalid-textarea-2">Invalid Textarea</h3><div class="form-field">
+<h3 id="invalid-textarea-2">Invalid Textarea</h3><div class="form-field has-error">
   <label for="textarea-invalid">Invalid Textarea</label>
-  <textarea id="textarea-invalid" class="invalid" rows="3">This content is invalid.</textarea>
-  <div class="form-error">This field contains invalid content. Please review and correct.</div>
+  <textarea id="textarea-invalid" rows="3" aria-describedby="textarea-invalid-helper">This content is invalid.</textarea>
+  <div class="form-error" id="textarea-invalid-helper">This field contains invalid content. Please review and correct.</div>
 </div>
 
-<h2 id="select-dropdowns-2">Select Dropdowns</h2><h3 id="basic-select-2">Basic Select</h3><div class="form-field">
+<h2 id="select-dropdowns-2">Select Dropdowns</h2><h3 id="basic-select-3">Basic Select</h3><div class="form-field">
   <label for="select-basic">Select an Option</label>
-  <select id="select-basic">
+  <select id="select-basic" aria-describedby="select-basic-helper">
     <option value="">Choose an option...</option>
     <option value="option1">Option 1</option>
     <option value="option2">Option 2</option>
     <option value="option3">Option 3</option>
     <option value="option4">Option 4</option>
   </select>
-  <span class="form-helper-text">Please select one of the available options.</span>
+  <span class="form-helper-text" id="select-basic-helper">Please select one of the available options.</span>
 </div>
 
-<h3 id="select-with-optgroups-2">Select with Optgroups</h3><div class="form-field">
+<h3 id="select-with-optgroups-3">Select with Optgroups</h3><div class="form-field">
   <label for="select-optgroup">Select with Groups</label>
   <select id="select-optgroup">
     <option value="">Choose a framework...</option>
@@ -949,18 +1002,18 @@ But it cannot be edited.</textarea>
   </select>
 </div>
 
-<h3 id="invalid-select-2">Invalid Select</h3><div class="form-field">
+<h3 id="invalid-select-2">Invalid Select</h3><div class="form-field has-error">
   <label for="select-invalid">Invalid Select</label>
-  <select id="select-invalid" class="invalid">
+  <select id="select-invalid" aria-describedby="select-invalid-helper">
     <option value="">Choose...</option>
     <option value="invalid" selected>Invalid Option</option>
   </select>
-  <div class="form-error">This selection is not valid. Please choose a different option.</div>
+  <div class="form-error" id="select-invalid-helper">This selection is not valid. Please choose a different option.</div>
 </div>
 
-<h3 id="multiple-select-2">Multiple Select</h3><div class="form-field">
+<h3 id="multiple-select-3">Multiple Select</h3><div class="form-field">
   <label for="select-multiple">Multiple Select</label>
-  <select id="select-multiple" multiple size="5">
+  <select id="select-multiple" multiple size="5" aria-describedby="select-multiple-helper">
     <option value="opt1">Option 1</option>
     <option value="opt2">Option 2</option>
     <option value="opt3">Option 3</option>
@@ -968,51 +1021,50 @@ But it cannot be edited.</textarea>
     <option value="opt5">Option 5</option>
     <option value="opt6">Option 6</option>
   </select>
-  <span class="form-helper-text">Hold Ctrl/Cmd to select multiple options.</span>
+  <span class="form-helper-text" id="select-multiple-helper">Hold Ctrl/Cmd to select multiple options.</span>
 </div>
 
-<h2 id="checkboxes-2">Checkboxes</h2><h3 id="basic-checkboxes-2">Basic Checkboxes</h3><div class="form-field">
-  <label>Select Your Interests</label>
-  <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
-    <label style="display: flex; align-items: center;">
-      <input type="checkbox" id="checkbox1" checked / name="task">
-      <span>Web Development</span>
-    </label>
-    <label style="display: flex; align-items: center;">
-      <input type="checkbox" id="checkbox2" / name="task">
-      <span>Mobile Development</span>
-    </label>
-    <label style="display: flex; align-items: center;">
-      <input type="checkbox" id="checkbox3" / name="task">
-      <span>DevOps</span>
-    </label>
-    <label style="display: flex; align-items: center;">
-      <input type="checkbox" id="checkbox4" / name="task">
-      <span>Data Science</span>
-    </label>
+<h2 id="checkboxes-2">Checkboxes</h2><h3 id="basic-checkboxes-2">Basic Checkboxes</h3><fieldset class="checkbox-group" aria-describedby="checkbox-group-1763858619280-2-helper">
+  <legend>Select Your Interests</legend>
+  <div class="checkbox-group-options">
+    <div class="checkbox-item">
+      <input type="checkbox" id="checkbox-group-1763858619280-2-0" name="interests" value="web" checked />
+      <label for="checkbox-group-1763858619280-2-0">Web Development</label>
+    </div>
+    <div class="checkbox-item">
+      <input type="checkbox" id="checkbox-group-1763858619280-2-1" name="interests" value="mobile" />
+      <label for="checkbox-group-1763858619280-2-1">Mobile Development</label>
+    </div>
+    <div class="checkbox-item">
+      <input type="checkbox" id="checkbox-group-1763858619280-2-2" name="interests" value="devops" />
+      <label for="checkbox-group-1763858619280-2-2">DevOps</label>
+    </div>
+    <div class="checkbox-item">
+      <input type="checkbox" id="checkbox-group-1763858619280-2-3" name="interests" value="data" />
+      <label for="checkbox-group-1763858619280-2-3">Data Science</label>
+    </div>
   </div>
-</div>
+  <span class="form-helper-text" id="checkbox-group-1763858619280-2-helper">Choose one or more options</span>
+</fieldset>
 
-<h3 id="disabled-checkboxes-2">Disabled Checkboxes</h3><div class="form-field">
-  <label>Disabled Checkboxes</label>
-  <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
-    <label style="display: flex; align-items: center;">
-      <input type="checkbox" id="checkbox-disabled-checked" checked disabled / name="task">
-      <span>Disabled & Checked</span>
-    </label>
-    <label style="display: flex; align-items: center;">
-      <input type="checkbox" id="checkbox-disabled" disabled / name="task">
-      <span>Disabled & Unchecked</span>
-    </label>
+<h3 id="disabled-checkboxes-2">Disabled Checkboxes</h3><fieldset class="checkbox-group">
+  <legend>Disabled Checkboxes</legend>
+  <div class="checkbox-group-options">
+    <div class="checkbox-item">
+      <input type="checkbox" id="checkbox-group-1763858619280-3-0" name="disabled-checks" value="checked" checked disabled />
+      <label for="checkbox-group-1763858619280-3-0">Disabled &amp; Checked</label>
+    </div>
+    <div class="checkbox-item">
+      <input type="checkbox" id="checkbox-group-1763858619280-3-1" name="disabled-checks" value="unchecked" disabled />
+      <label for="checkbox-group-1763858619280-3-1">Disabled &amp; Unchecked</label>
+    </div>
   </div>
-</div>
+</fieldset>
 
 <h3 id="indeterminate-checkbox-via-javascript-2">Indeterminate Checkbox (via JavaScript)</h3><div class="form-field">
-  <label style="display: flex; align-items: center;">
-    <input type="checkbox" id="checkbox-indeterminate" / name="task">
-    <span>Indeterminate State</span>
-  </label>
-  <span class="form-helper-text">This checkbox is in an indeterminate state.</span>
+  <label for="checkbox-indeterminate">Indeterminate State</label>
+  <input type="checkbox" id="checkbox-indeterminate" aria-describedby="checkbox-indeterminate-helper" / name="task">
+  <span class="form-helper-text" id="checkbox-indeterminate-helper">This checkbox is in an indeterminate state.</span>
 </div>
 
 <script>
@@ -1025,58 +1077,59 @@ But it cannot be edited.</textarea>
   });
 </script>
 
-<h2 id="radio-buttons-2">Radio Buttons</h2><h3 id="basic-radio-group-2">Basic Radio Group</h3><div class="form-field">
-  <label>Select Your Preferred Framework</label>
-  <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
-    <label style="display: flex; align-items: center;">
-      <input type="radio" name="framework" value="react" checked />
-      <span>React</span>
-    </label>
-    <label style="display: flex; align-items: center;">
-      <input type="radio" name="framework" value="vue" />
-      <span>Vue.js</span>
-    </label>
-    <label style="display: flex; align-items: center;">
-      <input type="radio" name="framework" value="svelte" />
-      <span>Svelte</span>
-    </label>
-    <label style="display: flex; align-items: center;">
-      <input type="radio" name="framework" value="angular" />
-      <span>Angular</span>
-    </label>
+<h2 id="radio-buttons-2">Radio Buttons</h2><h3 id="basic-radio-group-2">Basic Radio Group</h3><fieldset class="radio-group" aria-describedby="radio-group-1763858619280-3-helper">
+  <legend>Select Your Preferred Framework</legend>
+  <div class="radio-group-options">
+    <div class="radio-item">
+      <input type="radio" id="radio-group-1763858619280-3-0" name="framework" value="react" checked />
+      <label for="radio-group-1763858619280-3-0">React</label>
+    </div>
+    <div class="radio-item">
+      <input type="radio" id="radio-group-1763858619280-3-1" name="framework" value="vue" />
+      <label for="radio-group-1763858619280-3-1">Vue.js</label>
+    </div>
+    <div class="radio-item">
+      <input type="radio" id="radio-group-1763858619280-3-2" name="framework" value="svelte" />
+      <label for="radio-group-1763858619280-3-2">Svelte</label>
+    </div>
+    <div class="radio-item">
+      <input type="radio" id="radio-group-1763858619280-3-3" name="framework" value="angular" />
+      <label for="radio-group-1763858619280-3-3">Angular</label>
+    </div>
   </div>
-</div>
+  <span class="form-helper-text" id="radio-group-1763858619280-3-helper">Choose your favorite JavaScript framework</span>
+</fieldset>
 
-<h3 id="disabled-radio-buttons-2">Disabled Radio Buttons</h3><div class="form-field">
-  <label>Disabled Radio Group</label>
-  <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
-    <label style="display: flex; align-items: center;">
-      <input type="radio" name="disabled-radio" value="option1" checked disabled />
-      <span>Disabled & Selected</span>
-    </label>
-    <label style="display: flex; align-items: center;">
-      <input type="radio" name="disabled-radio" value="option2" disabled />
-      <span>Disabled & Unselected</span>
-    </label>
+<h3 id="disabled-radio-buttons-2">Disabled Radio Buttons</h3><fieldset class="radio-group">
+  <legend>Disabled Radio Group</legend>
+  <div class="radio-group-options">
+    <div class="radio-item">
+      <input type="radio" id="radio-group-1763858619280-4-0" name="disabled-radio" value="option1" checked disabled />
+      <label for="radio-group-1763858619280-4-0">Disabled &amp; Selected</label>
+    </div>
+    <div class="radio-item">
+      <input type="radio" id="radio-group-1763858619280-4-1" name="disabled-radio" value="option2" disabled />
+      <label for="radio-group-1763858619280-4-1">Disabled &amp; Unselected</label>
+    </div>
   </div>
-</div>
+</fieldset>
 
-<h2 id="file-upload-2">File Upload</h2><h3 id="basic-file-input-2">Basic File Input</h3><div class="form-field">
+<h2 id="file-upload-3">File Upload</h2><h3 id="basic-file-input-2">Basic File Input</h3><div class="form-field">
   <label for="file-input">Upload File</label>
-  <input type="file" id="file-input" />
-  <span class="form-helper-text">Maximum file size: 10MB. Supported formats: PDF, DOC, DOCX.</span>
+  <input type="file" id="file-input" aria-describedby="file-input-helper" />
+  <span class="form-helper-text" id="file-input-helper">Maximum file size: 10MB. Supported formats: PDF, DOC, DOCX.</span>
 </div>
 
 <h3 id="multiple-file-upload-2">Multiple File Upload</h3><div class="form-field">
   <label for="file-multiple">Upload Multiple Files</label>
-  <input type="file" id="file-multiple" multiple />
-  <span class="form-helper-text">You can select multiple files at once.</span>
+  <input type="file" id="file-multiple" multiple aria-describedby="file-multiple-helper" />
+  <span class="form-helper-text" id="file-multiple-helper">You can select multiple files at once.</span>
 </div>
 
 <h3 id="file-upload-with-accept-filter-2">File Upload with Accept Filter</h3><div class="form-field">
   <label for="file-images">Upload Images Only</label>
-  <input type="file" id="file-images" accept="image/*" multiple />
-  <span class="form-helper-text">Only image files are accepted (JPG, PNG, GIF, etc.).</span>
+  <input type="file" id="file-images" accept="image/*" multiple aria-describedby="file-images-helper" />
+  <span class="form-helper-text" id="file-images-helper">Only image files are accepted (JPG, PNG, GIF, etc.).</span>
 </div>
 
 <h3 id="disabled-file-input-2">Disabled File Input</h3><div class="form-field">
@@ -1088,104 +1141,147 @@ But it cannot be edited.</textarea>
   <legend>User Information</legend>
   
   <div class="form-field">
-    <label for="user-name">Full Name</label>
-    <input type="text" id="user-name" placeholder="John Doe" />
-  </div>
+  <label for="user-name">Full Name</label>
+  <input type="text" id="user-name" placeholder="John Doe" />
+</div>
   
   <div class="form-field">
-    <label for="user-email">Email</label>
-    <input type="email" id="user-email" placeholder="john@example.com" />
-  </div>
+  <label for="user-email">Email</label>
+  <input type="email" id="user-email" placeholder="john@example.com" />
+</div>
   
   <div class="form-field">
-    <label for="user-phone">Phone</label>
-    <input type="tel" id="user-phone" placeholder="+1 (555) 123-4567" />
-  </div>
+  <label for="user-phone">Phone</label>
+  <input type="tel" id="user-phone" placeholder="+1 (555) 123-4567" />
+</div>
   
   <div class="form-field">
-    <label style="display: flex; align-items: center;">
-      <input type="checkbox" id="newsletter" / name="task">
-      <span>Subscribe to newsletter</span>
-    </label>
-  </div>
+  <label for="newsletter">Subscribe to newsletter</label>
+  <input type="checkbox" id="newsletter" / name="task">
+</div>
 </fieldset>
 
-<h2 id="complete-form-example-2">Complete Form Example</h2><form style="max-width: 600px; margin: 2rem 0;">
+<h2 id="complete-form-example-3">Complete Form Example</h2><form style="max-width: 600px; margin: 2rem 0;">
 <fieldset>
 <legend>Contact Form</legend>
 
 <div class="form-field">
-<label for="contact-name">Name *</label>
-<input type="text" id="contact-name" required placeholder="Your full name" />
+  <label for="contact-name">Name *</label>
+  <input type="text" id="contact-name" required placeholder="Your full name" />
 </div>
 
 <div class="form-field">
-<label for="contact-email">Email *</label>
-<input type="email" id="contact-email" required placeholder="your.email@example.com" />
+  <label for="contact-email">Email *</label>
+  <input type="email" id="contact-email" required placeholder="your.email@example.com" />
 </div>
 
 <div class="form-field">
-<label for="contact-subject">Subject</label>
-<select id="contact-subject">
-<option value="">Select a subject...</option>
-<option value="general">General Inquiry</option>
-<option value="support">Technical Support</option>
-<option value="sales">Sales</option>
-<option value="other">Other</option>
-</select>
+  <label for="contact-subject">Subject</label>
+  <select id="contact-subject">
+    <option value="">Select a subject...</option>
+    <option value="general">General Inquiry</option>
+    <option value="support">Technical Support</option>
+    <option value="sales">Sales</option>
+    <option value="other">Other</option>
+  </select>
 </div>
 
 <div class="form-field">
-<label for="contact-message">Message *</label>
-<textarea id="contact-message" rows="6" required placeholder="Enter your message here..."></textarea>
-<span class="form-helper-text">Please provide as much detail as possible.</span>
+  <label for="contact-message">Message *</label>
+  <textarea id="contact-message" rows="6" required placeholder="Enter your message here..." aria-describedby="contact-message-helper"></textarea>
+  <span class="form-helper-text" id="contact-message-helper">Please provide as much detail as possible.</span>
 </div>
 
 <div class="form-field">
-<label for="contact-attachment">Attachments</label>
-<input type="file" id="contact-attachment" multiple accept=".pdf,.doc,.docx,.jpg,.png" />
-<span class="form-helper-text">Optional: Attach relevant files (max 10MB each).</span>
+  <label for="contact-attachment">Attachments</label>
+  <input type="file" id="contact-attachment" multiple accept=".pdf,.doc,.docx,.jpg,.png" aria-describedby="contact-attachment-helper" />
+  <span class="form-helper-text" id="contact-attachment-helper">Optional: Attach relevant files (max 10MB each).</span>
 </div>
 
-<div class="form-field">
-<label>Preferred Contact Method</label>
-<div style="display: flex; gap: 1.5rem; margin-top: 0.5rem;">
-<label style="display: flex; align-items: center;">
-<input type="radio" name="contact-method" value="email" checked />
-<span>Email</span>
-</label>
-<label style="display: flex; align-items: center;">
-<input type="radio" name="contact-method" value="phone" />
-<span>Phone</span>
-</label>
-</div>
-</div>
+<fieldset class="radio-group">
+  <legend>Preferred Contact Method</legend>
+  <div class="radio-group-options">
+    <div class="radio-item">
+      <input type="radio" id="radio-group-1763858619280-5-0" name="contact-method" value="email" checked />
+      <label for="radio-group-1763858619280-5-0">Email</label>
+    </div>
+    <div class="radio-item">
+      <input type="radio" id="radio-group-1763858619280-5-1" name="contact-method" value="phone" />
+      <label for="radio-group-1763858619280-5-1">Phone</label>
+    </div>
+  </div>
+</fieldset>
 
 <div class="form-field">
-<label style="display: flex; align-items: center;">
-<input type="checkbox" id="contact-consent" required / name="task">
-<span>I agree to the privacy policy *</span>
-</label>
+  <label for="contact-consent">I agree to the privacy policy *</label>
+  <input type="checkbox" id="contact-consent" required / name="task">
 </div>
 
-<div class="form-field">
-<button type="submit" class="button button-primary">Send Message</button>
-<button type="reset" class="button">Reset Form</button>
+<div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+  <button type="submit" class="button button-primary">Send Message</button>
+  <button type="reset" class="button">Reset Form</button>
 </div>
 </fieldset>
 </form>
 
-<h2 id="accessibility-features-5">Accessibility Features</h2><p>All form elements include:</p>
+<h2 id="form-validation-1">Form Validation</h2><p><strong>Browser Native Validation (Default)</strong> - All form components use HTML5 native validation by default:</p>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-html">&lt;!-- Built-in validation attributes --&gt;
+&lt;FormField label=<span class="hljs-string">&quot;Email *&quot;</span>&gt;
+  &lt;input type=<span class="hljs-string">&quot;email&quot;</span> required /&gt;
+&lt;/FormField&gt;
+
+&lt;FormField label=<span class="hljs-string">&quot;Age&quot;</span>&gt;
+  &lt;input type=<span class="hljs-string">&quot;number&quot;</span> min=<span class="hljs-string">&quot;18&quot;</span> max=<span class="hljs-string">&quot;100&quot;</span> /&gt;
+&lt;/FormField&gt;
+
+&lt;FormField label=<span class="hljs-string">&quot;Username&quot;</span>&gt;
+  &lt;input type=<span class="hljs-string">&quot;text&quot;</span> pattern=<span class="hljs-string">&quot;[a-zA-Z0-9]+&quot;</span> minlength=<span class="hljs-string">&quot;3&quot;</span> maxlength=<span class="hljs-string">&quot;20&quot;</span> /&gt;
+&lt;/FormField&gt;</code></pre></div><h3 id="supported-html5-validation-attributes-1">Supported HTML5 Validation Attributes</h3><ul>
+<li>✅ <strong><code>required</code></strong> - Field must be filled</li>
+<li>✅ <strong><code>type=&quot;email&quot;</code></strong> - Valid email format</li>
+<li>✅ <strong><code>type=&quot;url&quot;</code></strong> - Valid URL format</li>
+<li>✅ <strong><code>type=&quot;number&quot;</code></strong> - Numeric input with <code>min</code>, <code>max</code>, <code>step</code></li>
+<li>✅ <strong><code>pattern</code></strong> - Custom regex validation</li>
+<li>✅ <strong><code>minlength</code> / <code>maxlength</code></strong> - String length constraints</li>
+<li>✅ <strong><code>min</code> / <code>max</code></strong> - Number/date range constraints</li>
+</ul>
+<h3 id="custom-error-messages-1">Custom Error Messages</h3><p>Use the <code>error</code> attribute to display validation errors:</p>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-html">&lt;FormField label=<span class="hljs-string">&quot;Password&quot;</span> error=<span class="hljs-string">&quot;Password must be at least 8 characters&quot;</span>&gt;
+  &lt;input type=<span class="hljs-string">&quot;password&quot;</span> minlength=<span class="hljs-string">&quot;8&quot;</span> /&gt;
+&lt;/FormField&gt;
+
+&lt;fieldset <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;checkbox-group has-error&quot;</span> aria-describedby=<span class="hljs-string">&quot;checkbox-group-1763858619280-4-helper&quot;</span>&gt;
+  &lt;legend&gt;Terms&lt;/legend&gt;
+  &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;checkbox-group-options&quot;</span>&gt;
+    &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;checkbox-item&quot;</span>&gt;
+      &lt;input type=<span class="hljs-string">&quot;checkbox&quot;</span> id=<span class="hljs-string">&quot;checkbox-group-1763858619280-4-0&quot;</span> name=<span class="hljs-string">&quot;terms&quot;</span> value=<span class="hljs-string">&quot;agree&quot;</span> required /&gt;
+      &lt;label <span class="hljs-keyword">for</span>=<span class="hljs-string">&quot;checkbox-group-1763858619280-4-0&quot;</span>&gt;I agree to the terms and conditions&lt;/label&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;form-error&quot;</span> id=<span class="hljs-string">&quot;checkbox-group-1763858619280-4-helper&quot;</span>&gt;You must accept the terms&lt;/div&gt;
+&lt;/fieldset&gt;</code></pre></div><p><strong>Browser native validation</strong> provides:</p>
 <ul>
-<li><strong>Proper Labels</strong>: Every input has an associated label for screen readers</li>
-<li><strong>Helper Text</strong>: Additional context for users</li>
-<li><strong>Error Messages</strong>: Clear error states with descriptive messages</li>
-<li><strong>Focus Indicators</strong>: Visible focus rings for keyboard navigation</li>
-<li><strong>Color Contrast</strong>: WCAG AA compliant color combinations</li>
-<li><strong>Keyboard Support</strong>: Full keyboard accessibility</li>
+<li>Zero JavaScript required</li>
+<li>Instant feedback</li>
+<li>Accessible error messages</li>
+<li>Works without JS enabled</li>
+<li>Mobile-friendly UI</li>
+<li>Automatic form submission prevention</li>
+</ul>
+<h2 id="accessibility-features-5">Accessibility Features</h2><p>The <code>&lt;FormField&gt;</code>, <code>&lt;CheckboxGroup&gt;</code>, and <code>&lt;RadioGroup&gt;</code> components automatically provide:</p>
+<ul>
+<li>✅ <strong>Proper Labels</strong>: Automatic <code>for</code>/<code>id</code> linking for screen readers</li>
+<li>✅ <strong>Helper Text</strong>: Connected via <code>aria-describedby</code> for accessibility</li>
+<li>✅ <strong>Error Messages</strong>: Clear error states with <code>.has-error</code> class and ARIA attributes</li>
+<li>✅ <strong>Focus Indicators</strong>: Visible focus rings for keyboard navigation (native browser)</li>
+<li>✅ <strong>Color Contrast</strong>: WCAG AA compliant color combinations (Carbon Design System)</li>
+<li>✅ <strong>Keyboard Support</strong>: Full keyboard accessibility (native HTML5)</li>
+<li>✅ <strong>HTML5 Validation</strong>: All native validation attributes preserved</li>
+<li>✅ <strong>XSS Protection</strong>: Automatic HTML escaping in labels, helpers, and errors</li>
+<li>✅ <strong>Fieldset/Legend</strong>: Proper semantic structure for checkbox/radio groups</li>
 </ul>
 <hr>
-<p><strong>Note</strong>: All form elements are fully functional and can be used in your projects. Simply use standard HTML form elements and they will automatically receive styling.</p>
+<p><strong>Note</strong>: For complete documentation, see <a href="/components/form-fields.html">FormField</a>, <a href="/components/checkbox-group.html">CheckboxGroup</a>, and <a href="/components/radio-group.html">RadioGroup</a>.</p>
 
                 </div>
 
@@ -1456,6 +1552,60 @@ window.CHIRON_LOCALE = 'en';
 
 <script src="./base.js"></script>
 <script>
+// Component: code-blocks
+/**
+ * Code Blocks Component - Copy button only
+ * Detects: pre code, .code-copy
+ * 
+ * @component code-blocks
+ */
+
+// Copy button functionality
+document.addEventListener('click', async (e) => {
+  const button = e.target.closest('.code-copy');
+  if (!button) {return;}
+
+  const codeBlock = button.closest('.code-block');
+  if (!codeBlock) {return;}
+
+  const code = codeBlock.querySelector('code');
+  if (!code) {return;}
+
+  const text = code.textContent;
+  const originalHTML = button.innerHTML;
+  const originalLabel = button.getAttribute('aria-label');
+
+  try {
+    await navigator.clipboard.writeText(text);
+    
+    // Success state - checkmark icon
+    button.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+    button.classList.add('copied');
+    button.setAttribute('aria-label', t('code_copied', 'Code copied'));
+        
+    setTimeout(() => {
+      button.innerHTML = originalHTML;
+      button.classList.remove('copied');
+      button.setAttribute('aria-label', originalLabel || t('code_copy', 'Copy code'));
+    }, 2000);
+  } catch (_err) {
+    console.error('Failed to copy code to clipboard');
+    
+    // Error state: X icon in lighter red with clear visual feedback
+    button.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>';
+    button.classList.add('copy-error');
+    button.setAttribute('aria-label', t('code_copy_failed', 'Copy failed'));
+    
+    // Reset after 3 seconds (longer for error visibility)
+    setTimeout(() => {
+      button.innerHTML = originalHTML;
+      button.classList.remove('copy-error');
+      button.setAttribute('aria-label', originalLabel || t('code_copy', 'Copy code'));
+    }, 3000);
+  }
+});
+
+
 // Component: toc
 /**
  * Table of Contents Component - Auto-generate TOC and highlight active section
