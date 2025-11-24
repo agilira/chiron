@@ -27,6 +27,9 @@ jobs:
       run: npm run lint
       continue-on-error: true
     
+    - name: Clear Jest cache
+      run: npx jest --clearCache
+    
     - name: Run tests
       run: npm test
     
