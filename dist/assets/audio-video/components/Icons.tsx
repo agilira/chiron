@@ -1,1 +1,0 @@
-// This file is no longer used. Icons are inlined in index.tsx.

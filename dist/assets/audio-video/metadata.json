@@ -1,5 +1,0 @@
-{
-  "name": "Lumos A11y Player",
-  "description": "Un video player HTML5 elegante, minimalista e completamente accessibile (WCAG 2.2 compliant), costruito con logica Vanilla JS incapsulata in React per la massima performance e accessibilità.",
-  "requestFramePermissions": []
-}
