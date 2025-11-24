@@ -523,6 +523,58 @@
   }
 
   /**
+   * Load HTML fragment from a URL and inject it into a container
+   * @param {HTMLElement} container - The container element with data-html-src attribute
+   * @returns {Promise<void>}
+   */
+  async function loadHtmlFragment(container) {
+    // Check if already loaded
+    if (container.dataset.htmlLoaded === 'true') {
+      console.debug('[LazyApp] HTML fragment already loaded:', container.id || container);
+      return;
+    }
+
+    const url = container.getAttribute('data-html-src');
+    if (!url) {
+      throw new Error('Container must have data-html-src attribute');
+    }
+
+    console.debug('[LazyApp] Loading HTML fragment from:', url);
+
+    try {
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const html = await response.text();
+      
+      // Inject HTML
+      container.innerHTML = html;
+      
+      // Mark as loaded
+      container.dataset.htmlLoaded = 'true';
+      
+      // Dispatch custom event
+      const event = new CustomEvent('html-fragment-loaded', {
+        detail: { url, container }
+      });
+      container.dispatchEvent(event);
+      
+      console.debug('[LazyApp] HTML fragment loaded successfully:', url);
+      
+    } catch (error) {
+      console.error('[LazyApp] Failed to load HTML fragment:', url, error);
+      
+      // Show error state
+      container.innerHTML = `<div class="html-fragment-error">Failed to load content from ${url}</div>`;
+      
+      throw error;
+    }
+  }
+
+  /**
  * Initialize lazy app loading for all containers on page
  * @param {HTMLElement|string|null} root - Root element or selector to search within (default: document)
  * @returns {IntersectionObserver|null} - Observer instance for manual control
@@ -629,6 +681,7 @@
       getData,
       loadApp,
       retryApp,
+      loadHtmlFragment,
       initLazyApps,
       cleanup,
       isElementVisible,
@@ -661,6 +714,7 @@
         cleanup,
         initLazyApps,
         loadApp,
+        loadHtmlFragment,
         injectData,
         getData
       };
