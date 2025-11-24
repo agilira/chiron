@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<!-- Anti-flash script - must run before CSS loads -->
+<script>
+(function() {
+  try {
+    const theme = localStorage.getItem('theme') || 
+                  (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  } catch (e) {
+    // Fallback if localStorage is not available
+  }
+})();
+</script>
+
+
+<title>Data Island Pattern - Complete Guide</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Comprehensive documentation for the Data Island Pattern in Chiron">
+    <meta name="keywords" content="documentation template, chiron, accessibility, responsive design, modern UI, developer tools">
+    <meta name="author" content="Agilira">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://agilira.github.io/chiron/data-island-docs.html">
+    <meta property="og:title" content="Data Island Pattern - Complete Guide">
+    <meta property="og:description" content="Comprehensive documentation for the Data Island Pattern in Chiron">
+    <meta property="og:image" content="https://agilira.github.io/chiron/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Chiron Documentation Template">
+    <meta property="og:site_name" content="Chiron Documentation">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://agilira.github.io/chiron/data-island-docs.html">
+    <meta name="twitter:title" content="Data Island Pattern - Complete Guide">
+    <meta name="twitter:description" content="Comprehensive documentation for the Data Island Pattern in Chiron">
+    <meta name="twitter:image" content="https://agilira.github.io/chiron/og-image.png">
+    <meta name="twitter:site" content="@agilirax">
+    <meta name="twitter:creator" content="@agilirax">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://agilira.github.io/chiron/data-island-docs.html">
+    <link rel="alternate" hreflang="en" href="https://agilira.github.io/chiron/data-island-docs.html">
+    <link rel="alternate" hreflang="x-default" href="https://agilira.github.io/chiron/data-island-docs.html">
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="./favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="./favicon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./favicon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="./favicon-512.png">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="./fonts.css">
+<link rel="stylesheet" href="./styles.css?v=20251104-v1">
+
+<!-- Syntax Highlighting - Custom theme in styles.css -->
+
+<script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Data Island Pattern - Complete Guide",
+    "description": "Comprehensive documentation for the Data Island Pattern in Chiron",
+    "url": "https://agilira.github.io/chiron/",
+    "author": {
+        "@type": "Organization",
+        "name": "Agilira",
+        "url": "https://github.com/agilira"
+    },
+    "isPartOf": {
+        "@type": "WebSite",
+        "name": "Chiron",
+        "url": "https://agilira.github.io/chiron"
+    }
+}
+    </script>
+
+
+<!-- Page-specific external stylesheets (from frontmatter) -->
+
+
+<style>
+/* Cookie Consent Banner Styles - GDPR Compliant */
+.cookie-consent-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  z-index: 9999;
+  font-family: system-ui, -apple-system, sans-serif;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.cookie-consent-content {
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.cookie-consent-content p {
+  margin: 0;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.cookie-link {
+  color: #0066cc;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.cookie-link:hover {
+  color: #0052a3;
+}
+
+.cookie-consent-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* GDPR Compliant: Both buttons have equal visual weight */
+.cookie-btn {
+  padding: 0.65rem 1.25rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #f5f5f5;
+  color: #333;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.cookie-btn:hover {
+  background: #e8e8e8;
+  border-color: #999;
+}
+
+.cookie-btn:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 768px) {
+  .cookie-consent-banner {
+    padding: 1rem;
+  }
+  
+  .cookie-consent-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .cookie-consent-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+  
+  .cookie-btn {
+    width: 100%;
+  }
+}
+</style>
+</head>
+<body id="page-data-island-docs" class="page has-sidebar">
+    <!-- Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- SVG Icon Sprite (hidden, for <use> references) -->
+    <svg style="display: none;" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="icon-menu" viewBox="0 0 24 24">
+    <path d="M4 5h16" />
+  <path d="M4 12h16" />
+  <path d="M4 19h16" />
+  </symbol>
+  <symbol id="icon-x" viewBox="0 0 24 24">
+    <path d="M18 6 6 18" />
+  <path d="m6 6 12 12" />
+  </symbol>
+  <symbol id="icon-chevron-right" viewBox="0 0 24 24">
+    <path d="m9 18 6-6-6-6" />
+  </symbol>
+  <symbol id="icon-chevron-left" viewBox="0 0 24 24">
+    <path d="m15 18-6-6 6-6" />
+  </symbol>
+  <symbol id="icon-chevron-down" viewBox="0 0 24 24">
+    <path d="m6 9 6 6 6-6" />
+  </symbol>
+  <symbol id="icon-chevron-up" viewBox="0 0 24 24">
+    <path d="m18 15-6-6-6 6" />
+  </symbol>
+  <symbol id="icon-arrow-right" viewBox="0 0 24 24">
+    <path d="M5 12h14" />
+  <path d="m12 5 7 7-7 7" />
+  </symbol>
+  <symbol id="icon-arrow-left" viewBox="0 0 24 24">
+    <path d="m12 19-7-7 7-7" />
+  <path d="M19 12H5" />
+  </symbol>
+  <symbol id="icon-external-link" viewBox="0 0 24 24">
+    <path d="M15 3h6v6" />
+  <path d="M10 14 21 3" />
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+  </symbol>
+  <symbol id="icon-link" viewBox="0 0 24 24">
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+  </symbol>
+  <symbol id="icon-home" viewBox="0 0 24 24">
+    <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
+  <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+  </symbol>
+  <symbol id="icon-languages" viewBox="0 0 24 24">
+    <path d="m5 8 6 6" />
+  <path d="m4 14 6-6 2-3" />
+  <path d="M2 5h12" />
+  <path d="M7 2h1" />
+  <path d="m22 22-5-10-5 10" />
+  <path d="M14 18h6" />
+  </symbol>
+  <symbol id="icon-file-text" viewBox="0 0 24 24">
+    <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+  <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+  <path d="M10 9H8" />
+  <path d="M16 13H8" />
+  <path d="M16 17H8" />
+  </symbol>
+  <symbol id="icon-book-open" viewBox="0 0 24 24">
+    <path d="M12 7v14" />
+  <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
+  </symbol>
+  <symbol id="icon-file" viewBox="0 0 24 24">
+    <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+  <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+  </symbol>
+  <symbol id="icon-folder" viewBox="0 0 24 24">
+    <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+  </symbol>
+  <symbol id="icon-image" viewBox="0 0 24 24">
+    <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+  <circle cx="9" cy="9" r="2" />
+  <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+  </symbol>
+  <symbol id="icon-code" viewBox="0 0 24 24">
+    <path d="m16 18 6-6-6-6" />
+  <path d="m8 6-6 6 6 6" />
+  </symbol>
+  <symbol id="icon-search" viewBox="0 0 24 24">
+    <path d="m21 21-4.34-4.34" />
+  <circle cx="11" cy="11" r="8" />
+  </symbol>
+  <symbol id="icon-copy" viewBox="0 0 24 24">
+    <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+  </symbol>
+  <symbol id="icon-check" viewBox="0 0 24 24">
+    <path d="M20 6 9 17l-5-5" />
+  </symbol>
+  <symbol id="icon-download" viewBox="0 0 24 24">
+    <path d="M12 15V3" />
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+  <path d="m7 10 5 5 5-5" />
+  </symbol>
+  <symbol id="icon-upload" viewBox="0 0 24 24">
+    <path d="M12 3v12" />
+  <path d="m17 8-5-5-5 5" />
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+  </symbol>
+  <symbol id="icon-edit" viewBox="0 0 24 24">
+    <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+  <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z" />
+  </symbol>
+  <symbol id="icon-trash" viewBox="0 0 24 24">
+    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+  <path d="M3 6h18" />
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+  </symbol>
+  <symbol id="icon-plus" viewBox="0 0 24 24">
+    <path d="M5 12h14" />
+  <path d="M12 5v14" />
+  </symbol>
+  <symbol id="icon-minus" viewBox="0 0 24 24">
+    <path d="M5 12h14" />
+  </symbol>
+  <symbol id="icon-settings" viewBox="0 0 24 24">
+    <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" />
+  <circle cx="12" cy="12" r="3" />
+  </symbol>
+  <symbol id="icon-share-2" viewBox="0 0 24 24">
+    <circle cx="18" cy="5" r="3" />
+  <circle cx="6" cy="12" r="3" />
+  <circle cx="18" cy="19" r="3" />
+  <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" />
+  <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" />
+  </symbol>
+  <symbol id="icon-info" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10" />
+  <path d="M12 16v-4" />
+  <path d="M12 8h.01" />
+  </symbol>
+  <symbol id="icon-alert-circle" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10" />
+  <line x1="12" x2="12" y1="8" y2="12" />
+  <line x1="12" x2="12.01" y1="16" y2="16" />
+  </symbol>
+  <symbol id="icon-alert-triangle" viewBox="0 0 24 24">
+    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+  <path d="M12 9v4" />
+  <path d="M12 17h.01" />
+  </symbol>
+  <symbol id="icon-check-circle" viewBox="0 0 24 24">
+    <path d="M21.801 10A10 10 0 1 1 17 3.335" />
+  <path d="m9 11 3 3L22 4" />
+  </symbol>
+  <symbol id="icon-x-circle" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10" />
+  <path d="m15 9-6 6" />
+  <path d="m9 9 6 6" />
+  </symbol>
+  <symbol id="icon-help-circle" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10" />
+  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+  <path d="M12 17h.01" />
+  </symbol>
+  <symbol id="icon-lightbulb" viewBox="0 0 24 24">
+    <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
+  <path d="M9 18h6" />
+  <path d="M10 22h4" />
+  </symbol>
+  <symbol id="icon-zap" viewBox="0 0 24 24">
+    <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z" />
+  </symbol>
+  <symbol id="icon-star" viewBox="0 0 24 24">
+    <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" />
+  </symbol>
+  <symbol id="icon-heart" viewBox="0 0 24 24">
+    <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" />
+  </symbol>
+  <symbol id="icon-bookmark" viewBox="0 0 24 24">
+    <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z" />
+  </symbol>
+  <symbol id="icon-tag" viewBox="0 0 24 24">
+    <path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z" />
+  <circle cx="7.5" cy="7.5" r=".5" fill="currentColor" />
+  </symbol>
+  <symbol id="icon-clock" viewBox="0 0 24 24">
+    <path d="M12 6v6l4 2" />
+  <circle cx="12" cy="12" r="10" />
+  </symbol>
+  <symbol id="icon-calendar" viewBox="0 0 24 24">
+    <path d="M8 2v4" />
+  <path d="M16 2v4" />
+  <rect width="18" height="18" x="3" y="4" rx="2" />
+  <path d="M3 10h18" />
+  </symbol>
+  <symbol id="icon-users" viewBox="0 0 24 24">
+    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+  <path d="M16 3.128a4 4 0 0 1 0 7.744" />
+  <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+  <circle cx="9" cy="7" r="4" />
+  </symbol>
+  <symbol id="icon-user" viewBox="0 0 24 24">
+    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+  <circle cx="12" cy="7" r="4" />
+  </symbol>
+  <symbol id="icon-mail" viewBox="0 0 24 24">
+    <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />
+  <rect x="2" y="4" width="20" height="16" rx="2" />
+  </symbol>
+  <symbol id="icon-message-circle" viewBox="0 0 24 24">
+    <path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" />
+  </symbol>
+  <symbol id="icon-bell" viewBox="0 0 24 24">
+    <path d="M10.268 21a2 2 0 0 0 3.464 0" />
+  <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
+  </symbol>
+  <symbol id="icon-github" viewBox="0 0 24 24">
+    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+  <path d="M9 18c-4.51 2-5-2-7-2" />
+  </symbol>
+  <symbol id="icon-git-branch" viewBox="0 0 24 24">
+    <line x1="6" x2="6" y1="3" y2="15" />
+  <circle cx="18" cy="6" r="3" />
+  <circle cx="6" cy="18" r="3" />
+  <path d="M18 9a9 9 0 0 1-9 9" />
+  </symbol>
+  <symbol id="icon-git-commit" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="3" />
+  <line x1="3" x2="9" y1="12" y2="12" />
+  <line x1="15" x2="21" y1="12" y2="12" />
+  </symbol>
+  <symbol id="icon-terminal" viewBox="0 0 24 24">
+    <path d="M12 19h8" />
+  <path d="m4 17 6-6-6-6" />
+  </symbol>
+  <symbol id="icon-package" viewBox="0 0 24 24">
+    <path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z" />
+  <path d="M12 22V12" />
+  <polyline points="3.29 7 12 12 20.71 7" />
+  <path d="m7.5 4.27 9 5.15" />
+  </symbol>
+  <symbol id="icon-database" viewBox="0 0 24 24">
+    <ellipse cx="12" cy="5" rx="9" ry="3" />
+  <path d="M3 5V19A9 3 0 0 0 21 19V5" />
+  <path d="M3 12A9 3 0 0 0 21 12" />
+  </symbol>
+  <symbol id="icon-server" viewBox="0 0 24 24">
+    <rect width="20" height="8" x="2" y="2" rx="2" ry="2" />
+  <rect width="20" height="8" x="2" y="14" rx="2" ry="2" />
+  <line x1="6" x2="6.01" y1="6" y2="6" />
+  <line x1="6" x2="6.01" y1="18" y2="18" />
+  </symbol>
+  <symbol id="icon-cloud" viewBox="0 0 24 24">
+    <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
+  </symbol>
+  <symbol id="icon-lock" viewBox="0 0 24 24">
+    <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+  </symbol>
+  <symbol id="icon-unlock" viewBox="0 0 24 24">
+    <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+  <path d="M7 11V7a5 5 0 0 1 9.9-1" />
+  </symbol>
+  <symbol id="icon-key" viewBox="0 0 24 24">
+    <path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4" />
+  <path d="m21 2-9.6 9.6" />
+  <circle cx="7.5" cy="15.5" r="5.5" />
+  </symbol>
+  <symbol id="icon-play" viewBox="0 0 24 24">
+    <path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" />
+  </symbol>
+  <symbol id="icon-pause" viewBox="0 0 24 24">
+    <rect x="14" y="3" width="5" height="18" rx="1" />
+  <rect x="5" y="3" width="5" height="18" rx="1" />
+  </symbol>
+  <symbol id="icon-volume-2" viewBox="0 0 24 24">
+    <path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" />
+  <path d="M16 9a5 5 0 0 1 0 6" />
+  <path d="M19.364 18.364a9 9 0 0 0 0-12.728" />
+  </symbol>
+  <symbol id="icon-video" viewBox="0 0 24 24">
+    <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5" />
+  <rect x="2" y="6" width="14" height="12" rx="2" />
+  </symbol>
+  <symbol id="icon-mic" viewBox="0 0 24 24">
+    <path d="M12 19v3" />
+  <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+  <rect x="9" y="2" width="6" height="13" rx="3" />
+  </symbol>
+  <symbol id="icon-sun" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="4" />
+  <path d="M12 2v2" />
+  <path d="M12 20v2" />
+  <path d="m4.93 4.93 1.41 1.41" />
+  <path d="m17.66 17.66 1.41 1.41" />
+  <path d="M2 12h2" />
+  <path d="M20 12h2" />
+  <path d="m6.34 17.66-1.41 1.41" />
+  <path d="m19.07 4.93-1.41 1.41" />
+  </symbol>
+  <symbol id="icon-moon" viewBox="0 0 24 24">
+    <path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" />
+  </symbol>
+  <symbol id="icon-eye" viewBox="0 0 24 24">
+    <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+  <circle cx="12" cy="12" r="3" />
+  </symbol>
+  <symbol id="icon-eye-off" viewBox="0 0 24 24">
+    <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49" />
+  <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242" />
+  <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143" />
+  <path d="m2 2 20 20" />
+  </symbol>
+  <symbol id="icon-filter" viewBox="0 0 24 24">
+    <path d="M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z" />
+  </symbol>
+  <symbol id="icon-layout" viewBox="0 0 24 24">
+    <rect width="18" height="18" x="3" y="3" rx="2" />
+  <path d="M3 9h18" />
+  <path d="M9 21V9" />
+  </symbol>
+  <symbol id="icon-grid" viewBox="0 0 24 24">
+    <rect width="18" height="18" x="3" y="3" rx="2" />
+  <path d="M3 9h18" />
+  <path d="M3 15h18" />
+  <path d="M9 3v18" />
+  <path d="M15 3v18" />
+  </symbol>
+  <symbol id="icon-list" viewBox="0 0 24 24">
+    <path d="M3 5h.01" />
+  <path d="M3 12h.01" />
+  <path d="M3 19h.01" />
+  <path d="M8 5h13" />
+  <path d="M8 12h13" />
+  <path d="M8 19h13" />
+  </symbol>
+  <symbol id="icon-maximize" viewBox="0 0 24 24">
+    <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+  <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
+  <path d="M3 16v3a2 2 0 0 0 2 2h3" />
+  <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+  </symbol>
+  <symbol id="icon-minimize" viewBox="0 0 24 24">
+    <path d="M8 3v3a2 2 0 0 1-2 2H3" />
+  <path d="M21 8h-3a2 2 0 0 1-2-2V3" />
+  <path d="M3 16h3a2 2 0 0 1 2 2v3" />
+  <path d="M16 21v-3a2 2 0 0 1 2-2h3" />
+  </symbol>
+  <symbol id="icon-refresh-cw" viewBox="0 0 24 24">
+    <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+  <path d="M21 3v5h-5" />
+  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+  <path d="M8 16H3v5" />
+  </symbol>
+</svg>
+    
+    <!-- Header -->
+    <header class="header" role="banner">
+    <div class="header-container">
+        <div class="header-left">
+            <!-- 
+    Flexible Logo/Name Link:
+    - logoImages: Shows logo images (light + dark) if configured
+    - projectNameSpan: Shows project name if configured
+    
+    Supports all combinations:
+    1. Logo + Name (default)
+    2. Logo only (omit project.name in config)
+    3. Name only (omit branding.logo paths in config)
+    4. Neither (edge case, link will be empty but functional)
+-->
+<a href="https://github.com/agilira/chiron" class="logo-link" target="_blank" rel="noopener">
+    <img src="./assets/logo-black.png" alt="Chiron Logo" class="logo-img logo-light" width="32" height="32" loading="eager">
+    <img src="./assets/logo-white.png" alt="Chiron Logo" class="logo-img logo-dark" width="32" height="32" loading="eager">
+    
+</a>
+
+            <nav aria-label="Main navigation" role="navigation">
+  <ul class="header-nav" data-dropdown-trigger="click">
+    <li class="header-nav-item"><a href="/" class="header-nav-link">Home</a></li>
+    <li class="header-nav-item">
+      <button class="header-nav-link" aria-haspopup="true" aria-expanded="false">Docs <svg class="dropdown-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <ul class="header-dropdown">
+        <li class="header-nav-item"><a href="/showcase.html" class="header-dropdown-link">Getting Started</a></li>
+    <li class="header-nav-item"><a href="/custom-template-test.html" class="header-dropdown-link">Templates</a></li>
+    <li class="header-nav-item menu-divider"><hr /></li>
+    <li class="header-nav-item"><a href="/external-scripts-demo.html" class="header-dropdown-link">External Scripts</a></li>
+    <li class="header-nav-item"><a href="/forms-demo.html" class="header-dropdown-link">Forms</a></li>
+      </ul>
+    </li>
+    <li class="header-nav-item"><a href="/react-demo.html" class="header-nav-link">React Demo</a></li>
+  </ul>
+</nav>
+        </div>
+        <div class="header-right">
+            <div class="header-actions">
+                
+
+
+
+
+    
+        
+
+        
+            <button type="button" class="header-action-btn" id="searchToggle" aria-label="Search" >
+                
+                    <svg width="20" height="20" aria-hidden="true">
+                        <use href="#icon-search"></use>
+                    </svg>
+                
+            </button>
+        
+    
+        
+
+        
+            <a href="https://github.com/agilira/chiron" class="header-action-btn" aria-label="GitHub" rel=&#34;noopener&#34;>
+                
+                    <svg width="20" height="20" aria-hidden="true">
+                        <use href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+
+        
+            <button type="button" class="header-action-btn theme-toggle" id="themeToggle" aria-label="Theme" >
+                
+                    
+                    <svg width="20" height="20" aria-hidden="true" class="theme-icon-light">
+                        <use href="#icon-sun"></use>
+                    </svg>
+                    <svg width="20" height="20" aria-hidden="true" class="theme-icon-dark" style="display: none;">
+                        <use href="#icon-moon"></use>
+                    </svg>
+                
+            </button>
+        
+    
+        
+
+        
+            <a href="./login" class="header-action-btn btn-login hide-on-mobile" aria-label="Login" >
+                
+                    <svg width="20" height="20" aria-hidden="true">
+                        <use href="#icon-user"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+
+        
+            <a href="https://github.com/sponsors" class="header-action-btn btn-donate" aria-label="Donate" rel=&#34;noopener noreferrer&#34;>
+                
+                    <svg width="20" height="20" aria-hidden="true">
+                        <use href="#icon-heart"></use>
+                    </svg>
+                
+            </a>
+        
+    
+
+
+
+<button type="button" class="header-action-btn mobile-only" id="sidebarToggle" aria-label=&#34;aria_sidebar_toggle&#34;>
+    <svg width="20" height="20" aria-hidden="true">
+        <use href="#icon-menu"></use>
+    </svg>
+</button>
+
+            </div>
+        </div>
+    </div>
+</header>
+
+
+    <!-- Main Layout -->
+    <div class="layout">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar" role="complementary" aria-label="Sidebar">
+            <!-- Mobile Header Navigation -->
+            <nav class="mobile-header-nav" aria-label="Main navigation (mobile)">
+                <a href="./index.html" class="nav-item">Home</a>
+                    <div class="nav-section">
+                      <button class="nav-section-title collapsible" aria-expanded="false">
+                        <span class="nav-section-title-text">Docs</span>
+                        <svg class="nav-section-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                      </button>
+                      <ul class="nav-list">
+                        <li><a href="./showcase.html" class="nav-item">Getting Started</a></li>
+                      <li><a href="./custom-template-test.html" class="nav-item">Templates</a></li>
+                      <li class="menu-divider"><hr /></li>
+                      <li><a href="./external-scripts-demo.html" class="nav-item">External Scripts</a></li>
+                      <li><a href="./forms-demo.html" class="nav-item">Forms</a></li>
+                      </ul>
+                    </div>
+                    <a href="./react-demo.html" class="nav-item">React Demo</a>
+            </nav>
+            
+            <!-- Sidebar Navigation -->
+            <nav class="sidebar-nav" aria-label=&#34;aria_nav_sidebar&#34;>
+                <div class="nav-section">
+                    <div class="nav-section-title">Documentation</div>
+                    <ul class="nav-list">
+                        <li><a href="./index.html" class="nav-item">Overview</a></li>
+                        <li><a href="./react-demo.html" class="nav-item">React Demo</a></li>
+                        <li><a href="./tabs-demo.html" class="nav-item">Tabs Demo</a></li>
+                        <li><a href="./api-reference.html" class="nav-item">API Reference</a></li>
+                        <li><a href="./showcase.html" class="nav-item">UI Showcase</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section expanded">
+                    <div class="nav-section-title collapsible" role="button" tabindex="0" aria-expanded="true">
+                        <span class="nav-section-title-text">Plugins</span>
+                        <svg class="nav-section-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <ul class="nav-list">
+                        <li><a href="./plugins/index.html" class="nav-item">Plugins Overview</a></li>
+                        <li><a href="./plugins/auth/index.html" class="nav-item">Authentication Plugin</a></li>
+                        <li><a href="./plugins/auth/api-reference.html" class="nav-item">Auth API Reference</a></li>
+                        <li><a href="./plugins/auth/guide.html" class="nav-item">Auth Configuration</a></li>
+                        <li><a href="./plugins/cache/index.html" class="nav-item">Cache Plugin</a></li>
+                        <li><a href="./plugins/cache/api-reference.html" class="nav-item">Cache API Reference</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-section-title collapsible" role="button" tabindex="0" aria-expanded="false">
+                        <span class="nav-section-title-text">Legal</span>
+                        <svg class="nav-section-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <ul class="nav-list">
+                        <li><a href="./privacy-policy.html" class="nav-item">Privacy Policy</a></li>
+                        <li><a href="./terms-of-service.html" class="nav-item">Terms of Service</a></li>
+                        <li><a href="./cookie-policy.html" class="nav-item">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section expanded">
+                    <div class="nav-section-title collapsible" role="button" tabindex="0" aria-expanded="true">
+                        <span class="nav-section-title-text">Resources</span>
+                        <svg class="nav-section-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <ul class="nav-list">
+                        <li><a href="https://github.com/agilira/chiron" class="nav-item sidebar-github" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
+                        <li><a href="./CHANGELOG.html" class="nav-item">Changelog</a></li>
+                        <li><a href="./ACCESSIBILITY.html" class="nav-item sidebar-accessibility">Accessibility Guide</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+        
+
+        <!-- Main Content -->
+        <main class="main-content" id="main-content" role="main">
+            <div class="content-container">
+                
+<nav class="breadcrumb" aria-label="Breadcrumb">
+    <ol class="breadcrumb-list">
+        
+            
+            
+            
+                
+                <li class="breadcrumb-item breadcrumb-company">
+                    <a href="https://github.com/agilira" target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;>AGILira</a>
+                </li>
+            
+
+            
+                <li class="breadcrumb-separator" aria-hidden="true">/</li>
+            
+        
+            
+            
+            
+                
+                <li class="breadcrumb-item breadcrumb-project">
+                    <a href="https://github.com/agilira/chiron" target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;>Chiron</a>
+                </li>
+            
+
+            
+                <li class="breadcrumb-separator" aria-hidden="true">/</li>
+            
+        
+            
+            
+            
+                
+                <li class="breadcrumb-item breadcrumb-home">
+                    <a href="./index.html">Documentation</a>
+                </li>
+            
+
+            
+                <li class="breadcrumb-separator" aria-hidden="true">/</li>
+            
+        
+            
+            
+            
+                <li class="breadcrumb-item current" aria-current=&#34;page&#34;>
+                    Data Island Pattern - Complete Guide
+                </li>
+            
+
+            
+        
+    </ol>
+</nav>
+
+
+
+                <!-- Page Content -->
+                <div class="content">
+                    <h1 id="data-island-pattern-complete-guide-1">🏝️ Data Island Pattern - Complete Guide</h1><p>Il <strong>Data Island Pattern</strong> è una tecnica per iniettare dati a <strong>build-time</strong> direttamente nell&#39;HTML, eliminando la necessità di chiamate HTTP a runtime.</p>
+<h2 id="quando-usarlo-1">🎯 Quando Usarlo</h2><h3 id="use-cases-perfetti-1">✅ Use Cases Perfetti</h3><h4 id="widgets-interattivi-1">Widgets Interattivi</h4><ul>
+<li><strong>Related Posts Widget</strong> - Lista articoli correlati (zero fetch, SEO-friendly)</li>
+<li><strong>Recent Articles</strong> - Ultimi articoli con sorting/filtering client-side</li>
+<li><strong>Author Bio Cards</strong> - Info autore con social links interattivi</li>
+<li><strong>Product Listings</strong> - Catalogo prodotti con filtri e ricerca</li>
+<li><strong>Comment Counters</strong> - Visualizzazione conteggi senza API</li>
+</ul>
+<h4 id="componenti-dinamici-1">Componenti Dinamici</h4><ul>
+<li><strong>Search Widgets</strong> - Indice di ricerca pre-generato</li>
+<li><strong>Analytics Dashboards</strong> - Metriche pre-calcolate dal build</li>
+<li><strong>Interactive Maps</strong> - Coordinate e markers già nell&#39;HTML</li>
+<li><strong>Chart Components</strong> - Dati per grafici disponibili immediatamente</li>
+<li><strong>Filter Panels</strong> - Opzioni di filtro pre-caricate</li>
+</ul>
+<h4 id="progressive-enhancement-1">Progressive Enhancement</h4><ul>
+<li><strong>User Preferences UI</strong> - Settings con valori default</li>
+<li><strong>Form Wizards</strong> - Dati di configurazione step-by-step</li>
+<li><strong>Validation Rules</strong> - Regole di validazione complesse</li>
+<li><strong>Localization Data</strong> - Traduzioni per UI dinamiche</li>
+</ul>
+<h2 id="come-funziona-1">📖 Come Funziona</h2><h3 id="step-1-aggiungi-dati-al-frontmatter-1">Step 1: Aggiungi Dati al Frontmatter</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">---
+title: My Blog Post
+description: An awesome post
+author: John Doe
+tags: [react, performance, seo]
+relatedPosts:
+  - title: First Related
+    url: /posts/first
+  - title: Second Related
+    url: /posts/second
+customConfig:
+  apiEndpoint: https:<span class="hljs-comment">//api.example.com</span>
+  maxItems: <span class="hljs-number">10</span>
+  theme: dark
+---</code></pre></div><h3 id="step-2-usa-il-shortcode-con-data-attribute-1">Step 2: Usa il Shortcode con `data` Attribute</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-jsx">&lt;App id=<span class="hljs-string">&quot;related-posts-widget&quot;</span> 
+     framework=<span class="hljs-string">&quot;vanilla&quot;</span> 
+     src=<span class="hljs-string">&quot;/assets/widgets/related-posts.js&quot;</span>
+     data=<span class="hljs-string">&quot;page.title,page.tags,page.relatedPosts&quot;</span>&gt;
+  &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;placeholder&quot;</span>&gt;Loading related posts...&lt;/div&gt;
+&lt;/App&gt;</code></pre></div><h3 id="step-3-chiron-genera-il-data-island-1">Step 3: Chiron Genera il Data Island</h3><p>Durante il build, Chiron genera:</p>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-html">&lt;!-- Data Island - injected at build time --&gt;
+&lt;script type=<span class="hljs-string">&quot;application/json&quot;</span> id=<span class="hljs-string">&quot;related-posts-widget-data&quot;</span>&gt;
+{
+  <span class="hljs-string">&quot;title&quot;</span>: <span class="hljs-string">&quot;My Blog Post&quot;</span>,
+  <span class="hljs-string">&quot;tags&quot;</span>: [<span class="hljs-string">&quot;react&quot;</span>, <span class="hljs-string">&quot;performance&quot;</span>, <span class="hljs-string">&quot;seo&quot;</span>],
+  <span class="hljs-string">&quot;relatedPosts&quot;</span>: [
+    { <span class="hljs-string">&quot;title&quot;</span>: <span class="hljs-string">&quot;First Related&quot;</span>, <span class="hljs-string">&quot;url&quot;</span>: <span class="hljs-string">&quot;/posts/first&quot;</span> },
+    { <span class="hljs-string">&quot;title&quot;</span>: <span class="hljs-string">&quot;Second Related&quot;</span>, <span class="hljs-string">&quot;url&quot;</span>: <span class="hljs-string">&quot;/posts/second&quot;</span> }
+  ]
+}
+&lt;/script&gt;
+
+&lt;!-- Lazy-loaded container --&gt;
+&lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;lazy-app-container&quot;</span> 
+     data-lazy-app=<span class="hljs-string">&quot;vanilla&quot;</span>
+     data-script-src=<span class="hljs-string">&quot;/assets/widgets/related-posts.js&quot;</span>
+     id=<span class="hljs-string">&quot;related-posts-widget&quot;</span>&gt;
+  &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;placeholder&quot;</span>&gt;Loading related posts...&lt;/div&gt;
+&lt;/div&gt;</code></pre></div><h3 id="step-4-l-app-legge-i-dati-1">Step 4: L'App Legge i Dati</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript"><span class="hljs-comment">// assets/widgets/related-posts.js</span>
+(<span class="hljs-keyword">function</span>() {
+  <span class="hljs-string">&#039;use strict&#039;</span>;
+  
+  document.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#039;lazy-app-loaded&#039;</span>, <span class="hljs-keyword">function</span>(event) {
+    <span class="hljs-keyword">if</span> (event.detail.appId !== <span class="hljs-string">&#039;related-posts-widget&#039;</span>) <span class="hljs-keyword">return</span>;
+    
+    <span class="hljs-keyword">const</span> container = event.detail.container;
+    
+    <span class="hljs-comment">// Read injected Data Island</span>
+    <span class="hljs-keyword">const</span> dataScript = document.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#039;related-posts-widget-data&#039;</span>);
+    <span class="hljs-keyword">const</span> data = JSON.<span class="hljs-title function_">parse</span>(dataScript.textContent);
+    
+    <span class="hljs-comment">// Render with zero HTTP requests!</span>
+    <span class="hljs-keyword">const</span> html = <span class="hljs-template-literal">`
+      &lt;div class=&quot;related-posts&quot;&gt;
+        &lt;h3&gt;Related to: ${data.title}&lt;/h3&gt;
+        &lt;ul&gt;
+          ${data.relatedPosts.map(post =&gt; `</span>
+            &lt;li&gt;&lt;a href=<span class="hljs-string">&quot;${post.url}&quot;</span>&gt;${post.title}&lt;/a&gt;&lt;/li&gt;
+          <span class="hljs-template-literal">`).join(&#039;&#039;)}
+        &lt;/ul&gt;
+        &lt;div class=&quot;tags&quot;&gt;
+          ${data.tags.map(tag =&gt; `</span>&lt;span <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;tag&quot;</span>&gt;${tag}&lt;/span&gt;<span class="hljs-template-literal">`).join(&#039;&#039;)}
+        &lt;/div&gt;
+      &lt;/div&gt;
+    `</span>;
+    
+    container.innerHTML = html;
+  });
+})();</code></pre></div><h2 id="cosa-puoi-iniettare-1">📊 Cosa Puoi Iniettare?</h2><p>Il Data Island può accedere a <strong>tutto il context</strong> disponibile durante il rendering della pagina.</p>
+<h3 id="dati-pagina-corrente-1">🔹 Dati Pagina Corrente</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml"><span class="hljs-comment"># Nel frontmatter</span>
+title: My Page
+description: Page description
+author: John Doe
+date: <span class="hljs-number">2024</span>-<span class="hljs-number">01</span>-<span class="hljs-number">15</span>
+tags: [tag1, tag2]
+category: tutorials
+
+<span class="hljs-comment"># Dati custom arbitrari</span>
+myCustomData:
+  apiKey: abc123
+  settings:
+    theme: dark
+    lang: it</code></pre></div><p>Accesso nel shortcode:</p>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-markdown">data=<span class="hljs-string">&quot;page.title,page.author,page.tags,page.myCustomData&quot;</span></code></pre></div><h3 id="configurazione-sito-1">🔹 Configurazione Sito</h3><p>Dalla <code>chiron.config.yaml</code>:</p>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">project:
+  name: My Site
+  url: https:<span class="hljs-comment">//mysite.com</span>
+  author: Site Author
+  
+customGlobals:
+  contactEmail: hello@mysite.com
+  socialLinks:
+    twitter: @mysite
+    github: mysite</code></pre></div><p>Accesso nel shortcode:</p>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-markdown">data=<span class="hljs-string">&quot;config.project.name,config.customGlobals.contactEmail&quot;</span></code></pre></div><h3 id="dati-da-plugin-1">🔹 Dati da Plugin</h3><p>I plugin possono iniettare dati nel context tramite hook <code>page:before-render</code>:</p>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript"><span class="hljs-comment">// In un plugin</span>
+hooks: {
+  <span class="hljs-string">&#039;page:before-render&#039;</span>: <span class="hljs-keyword">async</span> (pageContext, context) =&gt; {
+    <span class="hljs-comment">// Aggiungi dati custom al page context</span>
+    pageContext.page.relatedPosts = [
+      { title: <span class="hljs-string">&#039;Post 1&#039;</span>, url: <span class="hljs-string">&#039;/post-1&#039;</span> },
+      { title: <span class="hljs-string">&#039;Post 2&#039;</span>, url: <span class="hljs-string">&#039;/post-2&#039;</span> }
+    ];
+    <span class="hljs-keyword">return</span> pageContext;
+  }
+}</code></pre></div><p>Poi accessibili con:</p>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-markdown">data=<span class="hljs-string">&quot;page.relatedPosts&quot;</span></code></pre></div><h2 id="performance-6">⚡ Performance</h2><h3 id="confronto-con-fetch-tradizionale-1">Confronto con Fetch Tradizionale</h3><div class="table-wrapper">
+        <table>
+          <thead><tr>
+<th>Aspetto</th>
+<th>Traditional Fetch</th>
+<th>Data Island</th>
+</tr>
+</thead>
+          <tbody><tr>
+<td><strong>HTTP Requests</strong></td>
+<td>1+ per widget</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td><strong>Time to Interactive</strong></td>
+<td>200-500ms</td>
+<td><strong>Instant</strong></td>
+</tr>
+<tr>
+<td><strong>SEO</strong></td>
+<td>❌ Content not crawlable</td>
+<td>✅ In HTML source</td>
+</tr>
+<tr>
+<td><strong>Caching</strong></td>
+<td>Browser cache only</td>
+<td><strong>Build cache</strong></td>
+</tr>
+<tr>
+<td><strong>Bundle Size</strong></td>
+<td>Fetch API (~2KB)</td>
+<td><strong>0 KB</strong></td>
+</tr>
+<tr>
+<td><strong>Network Failures</strong></td>
+<td>Can break UI</td>
+<td><strong>Impossible</strong></td>
+</tr>
+</tbody>
+        </table>
+      </div><h3 id="vantaggi-1">Vantaggi</h3><p>✅ <strong>Zero Network Latency</strong> - Dati già nell&#39;HTML<br>✅ <strong>SEO-Friendly</strong> - Crawlers vedono i dati<br>✅ <strong>Cost Effective</strong> - Meno API calls = meno costi<br>✅ <strong>Type Safe</strong> - Errori rilevati a build-time<br>✅ <strong>Offline-First</strong> - Funziona anche offline<br>✅ <strong>Progressive Enhancement</strong> - Degrada gracefully  </p>
+<h3 id="limitazioni-1">Limitazioni</h3><p>⚠️ <strong>Dati Statici</strong> - Solo dati noti a build-time<br>⚠️ <strong>HTML Size</strong> - Dati grandi aumentano dimensione pagina<br>⚠️ <strong>Cache Invalidation</strong> - Rebuild necessario per aggiornare  </p>
+<p><strong>Regola d&#39;oro</strong>: Usa Data Island per dati che cambiano raramente, fetch() per dati realtime.</p>
+<h2 id="sintassi-completa-1">🔧 Sintassi Completa</h2><h3 id="attributo-data-1">Attributo `data`</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-markdown">data=<span class="hljs-string">&quot;key1,key2.nested,key3.deep.value&quot;</span></code></pre></div><ul>
+<li><strong>Separator</strong>: virgola (<code>,</code>)</li>
+<li><strong>Dot Notation</strong>: naviga oggetti nested</li>
+<li><strong>Property Name</strong>: ultimo elemento del path diventa chiave nel JSON</li>
+</ul>
+<h4 id="esempi-1">Esempi</h4><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-markdown"><span class="hljs-comment"># Semplice</span>
+data=<span class="hljs-string">&quot;page.title&quot;</span>
+→ { <span class="hljs-string">&quot;title&quot;</span>: <span class="hljs-string">&quot;Page Title&quot;</span> }
+
+<span class="hljs-comment"># Multiple keys</span>
+data=<span class="hljs-string">&quot;page.title,page.author&quot;</span>
+→ { <span class="hljs-string">&quot;title&quot;</span>: <span class="hljs-string">&quot;...&quot;</span>, <span class="hljs-string">&quot;author&quot;</span>: <span class="hljs-string">&quot;...&quot;</span> }
+
+<span class="hljs-comment"># Nested objects</span>
+data=<span class="hljs-string">&quot;page.customData.settings.theme&quot;</span>
+→ { <span class="hljs-string">&quot;theme&quot;</span>: <span class="hljs-string">&quot;dark&quot;</span> }
+
+<span class="hljs-comment"># Arrays</span>
+data=<span class="hljs-string">&quot;page.tags,page.categories&quot;</span>
+→ { <span class="hljs-string">&quot;tags&quot;</span>: [...], <span class="hljs-string">&quot;categories&quot;</span>: [...] }
+
+<span class="hljs-comment"># Complex objects</span>
+data=<span class="hljs-string">&quot;page.metadata,config.project&quot;</span>
+→ { <span class="hljs-string">&quot;metadata&quot;</span>: {...}, <span class="hljs-string">&quot;project&quot;</span>: {...} }</code></pre></div><h3 id="shortcode-completo-1">Shortcode Completo</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-jsx">&lt;App id=<span class="hljs-string">&quot;my-widget&quot;</span>                    {<span class="hljs-comment">/* ID univoco (required) */</span>}
+     framework=<span class="hljs-string">&quot;vanilla&quot;</span>               {<span class="hljs-comment">/* vanilla|react|vue (required) */</span>}
+     src=<span class="hljs-string">&quot;/assets/my-widget.js&quot;</span>        {<span class="hljs-comment">/* Script path (required) */</span>}
+     data=<span class="hljs-string">&quot;page.title,page.tags&quot;</span>       {<span class="hljs-comment">/* Data to inject (optional) */</span>}
+     deps=<span class="hljs-string">&quot;https://cdn.../lib.js&quot;</span>&gt;     {<span class="hljs-comment">/* Dependencies (optional) */</span>}
+  {<span class="hljs-comment">/* Placeholder HTML (optional) */</span>}
+  &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;loading&quot;</span>&gt;Loading...&lt;/div&gt;
+&lt;/App&gt;</code></pre></div><h2 id="esempi-pratici-1">🎨 Esempi Pratici</h2><h3 id="esempio-1-related-posts-widget-1">Esempio 1: Related Posts Widget</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">---
+title: Advanced React Patterns
+tags: [react, patterns, hooks]
+relatedPosts:
+  - title: React Hooks Guide
+    url: /react-hooks
+  - title: Component Composition
+    url: /composition
+---</code></pre></div><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-jsx">&lt;App id=<span class="hljs-string">&quot;related&quot;</span> 
+     framework=<span class="hljs-string">&quot;vanilla&quot;</span> 
+     src=<span class="hljs-string">&quot;/widgets/related.js&quot;</span>
+     data=<span class="hljs-string">&quot;page.title,page.relatedPosts&quot;</span>&gt;
+  &lt;div&gt;Loading...&lt;/div&gt;
+&lt;/App&gt;</code></pre></div><h3 id="esempio-2-user-settings-panel-1">Esempio 2: User Settings Panel</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">---
+title: Account Settings
+userDefaults:
+  theme: light
+  language: en
+  notifications: <span class="hljs-literal">true</span>
+  emailFrequency: weekly
+---</code></pre></div><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-jsx">&lt;App id=<span class="hljs-string">&quot;settings&quot;</span> 
+     framework=<span class="hljs-string">&quot;react&quot;</span> 
+     src=<span class="hljs-string">&quot;/apps/settings.js&quot;</span>
+     deps=<span class="hljs-string">&quot;react,react-dom&quot;</span>
+     data=<span class="hljs-string">&quot;page.userDefaults&quot;</span>&gt;
+  &lt;div&gt;Loading settings...&lt;/div&gt;
+&lt;/App&gt;</code></pre></div><h3 id="esempio-3-product-filter-1">Esempio 3: Product Filter</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml">---
+title: Product Catalog
+filterOptions:
+  categories: [Electronics, Clothing, Books]
+  priceRanges: 
+    - { min: <span class="hljs-number">0</span>, max: <span class="hljs-number">50</span>, label: <span class="hljs-string">&quot;Under $50&quot;</span> }
+    - { min: <span class="hljs-number">50</span>, max: <span class="hljs-number">100</span>, label: <span class="hljs-string">&quot;$50-$100&quot;</span> }
+  brands: [Nike, Adidas, Puma]
+---</code></pre></div><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-jsx">&lt;App id=<span class="hljs-string">&quot;filter&quot;</span> 
+     framework=<span class="hljs-string">&quot;vue&quot;</span> 
+     src=<span class="hljs-string">&quot;/apps/filter.js&quot;</span>
+     data=<span class="hljs-string">&quot;page.filterOptions&quot;</span>&gt;
+  &lt;div&gt;Loading filters...&lt;/div&gt;
+&lt;/App&gt;</code></pre></div><h2 id="security-6">🛡️ Security</h2><h3 id="xss-protection-1">XSS Protection</h3><p>Chiron sanitizza automaticamente i dati usando <code>JSON.stringify()</code>:</p>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript"><span class="hljs-comment">// builder/template-engine.js (lines 2254)</span>
+<span class="hljs-keyword">const</span> jsonData = JSON.<span class="hljs-title function_">stringify</span>(data, <span class="hljs-literal">null</span>, <span class="hljs-number">2</span>);
+<span class="hljs-keyword">return</span> <span class="hljs-template-literal">`&lt;script type=&quot;application/json&quot; id=&quot;${appId}-data&quot;&gt;\n${jsonData}\n&lt;/script&gt;`</span>;</code></pre></div><h3 id="best-practices-18">Best Practices</h3><p>✅ <strong>Valida Input</strong> - Valida dati nel frontmatter<br>✅ <strong>Limita Dimensione</strong> - Non iniettare dataset enormi<br>✅ <strong>Escape HTML</strong> - Se mostri dati utente, usa escape<br>✅ <strong>Type Checking</strong> - Verifica tipi prima di usare  </p>
+<h2 id="debugging-1">🐛 Debugging</h2><h3 id="ispeziona-data-island-1">Ispeziona Data Island</h3><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript"><span class="hljs-comment">// Nel browser</span>
+<span class="hljs-keyword">const</span> dataScript = document.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#039;my-widget-data&#039;</span>);
+console.<span class="hljs-title function_">log</span>(JSON.<span class="hljs-title function_">parse</span>(dataScript.textContent));</code></pre></div><h3 id="log-build-time-1">Log Build-Time</h3><p>Se il Data Island non appare, controlla:</p>
+<ol>
+<li><strong>Marker generato?</strong> - Cerca <code>&lt;!--LAZY_APP_DATA_START</code> nel markdown processed</li>
+<li><strong>Context disponibile?</strong> - Verifica che <code>page.yourKey</code> esista</li>
+<li><strong>Build errors?</strong> - Controlla console durante build</li>
+</ol>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-built_in">npm</span> run build <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span> | grep -i <span class="hljs-string">&quot;data island\|lazy-app&quot;</span></code></pre></div><h2 id="risorse-1">📚 Risorse</h2><ul>
+<li><a href="#">Lazy App Loader Documentation</a></li>
+<li><a href="#">Shortcode Reference</a></li>
+<li><a href="#">Plugin Development Guide</a></li>
+<li><a href="#">Performance Best Practices</a></li>
+</ul>
+<hr>
+<p>💡 <strong>Pro Tip</strong>: Combina Data Island con lazy loading per widget interattivi che si caricano solo quando visibili, con dati istantaneamente disponibili!</p>
+
+                </div>
+
+                <!-- Pagination (Previous/Next) -->
+                
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer" role="contentinfo">
+    <div class="footer-container">
+        <div class="footer-content">
+            <div class="footer-left">
+                <p class="footer-copyright">
+    &copy; <span class="copyright-year">2025</span> <span class="copyright-holder">Agilira</span>. All rights reserved.
+</p>
+
+                <div class="footer-legal">
+                    <ul class="footer-links">
+    <li><a href="./privacy-policy.html" class="footer-legal-link">Privacy Policy</a></li>
+    <li><a href="./terms-of-service.html" class="footer-legal-link">Terms of Service</a></li>
+    <li><a href="./cookie-policy.html" class="footer-legal-link">Cookie Policy</a></li>
+    <li><a href="https://opensource.org/licenses/MIT" class="footer-legal-link" target="_blank" rel="noopener noreferrer" aria-label="License - aria.external_link">License</a></li>
+  </ul>
+                </div>
+            </div>
+            <div class="footer-right">
+                <a href="https://github.com/agilira" target="_blank" rel="noopener" class="footer-logo-link">
+    <img src="./assets/logo-footer.png" alt="Chiron Logo" class="footer-logo footer-logo-light" loading="lazy">
+    <img src="./assets/logo-footer-white.png" alt="Chiron Logo" class="footer-logo footer-logo-dark" loading="lazy">
+</a>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    
+<!-- Scroll to Top Button -->
+<button 
+    class="scroll-to-top" 
+    id="scrollToTop" 
+    aria-label="Scroll to top of page"
+    title="Scroll to top"
+    type="button"
+>
+    ↑
+</button>
+
+
+    
+<!-- Search Modal -->
+<div class="search-modal" id="searchModal" aria-hidden="true">
+    <div class="search-modal-overlay" id="searchModalOverlay"></div>
+    <div class="search-modal-content" role="dialog" aria-modal="true" aria-labelledby="searchModalTitle">
+        <div class="search-modal-header">
+            <h2 id="searchModalTitle" class="search-modal-title">Search Documentation</h2>
+            <button type="button" class="search-modal-close" id="searchModalClose" aria-label="Close search">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+        <div class="search-modal-body">
+            <div class="search-container" id="searchContainer" role="search">
+                <input 
+                    type="search" 
+                    id="searchInput" 
+                    class="search-input" 
+                    placeholder="Search documentation..." 
+                    aria-label="Search input"
+                    aria-autocomplete="list"
+                    aria-controls="searchResults"
+                    aria-expanded="false"
+                    autocomplete="off"
+                >
+                <button 
+                    type="button" 
+                    class="search-clear-btn" 
+                    id="searchClearBtn" 
+                    aria-label="Clear search"
+                    hidden
+                >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div 
+                    class="search-results" 
+                    id="searchResults" 
+                    role="listbox"
+                    aria-label="Search results"
+                    hidden
+                ></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Scripts -->
+
+
+<!-- i18n Configuration -->
+<script>
+// i18n Configuration
+window.CHIRON_I18N = {
+  "_comment": "Default Theme Strings - Used by theme templates only",
+  "_comment_search": "=== Search Modal (Theme UI) ===",
+  "search_no_results": "No results found",
+  "search_loading": "Loading...",
+  "search_error": "Search unavailable",
+  "search_timeout": "Search request timeout",
+  "_comment_nav": "=== Navigation (Theme) ===",
+  "skip_to_content": "Skip to main content",
+  "_comment_theme": "=== Theme Toggle ===",
+  "theme_switch_success": "Switched to {theme} mode",
+  "_comment_sidebar": "=== Sidebar ===",
+  "sidebar_toggle_aria": "Toggle sidebar navigation",
+  "_comment_toc": "=== Table of Contents ===",
+  "toc_title": "On This Page",
+  "toc_aria": "Table of contents",
+  "_comment_code": "=== Code Blocks ===",
+  "code_copy_failed": "Failed to copy code",
+  "code_copy_success": "Code copied to clipboard!",
+  "_comment_infobox": "=== Info Boxes ===",
+  "aria_infobox_close": "Close",
+  "_comment_embed": "=== Embeds ===",
+  "embed_loading": "Loading...",
+  "embed_view_tweet": "View tweet",
+  "embed_content_loaded": "Content loaded",
+  "_comment_aria_core": "=== Core ARIA Labels ===",
+  "aria_search": "Search documentation",
+  "search_modal_title": "Search Documentation",
+  "search_modal_close": "Close search",
+  "search_placeholder": "Search documentation...",
+  "search_clear": "Clear search",
+  "search_results_label": "Search results",
+  "nav_main": "Main navigation",
+  "nav_home": "Home",
+  "nav_previous": "Previous",
+  "nav_next": "Next",
+  "nav_menu": "Menu",
+  "nav_close": "Close",
+  "nav_expand": "Expand",
+  "nav_collapse": "Collapse",
+  "_comment_nav_sidebar": "=== Sidebar Navigation Labels ===",
+  "nav_section_documentation": "Documentation",
+  "nav_section_getting_started": "Getting Started",
+  "nav_section_guides": "Guides",
+  "nav_section_api": "API Reference",
+  "nav_section_plugins": "Plugins",
+  "nav_section_legal": "Legal",
+  "nav_section_resources": "Resources",
+  "nav_getting_started": "Getting Started",
+  "nav_installation": "Installation",
+  "nav_quick_start": "Quick Start",
+  "nav_configuration": "Configuration",
+  "nav_overview": "Overview",
+  "nav_api_reference": "API Reference",
+  "nav_react_demo": "React Demo",
+  "nav_tabs_demo": "Tabs Demo",
+  "nav_ui_showcase": "UI Showcase",
+  "nav_plugins_overview": "Plugins Overview",
+  "nav_auth_plugin": "Authentication Plugin",
+  "nav_auth_api": "Auth API Reference",
+  "nav_auth_config": "Auth Configuration",
+  "nav_cache_plugin": "Cache Plugin",
+  "nav_cache_api": "Cache API Reference",
+  "nav_privacy_policy": "Privacy Policy",
+  "nav_terms_of_service": "Terms of Service",
+  "nav_cookie_policy": "Cookie Policy",
+  "nav_github_repo": "GitHub Repository",
+  "nav_changelog": "Changelog",
+  "nav_accessibility": "Accessibility Guide",
+  "_comment_theme_ui": "=== Theme UI Elements ===",
+  "theme_toggle_aria": "Toggle dark mode",
+  "theme_toggle_aria_dark": "Switch to light mode",
+  "theme_toggle_aria_light": "Switch to dark mode",
+  "theme_light": "Light theme",
+  "theme_dark": "Dark theme",
+  "_comment_sidebar_ui": "=== Sidebar UI ===",
+  "sidebar_aria_hidden_true": "Sidebar hidden",
+  "sidebar_aria_hidden_false": "Sidebar visible",
+  "sidebar_aria_expanded_true": "Sidebar expanded",
+  "sidebar_aria_expanded_false": "Sidebar collapsed",
+  "_comment_code_ui": "=== Code Blocks UI ===",
+  "code_copy": "Copy code",
+  "code_copied": "Copied!",
+  "_comment_toast": "=== Toast Messages ===",
+  "toast_success": "Success",
+  "toast_error": "Error",
+  "toast_warning": "Warning",
+  "toast_info": "Info",
+  "_comment_cookie": "=== Cookie Consent ===",
+  "cookie_message": "This site uses cookies to ensure you get the best experience.",
+  "cookie_accept": "Accept",
+  "cookie_decline": "Decline",
+  "cookie_learn_more": "Learn more",
+  "_comment_aria": "=== Theme ARIA Labels ===",
+  "aria_search_input": "Search documentation",
+  "aria_search_close": "Close search",
+  "aria_search_clear": "Clear search",
+  "aria_search_results": "Search results",
+  "aria_nav_main": "Main navigation",
+  "aria_nav_previous": "Previous page",
+  "aria_nav_next": "Next page",
+  "aria_close": "Close",
+  "aria_expand": "Expand section",
+  "aria_collapse": "Collapse section",
+  "aria_menu": "Navigation menu",
+  "aria_code_copy": "Copy code to clipboard",
+  "aria_language_switcher": "Language selection",
+  "aria_language_current": "Current language",
+  "aria_language_switch_to": "Switch to {language}",
+  "_comment_footer": "=== Footer ===",
+  "footer_copyright": "All rights reserved",
+  "footer_legal": "Legal",
+  "footer_privacy": "Privacy Policy",
+  "footer_terms": "Terms of Service",
+  "_comment_pagination": "=== Pagination ===",
+  "pagination_previous": "Previous",
+  "pagination_next": "Next",
+  "pagination_page": "Page",
+  "_comment_errors": "=== Error Messages ===",
+  "error_generic": "An error occurred",
+  "error_not_found": "Page not found",
+  "error_network": "Network error",
+  "error_timeout": "Request timeout",
+  "_comment_success": "=== Success Messages ===",
+  "success_generic": "Operation successful",
+  "success_saved": "Changes saved",
+  "success_updated": "Updated successfully",
+  "_comment_loading": "=== Loading States ===",
+  "loading": "Loading...",
+  "loading_content": "Loading content...",
+  "loading_search": "Searching...",
+  "_comment_misc": "=== Miscellaneous ===",
+  "read_more": "Read more",
+  "show_more": "Show more",
+  "show_less": "Show less",
+  "edit_page": "Edit this page",
+  "last_updated": "Last updated",
+  "table_of_contents": "Table of Contents",
+  "on_this_page": "On This Page",
+  "_comment_language": "=== Language Switcher ===",
+  "language_english": "English",
+  "language_italian": "Italiano",
+  "language_french": "Français",
+  "language_spanish": "Español",
+  "language_german": "Deutsch",
+  "language_switch": "Switch language",
+  "language_current": "Current language"
+};
+window.CHIRON_LOCALE = 'en';
+</script>
+
+<script src="./base.js"></script>
+<script>
+// Component: code-blocks
+/**
+ * Code Blocks Component - Copy button only
+ * Detects: pre code, .code-copy
+ * 
+ * @component code-blocks
+ */
+
+// Copy button functionality
+document.addEventListener('click', async (e) => {
+  const button = e.target.closest('.code-copy');
+  if (!button) {return;}
+
+  const codeBlock = button.closest('.code-block');
+  if (!codeBlock) {return;}
+
+  const code = codeBlock.querySelector('code');
+  if (!code) {return;}
+
+  const text = code.textContent;
+  const originalHTML = button.innerHTML;
+  const originalLabel = button.getAttribute('aria-label');
+
+  try {
+    await navigator.clipboard.writeText(text);
+    
+    // Success state - checkmark icon
+    button.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+    button.classList.add('copied');
+    button.setAttribute('aria-label', t('code_copied', 'Code copied'));
+        
+    setTimeout(() => {
+      button.innerHTML = originalHTML;
+      button.classList.remove('copied');
+      button.setAttribute('aria-label', originalLabel || t('code_copy', 'Copy code'));
+    }, 2000);
+  } catch (_err) {
+    console.error('Failed to copy code to clipboard');
+    
+    // Error state: X icon in lighter red with clear visual feedback
+    button.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>';
+    button.classList.add('copy-error');
+    button.setAttribute('aria-label', t('code_copy_failed', 'Copy failed'));
+    
+    // Reset after 3 seconds (longer for error visibility)
+    setTimeout(() => {
+      button.innerHTML = originalHTML;
+      button.classList.remove('copy-error');
+      button.setAttribute('aria-label', originalLabel || t('code_copy', 'Copy code'));
+    }, 3000);
+  }
+});
+
+</script>
+
+
+    <!-- External Scripts -->
+    <script src="/search-client.js"></script>
+
+<div id="cookie-consent-banner" class="cookie-consent-banner" style="display: none;">
+  <div class="cookie-consent-content">
+    <p>We use cookies to enhance your experience. <a href="/manage-cookies.html" class="cookie-link">Manage preferences</a></p>
+    <div class="cookie-consent-actions">
+      <button id="cookie-accept-all" class="cookie-btn">Accept All</button>
+      <button id="cookie-reject-all" class="cookie-btn">Reject All</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Cookie Consent Manager (injected by cookie-consent plugin)
+(function() {
+  const CONSENT_KEY = 'chiron-cookie-consent';
+  
+  // Check if consent already given
+  const savedConsent = localStorage.getItem(CONSENT_KEY);
+  if (savedConsent) {
+    return;
+  }
+  
+  // Show banner
+  const banner = document.getElementById('cookie-consent-banner');
+  if (banner) {
+    banner.style.display = 'flex';
+  }
+  
+  // Handle accept all
+  document.getElementById('cookie-accept-all')?.addEventListener('click', () => {
+    saveConsent({
+      necessary: true,
+      analytics: true,
+      marketing: true,
+      preferences: true
+    });
+    hideBanner();
+  });
+  
+  // Handle reject all
+  document.getElementById('cookie-reject-all')?.addEventListener('click', () => {
+    saveConsent({
+      necessary: true,
+      analytics: false,
+      marketing: false,
+      preferences: false
+    });
+    hideBanner();
+  });
+  
+  function saveConsent(choices) {
+    localStorage.setItem(CONSENT_KEY, JSON.stringify({
+      choices,
+      timestamp: Date.now()
+    }));
+  }
+  
+  function hideBanner() {
+    const banner = document.getElementById('cookie-consent-banner');
+    if (banner) {
+      banner.style.display = 'none';
+    }
+  }
+})();
+</script>
+</body>
+</html>

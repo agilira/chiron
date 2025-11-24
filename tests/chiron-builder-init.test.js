@@ -10,10 +10,99 @@
  */
 
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const yaml = require('js-yaml');
 const ChironBuilder = require('../builder');
-const { createTempProject } = require('./test-helpers');
+
+// Helper to copy directory recursively
+const copyDirSync = (src, dest) => {
+  fs.mkdirSync(dest, { recursive: true });
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+  
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    
+    if (entry.isDirectory()) {
+      copyDirSync(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
+};
+
+// Helper to create temporary test project
+const createTempProject = (options = {}) => {
+  const { themeName = 'metis', withConfig = true, configOverrides = {} } = options;
+  const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), 'chiron-test-'));
+  const contentDir = path.join(rootDir, 'content');
+  const outputDir = path.join(rootDir, 'docs');
+  const themesDir = path.join(rootDir, 'themes');
+  const themeDir = path.join(themesDir, themeName);
+  
+  fs.mkdirSync(contentDir, { recursive: true });
+  fs.mkdirSync(outputDir, { recursive: true });
+  fs.mkdirSync(themesDir, { recursive: true });
+  
+  // Copy theme from fixtures
+  const fixturesThemePath = path.join(__dirname, 'fixtures', 'themes', themeName);
+  if (fs.existsSync(fixturesThemePath)) {
+    copyDirSync(fixturesThemePath, themeDir);
+  }
+
+  if (withConfig) {
+    const defaultConfig = {
+      project: { 
+        name: 'test',
+        title: 'Test Project', 
+        description: 'Test', 
+        url: 'https://test.com',
+        base_url: '/', 
+        language: 'en' 
+      },
+      build: { output_dir: 'docs', content_dir: 'content', templates_dir: 'templates' },
+      navigation: { sidebars: { default: [] } },
+      theme: { active: themeName }
+    };
+    const mergedConfig = deepMerge(defaultConfig, configOverrides);
+    fs.writeFileSync(path.join(rootDir, 'chiron.config.yaml'), yaml.dump(mergedConfig));
+  }
+
+  return {
+    rootDir,
+    contentDir,
+    outputDir,
+    themesDir,
+    themeDir,
+    themeTemplatesDir: path.join(themeDir, 'templates'),
+    cleanup: () => {
+      try {
+        fs.rmSync(rootDir, { recursive: true, force: true });
+      } catch (_) {}
+    }
+  };
+};
+
+const deepMerge = (target, source) => {
+  const output = { ...target };
+  if (isObject(target) && isObject(source)) {
+    Object.keys(source).forEach(key => {
+      if (isObject(source[key])) {
+        if (!(key in target)) {
+          Object.assign(output, { [key]: source[key] });
+        } else {
+          output[key] = deepMerge(target[key], source[key]);
+        }
+      } else {
+        Object.assign(output, { [key]: source[key] });
+      }
+    });
+  }
+  return output;
+};
+
+const isObject = (item) => item && typeof item === 'object' && !Array.isArray(item);
 
 describe('ChironBuilder Initialization', () => {
   let project;

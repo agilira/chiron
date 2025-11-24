@@ -1,8 +1,87 @@
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
+const yaml = require('js-yaml');
 const ChironBuilder = require('../builder');
 const i18nLoader = require('../builder/i18n/i18n-loader');
-const { createTempProject, createLoggerStub } = require('./test-helpers');
+
+// Helper to copy directory recursively
+const copyDirSync = (src, dest) => {
+  fs.mkdirSync(dest, { recursive: true });
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+  
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    
+    if (entry.isDirectory()) {
+      copyDirSync(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
+};
+
+// Helper to create temporary test project
+const createTempProject = (options = {}) => {
+  const { themeName = 'metis', withConfig = true } = options;
+  const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), 'chiron-test-'));
+  const contentDir = path.join(rootDir, 'content');
+  const outputDir = path.join(rootDir, 'docs');
+  const customTemplatesDir = path.join(rootDir, 'templates');
+  const themesDir = path.join(rootDir, 'themes');
+  const themeDir = path.join(themesDir, themeName);
+  
+  fs.mkdirSync(contentDir, { recursive: true });
+  fs.mkdirSync(outputDir, { recursive: true });
+  fs.mkdirSync(customTemplatesDir, { recursive: true });
+  fs.mkdirSync(themesDir, { recursive: true });
+  
+  // Copy theme from fixtures
+  const fixturesThemePath = path.join(__dirname, 'fixtures', 'themes', themeName);
+  if (fs.existsSync(fixturesThemePath)) {
+    copyDirSync(fixturesThemePath, themeDir);
+  }
+
+  if (withConfig) {
+    const config = {
+      project: { 
+        name: 'test',
+        title: 'Test', 
+        description: 'Test', 
+        url: 'https://test.com',
+        base_url: '/', 
+        language: 'en' 
+      },
+      build: { output_dir: 'docs', content_dir: 'content', templates_dir: 'templates' },
+      navigation: { sidebars: { default: [] } },
+      theme: { active: themeName }
+    };
+    fs.writeFileSync(path.join(rootDir, 'chiron.config.yaml'), yaml.dump(config));
+  }
+
+  return {
+    rootDir,
+    contentDir,
+    outputDir,
+    customTemplatesDir,
+    themesDir,
+    themeDir,
+    themeTemplatesDir: path.join(themeDir, 'templates'),
+    cleanup: () => {
+      try {
+        fs.rmSync(rootDir, { recursive: true, force: true });
+      } catch (_) {}
+    }
+  };
+};
+
+const createLoggerStub = () => ({
+  info: jest.fn(),
+  warn: jest.fn(),
+  error: jest.fn(),
+  debug: jest.fn()
+});
 
 describe('ChironBuilder - Custom 404 Template Support', () => {
   let project;

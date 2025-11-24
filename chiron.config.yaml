@@ -290,7 +290,7 @@ features:
 
 # Build Configuration
 build:
-  output_dir: docs
+  output_dir: dist
   content_dir: content
   assets_dir: assets
   templates_dir: templates
