@@ -41,6 +41,13 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
+const acorn = require('acorn');
+const acornJsx = require('acorn-jsx');
+const { parse: babelParse } = require('@babel/parser');
+const traverse = require('@babel/traverse').default;
+const path = require('path');
+const fs = require('fs');
+
 module.exports = {
   name: 'mdx-framework',
   version: '1.0.0',
@@ -69,6 +76,7 @@ module.exports = {
   // Plugin state
   enabledAdapters: [],
   bundlingEnabled: true,
+  bundledComponents: new Map(), // Track bundled components to avoid duplicates
   
   /**
    * Initialize plugin with configuration
@@ -78,6 +86,7 @@ module.exports = {
   init(config, context) {
     this.enabledAdapters = config.adapters || this.config.adapters;
     this.bundlingEnabled = config.bundle !== false;
+    this.bundledComponents.clear(); // Reset on init
     
     if (context && context.logger) {
       context.logger.info('MDX Framework plugin initialized', {
@@ -177,27 +186,62 @@ module.exports = {
     const imports = [];
     
     // Remove code blocks to avoid false positives
-    // Match ``` ... ``` blocks and replace with empty string
     const contentWithoutCodeBlocks = content.replace(/```[\s\S]*?```/g, '');
     
-    // Regex for default imports: import Name from './path.ext'
-    // Matches both single and double quotes
-    const importRegex = /import\s+(\w+)\s+from\s+['"]([^'"]+)['"]/g;
-    
-    let match;
-    while ((match = importRegex.exec(contentWithoutCodeBlocks)) !== null) {
-      const name = match[1];
-      const path = match[2];
-      const framework = this.detectFramework(path);
+    try {
+      // Parse with Babel parser (supports JSX, TypeScript, comments, etc.)
+      const ast = babelParse(contentWithoutCodeBlocks, {
+        sourceType: 'module',
+        plugins: ['jsx', 'typescript'],
+        errorRecovery: true
+      });
       
-      // Only include if we detected a supported framework
-      if (framework) {
-        imports.push({
-          name,
-          path,
-          framework,
-          type: 'default'
-        });
+      // Traverse AST to find import declarations
+      const self = this; // Preserve context
+      traverse(ast, {
+        ImportDeclaration(path) {
+          const importPath = path.node.source.value;
+          
+          // Skip type-only imports
+          if (path.node.importKind === 'type') {
+            return;
+          }
+          
+          // Only process default imports for now
+          path.node.specifiers.forEach(specifier => {
+            if (specifier.type === 'ImportDefaultSpecifier') {
+              const name = specifier.local.name;
+              const framework = self.detectFramework(importPath);
+              
+              if (framework) {
+                imports.push({
+                  name,
+                  path: importPath,
+                  framework,
+                  type: 'default'
+                });
+              }
+            }
+          });
+        }
+      });
+    } catch (error) {
+      // Fallback to regex if AST parsing fails
+      const importRegex = /import\s+(\w+)\s+from\s+['"]([^'"]+)['"]/g;
+      let match;
+      while ((match = importRegex.exec(contentWithoutCodeBlocks)) !== null) {
+        const name = match[1];
+        const importPath = match[2];
+        const framework = this.detectFramework(importPath);
+        
+        if (framework) {
+          imports.push({
+            name,
+            path: importPath,
+            framework,
+            type: 'default'
+          });
+        }
       }
     }
     
@@ -236,40 +280,125 @@ module.exports = {
     
     const props = {};
     
-    // Match component tag with props
-    const componentRegex = new RegExp(`<${componentName}([^>]*?)(?:/>|>)`, 's');
-    const match = content.match(componentRegex);
-    
-    if (!match) {
-      return props;
-    }
-    
-    const propsString = match[1];
-    
-    // Extract props: name={value} or name="value" or name (boolean)
-    // Match: propName={value} or propName="value" or propName='value' or propName
-    const propRegex = /(\w+)(?:=\{([^}]+)\}|="([^"]+)"|='([^']+)'|(?=\s|$|\/|>))/g;
-    
-    let propMatch;
-    while ((propMatch = propRegex.exec(propsString)) !== null) {
-      const propName = propMatch[1];
-      const jsValue = propMatch[2]; // {value}
-      const doubleQuoteValue = propMatch[3]; // "value"
-      const singleQuoteValue = propMatch[4]; // 'value'
+    try {
+      // Wrap content in function component to make it valid JSX
+      const wrappedContent = `const Wrapper = () => { return (${content}); };`;
       
-      if (jsValue) {
-        props[propName] = jsValue.trim();
-      } else if (doubleQuoteValue !== undefined) {
-        props[propName] = doubleQuoteValue;
-      } else if (singleQuoteValue !== undefined) {
-        props[propName] = singleQuoteValue;
-      } else {
-        // Boolean prop
-        props[propName] = 'true';
+      // Parse JSX with Babel to get AST
+      const ast = babelParse(wrappedContent, {
+        sourceType: 'module',
+        plugins: ['jsx', 'typescript'],
+        errorRecovery: true
+      });
+      
+      // Traverse AST to find JSX elements
+      const self = this; // Preserve context for callbacks
+      traverse(ast, {
+        JSXElement(path) {
+          const openingElement = path.node.openingElement;
+          const elementName = openingElement.name.name;
+          
+          if (elementName === componentName) {
+            // Extract attributes (props)
+            openingElement.attributes.forEach(attr => {
+              if (attr.type === 'JSXAttribute') {
+                const propName = attr.name.name;
+                const value = attr.value;
+                
+                if (!value) {
+                  // Boolean prop: <Component disabled />
+                  props[propName] = true;
+                } else if (value.type === 'StringLiteral') {
+                  // String prop: <Component label="text" />
+                  props[propName] = value.value;
+                } else if (value.type === 'JSXExpressionContainer') {
+                  // JS expression prop: <Component count={5} />
+                  props[propName] = self.evaluateExpression(value.expression);
+                }
+              }
+            });
+            
+            // Stop traversal after first match
+            path.stop();
+          }
+        }
+      });
+    } catch (error) {
+      // AST parsing failed, use regex fallback
+      const componentRegex = new RegExp(`<${componentName}([^>]*?)(?:/>|>)`, 's');
+      const match = content.match(componentRegex);
+      
+      if (match) {
+        const propsString = match[1];
+        const propRegex = /(\w+)(?:=\{([^}]+)\}|="([^"]+)"|='([^']+)'|(?=\s|$|\/|>))/g;
+        
+        let propMatch;
+        while ((propMatch = propRegex.exec(propsString)) !== null) {
+          const propName = propMatch[1];
+          const jsValue = propMatch[2];
+          const doubleQuoteValue = propMatch[3];
+          const singleQuoteValue = propMatch[4];
+          
+          if (jsValue) {
+            props[propName] = jsValue.trim();
+          } else if (doubleQuoteValue !== undefined) {
+            props[propName] = doubleQuoteValue;
+          } else if (singleQuoteValue !== undefined) {
+            props[propName] = singleQuoteValue;
+          } else {
+            props[propName] = 'true';
+          }
+        }
       }
     }
     
     return props;
+  },
+  
+  /**
+   * Evaluate AST expression node to JavaScript value
+   * Handles literals, objects, arrays, etc.
+   * @param {Object} node - Babel AST node
+   * @returns {*} Evaluated value
+   */
+  evaluateExpression(node) {
+    if (!node) return undefined;
+    
+    switch (node.type) {
+      case 'NumericLiteral':
+        return node.value;
+      
+      case 'StringLiteral':
+        return node.value;
+      
+      case 'BooleanLiteral':
+        return node.value;
+      
+      case 'NullLiteral':
+        return null;
+      
+      case 'ObjectExpression':
+        const obj = {};
+        node.properties.forEach(prop => {
+          if (prop.type === 'ObjectProperty') {
+            const key = prop.key.name || prop.key.value;
+            obj[key] = this.evaluateExpression(prop.value);
+          }
+        });
+        return obj;
+      
+      case 'ArrayExpression':
+        return node.elements.map(el => this.evaluateExpression(el));
+      
+      case 'Identifier':
+        // Can't evaluate identifiers without runtime context
+        // Return as string for now
+        return node.name;
+      
+      default:
+        // For complex expressions, return undefined
+        return undefined;
+    }
   },
   
   /**
@@ -362,12 +491,92 @@ module.exports = {
    * @param {Object} context - Build context
    * @returns {Promise<Object>} Bundle result
    */
+  /**
+   * Bundle component with esbuild
+   * Converts JSX/Svelte/Vue to standalone JavaScript bundle
+   * 
+   * @param {string} componentPath - Path to component file (relative or absolute)
+   * @param {Object} context - Build context
+   * @returns {Promise<Object>} Bundle result with outputPath
+   */
   async bundleComponent(componentPath, context) {
-    // Placeholder for esbuild integration
-    // Will implement in future version with real esbuild bundling
-    return {
-      path: componentPath,
-      bundled: true
+    // Check if already bundled (avoid duplicates)
+    if (this.bundledComponents.has(componentPath)) {
+      return this.bundledComponents.get(componentPath);
+    }
+    
+    const esbuild = require('esbuild');
+    
+    // Resolve absolute path
+    const absolutePath = path.isAbsolute(componentPath) 
+      ? componentPath 
+      : path.resolve(context.contentDir || process.cwd(), componentPath);
+    
+    // Detect framework from extension
+    const framework = this.detectFramework(componentPath);
+    if (!framework) {
+      throw new Error(`Unknown framework for component: ${componentPath}`);
+    }
+    
+    // Setup output directory
+    const outputDir = context.assetsDir || path.join(context.outputDir || 'dist', 'assets');
+    if (!fs.existsSync(outputDir)) {
+      fs.mkdirSync(outputDir, { recursive: true });
+    }
+    
+    // Generate output filename: Counter.jsx -> Counter.[hash].js
+    const baseName = path.basename(componentPath, path.extname(componentPath));
+    const hash = Date.now().toString(36);
+    const outputFileName = `${baseName}.${hash}.js`;
+    const outputPath = path.join(outputDir, outputFileName);
+    
+    // esbuild configuration
+    const buildOptions = {
+      entryPoints: [absolutePath],
+      bundle: true,
+      format: 'esm',
+      target: ['es2020'],
+      outfile: outputPath,
+      minify: context.config?.minifyJS || false,
+      sourcemap: context.config?.sourcemap || false,
+      jsx: 'automatic',
+      jsxImportSource: framework === 'preact' ? 'preact' : 'react',
+      external: [], // Bundle everything for standalone
+      loader: {
+        '.jsx': 'jsx',
+        '.tsx': 'tsx',
+        '.js': 'js',
+        '.ts': 'ts'
+      }
     };
+    
+    try {
+      await esbuild.build(buildOptions);
+      
+      // Calculate relative path for web
+      const relativePath = `/assets/${outputFileName}`;
+      
+      const result = {
+        bundled: true,
+        outputPath: relativePath,
+        absolutePath: outputPath,
+        minified: buildOptions.minify,
+        framework
+      };
+      
+      // Cache result
+      this.bundledComponents.set(componentPath, result);
+      
+      if (context && context.logger) {
+        context.logger.debug(`Bundled ${componentPath} -> ${relativePath}`);
+      }
+      
+      return result;
+    } catch (error) {
+      if (context && context.logger) {
+        context.logger.error(`Failed to bundle ${componentPath}:`, error.message);
+      }
+      throw new Error(`esbuild failed for ${componentPath}: ${error.message}`);
+    }
   }
 };

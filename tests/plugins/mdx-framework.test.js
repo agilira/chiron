@@ -126,6 +126,26 @@ describe('MDX Framework Plugin', () => {
       expect(imports1).toHaveLength(1);
       expect(imports2).toHaveLength(1);
     });
+
+    test('should handle AST-based parsing for complex imports', () => {
+      const content = `
+        import Counter from './Counter.jsx'
+        import Chart from /* comment */ './Chart.svelte'
+      `;
+      const imports = plugin.detectImports(content);
+      expect(imports).toHaveLength(2);
+      expect(imports[1].name).toBe('Chart');
+    });
+
+    test('should handle multiline imports', () => {
+      const content = `
+        import Counter
+          from './Counter.jsx'
+      `;
+      const imports = plugin.detectImports(content);
+      expect(imports).toHaveLength(1);
+      expect(imports[0].name).toBe('Counter');
+    });
   });
 
   describe('Component Usage Detection', () => {
@@ -141,7 +161,7 @@ describe('MDX Framework Plugin', () => {
     test('should detect component with props', () => {
       const content = `<Counter initial={5} max={10} />`;
       const props = plugin.extractProps(content, 'Counter');
-      expect(props).toEqual({ initial: '5', max: '10' });
+      expect(props).toEqual({ initial: 5, max: 10 });
     });
     
     test('should detect self-closing components', () => {
@@ -171,7 +191,37 @@ describe('MDX Framework Plugin', () => {
     test('should extract boolean props', () => {
       const content = `<Counter disabled />`;
       const props = plugin.extractProps(content, 'Counter');
-      expect(props.disabled).toBe('true');
+      expect(props.disabled).toBe(true);
+    });
+
+    test('should extract complex object props using AST', () => {
+      const content = `<Counter config={{ theme: 'dark', size: 42 }} />`;
+      const props = plugin.extractProps(content, 'Counter');
+      expect(props.config).toEqual({ theme: 'dark', size: 42 });
+    });
+
+    test('should extract array props using AST', () => {
+      const content = `<Counter items={[1, 2, 3]} />`;
+      const props = plugin.extractProps(content, 'Counter');
+      expect(props.items).toEqual([1, 2, 3]);
+    });
+
+    test('should handle multiline props', () => {
+      const content = `<Counter 
+        data={{
+          count: 5,
+          label: 'clicks'
+        }}
+      />`;
+      const props = plugin.extractProps(content, 'Counter');
+      expect(props.data).toEqual({ count: 5, label: 'clicks' });
+    });
+
+    test('should handle nested objects in props', () => {
+      const content = `<Counter config={{ user: { name: 'John', age: 30 } }} />`;
+      const props = plugin.extractProps(content, 'Counter');
+      expect(props.config.user.name).toBe('John');
+      expect(props.config.user.age).toBe(30);
     });
   });
 
@@ -290,6 +340,57 @@ title: Test
         const result = plugin.detectFramework(`./Component.${framework === 'preact' ? 'jsx' : framework}`);
         expect(result).toBe(framework);
       });
+    });
+
+    test('should bundle component with esbuild and return output path', async () => {
+      const path = require('path');
+      const componentPath = path.join(__dirname, '../fixtures/Counter.jsx');
+      const context = {
+        ...mockContext,
+        outputDir: path.join(__dirname, '../../dist'),
+        assetsDir: path.join(__dirname, '../../dist/assets'),
+        contentDir: path.join(__dirname, '..')
+      };
+      
+      const result = await plugin.bundleComponent(componentPath, context);
+      
+      expect(result).toHaveProperty('outputPath');
+      expect(result).toHaveProperty('bundled');
+      expect(result.bundled).toBe(true);
+      expect(result.outputPath).toContain('/assets/');
+      expect(result.outputPath).toMatch(/\.js$/);
+    });
+
+    test('should minify bundle in production mode', async () => {
+      const path = require('path');
+      const componentPath = path.join(__dirname, '../fixtures/Counter.jsx');
+      
+      // Clear cache to force rebundle
+      plugin.bundledComponents.clear();
+      
+      const context = {
+        ...mockContext,
+        config: { minifyJS: true },
+        outputDir: path.join(__dirname, '../../dist'),
+        assetsDir: path.join(__dirname, '../../dist/assets'),
+        contentDir: path.join(__dirname, '..')
+      };
+      
+      const result = await plugin.bundleComponent(componentPath, context);
+      expect(result.minified).toBe(true);
+    });
+
+    test('should track bundled components to avoid duplicates', async () => {
+      const path = require('path');
+      const componentPath = path.join(__dirname, '../fixtures/Counter.jsx');
+      
+      plugin.bundledComponents = new Map();
+      
+      const result1 = await plugin.bundleComponent(componentPath, mockContext);
+      const result2 = await plugin.bundleComponent(componentPath, mockContext);
+      
+      expect(result1.outputPath).toBe(result2.outputPath);
+      expect(plugin.bundledComponents.size).toBe(1);
     });
   });
 
