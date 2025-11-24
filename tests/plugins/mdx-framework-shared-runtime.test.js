@@ -76,7 +76,7 @@ import Counter from '../components/Counter.jsx'
 
   describe('ESM Bundle Generation', () => {
     test('should bundle Vue components as ESM with external vue', async () => {
-      const mockComponentPath = path.join(__dirname, '..', '..', 'examples', 'components', 'VueCounter.vue');
+      const mockComponentPath = path.join(__dirname, '..', 'fixtures', 'components', 'VueCounter.vue');
       const outputDir = path.join(mockContext.outputDir, 'assets');
       
       // This should create ESM bundle with `import { createApp } from 'vue'`
@@ -102,7 +102,7 @@ import Counter from '../components/Counter.jsx'
     });
 
     test('should bundle React components as ESM with external react', async () => {
-      const mockComponentPath = path.join(__dirname, '..', '..', 'examples', 'components', 'Counter.react.jsx');
+      const mockComponentPath = path.join(__dirname, '..', 'fixtures', 'components', 'Counter.react.jsx');
       const outputDir = path.join(mockContext.outputDir, 'assets');
       
       const outputPath = await plugin.bundleComponent(
@@ -124,7 +124,7 @@ import Counter from '../components/Counter.jsx'
     });
 
     test('should bundle Preact/Solid without external (already small)', async () => {
-      const mockComponentPath = path.join(__dirname, '..', '..', 'examples', 'components', 'PreactCounter.jsx');
+      const mockComponentPath = path.join(__dirname, '..', 'fixtures', 'components', 'PreactCounter.jsx');
       const outputDir = path.join(mockContext.outputDir, 'assets');
       
       const outputPath = await plugin.bundleComponent(
@@ -240,7 +240,7 @@ import Counter from '../components/Counter.vue'
 
   describe('Bundle Size Validation', () => {
     test('Vue component bundle should be < 50KB (vs 246KB)', async () => {
-      const mockComponentPath = path.join(__dirname, '..', '..', 'examples', 'components', 'VueCounter.vue');
+      const mockComponentPath = path.join(__dirname, '..', 'fixtures', 'components', 'VueCounter.vue');
       const outputDir = path.join(mockContext.outputDir, 'assets');
       
       const outputPath = await plugin.bundleComponent(
@@ -258,7 +258,7 @@ import Counter from '../components/Counter.vue'
     });
 
     test('React component bundle should be < 50KB (vs 1.1MB)', async () => {
-      const mockComponentPath = path.join(__dirname, '..', '..', 'examples', 'components', 'Counter.react.jsx');
+      const mockComponentPath = path.join(__dirname, '..', 'fixtures', 'components', 'Counter.react.jsx');
       const outputDir = path.join(mockContext.outputDir, 'assets');
       
       const outputPath = await plugin.bundleComponent(

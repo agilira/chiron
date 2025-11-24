@@ -55,6 +55,7 @@ Thumbs.db
 ROADMAP_FUTURE.md 
 COMPONENTS-ANALYSIS.md
 docs-internal/
+examples/
 
 # Internal documentation (not ready for publish)
 *.md

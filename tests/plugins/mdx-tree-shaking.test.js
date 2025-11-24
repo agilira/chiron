@@ -52,8 +52,8 @@ describe('MDX Runtime Tree-Shaking', () => {
 
     test('should analyze multiple components and merge exports', async () => {
       const components = [
-        { path: path.join(__dirname, '..', '..', 'examples', 'components', 'VueCounter.vue'), framework: 'vue' },
-        { path: path.join(__dirname, '..', '..', 'examples', 'components', 'VueButton.vue'), framework: 'vue' }
+        { path: path.join(__dirname, '..', 'fixtures', 'components', 'VueCounter.vue'), framework: 'vue' },
+        { path: path.join(__dirname, '..', 'fixtures', 'components', 'VueButton.vue'), framework: 'vue' }
       ];
       
       // Collect all unique exports used across components
@@ -69,7 +69,7 @@ describe('MDX Runtime Tree-Shaking', () => {
 
   describe('React Export Analysis', () => {
     test('should analyze which React exports are used in component', async () => {
-      const componentPath = path.join(__dirname, '..', '..', 'examples', 'components', 'Counter.react.jsx');
+      const componentPath = path.join(__dirname, '..', 'fixtures', 'components', 'Counter.react.jsx');
       
       const usedExports = await plugin.analyzeFrameworkExports(componentPath, 'react');
       
@@ -229,7 +229,7 @@ import Dashboard from '../components/ComplexDashboard.vue'
     test('should handle components with no explicit imports (template-only)', async () => {
       // Some Vue SFCs might not import anything explicitly
       // but still need runtime functions
-      const componentPath = path.join(__dirname, '..', '..', 'examples', 'components', 'SimpleText.vue');
+      const componentPath = path.join(__dirname, '..', 'fixtures', 'components', 'SimpleText.vue');
       
       const usedExports = await plugin.analyzeFrameworkExports(componentPath, 'vue');
       
