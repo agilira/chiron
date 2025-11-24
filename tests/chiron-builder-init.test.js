@@ -79,7 +79,9 @@ const createTempProject = (options = {}) => {
     cleanup: () => {
       try {
         fs.rmSync(rootDir, { recursive: true, force: true });
-      } catch (_) {}
+      } catch (_) {
+        // Ignore cleanup errors
+      }
     }
   };
 };
