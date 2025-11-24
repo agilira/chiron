@@ -413,12 +413,12 @@ class ChironBuilder {
     try {
       this.logger.debug('Starting content scan with fast-glob', { contentDir });
 
-      // Use fast-glob to find all .md files efficiently
+      // Use fast-glob to find all .md and .mdx files efficiently
       // - Uses relative paths for compatibility with existing logic
       // - We don't use 'deep' option here because we need to validate depth
       //   manually to maintain compatibility with the original error-throwing behavior
       // - Ignores common patterns like node_modules
-      const relativePaths = fg.sync('**/*.md', {
+      const relativePaths = fg.sync('**/*.{md,mdx}', {
         cwd: contentDir,
         onlyFiles: true,
         absolute: false,  // CRITICAL: Return relative paths for locale detection
@@ -493,7 +493,7 @@ class ChironBuilder {
           filename: path.basename(relPath),
           path: fullPath,
           relativePath: relPath,
-          outputName: relPath.replace(/\.md$/, '.html'),
+          outputName: relPath.replace(/\.mdx?$/, '.html'),
           depth,
           locale,           // Detected locale
           pagePath,         // Path without locale prefix
@@ -504,12 +504,20 @@ class ChironBuilder {
         // This enables fallback mechanism for missing translations
         addToPageRegistry(fileInfo);
 
+        // Temporary INFO log to debug MDX detection
+        if (relPath.endsWith('.mdx')) {
+          this.logger.info('Found MDX file via fast-glob', {
+            file: relPath,
+            outputName: relPath.replace(/\.mdx?$/, '.html')
+          });
+        }
+        
         this.logger.debug('Found markdown file (via fast-glob)', {
           file: relPath,
           locale,
           pagePath,
           depth,
-          outputName: relPath.replace(/\.md$/, '.html')
+          outputName: relPath.replace(/\.mdx?$/, '.html')
         });
 
         return fileInfo;
@@ -566,8 +574,8 @@ class ChironBuilder {
             pageRegistry[pagePath][locale] = {
               inputPath: fallbackEntry.inputPath,          // Use fallback content
               relativePath: `${locale}/${pagePath}`,       // Target locale path
-              outputPath: `${locale}/${pagePath.replace(/\.md$/, '.html')}`,
-              url: `/${locale}/${pagePath.replace(/\.md$/, '.html').replace(/\\/g, '/')}`,
+              outputPath: `${locale}/${pagePath.replace(/\.mdx?$/, '.html')}`,
+              url: `/${locale}/${pagePath.replace(/\.mdx?$/, '.html').replace(/\\/g, '/')}`,
               locale,                              // Target locale
               exists: false,                               // Translation doesn't exist
               isFallback: true,                            // Mark as fallback
@@ -668,11 +676,14 @@ class ChironBuilder {
         // Execute markdown:before-parse hook
         if (this.pluginManager && this.pluginContext) {
           try {
-            // Set current page on the context (mutable property)
-            this.pluginContext.currentPage = file;
-            content = await this.pluginManager.executeHook('markdown:before-parse', content, this.pluginContext) || content;
+            // CRITICAL: Create context copy for each file to prevent race conditions
+            // Use Object.create to preserve prototype chain (methods like getData)
+            const fileContext = Object.create(this.pluginContext);
+            fileContext.currentPage = file;
+            
+            content = await this.pluginManager.executeHook('markdown:before-parse', content, fileContext) || content;
           } catch (error) {
-            this.logger.error('Error in markdown:before-parse hook', { error: error.message });
+            this.logger.error('Error in markdown:before-parse hook', { error: error.message, file: file.filename });
           }
         }
 
@@ -682,10 +693,17 @@ class ChironBuilder {
         if (this.pluginManager && this.pluginContext) {
           try {
             // currentPage is already set from before-parse
+            const beforeHook = parsed.html?.substring(0, 100);
             parsed = await this.pluginManager.executeHook('markdown:after-parse', parsed, this.pluginContext) || parsed;
+            const afterHook = parsed.html?.substring(0, 150);
+            if (beforeHook !== afterHook) {
+              console.log('[BUILDER] markdown:after-parse modified HTML');
+            }
           } catch (error) {
             this.logger.error('Error in markdown:after-parse hook', { error: error.message });
           }
+        } else {
+          console.log('[BUILDER] Skipping markdown:after-parse - pluginManager:', !!this.pluginManager, 'pluginContext:', !!this.pluginContext);
         }
       }
 

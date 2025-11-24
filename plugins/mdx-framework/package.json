@@ -19,12 +19,11 @@
     "chiron": ">=0.7.0"
   },
   "dependencies": {
-    "@mdx-js/mdx": "^3.0.0",
-    "esbuild": "^0.19.0",
     "@babel/parser": "^7.23.0",
     "@babel/traverse": "^7.23.0",
     "acorn": "^8.11.0",
-    "acorn-jsx": "^5.3.2"
+    "acorn-jsx": "^5.3.2",
+    "esbuild": "^0.19.0"
   },
   "optionalDependencies": {
     "preact": "^10.0.0",

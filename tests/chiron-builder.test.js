@@ -108,7 +108,7 @@ describe('ChironBuilder core workflows', () => {
 
     const builder = createBuilder();
 
-    const executeHook = jest.fn(async (hookName, payload, context) => {
+    const executeHook = jest.fn().mockImplementation(async (hookName, payload, context) => {
       expect(context).toEqual(expect.objectContaining({ currentPage: expect.any(Object) }));
 
       switch (hookName) {
@@ -160,7 +160,7 @@ describe('ChironBuilder core workflows', () => {
     expect(builder.templateEngine.render).toHaveBeenCalledWith(expect.objectContaining({
       page: expect.objectContaining({
         title: 'Hooked Title',
-        content: expect.stringContaining('<p>Injected</p>')
+        content: expect.stringContaining('<p><em>Extra content</em></p>')
       })
     }));
 

@@ -65,3 +65,4 @@ examples/
 
 # Study/Reference materials
 study/
+dist/assets/*.js
