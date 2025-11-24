@@ -195,6 +195,14 @@ class MarkdownParser {
    */
   setPluginManager(pluginManager) {
     this.pluginManager = pluginManager;
+    
+    // Auto-register components that should be post-processed
+    // These components are processed in the markdown:after-parse hook
+    if (this.pluginManager && typeof this.pluginManager.registerPostProcessComponent === 'function') {
+      this.pluginManager.registerPostProcessComponent('Image');
+      this.pluginManager.registerPostProcessComponent('Chart');
+    }
+    
     this.logger.debug('Plugin manager set for component processing');
   }
 
@@ -239,31 +247,57 @@ class MarkdownParser {
       return markdown; // No plugin manager, skip component processing
     }
 
+    // Step 1: Protect post-process components with placeholders to avoid infinite loops
+    const postProcessPlaceholders = [];
     let processed = markdown;
+    
+    // Replace post-process components with placeholders (only if method exists)
+    const hasPostProcessSupport = typeof this.pluginManager.isPostProcessComponent === 'function';
+    if (hasPostProcessSupport) {
+      processed = processed.replace(
+        /<([A-Z][a-zA-Z0-9]*)((?:\s+[a-zA-Z][a-zA-Z0-9-]*(?:="[^"]*")?)*)\s*\/?>(.*?<\/\1>)?/g,
+        (match, componentName) => {
+          if (this.pluginManager.isPostProcessComponent(componentName)) {
+            const placeholder = `__POST_PROCESS_COMPONENT_${postProcessPlaceholders.length}__`;
+            postProcessPlaceholders.push(match);
+            return placeholder;
+          }
+          return match;
+        }
+      );
+    }
+
+    // Step 2: Process regular components from innermost to outermost
     let iterationCount = 0;
     const MAX_ITERATIONS = 20; // Safety limit for deeply nested components
 
-    // Process components from innermost to outermost
-    // Each iteration processes one level of nesting
     while (iterationCount < MAX_ITERATIONS) {
       let hasMatches = false;
 
       // Match components that don't contain other components (innermost first)
       // Self-closing: <Component attr="value" />
-      // With content: <Component attr="value">content</Component>
       processed = processed.replace(
         /<([A-Z][a-zA-Z0-9]*)((?:\s+[a-zA-Z][a-zA-Z0-9-]*(?:="[^"]*")?)*)\s*\/>/g,
         (match, componentName, attrsStr) => {
+          // Skip placeholders
+          if (match.startsWith('__POST_PROCESS_COMPONENT_')) {
+            return match;
+          }
           hasMatches = true;
-          return this.executeComponent(componentName, attrsStr, '');
+          return this.executeComponent(componentName, attrsStr, '', match);
         }
       );
 
+      // With content: <Component attr="value">content</Component>
       processed = processed.replace(
         /<([A-Z][a-zA-Z0-9]*)((?:\s+[a-zA-Z][a-zA-Z0-9-]*(?:="[^"]*")?)*)\s*>((?:(?!<\1[ >])[\s\S])*?)<\/\1>/g,
         (match, componentName, attrsStr, content) => {
+          // Skip placeholders
+          if (match.startsWith('__POST_PROCESS_COMPONENT_')) {
+            return match;
+          }
           hasMatches = true;
-          return this.executeComponent(componentName, attrsStr, content);
+          return this.executeComponent(componentName, attrsStr, content, match);
         }
       );
 
@@ -278,6 +312,12 @@ class MarkdownParser {
       this.logger.warn('Component processing reached max iterations - possible circular nesting');
     }
 
+    // Step 3: Restore post-process components from placeholders
+    postProcessPlaceholders.forEach((original, index) => {
+      const placeholder = `__POST_PROCESS_COMPONENT_${index}__`;
+      processed = processed.replace(placeholder, original);
+    });
+
     return processed;
   }
 
@@ -286,14 +326,28 @@ class MarkdownParser {
    * @param {string} componentName - Component name (e.g., 'Button')
    * @param {string} attrsStr - Attributes string
    * @param {string} content - Component content
+   * @param {string} originalMatch - Original matched string (for preserving post-process syntax)
    * @returns {string} - Processed HTML or original if component not found
    */
-  executeComponent(componentName, attrsStr, content) {
-    if (!this.pluginManager || !this.pluginManager.hasComponent(componentName)) {
-      this.logger.warn('Unknown component', { name: componentName });
-      return `<${componentName}${attrsStr}>${content}</${componentName}>`; // Return as-is
+  executeComponent(componentName, attrsStr, content, originalMatch = null) {
+    if (!this.pluginManager) {
+      return originalMatch || `<${componentName}${attrsStr}>${content}</${componentName}>`; // No plugin manager
     }
 
+    // Post-process components should have been replaced with placeholders
+    // This should never be called for them, but just in case:
+    if (typeof this.pluginManager.isPostProcessComponent === 'function' && 
+        this.pluginManager.isPostProcessComponent(componentName)) {
+      this.logger.warn('Post-process component reached executeComponent - should have been placeholder', { name: componentName });
+      return originalMatch || `<${componentName}${attrsStr}>${content}</${componentName}>`;
+    }
+
+    if (!this.pluginManager.hasComponent(componentName)) {
+      this.logger.warn('Unknown component', { name: componentName });
+      return originalMatch || `<${componentName}${attrsStr}>${content}</${componentName}>`;
+    }
+
+    // Component found - process it normally
     const attrs = this.parseComponentAttributes(attrsStr);
 
     try {
@@ -304,7 +358,8 @@ class MarkdownParser {
         name: componentName,
         error: error.message
       });
-      return `<${componentName}${attrsStr}>${content}</${componentName}>`; // Return as-is on error
+      // On error, try to return original or reconstruct
+      return originalMatch || `<${componentName}${attrsStr}>${content}</${componentName}>`;
     }
   }
 

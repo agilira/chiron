@@ -52,4 +52,38 @@ describe('PluginManager - Component Renaming (TDD)', () => {
     const result = manager.executeShortcode(componentName, {}, '');
     expect(result).toBe('<div>Legacy</div>');
   });
+
+  describe('Post-Process Components', () => {
+    test('should register post-process components', () => {
+      expect(typeof manager.registerPostProcessComponent).toBe('function');
+      expect(typeof manager.isPostProcessComponent).toBe('function');
+      
+      manager.registerPostProcessComponent('Image');
+      manager.registerPostProcessComponent('Chart');
+      
+      expect(manager.isPostProcessComponent('Image')).toBe(true);
+      expect(manager.isPostProcessComponent('Chart')).toBe(true);
+      expect(manager.isPostProcessComponent('Button')).toBe(false);
+    });
+
+    test('should initialize with empty post-process registry', () => {
+      expect(manager.isPostProcessComponent('Image')).toBe(false);
+      expect(manager.isPostProcessComponent('Chart')).toBe(false);
+    });
+
+    test('should handle case-sensitive component names', () => {
+      manager.registerPostProcessComponent('Image');
+      
+      expect(manager.isPostProcessComponent('Image')).toBe(true);
+      expect(manager.isPostProcessComponent('image')).toBe(false);
+      expect(manager.isPostProcessComponent('IMAGE')).toBe(false);
+    });
+
+    test('should allow multiple registrations without error', () => {
+      manager.registerPostProcessComponent('Image');
+      manager.registerPostProcessComponent('Image'); // duplicate
+      
+      expect(manager.isPostProcessComponent('Image')).toBe(true);
+    });
+  });
 });

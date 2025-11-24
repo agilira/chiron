@@ -80,6 +80,7 @@ class PluginManager {
     this.plugins = [];
     this.hookRegistry = new Map(); // hookName -> [plugin functions]
     this.componentRegistry = new Map(); // componentName -> plugin function
+    this.postProcessComponents = new Set(); // Components to skip in pre-parse (processed in after-parse)
     this._staticAssets = new Map(); // pluginName -> assets (legacy declaration)
     this.initialized = false;
   }
@@ -305,6 +306,29 @@ class PluginManager {
    */
   hasComponent(componentName) {
     return this.componentRegistry.has(componentName);
+  }
+
+  /**
+   * Check if a component should be skipped during pre-parse
+   * (because it's processed in the after-parse hook)
+   * 
+   * @param {string} componentName - Component name to check
+   * @returns {boolean}
+   */
+  isPostProcessComponent(componentName) {
+    return this.postProcessComponents.has(componentName);
+  }
+
+  /**
+   * Register a component as post-process only
+   * These components will be skipped during markdown pre-parse
+   * and processed in the after-parse hook instead
+   * 
+   * @param {string} componentName - Component name
+   */
+  registerPostProcessComponent(componentName) {
+    this.postProcessComponents.add(componentName);
+    this.logger.debug('Registered post-process component', { name: componentName });
   }
 
   /**

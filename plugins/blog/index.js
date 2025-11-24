@@ -368,8 +368,8 @@ module.exports = {
         // Calculate pagination URLs
         const prevPage = currentPage > 1 ? currentPage - 1 : null;
         const nextPage = currentPage < totalPages ? currentPage + 1 : null;
-        const prevUrl = prevPage ? (prevPage === 1 ? 'blog/index.html' : `blog/page-${prevPage}.html`) : null;
-        const nextUrl = nextPage ? `blog/page-${nextPage}.html` : null;
+        const prevUrl = prevPage ? (prevPage === 1 ? '/blog/index.html' : `/blog/page-${prevPage}.html`) : null;
+        const nextUrl = nextPage ? `/blog/page-${nextPage}.html` : null;
         
         // Get blog identity from config
         const blogName = blogConfig.blogName || 'Blog';
@@ -569,7 +569,7 @@ module.exports = {
           enabled: true,
           custom: true,
           items: [
-            { label: blogName, url: 'blog/index.html' },
+            { label: blogName, url: '/blog/index.html' },
             { label: archiveTitle, current: true }
           ]
         };
