@@ -40,41 +40,31 @@ describe('FontDownloader', () => {
     await fsp.rm(workspace, { recursive: true, force: true });
   });
 
-  test('build() copies default fonts and generates fonts.css', async () => {
-    // Prepare default font packages
-    await createFontPackage(workspace, 'Manrope', [500, 600, 700]);
-    await createFontPackage(workspace, 'Work Sans', [400, 500, 600]);
-
-    // Seed stale fonts to verify cleanOldFonts behaviour
+  test('build() skips font download when no config provided', async () => {
     const outputDir = path.join(workspace, 'docs');
+
+    // Create a stale font to verify cleanup still happens
     const staleDir = path.join(outputDir, 'assets', 'fonts', 'old-font');
     await fsp.mkdir(staleDir, { recursive: true });
     await fsp.writeFile(path.join(staleDir, 'stale.woff2'), 'stale', 'utf8');
 
     const downloader = new FontDownloader({}, outputDir);
-    // Ensure no actual npm install runs
     jest.spyOn(downloader, 'installFont');
 
     await downloader.build();
 
-    // Old fonts cleaned
+    // Old fonts cleaned even without config
     expect(fs.existsSync(staleDir)).toBe(false);
 
-    // New fonts copied
-    const manropeDir = path.join(outputDir, 'assets', 'fonts', 'manrope');
-    const workSansDir = path.join(outputDir, 'assets', 'fonts', 'work-sans');
-    expect(fs.existsSync(path.join(manropeDir, 'manrope-latin-500-normal.woff2'))).toBe(true);
-    expect(fs.existsSync(path.join(workSansDir, 'work-sans-latin-400-normal.woff2'))).toBe(true);
+    // No new fonts downloaded
+    const fontsDir = path.join(outputDir, 'assets', 'fonts');
+    const fontDirs = fs.existsSync(fontsDir) ? fs.readdirSync(fontsDir) : [];
+    expect(fontDirs).toHaveLength(0);
 
-    // fonts.css with @font-face and variables
-    const fontsCss = readFile(path.join(outputDir, 'fonts.css'));
-    expect(fontsCss).toContain("font-family: 'Manrope'");
-    expect(fontsCss).toContain('font-weight: 700');
-    expect(fontsCss).toContain("font-family: 'Work Sans'");
-    expect(fontsCss).toContain("--font-heading: 'Manrope'");
-    expect(fontsCss).toContain("--font-body: 'Work Sans'");
+    // No fonts.css generated
+    expect(fs.existsSync(path.join(outputDir, 'fonts.css'))).toBe(false);
 
-    // installFont should not have been called (packages already present)
+    // installFont should not have been called
     expect(downloader.installFont).not.toHaveBeenCalled();
   });
 

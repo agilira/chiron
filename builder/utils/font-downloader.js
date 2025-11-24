@@ -53,15 +53,15 @@ class FontDownloader {
 
   /**
    * Parse font configuration and return heading/body fonts
-   * @returns {Object} { heading: string, body: string }
+   * @returns {Object|null} { heading: string, body: string } or null if no config
    */
   parseFontConfig() {
     const fonts = this.config.fonts || {};
     
-    // Scenario 1: No config - use defaults
-    if (!fonts.heading && !fonts.body) {
-      this.logger.info('No font configuration found, using defaults: Manrope (heading) + Work Sans (body)');
-      return this.defaults;
+    // Scenario 1: No config at all - skip font processing
+    if (!fonts.heading && !fonts.body && !fonts.adobe_project_id) {
+      this.logger.debug('No font configuration found, skipping font setup');
+      return null;
     }
     
     // Scenario 2: Single font specified - apply to both
@@ -264,11 +264,20 @@ class FontDownloader {
   async build() {
     this.logger.info('Starting font download and setup...');
 
-    // Clean old fonts first (now async)
-    await this.cleanOldFonts();
-
     // Parse configuration
-    const { heading, body } = this.parseFontConfig();
+    const fontConfig = this.parseFontConfig();
+    
+    // Clean old fonts first (always, even if no config)
+    // This ensures fonts are removed when config is deleted
+    await this.cleanOldFonts();
+    
+    // If no font config, skip download but keep cleanup
+    if (!fontConfig) {
+      this.logger.info('No fonts configured, cleaned up old fonts');
+      return;
+    }
+
+    const { heading, body } = fontConfig;
 
     // Track success for each font
     let headingSuccess = false;

@@ -78,6 +78,10 @@ Follow the steps.
           sitemap: { enabled: true, priority: 0.8, changefreq: 'weekly' },
           robots: { enabled: true, allow_all: true }
         },
+        fonts: {
+          heading: 'Test Font',
+          body: 'Test Font'
+        },
         features: {},
         navigation: {},
         theme: {}

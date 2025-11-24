@@ -1701,16 +1701,19 @@ ${analyticsSnippet}
     }
 
     // Download and setup fonts (after copyScripts to overwrite default fonts.css)
-    this.logger.info('Setting up fonts...');
-    try {
-      const fontDownloader = new FontDownloader(
-        this.config,
-        this.getOutputDir()
-      );
-      await fontDownloader.build();
-    } catch (error) {
-      this.logger.error('Error setting up fonts', { error: error.message });
-      this.buildErrors.push({ file: 'fonts', error: error.message });
+    // Only run if fonts config exists
+    if (this.config.fonts) {
+      this.logger.info('Setting up fonts...');
+      try {
+        const fontDownloader = new FontDownloader(
+          this.config,
+          this.getOutputDir()
+        );
+        await fontDownloader.build();
+      } catch (error) {
+        this.logger.error('Error setting up fonts', { error: error.message });
+        this.buildErrors.push({ file: 'fonts', error: error.message });
+      }
     }
 
     // Generate sitemap
