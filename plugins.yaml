@@ -68,6 +68,19 @@ plugins:
       #   - "blog/drafts/**"
       #   - "**/*-draft.md"
   
+  # MDX Framework Plugin
+  # Enable MDX (Markdown + JSX) support with framework-agnostic component rendering
+  # Supports Preact, Svelte, Vue components with lazy-loading via lazy-app-loader
+  # Documentation: plugins/mdx-framework/README.md
+  - name: "mdx-framework"
+    enabled: true
+    config:
+      adapters:
+        - preact
+        - svelte
+        - vue
+      bundling: true
+  
   # Google Analytics Plugin
   # Adds Google Analytics 4 (GA4) or Google Tag Manager (GTM) tracking
   # Documentation: plugins/google-analytics/README.md

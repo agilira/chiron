@@ -1,0 +1,22 @@
+---
+title: Svelte Test
+description: Testing Svelte components only
+---
+
+import SvelteCounter from '../examples/components/SvelteCounter.svelte'
+
+# Svelte Framework Test
+
+## Counter Component
+
+<SvelteCounter initialCount={0} step={1} />
+
+## Counter with Different Props
+
+<SvelteCounter initialCount={75} step={15} />
+
+---
+
+**Check console for:**
+- `[MDX] Mounted SvelteCounter (Svelte)`
+- No errors

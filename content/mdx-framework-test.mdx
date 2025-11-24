@@ -1,0 +1,123 @@
+---
+title: MDX Multi-Framework Demo
+description: Testing all supported frameworks in one page
+---
+
+import PreactCounter from '../examples/components/PreactCounter.jsx'
+import PreactChart from '../examples/components/PreactChart.jsx'
+import ReactCounter from '../examples/components/Counter.react.jsx'
+import SolidCounter from '../examples/components/Counter.solid.jsx'
+import SvelteCounter from '../examples/components/SvelteCounter.svelte'
+import SvelteCard from '../examples/components/SvelteCard.svelte'
+import VueCounter from '../examples/components/VueCounter.vue'
+import VueButton from '../examples/components/VueButton.vue'
+
+# MDX Multi-Framework Test Page
+
+This page demonstrates **ALL 5 frameworks** working together with Chiron's lazy-app-loader: Preact, React, Solid, Svelte, and Vue!
+
+## 🎯 Preact Components
+
+### Counter (Preact)
+<PreactCounter initialCount={0} step={1} />
+
+### Chart (Preact)
+<PreactChart data={[25, 50, 75, 100]} type="bar" />
+
+---
+
+## 🔥 Svelte Components
+
+### Counter (Svelte)
+<SvelteCounter initialCount={10} step={5} />
+
+### Card (Svelte)
+<SvelteCard title="Svelte Card" description="This is a Svelte component" />
+
+---
+
+## ⚛️ React Components
+
+### Counter (React)
+<ReactCounter initialCount={20} step={3} />
+
+---
+
+## 🔷 Solid Components
+
+### Counter (Solid)
+<SolidCounter initialCount={50} step={7} />
+
+---
+
+## 💚 Vue Components
+
+### Counter (Vue)
+<VueCounter initialCount={100} step={10} />
+
+### Button (Vue)
+<VueButton label="Click me!" variant="primary" />
+
+---
+
+## 📊 Mixed Instances
+
+Multiple instances of the same component:
+
+<PreactCounter initialCount={0} step={1} />
+<PreactCounter initialCount={50} step={5} />
+<PreactCounter initialCount={1000} step={100} />
+
+---
+
+## ✅ Expected Behavior
+
+1. **All components load independently** (islands architecture)
+2. **Each instance maintains its own state**
+3. **Props are correctly passed** from MDX to components
+4. **Styles are isolated** (Svelte scoped styles work)
+5. **No framework conflicts** (Preact + Svelte + Vue coexist)
+
+## 🧪 Testing Checklist
+
+- [ ] Preact Counter increments correctly
+- [ ] Preact Chart displays bars
+- [ ] Svelte Counter works with different step
+- [ ] Svelte Card shows title and description
+- [ ] Vue Counter starts at 100
+- [ ] Vue Button responds to clicks
+- [ ] Multiple instances don't interfere
+- [ ] Browser console has no errors
+- [ ] All bundles load successfully
+- [ ] Page renders HTML-first (no flash)
+
+---
+
+**Regular Markdown continues to work:**
+
+- Lists work fine
+- **Bold** and *italic* text
+- `Code blocks` are preserved
+- [Links](/) function normally
+
+> Blockquotes work as expected
+
+```javascript
+// Code highlighting (if enabled)
+const test = 'syntax highlighting';
+```
+
+---
+
+## 📦 Bundle Information
+
+Check browser DevTools Network tab:
+
+- `PreactCounter.[hash].js` - Preact component bundle
+- `PreactChart.[hash].js` - Preact chart bundle
+- `SvelteCounter.[hash].js` - Svelte component bundle
+- `SvelteCard.[hash].js` - Svelte card bundle
+- `VueCounter.[hash].js` - Vue component bundle
+- `VueButton.[hash].js` - Vue button bundle
+
+Each bundle should be **< 10KB gzipped** for optimal performance.

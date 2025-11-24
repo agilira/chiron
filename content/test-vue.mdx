@@ -1,0 +1,26 @@
+---
+title: Vue Test
+description: Testing Vue components only
+---
+
+import VueCounter from '../examples/components/VueCounter.vue'
+import VueButton from '../examples/components/VueButton.vue'
+
+# Vue Framework Test
+
+## Counter Component (custom 3-line skeleton)
+
+<VueCounter initialCount={0} step={1}>
+<Skeleton lines="3" />
+</VueCounter>
+
+## Button Component (default skeleton)
+
+<VueButton label="Click me!" variant="primary" />
+
+---
+
+**Check console for:**
+- `[MDX] Mounted VueCounter (Vue)`
+- `[MDX] Mounted VueButton (Vue)`
+- No errors

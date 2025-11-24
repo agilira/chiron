@@ -6,8 +6,8 @@
   "scripts": {
     "build": "node builder/index.js",
     "watch": "node builder/index.js --dev",
-    "preview": "npx serve docs",
-    "clean": "node -e \"require('fs').rmSync('docs', {recursive: true, force: true})\"",
+    "preview": "npx serve dist",
+    "clean": "node -e \"require('fs').rmSync('dist', {recursive: true, force: true})\"",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
@@ -53,6 +53,9 @@
     "babel-jest": "^30.2.0",
     "chokidar": "^4.0.3",
     "docdash": "^2.0.2",
+    "esbuild-plugin-solid": "^0.6.0",
+    "esbuild-plugin-vue-next": "^0.1.4",
+    "esbuild-svelte": "^0.9.3",
     "eslint": "^9.38.0",
     "fs-extra": "^11.3.2",
     "jest": "^30.2.0",
@@ -60,7 +63,12 @@
     "jsdoc": "^4.0.5",
     "lightningcss": "^1.30.2",
     "lucide-static": "^0.552.0",
-    "preact": "^10.27.2"
+    "preact": "^10.27.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "solid-js": "^1.9.10",
+    "svelte": "^5.43.14",
+    "vue": "^3.5.25"
   },
   "overrides": {
     "glob": "^10.4.5",
