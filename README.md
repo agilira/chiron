@@ -33,6 +33,7 @@ Zero runtime. Zero complexity. Just fast, beautiful websites.
 - **Analytics**: Optional integration with Google Analytics 4 and GTM
 - **Code Blocks**: Copy-to-clipboard functionality for code snippets
 - **External Scripts**: Integrate external JavaScript libraries and CSS per-page or globally
+- **Async HTML Fragments**: Progressive loading of HTML content with `data-html-src` - [See ASYNC-HTML-FRAGMENTS.md](docs-internal/ASYNC-HTML-FRAGMENTS.md)
 
 ## Quick Start
 
