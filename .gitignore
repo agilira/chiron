@@ -55,7 +55,6 @@ Thumbs.db
 ROADMAP_FUTURE.md 
 COMPONENTS-ANALYSIS.md
 docs-internal/
-examples/
 
 # Internal documentation (not ready for publish)
 *.md
@@ -66,6 +65,3 @@ examples/
 # Study/Reference materials
 study/
 dist/assets/*.js
-
-# Allow example components (needed for tests)
-!examples/components/
