@@ -2617,8 +2617,12 @@ class TemplateEngine {
   renderComponentScripts(usedComponents = ['base'], pageScriptsConfig = null, pathToRoot = './') {
     const componentDir = path.join(this.chironRootDir, 'builder', 'js-components');
 
-    // Check if base.js should be loaded (from frontmatter scripts.base)
-    const shouldLoadBase = pageScriptsConfig?.base !== false;
+    // Check global core_framework setting (true by default, false to disable entirely)
+    const coreFrameworkEnabled = this.config.features?.core_framework !== false;
+
+    // Check if base.js should be loaded (frontmatter overrides global config)
+    // If frontmatter explicitly sets scripts.base, it takes precedence
+    const shouldLoadBase = coreFrameworkEnabled && pageScriptsConfig?.base !== false;
     const baseMode = pageScriptsConfig?.base || 'full'; // 'full', 'minimal', or false
 
     // Components included in base.js (built from base.ejs template)

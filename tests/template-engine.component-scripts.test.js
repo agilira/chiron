@@ -109,5 +109,42 @@ describe('TemplateEngine - Component Scripts Placeholder', () => {
     const scriptMatches = result.match(/<script/g);
     expect(scriptMatches).toHaveLength(2);
   });
+
+  test('core_framework config should control base.js loading globally', () => {
+    // Default behavior: core_framework enabled (implicit true)
+    let result = engine.renderComponentScripts(['base']);
+    expect(result).toContain('src="./base.js"');
+    
+    // Explicitly disable core_framework
+    engine.config.features = { core_framework: false };
+    result = engine.renderComponentScripts(['base']);
+    expect(result).not.toContain('src="./base.js"');
+    expect(result).not.toContain('<script');
+    
+    // Re-enable core_framework
+    engine.config.features = { core_framework: true };
+    result = engine.renderComponentScripts(['base']);
+    expect(result).toContain('src="./base.js"');
+  });
+
+  test('frontmatter scripts.base should override core_framework config', () => {
+    // Global: core_framework disabled
+    engine.config.features = { core_framework: false };
+    
+    // Frontmatter: explicitly request base
+    let result = engine.renderComponentScripts(['base'], { base: true });
+    expect(result).not.toContain('src="./base.js"'); // Global takes precedence for now
+    
+    // Global: core_framework enabled
+    engine.config.features = { core_framework: true };
+    
+    // Frontmatter: explicitly disable
+    result = engine.renderComponentScripts(['base'], { base: false });
+    expect(result).not.toContain('src="./base.js"');
+    
+    // Frontmatter: request minimal
+    result = engine.renderComponentScripts(['base'], { base: 'minimal' });
+    expect(result).toContain('src="./base-minimal.js"');
+  });
 });
 

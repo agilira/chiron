@@ -254,6 +254,13 @@ security:
 # Control which JavaScript features are loaded on pages
 # Disabling unused features reduces bundle size and improves performance
 features:
+  # Core framework (base.js)
+  # Controls automatic loading of Chiron's JavaScript framework
+  # Includes: core utilities, accessibility, navigation, component handlers
+  # Set to false if using your own custom framework
+  # Can be overridden per-page via frontmatter: scripts.base: false
+  core_framework: true  # true (default) | false
+  
   # Dark mode theme toggle
   # Adds theme switcher button in header and persists user preference
   dark_mode:
