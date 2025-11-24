@@ -1,0 +1,52 @@
+# MDX Framework Plugin Metadata
+# Enables MDX with multi-framework component support
+
+name: mdx-framework
+version: 1.0.0
+description: MDX support with Preact, Svelte, Vue component integration for Chiron
+author: AGILira
+
+# Plugin category
+category: content
+
+# Tags for discovery
+tags:
+  - mdx
+  - jsx
+  - react
+  - preact
+  - svelte
+  - vue
+  - components
+  - interactive
+
+# Dependencies
+dependencies:
+  # Required plugins (must be loaded before this one)
+  required: []
+  
+  # Optional plugins (if present, will be loaded before this one)
+  optional:
+    - components  # For App component integration
+
+# What this plugin provides (for other plugins to depend on)
+provides:
+  - mdx
+  - jsx-components
+  - framework-integration
+
+# External scripts/libraries required (handled by lazy-app-loader)
+external: []
+
+# Theme compatibility (empty = works with all themes)
+themes: []
+
+# Minimum Chiron version required
+requires: "^0.7.0"
+
+# Feature flags
+features:
+  mdx: true
+  component_imports: true
+  jsx_compilation: true
+  bundling: true
