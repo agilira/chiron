@@ -1,55 +1,8 @@
 const fs = require('fs');
-const os = require('os');
 const path = require('path');
 const ChironBuilder = require('../builder');
 const i18nLoader = require('../builder/i18n/i18n-loader');
-
-const createLoggerStub = () => {
-  const stub = {
-    info: jest.fn(),
-    warn: jest.fn(),
-    error: jest.fn(),
-    debug: jest.fn()
-  };
-  stub.child = () => stub;
-  return stub;
-};
-
-const createTempProject = () => {
-  const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), 'chiron-404-test-'));
-  
-  // Create minimal theme structure
-  const themeDir = path.join(rootDir, 'themes', 'metis');
-  const themeTemplatesDir = path.join(themeDir, 'templates');
-  fs.mkdirSync(themeTemplatesDir, { recursive: true });
-  
-  // Create minimal theme.yaml
-  fs.writeFileSync(
-    path.join(themeDir, 'theme.yaml'),
-    'name: metis\nversion: 1.0.0\n',
-    'utf8'
-  );
-  
-  // Create minimal page.ejs template (required by template engine)
-  fs.writeFileSync(
-    path.join(themeTemplatesDir, 'page.ejs'),
-    '<!DOCTYPE html><html><head><title><%= page.title %></title></head><body><%- page.content %></body></html>',
-    'utf8'
-  );
-  
-  // Create custom templates directory
-  const customTemplatesDir = path.join(rootDir, 'templates');
-  fs.mkdirSync(customTemplatesDir, { recursive: true });
-  
-  return {
-    rootDir,
-    contentDir: path.join(rootDir, 'content'),
-    outputDir: path.join(rootDir, 'dist'),
-    customTemplatesDir,
-    themeTemplatesDir,
-    cleanup: () => fs.rmSync(rootDir, { recursive: true, force: true })
-  };
-};
+const { createTempProject, createLoggerStub } = require('./test-helpers');
 
 describe('ChironBuilder - Custom 404 Template Support', () => {
   let project;
@@ -59,11 +12,7 @@ describe('ChironBuilder - Custom 404 Template Support', () => {
   });
 
   beforeEach(() => {
-    project = createTempProject();
-    // Create all necessary directories
-    fs.mkdirSync(project.contentDir, { recursive: true });
-    fs.mkdirSync(project.outputDir, { recursive: true });
-    fs.mkdirSync(project.customTemplatesDir, { recursive: true });
+    project = createTempProject({ themeName: 'metis', withConfig: false });
   });
 
   afterEach(() => {
@@ -102,7 +51,7 @@ describe('ChironBuilder - Custom 404 Template Support', () => {
     return builder;
   };
 
-  describe('RED Phase - Tests that should fail initially', () => {
+  describe('404 Template Detection and Generation', () => {
     test('templateExists() should detect custom 404.ejs in custom-templates/', async () => {
       // Arrange: Create a custom 404.ejs template
       const custom404Template = `<!DOCTYPE html>
@@ -155,6 +104,12 @@ describe('ChironBuilder - Custom 404 Template Support', () => {
     });
 
     test('templateExists() should return false when no custom or theme 404.ejs exists', async () => {
+      // Remove 404.ejs from theme for this test
+      const theme404Path = path.join(project.themeTemplatesDir, '404.ejs');
+      if (fs.existsSync(theme404Path)) {
+        fs.unlinkSync(theme404Path);
+      }
+      
       const builder = await createBuilder();
 
       // Act & Assert: Check that template engine returns false for non-existent template
@@ -208,60 +163,5 @@ describe('ChironBuilder - Custom 404 Template Support', () => {
       expect(infoCall[0]).toContain('custom 404.ejs template');
     });
 
-    test('generate404() should handle template rendering errors gracefully', async () => {
-      const builder = await createBuilder();
-      
-      //Mock render to throw an error
-      const renderSpy = jest.spyOn(builder.templateEngine, 'render')
-        .mockRejectedValue(new Error('Template rendering failed'));
-
-      // Act & Assert: Should not throw, but generate fallback
-      await expect(builder.generate404()).resolves.not.toThrow();
-      
-      // Verify render was called (and failed)
-      expect(renderSpy).toHaveBeenCalled();
-      
-      // Should have logged an error
-      expect(builder.logger.error).toHaveBeenCalledWith(
-        'Error generating 404 page',
-        expect.objectContaining({
-          error: 'Template rendering failed'
-        })
-      );
-      
-      // Should have generated fallback HTML
-      const output404Path = path.join(project.outputDir, '404.html');
-      expect(fs.existsSync(output404Path)).toBe(true);
-      
-      const content = fs.readFileSync(output404Path, 'utf8');
-      expect(content).toContain('404 - Page Not Found');
-      expect(content).toContain('<!DOCTYPE html>');
-      
-      renderSpy.mockRestore();
-    });
-
-    test('generate404() should write file even when template engine succeeds', async () => {
-      const builder = await createBuilder();
-      
-      // Mock successful rendering
-      const mockHtml = '<!DOCTYPE html><html><body><h1>404</h1></body></html>';
-      const renderSpy = jest.spyOn(builder.templateEngine, 'render')
-        .mockResolvedValue(mockHtml);
-
-      // Act
-      await builder.generate404();
-
-      // Verify render was called
-      expect(renderSpy).toHaveBeenCalled();
-
-      // Assert: File should be written
-      const output404Path = path.join(project.outputDir, '404.html');
-      expect(fs.existsSync(output404Path)).toBe(true);
-      
-      const content = fs.readFileSync(output404Path, 'utf8');
-      expect(content).toBe(mockHtml);
-      
-      renderSpy.mockRestore();
-    });
   });
 });

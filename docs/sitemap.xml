@@ -169,42 +169,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agilira.github.io/chiron/blog/building-modern-documentation.html</loc>
-    <lastmod>2025-11-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agilira.github.io/chiron/blog/first-post.html</loc>
-    <lastmod>2025-11-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agilira.github.io/chiron/blog/index.html</loc>
-    <lastmod>2025-11-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agilira.github.io/chiron/blog/second-post.html</loc>
-    <lastmod>2025-11-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agilira.github.io/chiron/blog/third-post.html</loc>
-    <lastmod>2025-11-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agilira.github.io/chiron/blog/welcome-to-chiron.html</loc>
-    <lastmod>2025-11-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://agilira.github.io/chiron/components/accordions.html</loc>
     <lastmod>2025-11-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -428,24 +392,6 @@
   </url>
   <url>
     <loc>https://agilira.github.io/chiron/plugins/index.html</loc>
-    <lastmod>2025-11-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agilira.github.io/chiron/blog/author/marco-rossi.html</loc>
-    <lastmod>2025-11-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agilira.github.io/chiron/blog/category/tutorials.html</loc>
-    <lastmod>2025-11-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agilira.github.io/chiron/blog/tag/javascript.html</loc>
     <lastmod>2025-11-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

@@ -10,77 +10,10 @@
  */
 
 const fs = require('fs');
-const os = require('os');
 const path = require('path');
 const yaml = require('js-yaml');
 const ChironBuilder = require('../builder');
-
-const createTempProject = (withConfig = true) => {
-  const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), 'chiron-init-test-'));
-  const contentDir = path.join(rootDir, 'content');
-  const outputDir = path.join(rootDir, 'docs');
-  
-  fs.mkdirSync(contentDir, { recursive: true });
-  fs.mkdirSync(outputDir, { recursive: true });
-  
-  // Create minimal theme structure
-  const themesDir = path.join(rootDir, 'themes', 'metis');
-  fs.mkdirSync(themesDir, { recursive: true });
-  
-  // Create minimal theme.yaml
-  const themeConfig = {
-    name: 'Metis',
-    version: '1.0.0',
-    engine: 'ejs',
-    templates: {}
-  };
-  fs.writeFileSync(
-    path.join(themesDir, 'theme.yaml'),
-    yaml.dump(themeConfig)
-  );
-  
-  // Create templates directory
-  fs.mkdirSync(path.join(rootDir, 'templates'), { recursive: true });
-  
-  if (withConfig) {
-    // Create minimal valid config with ALL required fields
-    const config = {
-      project: {
-        name: 'init-test',
-        title: 'Init Test',
-        description: 'Testing initialization',
-        url: 'https://test.example.com',
-        base_url: '/',
-        language: 'en'
-      },
-      build: {
-        output_dir: 'docs',
-        content_dir: 'content',
-        templates_dir: 'templates'
-      },
-      navigation: {
-        sidebars: {
-          default: []
-        }
-      },
-      theme: {
-        active: 'metis'
-      }
-    };
-    
-    fs.writeFileSync(
-      path.join(rootDir, 'chiron.config.yaml'),
-      yaml.dump(config)
-    );
-  }
-  
-  return {
-    rootDir,
-    contentDir,
-    outputDir,
-    cleanup: () => fs.rmSync(rootDir, { recursive: true, force: true })
-  };
-};
+const { createTempProject } = require('./test-helpers');
 
 describe('ChironBuilder Initialization', () => {
   let project;
@@ -100,7 +33,7 @@ describe('ChironBuilder Initialization', () => {
 
   describe('Constructor', () => {
     it('should use config from current working directory when available', () => {
-      project = createTempProject();
+      project = createTempProject({ themeName: 'metis', withConfig: true });
       process.chdir(project.rootDir);
 
       const builder = new ChironBuilder();
@@ -110,7 +43,7 @@ describe('ChironBuilder Initialization', () => {
     });
 
     it('should fallback to chiron root directory when config not in CWD', () => {
-      project = createTempProject(false); // No config
+      project = createTempProject({ themeName: 'metis', withConfig: false }); // No config
       process.chdir(project.rootDir);
 
       const builder = new ChironBuilder();
@@ -121,7 +54,7 @@ describe('ChironBuilder Initialization', () => {
     });
 
     it('should accept custom config filename', () => {
-      project = createTempProject(false);
+      project = createTempProject({ themeName: 'metis', withConfig: false });
       const customConfig = path.join(project.rootDir, 'custom.yaml');
       
       const config = {
@@ -150,7 +83,7 @@ describe('ChironBuilder Initialization', () => {
     });
 
     it('should initialize with null config before loadConfig() is called', () => {
-      project = createTempProject();
+      project = createTempProject({ themeName: 'metis', withConfig: true });
       process.chdir(project.rootDir);
 
       const builder = new ChironBuilder();
@@ -162,7 +95,7 @@ describe('ChironBuilder Initialization', () => {
     });
 
     it('should initialize MarkdownParser in constructor', () => {
-      project = createTempProject();
+      project = createTempProject({ themeName: 'metis', withConfig: true });
       process.chdir(project.rootDir);
 
       const builder = new ChironBuilder();
@@ -174,7 +107,13 @@ describe('ChironBuilder Initialization', () => {
 
   describe('loadConfig()', () => {
     it('should load valid YAML configuration', () => {
-      project = createTempProject();
+      project = createTempProject({ 
+        themeName: 'metis', 
+        withConfig: true,
+        configOverrides: {
+          project: { title: 'Init Test' }
+        }
+      });
       process.chdir(project.rootDir);
 
       const builder = new ChironBuilder();
@@ -187,7 +126,7 @@ describe('ChironBuilder Initialization', () => {
     });
 
     it('should throw error when config file does not exist', () => {
-      project = createTempProject(false);
+      project = createTempProject({ themeName: 'metis', withConfig: false });
       
       // Force builder to use non-existent config path
       const builder = new ChironBuilder();
@@ -199,7 +138,7 @@ describe('ChironBuilder Initialization', () => {
     });
 
     it('should throw error on invalid YAML syntax', () => {
-      project = createTempProject(false);
+      project = createTempProject({ themeName: 'metis', withConfig: false });
       const configPath = path.join(project.rootDir, 'chiron.config.yaml');
       
       // Write invalid YAML
@@ -214,7 +153,7 @@ describe('ChironBuilder Initialization', () => {
     });
 
     it('should throw error when config is empty', () => {
-      project = createTempProject(false);
+      project = createTempProject({ themeName: 'metis', withConfig: false });
       const configPath = path.join(project.rootDir, 'chiron.config.yaml');
       
       fs.writeFileSync(configPath, '');
@@ -228,7 +167,7 @@ describe('ChironBuilder Initialization', () => {
     });
 
     it('should throw error when required fields are missing', () => {
-      project = createTempProject(false);
+      project = createTempProject({ themeName: 'metis', withConfig: false });
       const configPath = path.join(project.rootDir, 'chiron.config.yaml');
       
       // Missing build section
@@ -256,7 +195,7 @@ describe('ChironBuilder Initialization', () => {
 
   describe('loadPluginsConfig()', () => {
     it('should return empty config when plugins.yaml does not exist', () => {
-      project = createTempProject();
+      project = createTempProject({ themeName: 'metis', withConfig: true });
       process.chdir(project.rootDir);
 
       const builder = new ChironBuilder();
@@ -269,7 +208,7 @@ describe('ChironBuilder Initialization', () => {
     });
 
     it('should load valid plugins configuration', () => {
-      project = createTempProject();
+      project = createTempProject({ themeName: 'metis', withConfig: true });
       const pluginsConfig = {
         pluginSettings: {
           enabled: true,
@@ -299,7 +238,7 @@ describe('ChironBuilder Initialization', () => {
     });
 
     it('should handle invalid plugins.yaml gracefully', () => {
-      project = createTempProject();
+      project = createTempProject({ themeName: 'metis', withConfig: true });
       
       // Write invalid YAML
       fs.writeFileSync(
@@ -318,7 +257,7 @@ describe('ChironBuilder Initialization', () => {
     });
 
     it('should handle non-object plugins.yaml', () => {
-      project = createTempProject();
+      project = createTempProject({ themeName: 'metis', withConfig: true });
       
       fs.writeFileSync(
         path.join(project.rootDir, 'plugins.yaml'),
@@ -336,7 +275,7 @@ describe('ChironBuilder Initialization', () => {
     });
 
     it('should filter enabled plugins correctly', () => {
-      project = createTempProject();
+      project = createTempProject({ themeName: 'metis', withConfig: true });
       const pluginsConfig = {
         pluginSettings: { enabled: true },
         plugins: [
@@ -362,7 +301,7 @@ describe('ChironBuilder Initialization', () => {
     });
 
     it('should apply default plugin settings', () => {
-      project = createTempProject();
+      project = createTempProject({ themeName: 'metis', withConfig: true });
       const pluginsConfig = {
         plugins: [{ name: 'test' }]
         // No pluginSettings section
@@ -388,7 +327,7 @@ describe('ChironBuilder Initialization', () => {
 
   describe('init()', () => {
     it('should initialize all components successfully', async () => {
-      project = createTempProject();
+      project = createTempProject({ themeName: 'metis', withConfig: true });
       process.chdir(project.rootDir);
 
       const builder = new ChironBuilder();
@@ -401,7 +340,7 @@ describe('ChironBuilder Initialization', () => {
     });
 
     it('should create output directory if it does not exist', async () => {
-      project = createTempProject();
+      project = createTempProject({ themeName: 'metis', withConfig: true });
       
       // Remove output dir
       fs.rmSync(project.outputDir, { recursive: true, force: true });
@@ -415,7 +354,7 @@ describe('ChironBuilder Initialization', () => {
     });
 
     it('should initialize theme loader with correct config', async () => {
-      project = createTempProject();
+      project = createTempProject({ themeName: 'metis', withConfig: true });
       process.chdir(project.rootDir);
 
       const builder = new ChironBuilder();
@@ -427,7 +366,7 @@ describe('ChironBuilder Initialization', () => {
     });
 
     it('should not fail when plugins are disabled', async () => {
-      project = createTempProject();
+      project = createTempProject({ themeName: 'metis', withConfig: true });
       process.chdir(project.rootDir);
 
       const builder = new ChironBuilder();
@@ -439,7 +378,7 @@ describe('ChironBuilder Initialization', () => {
     });
 
     it('should handle plugin initialization errors gracefully', async () => {
-      project = createTempProject();
+      project = createTempProject({ themeName: 'metis', withConfig: true });
       
       // Create plugins config with non-existent plugin
       const pluginsConfig = {
@@ -462,7 +401,7 @@ describe('ChironBuilder Initialization', () => {
     });
 
     it('should create plugin context with correct properties', async () => {
-      project = createTempProject();
+      project = createTempProject({ themeName: 'metis', withConfig: true });
       process.chdir(project.rootDir);
 
       const builder = new ChironBuilder();
@@ -477,7 +416,7 @@ describe('ChironBuilder Initialization', () => {
 
   describe('Edge Cases', () => {
     it('should handle config with unicode characters', () => {
-      project = createTempProject(false);
+      project = createTempProject({ themeName: 'metis', withConfig: false });
       const configPath = path.join(project.rootDir, 'chiron.config.yaml');
       
       const config = {
@@ -511,7 +450,7 @@ describe('ChironBuilder Initialization', () => {
     });
 
     it('should handle config with very long strings', () => {
-      project = createTempProject(false);
+      project = createTempProject({ themeName: 'metis', withConfig: false });
       const configPath = path.join(project.rootDir, 'chiron.config.yaml');
       
       // Use long string within validation limits (max 200 chars for title)
@@ -544,7 +483,7 @@ describe('ChironBuilder Initialization', () => {
     });
 
     it('should handle multiple init() calls gracefully', async () => {
-      project = createTempProject();
+      project = createTempProject({ themeName: 'metis', withConfig: true });
       process.chdir(project.rootDir);
 
       const builder = new ChironBuilder();
@@ -561,3 +500,4 @@ describe('ChironBuilder Initialization', () => {
     });
   });
 });
+

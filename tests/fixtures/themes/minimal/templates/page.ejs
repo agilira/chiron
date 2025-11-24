@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="<%= page.lang || 'en' %>">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= page.title %> - <%= config.project.name || 'Test Site' %></title>
+  <% if (page.description) { %>
+  <meta name="description" content="<%= page.description %>">
+  <% } %>
+  <link rel="stylesheet" href="<%= page.baseUrl || '/' %>styles.css">
+</head>
+<body>
+  <header>
+    <h1><%= config.project.name || 'Test Site' %></h1>
+    <% if (config.project.description) { %>
+    <p><%= config.project.description %></p>
+    <% } %>
+  </header>
+  
+  <main>
+    <article>
+      <h1><%= page.title %></h1>
+      <div class="content">
+        <%- page.content %>
+      </div>
+    </article>
+  </main>
+  
+  <footer>
+    <p>&copy; <%= new Date().getFullYear() %> Test Fixture</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,25 @@
+name: "Minimal Test Fixture"
+version: "1.0.0"
+description: "Minimal theme for testing purposes - not for production use"
+author: "Chiron Test Suite"
+engine: "ejs"
+
+# Minimal features - only what's needed for tests
+supports:
+  search: false
+  sidebar: false
+  blog: false
+  dark_mode: false
+
+# Minimal styling
+colors:
+  primary: "#000000"
+  background: "#ffffff"
+  text: "#000000"
+
+typography:
+  base_font: "system-ui"
+  heading_font: "system-ui"
+
+layout:
+  max_width: "1200px"

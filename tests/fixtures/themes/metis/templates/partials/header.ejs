@@ -1,0 +1,23 @@
+<header class="header" role="banner">
+    <div class="header-container">
+        <div class="header-left">
+            <%- include('partials/header-logo', { githubUrl, logoImages, projectNameSpan }) %>
+            <%- menu('header', { 
+                container: 'nav', 
+                menu_class: 'header-nav', 
+                menu_attrs: `data-dropdown-trigger="${headerDropdownTrigger}"`,
+                item_class: 'header-nav-item',
+                link_class: 'header-nav-link',
+                dropdown_class: 'header-dropdown',
+                dropdown_link_class: 'header-dropdown-link',
+                aria_label: aria?.nav || 'Main navigation',
+                context
+            }) %>
+        </div>
+        <div class="header-right">
+            <div class="header-actions">
+                <%- include('partials/header-actions', { headerActionsData, languageSwitcher, aria }) %>
+            </div>
+        </div>
+    </div>
+</header>

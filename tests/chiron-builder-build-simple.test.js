@@ -173,9 +173,9 @@ describe('ChironBuilder - Build Logic (Simplified)', () => {
       expect(files[0].filename).toBe('doc.md');
     });
 
-    test.skip('should prevent directory traversal attacks', () => {
-      // Try to scan outside content directory using symbolic link
-      // This should be caught by security checks
+    test('should prevent directory traversal attacks', () => {
+      // Test directory traversal protection (symlink-based)
+      // Note: Skipped on Windows without admin privileges
       
       const outsideDir = path.join(os.tmpdir(), 'outside-content');
       if (!fs.existsSync(outsideDir)) {
@@ -192,7 +192,7 @@ describe('ChironBuilder - Build Logic (Simplified)', () => {
         }).toThrow(/Directory traversal/);
       } catch (err) {
         if (err.code === 'EPERM') {
-          // Skip test on Windows without admin rights
+          // Skip on Windows without admin - test passed by default
           console.log('Skipping symlink test - requires admin on Windows');
         } else {
           throw err;

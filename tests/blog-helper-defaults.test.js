@@ -20,9 +20,9 @@ describe('Blog Helper Theme Defaults', () => {
     const _logger = new Logger('error');
     rootDir = path.join(__dirname, '..');
     
-    // Use real Metis theme (has helpers defaults in theme.yaml)
+    // Use fixture Metis theme (has helpers defaults in theme.yaml)
     const config = {
-      theme: { active: 'metis' }
+      theme: { custom_path: 'tests/fixtures/themes/metis' }
     };
 
     themeLoader = new ThemeLoader(config, rootDir);
@@ -138,7 +138,7 @@ describe('Blog Helper Theme Defaults', () => {
     it('should work normally when no theme defaults configured', () => {
       // Create theme loader without helper defaults
       const plainThemeLoader = new ThemeLoader(
-        { theme: { active: 'metis' } },
+        { theme: { custom_path: 'tests/fixtures/themes/metis' } },
         rootDir
       );
 

@@ -1,0 +1,59 @@
+# Metis - Chiron Documentation Theme
+# =====================================
+# Clean, modern documentation theme inspired by the Greek goddess of wisdom
+name: "Metis"
+version: "1.0.0"
+author: "AGILira - A. Giordano"
+description: "Clean, modern documentation theme inspired by the Greek goddess of wisdom and deep thought"
+license: "MIT"
+
+# Theme Configuration
+# ===================
+
+# Primary color (used for PWA manifest theme_color)
+colors:
+  primary: "#0066cc"
+
+# Blog Helper Defaults
+# ====================
+# Override default parameters for blog template helpers
+# These are applied automatically when helpers are called without explicit options
+helpers:
+  blog_pagination:
+    before: "<-"          # Previous button (arrow, emoji, HTML, text)
+    after: "->"           # Next button (arrow, emoji, HTML, text)
+    showNumbers: true     # Show page numbers between arrows
+    
+  the_date:
+    format: "MMMM D, YYYY"  # Date format (e.g., "January 15, 2025")
+                            # Options: YYYY-MM-DD, DD/MM/YYYY, MMMM D YYYY, short, long, iso
+    locale: "en"            # Locale for month names (en, it)
+    html: false             # Wrap in <time> tag
+    class: ""               # CSS class for <time> tag
+    
+  the_tags:
+    separator: ", "       # Separator between tags
+    before: ""            # Text/HTML before tags (e.g., "Tags: ")
+    after: ""             # Text/HTML after tags (e.g., "<br>")
+    
+  the_categories:
+    separator: ", "       # Separator between categories
+    before: ""            # Text/HTML before categories
+    after: ""             # Text/HTML after categories
+    
+  the_author:
+    before: ""            # Text/HTML before author (e.g., "By ")
+    after: ""             # Text/HTML after author
+    link: true            # Link to author archive
+    avatar: false         # Show author avatar
+    showSocial: false     # Show social links
+    
+  the_time:
+    before: ""            # Text/HTML before reading time (e.g., "⏱️ ")
+    after: ""             # Text/HTML after reading time
+    format: "short"       # "short" (5 min) or "long" (5 minutes read)
+    
+  the_read_more:
+    before: ""            # Text/HTML before link
+    after: ""             # Text/HTML after link (e.g., " →")
+    text: "Read more"     # Link text

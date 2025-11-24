@@ -120,20 +120,20 @@ describe('FontDownloader', () => {
 
   // === QUALITY TESTS - REAL FAILURE SCENARIOS ===
 
-  test.skip('should handle npm install timeout and fallback gracefully', async () => {
-    const outputDir = path.join(workspace, 'timeout-test');
+  test('should handle unknown fonts and use system fallback', async () => {
+    // Test fallback for non-existent font packages
+    const outputDir = path.join(workspace, 'fallback-test');
     await fsp.mkdir(outputDir, { recursive: true });
-    const downloader = new FontDownloader({ fonts: { heading: 'Timeout Font' } }, outputDir);
+    const downloader = new FontDownloader({ 
+      fonts: { heading: 'NonExistentFont9999' } 
+    }, outputDir);
     
-    const startTime = Date.now();
     await downloader.build();
-    const duration = Date.now() - startTime;
-
-    // Should complete quickly, not hang
-    expect(duration).toBeLessThan(5000);
     
+    // Should generate fonts.css with system fallback
     const fontsCss = readFile(path.join(outputDir, 'fonts.css'));
-    expect(fontsCss).toContain('--font-heading: -apple-system');
+    expect(fontsCss).toContain('--font-heading');
+    expect(fontsCss).toContain('-apple-system'); // System fallback
   });
 
   test('should handle corrupted font files and continue with available ones', async () => {

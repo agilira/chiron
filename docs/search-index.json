@@ -1,7 +1,7 @@
 {
   "version": "2.0",
-  "generated": "2025-11-24T06:07:08.625Z",
-  "totalPages": 80,
+  "generated": "2025-11-24T07:01:57.208Z",
+  "totalPages": 71,
   "languages": [
     "en",
     "it"
@@ -726,120 +726,6 @@
         "Third Section",
         "Fourth Section",
         "Subsection 4.1"
-      ],
-      "keywords": []
-    },
-    {
-      "id": "blog/building-modern-documentation",
-      "title": "Building Modern Documentation Sites",
-      "description": "",
-      "url": "blog/building-modern-documentation.html",
-      "language": "en",
-      "content": "Building Modern Documentation Sites Documentation is the backbone of any successful project. With Chiron, creating beautiful, maintainable documentation has never been easier. Why Static for Documentation? Static sites offer several advantages for documentation: Speed : No database queries, no server processing Security : No attack surface, just HTML files Versioning : Documentation lives with your code Portability : Deploy anywhere, from GitHub Pages to CDNs Chiron's Documentation Features Automatic Table of Contents Every page gets a dynamically generated TOC based on your heading structure: # Main Title ## Section 1 ### Subsection 1.1 ## Section 2 The sidebar automatically reflects your content structure. Syntax Highlighting Code blocks are beautifully highlighted with Prism.js: function greet (name) { console. log ( `Hello, ${name}!` ); } greet ( &#039;Chiron&#039; ); def calculate_fibonacci (n): if n &lt;= 1 : return n return calculate_fibonacci (n- 1 ) + calculate_fibonacci (n- 2 ) Breadcrumb Navigation Users always know where they are with automatic breadcrumbs: Home &gt; Documentation &gt; Building Modern Documentation Sites Search Integration Full-text search powered by Lunr.js (via plugin) helps users find what they need instantly. Best Practices 1. Clear Structure Organize content logically: content/ ├── getting-started/ │ ├── index.md │ ├── installation.md │ └── quick-start.md ├── guides/ │ ├── configuration.md │ └── deployment.md └── api/ └── reference.md 2. Consistent Frontmatter Use metadata consistently across pages: --- title: &quot;Page Title&quot; description: &quot;Brief description for SEO&quot; category: &quot;Guides&quot; order: 1 --- 3. Cross-Linking Link between related pages to improve navigation and SEO: See also: [Configuration Guide](../guides/configuration.html) 4. Code Examples Provide working examples with explanations: // Good: Explain what the code does const config = loadConfig (); // Load from chiron.config.yaml Multilingual Documentation Chiron makes multilingual docs effortless: content/ ├── en/ │ └── getting-started.md ├── it/ │ └── getting-started.md └── es/ └── getting-started.md Language detection and fallbacks are automatic. Advanced Features Custom Shortcodes Extend Markdown with reusable components: {{&lt; alert type= &quot;warning&quot; &gt;}} This feature is experimental {{&lt; /alert &gt;}} {{&lt; tabs &gt;}} {{&lt; tab name= &quot;JavaScript&quot; &gt;}} `` `javascript console. log ( &#039;Hello&#039; ); {{&lt; /tab &gt;}} {{&lt; tab name=&quot;Python&quot; &gt;}} print ( &#039;Hello&#039; ) {{&lt; /tab &gt;}} {{&lt; /tabs &gt;}} ### Custom Templates Create specialized layouts for API docs, tutorials, or changelogs: ```yaml --- template: &quot;api-reference.ejs&quot; --- Analytics Integration Track documentation usage with privacy-respecting analytics: # chiron.config.yaml analytics: provider: &quot;plausible&quot; domain: &quot;docs.example.com&quot; Deployment Deploy your documentation anywhere: GitHub Pages: # .github/workflows/deploy.yml - name: Build docs run: npm run build - name: Deploy uses: peaceiris/actions-gh-pages@v3 Netlify: # netlify.toml [build] command = &quot;npm run build&quot; publish = &quot;docs&quot; Vercel: { &quot;buildCommand&quot; : &quot;npm run build&quot; , &quot;outputDirectory&quot; : &quot;docs&quot; } Conclusion Chiron provides everything you need for modern documentation: Fast static generation Clean, maintainable structure Powerful customization Easy deployment Start building better docs today! 📚",
-      "headings": [
-        "Building Modern Documentation Sites",
-        "Why Static for Documentation?",
-        "Chiron's Documentation Features",
-        "Automatic Table of Contents",
-        "Syntax Highlighting",
-        "Breadcrumb Navigation",
-        "Search Integration",
-        "Best Practices",
-        "1. Clear Structure",
-        "2. Consistent Frontmatter",
-        "3. Cross-Linking",
-        "4. Code Examples",
-        "Multilingual Documentation",
-        "Advanced Features",
-        "Custom Shortcodes",
-        "Analytics Integration",
-        "Deployment",
-        "Conclusion"
-      ],
-      "keywords": []
-    },
-    {
-      "id": "blog/first-post",
-      "title": "Getting Started with Chiron Blog",
-      "description": "",
-      "url": "blog/first-post.html",
-      "language": "en",
-      "content": "Getting Started with Chiron Blog Welcome to your first blog post! This demonstrates the power and simplicity of Chiron&#39;s blog plugin. Why Choose Chiron? Chiron makes creating a blog incredibly simple: Zero Configuration : Works out of the box with sensible defaults Fully Customizable : Power users can override templates and styles SEO Optimized : Built-in meta tags and structured data Accessible : ARIA labels and semantic HTML throughout Performance : Static files mean blazing fast load times Writing Your First Post Creating a blog post is as simple as creating a Markdown file in content/blog/ : --- title: &quot;My First Post&quot; date: 2025 - 01 - 15 author: &quot;Your Name&quot; --- Your content here! That&#39;s it! The blog plugin handles the rest. What's Next? In the next posts, we&#39;ll explore: Customizing templates Adding categories and tags Multilingual content Advanced features Happy blogging! 🚀",
-      "headings": [
-        "Getting Started with Chiron Blog",
-        "Why Choose Chiron?",
-        "Writing Your First Post",
-        "What's Next?"
-      ],
-      "keywords": []
-    },
-    {
-      "id": "blog/index",
-      "title": "Blog",
-      "description": "Latest blog posts and updates",
-      "url": "blog/index.html",
-      "language": "en",
-      "content": "Blog Browse our latest posts, tutorials, and updates.",
-      "headings": [
-        "Blog"
-      ],
-      "keywords": []
-    },
-    {
-      "id": "blog/second-post",
-      "title": "Advanced Blog Features in Chiron",
-      "description": "",
-      "url": "blog/second-post.html",
-      "language": "en",
-      "content": "Advanced Blog Features in Chiron Now that you&#39;re familiar with the basics, let&#39;s dive into some advanced features that make Chiron&#39;s blog plugin truly powerful. Categories and Tags Organize your content effectively: Categories : Broad topics (Tutorial, News, Updates) Tags : Specific keywords for granular filtering Both are automatically indexed and linked, creating a rich navigation structure. Multilingual Support Chiron detects languages automatically: content/ blog/ en/ post.md it/ post.md No configuration needed! The plugin adapts to your structure. Custom Templates Power users can override default templates by creating files in custom-templates/ : blog-post.ejs - Single post layout blog-index.ejs - Post listing blog-category.ejs - Category archive blog-archive.ejs - Date-based archive Performance Optimizations The blog plugin includes several performance features: Lazy Loading : Images load on demand Pagination : Configurable posts per page Static Generation : No runtime overhead CSS Variables : Theme integration without conflicts Accessibility First Every template includes: Semantic HTML5 elements ARIA labels for screen readers Keyboard navigation support High contrast ratios Try it yourself and see the difference! 🎨",
-      "headings": [
-        "Advanced Blog Features in Chiron",
-        "Categories and Tags",
-        "Multilingual Support",
-        "Custom Templates",
-        "Performance Optimizations",
-        "Accessibility First"
-      ],
-      "keywords": []
-    },
-    {
-      "id": "blog/third-post",
-      "title": "Building a Custom Blog Theme",
-      "description": "",
-      "url": "blog/third-post.html",
-      "language": "en",
-      "content": "Building a Custom Blog Theme One of Chiron&#39;s most powerful features is its theming system. Let&#39;s create a custom blog theme from scratch. Understanding the Theme System Chiron uses CSS variables from the Carbon Design System: :root { --color-primary: #0f62fe; --color-text: #161616; --space-md: 1rem; --radius-sm: 0. 25rem; } Your custom styles automatically inherit these, ensuring consistency. Overriding Blog Styles Create a custom.css file: .blog-post-card { border: 2px solid var (--color-primary); transition: transform var (--duration-fast); } .blog-post-card:hover { transform: translateY (-8px); } The plugin&#39;s CSS is modular and easy to override. Custom Template Example Here&#39;s a minimal custom blog-post.ejs : &lt;%- include ( &#039;head&#039; , { title: post.title }) %&gt; &lt;%- include ( &#039;header&#039; ) %&gt; &lt;article class = &quot;my-custom-post&quot; &gt; &lt;h1&gt;&lt;%= post.title %&gt;&lt;/h1&gt; &lt;div class = &quot;meta&quot; &gt; By &lt;%= post.author %&gt; on &lt;%= post.date %&gt; &lt;/div&gt; &lt;%- post.content %&gt; &lt;/article&gt; &lt;%- include ( &#039;footer&#039; ) %&gt; Simple, powerful, yours. Responsive Design All blog templates are mobile-first: Grid layouts that adapt to screen size Touch-friendly navigation Optimized image loading Readable typography at any scale Dark Mode Support The theme system includes automatic dark mode: @ media (prefers-color-scheme: dark) { .blog-post { background: var (--color-background-dark); color: var (--color-text-dark); } } Works without any extra configuration! 🌙 Next Steps Try these exercises: Change the primary color Add custom fonts Create a unique card layout Implement gradient backgrounds Share your creations with the community! 🎉",
-      "headings": [
-        "Building a Custom Blog Theme",
-        "Understanding the Theme System",
-        "Overriding Blog Styles",
-        "Custom Template Example",
-        "Responsive Design",
-        "Dark Mode Support",
-        "Next Steps"
-      ],
-      "keywords": []
-    },
-    {
-      "id": "blog/welcome-to-chiron",
-      "title": "Welcome to Chiron Static Site Generator",
-      "description": "",
-      "url": "blog/welcome-to-chiron.html",
-      "language": "en",
-      "content": "Welcome to Chiron Chiron is a modern static site generator built with Node.js and EJS templating. Whether you&#39;re building documentation, a blog, or a complete website, Chiron provides the tools you need. Why Chiron? 🚀 Fast and Lightweight Chiron generates static HTML files that load instantly. No server-side processing, no databases, just pure speed. 🧩 Plugin Architecture Extend functionality with plugins. The blog plugin you&#39;re reading this on? That&#39;s a first-class plugin using the same architecture available to you. 🎨 Theme System Complete control over design with EJS templates and CSS. Themes are just templates - no lock-in, no complexity. 🌍 Multilingual Support Built-in i18n support with language detection, fallback chains, and per-language content organization. Key Features WordPress-Style Template Helpers If you&#39;ve worked with WordPress, you&#39;ll feel right at home: &lt;%= the_date (page, &#039;long&#039; ) %&gt; &lt;%= the_author (page, {avatar: true , showSocial: true }) %&gt; &lt;%= the_categories (page) %&gt; &lt;%= the_tags (page) %&gt; Flexible Plugin System 15 lifecycle hooks give you complete control: content:before-scan - Register custom content types markdown:after-parse - Enrich metadata build:before-start - Initialize generators build:end - Generate feeds, sitemaps, archives Developer Experience Clean, intuitive APIs with sensible defaults and full customization: // Get posts with filtering const posts = get_posts ({ category: &#039;tutorials&#039; , limit: 5 , language: &#039;en&#039; }); // Count posts const count = get_posts_count ({ tag: &#039;javascript&#039; }); Getting Started Install Chiron npm install -g chiron-ssg Create a New Project chiron init my-site cd my-site Start Building chiron build chiron serve What's Next? Check out these resources: Documentation - Complete guides and API reference Plugin Development - Build your own plugins Theme Customization - Create custom themes Ready to build something amazing? Chiron is here to help. Fast, flexible, and built for developers who value simplicity.",
-      "headings": [
-        "Welcome to Chiron",
-        "Why Chiron?",
-        "🚀 Fast and Lightweight",
-        "🧩 Plugin Architecture",
-        "🎨 Theme System",
-        "🌍 Multilingual Support",
-        "Key Features",
-        "WordPress-Style Template Helpers",
-        "Flexible Plugin System",
-        "Developer Experience",
-        "Getting Started",
-        "What's Next?"
       ],
       "keywords": []
     },
@@ -2121,42 +2007,6 @@
         "Cache Plugin",
         "Installation",
         "Contributing"
-      ],
-      "keywords": []
-    },
-    {
-      "id": "blog/author/marco-rossi",
-      "title": "Posts by Marco Rossi",
-      "description": "All posts by Marco Rossi",
-      "url": "blog/author/marco-rossi.html",
-      "language": "en",
-      "content": "Marco Rossi All posts by this author.",
-      "headings": [
-        "Marco Rossi"
-      ],
-      "keywords": []
-    },
-    {
-      "id": "blog/category/tutorials",
-      "title": "Tutorials",
-      "description": "Step-by-step guides to help you master web development, from beginner basics to advanced techniques.",
-      "url": "blog/category/tutorials.html",
-      "language": "en",
-      "content": "Tutorials All posts in the Tutorials category.",
-      "headings": [
-        "Tutorials"
-      ],
-      "keywords": []
-    },
-    {
-      "id": "blog/tag/javascript",
-      "title": "JavaScript Posts",
-      "description": "All posts tagged with JavaScript",
-      "url": "blog/tag/javascript.html",
-      "language": "en",
-      "content": "JavaScript All posts tagged with JavaScript.",
-      "headings": [
-        "JavaScript"
       ],
       "keywords": []
     },

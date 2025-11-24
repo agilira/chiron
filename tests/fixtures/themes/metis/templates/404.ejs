@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="<%- page.lang || 'en' %>" data-theme="light">
+<head>
+    <%- head %>
+</head>
+<body id="<%- bodyId %>" class="<%- bodyClasses.join(' ') %> page-404">
+    <!-- Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- SVG Icon Sprite (hidden, for <use> references) -->
+    {{SVG_SPRITE}}
+    
+    <!-- Header -->
+    <%- header %>
+
+    <!-- Main Layout (no sidebar for 404) -->
+    <div class="layout no-sidebar">
+        <!-- Main Content -->
+        <main class="main-content" id="main-content" role="main">
+            <div class="content-container">
+                <!-- 404 Content -->
+                <div class="content content-404">
+                    <div style="text-align: center; padding: 4rem 2rem;">
+                        <h1 style="font-size: 6rem; font-weight: 700; color: var(--text-primary); margin: 0;">404</h1>
+                        <h2 style="font-size: 2rem; font-weight: 600; color: var(--text-primary); margin: 1rem 0;">Page Not Found</h2>
+                        <p style="font-size: 1.125rem; color: var(--text-secondary); margin: 1rem 0 2rem;">The page you are looking for doesn't exist or has been moved.</p>
+                        <a href="<%- pathToRoot %>index.html" style="display: inline-block; padding: 0.75rem 2rem; background: var(--primary-600); color: white; text-decoration: none; border-radius: 8px; font-weight: 500; transition: background 0.2s;">Go to Homepage</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <%- footer %>
+    
+    <!-- Scroll to Top Button -->
+    <%- scrollToTop %>
+
+    <!-- Search Modal -->
+    <%- searchModal %>
+    
+    <!-- Scripts -->
+    <%- scripts %>
+</body>
+</html>
