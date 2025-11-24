@@ -187,9 +187,15 @@ describe('ChironBuilder - Build Logic (Simplified)', () => {
         // Try to create symlink (may fail on Windows without admin)
         fs.symlinkSync(outsideDir, path.join(contentDir, 'link'), 'dir');
         
-        expect(() => {
-          builder.getContentFiles();
-        }).toThrow(/Directory traversal/);
+        // fast-glob with followSymbolicLinks: false should safely ignore the symlink
+        // and not traverse into the outside directory
+        const result = builder.getContentFiles();
+        
+        // Verify that files from outside directory are NOT included
+        const hasOutsideFiles = result.files.some(file => 
+          file.filename === 'secret.md' || file.path.includes('outside-content')
+        );
+        expect(hasOutsideFiles).toBe(false);
       } catch (err) {
         if (err.code === 'EPERM') {
           // Skip on Windows without admin - test passed by default

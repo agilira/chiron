@@ -363,8 +363,8 @@ describe('ChironBuilder Security Features', () => {
         fs.symlinkSync(targetFile, symlinkPath);
         
         // Should handle symlinks without errors
-        const files = builder.getContentFiles();
-        expect(files.length).toBeGreaterThanOrEqual(0);
+        const result = builder.getContentFiles();
+        expect(result.files.length).toBeGreaterThanOrEqual(0);
       } catch (error) {
         // Expected on Windows without admin - test passes by default
         if (error.code === 'EPERM') {
