@@ -206,12 +206,12 @@ describe('Async HTML Fragments - Task 2: data-html-src Handler', () => {
     window.fetch = fetchMock;
 
     // Mock IntersectionObserver
-    let intersectionObserverInstance;
+    let _intersectionObserverInstance;
     window.IntersectionObserver = class {
       constructor(callback) {
         this.callback = callback;
         this.observedElements = [];
-        intersectionObserverInstance = this;
+        _intersectionObserverInstance = this;
       }
       observe(element) {
         this.observedElements.push(element);
@@ -346,7 +346,7 @@ describe('Async HTML Fragments - Task 2: data-html-src Handler', () => {
 
   describe('GREEN: Intersection Observer integration', () => {
     test('should automatically load HTML fragments when visible', async () => {
-      const container = document.getElementById('fragment-1');
+      const _container = document.getElementById('fragment-1');
       const mockHtml = '<header>Auto-loaded</header>';
       
       fetchMock.mockResolvedValueOnce({
@@ -364,7 +364,7 @@ describe('Async HTML Fragments - Task 2: data-html-src Handler', () => {
     });
 
     test('should load HTML first, then lazy app if both present', async () => {
-      const container = document.getElementById('fragment-3');
+      const _container = document.getElementById('fragment-3');
       const mockHtml = '<div id="app-root" data-lazy-app="react" data-script-src="/app.js">App container</div>';
       
       fetchMock.mockResolvedValueOnce({

@@ -1,5 +1,6 @@
 # Dependencies
 node_modules/
+mdx-framework/node_modules/
 
 # Build output
 docs-api/

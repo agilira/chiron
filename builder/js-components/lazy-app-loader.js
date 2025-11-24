@@ -1,3 +1,4 @@
+/* global HTMLElement */
 /**
  * Lazy App Loader - Core Module (Testable & Reliable)
  * 
@@ -337,6 +338,7 @@
 
     const framework = container.dataset.lazyApp || 'react';
     const scriptSrc = container.dataset.scriptSrc;
+    const htmlSrc = container.dataset.htmlSrc;
     const depsAttr = container.dataset.dependencies || '';
     const dependencies = depsAttr.split(',').map(s => s.trim()).filter(Boolean);
 
@@ -357,6 +359,37 @@
         ...options,
         signal: abortController.signal
       };
+
+      // Check if this is an HTML fragment (not a JS app)
+      if (htmlSrc && !scriptSrc) {
+        console.log(`[LazyApp] Loading HTML fragment: ${htmlSrc}`);
+        
+        // Check container still exists
+        if (!document.body.contains(container)) {
+          throw new Error('Container removed from DOM during loading');
+        }
+        
+        // Check if aborted
+        if (abortController.signal.aborted) {
+          throw new Error('Loading aborted');
+        }
+        
+        // Load HTML fragment
+        await loadHtmlFragment(container);
+        
+        // Mark as loaded
+        container.dataset.lazyAppLoaded = 'true';
+        container.dataset.lazyAppLoadedAt = Date.now();
+        
+        console.log(`[LazyApp] ✓ HTML fragment loaded successfully: ${appId}`);
+        
+        // Clean up
+        loadingApps.delete(appId);
+        abortControllers.delete(appId);
+        releaseLock(container);
+        
+        return;
+      }
 
       // Load dependencies first
       if (dependencies.length > 0) {

@@ -21,18 +21,18 @@
 </script>
 
 
-<title>Tabs Component Demo</title>
+<title>Server-Island Plugin Test</title>
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Interactive tab component for code examples and multi-content display">
+    <meta name="description" content="Testing async HTML fragment loading with ServerIsland components">
     <meta name="keywords" content="documentation template, chiron, accessibility, responsive design, modern UI, developer tools">
     <meta name="author" content="Agilira">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://agilira.github.io/chiron/it/tabs-demo.html">
-    <meta property="og:title" content="Tabs Component Demo">
-    <meta property="og:description" content="Interactive tab component for code examples and multi-content display">
+    <meta property="og:url" content="https://agilira.github.io/chiron/it/test-server-island.html">
+    <meta property="og:title" content="Server-Island Plugin Test">
+    <meta property="og:description" content="Testing async HTML fragment loading with ServerIsland components">
     <meta property="og:image" content="https://agilira.github.io/chiron/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -42,17 +42,17 @@
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://agilira.github.io/chiron/it/tabs-demo.html">
-    <meta name="twitter:title" content="Tabs Component Demo">
-    <meta name="twitter:description" content="Interactive tab component for code examples and multi-content display">
+    <meta name="twitter:url" content="https://agilira.github.io/chiron/it/test-server-island.html">
+    <meta name="twitter:title" content="Server-Island Plugin Test">
+    <meta name="twitter:description" content="Testing async HTML fragment loading with ServerIsland components">
     <meta name="twitter:image" content="https://agilira.github.io/chiron/og-image.png">
     <meta name="twitter:site" content="@agilirax">
     <meta name="twitter:creator" content="@agilirax">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://agilira.github.io/chiron/it/tabs-demo.html">
-    <link rel="alternate" hreflang="it" href="https://agilira.github.io/chiron/it/tabs-demo.html">
-    <link rel="alternate" hreflang="x-default" href="https://agilira.github.io/chiron/it/tabs-demo.html">
+    <link rel="canonical" href="https://agilira.github.io/chiron/it/test-server-island.html">
+    <link rel="alternate" hreflang="it" href="https://agilira.github.io/chiron/it/test-server-island.html">
+    <link rel="alternate" hreflang="x-default" href="https://agilira.github.io/chiron/it/test-server-island.html">
 
 <!-- Favicon -->
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
@@ -71,8 +71,8 @@
     {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "name": "Tabs Component Demo",
-    "description": "Interactive tab component for code examples and multi-content display",
+    "name": "Server-Island Plugin Test",
+    "description": "Testing async HTML fragment loading with ServerIsland components",
     "url": "https://agilira.github.io/chiron/",
     "author": {
         "@type": "Organization",
@@ -184,7 +184,7 @@
 }
 </style>
 </head>
-<body id="page-tabs-demo" class="page has-toc has-sidebar">
+<body id="page-test-server-island" class="page has-sidebar">
     <!-- Skip Link -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
@@ -661,10 +661,10 @@
 </header>
 
 
-    <!-- Main Layout with Double Sidebar -->
-    <div class="layout layout-with-toc">
+    <!-- Main Layout -->
+    <div class="layout">
         
-        <!-- Left Sidebar (Navigation) -->
+        <!-- Sidebar -->
         <aside class="sidebar" id="sidebar" role="complementary" aria-label="Sidebar">
             <!-- Mobile Header Navigation -->
             <nav class="mobile-header-nav" aria-label="Main navigation (mobile)">
@@ -795,7 +795,7 @@
             
             
                 <li class="breadcrumb-item current" aria-current=&#34;page&#34;>
-                    Tabs Component Demo
+                    Server-Island Plugin Test
                 </li>
             
 
@@ -808,397 +808,70 @@
 
                 <!-- Page Content -->
                 <div class="content">
-                    <h1 id="tabs-component-8">Tabs Component</h1><p>The tabs component provides an accessible, responsive interface for displaying multiple related content sections in a compact space. Perfect for code examples, configuration options, or any multi-view content.</p>
-<h2 id="features-47">Features</h2><ul>
-<li>✅ <strong>Accessible</strong> - Full ARIA support and keyboard navigation</li>
-<li>✅ <strong>Responsive</strong> - Horizontal scroll on mobile, full layout on desktop</li>
-<li>✅ <strong>Keyboard Navigation</strong> - Arrow keys, Home, End support</li>
-<li>✅ <strong>Print-Friendly</strong> - Shows all tabs when printing</li>
-<li>✅ <strong>Dark Mode</strong> - Automatic theme support</li>
-<li>✅ <strong>Lightweight</strong> - Pure JavaScript, no dependencies</li>
-</ul>
-<h2 id="basic-example-10">Basic Example</h2><p>Here&#39;s a simple example showing code snippets in different languages:</p>
-<div class="tabs-container" data-tabs-id="tab-8ieozzpqs">
-  <div class="tabs-header" role="tablist">
-    <button class="tab-button active" role="tab" id="tab-8ieozzpqs-tab-0" aria-selected="true" aria-controls="tab-8ieozzpqs-panel-0" tabindex="0">
-      JavaScript
-    </button>
-    <button class="tab-button" role="tab" id="tab-8ieozzpqs-tab-1" aria-selected="false" aria-controls="tab-8ieozzpqs-panel-1" tabindex="-1">
-      Python
-    </button>
-    <button class="tab-button" role="tab" id="tab-8ieozzpqs-tab-2" aria-selected="false" aria-controls="tab-8ieozzpqs-panel-2" tabindex="-1">
-      Go
-    </button>
-    <button class="tab-button" role="tab" id="tab-8ieozzpqs-tab-3" aria-selected="false" aria-controls="tab-8ieozzpqs-panel-3" tabindex="-1">
-      Rust
-    </button>
-  </div>
-  <div class="tab-panel active" role="tabpanel" id="tab-8ieozzpqs-panel-0" aria-labelledby="tab-8ieozzpqs-tab-0">
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript"><span class="hljs-comment">// Hello World in JavaScript</span>
-console.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#039;Hello, World!&#039;</span>);
-
-<span class="hljs-keyword">function</span> <span class="hljs-title function_">greet</span>(name) {
-  <span class="hljs-keyword">return</span> <span class="hljs-template-literal">`Hello, ${name}!`</span>;
-}
-
-<span class="hljs-title function_">greet</span>(<span class="hljs-string">&#039;Chiron&#039;</span>);</code></pre></div>
-  </div>
-  <div class="tab-panel" role="tabpanel" id="tab-8ieozzpqs-panel-1" aria-labelledby="tab-8ieozzpqs-tab-1" hidden="">
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-python"><span class="hljs-comment"># Hello World in Python</span>
-<span class="hljs-title function_">print</span>(<span class="hljs-string">&#039;Hello, World!&#039;</span>)
-
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">greet</span>(name):
-    <span class="hljs-keyword">return</span> f<span class="hljs-string">&#039;Hello, {name}!&#039;</span>
-
-<span class="hljs-title function_">greet</span>(<span class="hljs-string">&#039;Chiron&#039;</span>)</code></pre></div>
-  </div>
-  <div class="tab-panel" role="tabpanel" id="tab-8ieozzpqs-panel-2" aria-labelledby="tab-8ieozzpqs-tab-2" hidden="">
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-go"><span class="hljs-comment">// Hello World in Go</span>
-package main
-
-<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
-
-func <span class="hljs-title function_">main</span>() {
-    fmt.<span class="hljs-title function_">Println</span>(<span class="hljs-string">&quot;Hello, World!&quot;</span>)
-}
-
-func <span class="hljs-title function_">greet</span>(name string) string {
-    <span class="hljs-keyword">return</span> fmt.<span class="hljs-title function_">Sprintf</span>(<span class="hljs-string">&quot;Hello, %s!&quot;</span>, name)
-}</code></pre></div>
-  </div>
-  <div class="tab-panel" role="tabpanel" id="tab-8ieozzpqs-panel-3" aria-labelledby="tab-8ieozzpqs-tab-3" hidden="">
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-rust"><span class="hljs-comment">// Hello World in Rust</span>
-fn <span class="hljs-title function_">main</span>() {
-    println!(<span class="hljs-string">&quot;Hello, World!&quot;</span>);
-}
-
-fn <span class="hljs-title function_">greet</span>(name: &amp;str) -&gt; String {
-    format!(<span class="hljs-string">&quot;Hello, {}!&quot;</span>, name)
-}</code></pre></div>
+                    <h1 id="server-island-plugin-test-3">Server-Island Plugin Test</h1><p>This page demonstrates the <code>&lt;ServerIsland&gt;</code> component that transforms into async HTML fragments.</p>
+<h2 id="basic-example-11">Basic Example</h2><div class="lazy-app-container" data-lazy-app="html" id="server-island-1764006187161-qnvpeqsuk" data-html-src="/test-fragment.html" data-trigger="visible">
+  <div style="padding: 20px; background: #f0f0f0; border: 2px dashed #999; border-radius: 8px;">
+    <p>⏳ Loading HTML fragment...</p>
+    <p style="font-size: 0.9em; color: #666;">This placeholder will be replaced when the fragment loads.</p>
   </div>
 </div>
 
-
-<h2 id="installation-instructions-8">Installation Instructions</h2><p>You can use tabs for multi-step installation guides:</p>
-<div class="tabs-container" data-tabs-id="tab-3dq49eq93">
-  <div class="tabs-header" role="tablist">
-    <button class="tab-button active" role="tab" id="tab-3dq49eq93-tab-0" aria-selected="true" aria-controls="tab-3dq49eq93-panel-0" tabindex="0">
-      npm
-    </button>
-    <button class="tab-button" role="tab" id="tab-3dq49eq93-tab-1" aria-selected="false" aria-controls="tab-3dq49eq93-panel-1" tabindex="-1">
-      yarn
-    </button>
-    <button class="tab-button" role="tab" id="tab-3dq49eq93-tab-2" aria-selected="false" aria-controls="tab-3dq49eq93-panel-2" tabindex="-1">
-      pnpm
-    </button>
-  </div>
-  <div class="tab-panel active" role="tabpanel" id="tab-3dq49eq93-panel-0" aria-labelledby="tab-3dq49eq93-tab-0">
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-comment"># Install via npm</span>
-<span class="hljs-built_in">npm</span> install chiron --save-dev
-
-<span class="hljs-comment"># Run the build</span>
-<span class="hljs-built_in">npm</span> run build</code></pre></div>
-  </div>
-  <div class="tab-panel" role="tabpanel" id="tab-3dq49eq93-panel-1" aria-labelledby="tab-3dq49eq93-tab-1" hidden="">
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-comment"># Install via yarn</span>
-<span class="hljs-built_in">yarn</span> add chiron --dev
-
-<span class="hljs-comment"># Run the build</span>
-<span class="hljs-built_in">yarn</span> build</code></pre></div>
-  </div>
-  <div class="tab-panel" role="tabpanel" id="tab-3dq49eq93-panel-2" aria-labelledby="tab-3dq49eq93-tab-2" hidden="">
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-comment"># Install via pnpm</span>
-<span class="hljs-built_in">pnpm</span> add -D chiron
-
-<span class="hljs-comment"># Run the build</span>
-<span class="hljs-built_in">pnpm</span> build</code></pre></div>
+<h2 id="multiple-islands-3">Multiple Islands</h2><p>Here are multiple server islands that load independently:</p>
+<div class="lazy-app-container" data-lazy-app="html" id="server-island-1764006187161-rf4pk3q3i" data-html-src="/test-fragment.html" data-trigger="visible">
+  <div style="padding: 15px; background: #e3f2fd; border-left: 4px solid #2196f3;">
+    🔄 Loading first island...
   </div>
 </div>
 
-
-<h2 id="configuration-examples-8">Configuration Examples</h2><p>Show different configuration formats:</p>
-<div class="tabs-container" data-tabs-id="tab-e9qklhvl4">
-  <div class="tabs-header" role="tablist">
-    <button class="tab-button active" role="tab" id="tab-e9qklhvl4-tab-0" aria-selected="true" aria-controls="tab-e9qklhvl4-panel-0" tabindex="0">
-      YAML
-    </button>
-    <button class="tab-button" role="tab" id="tab-e9qklhvl4-tab-1" aria-selected="false" aria-controls="tab-e9qklhvl4-panel-1" tabindex="-1">
-      JSON
-    </button>
-    <button class="tab-button" role="tab" id="tab-e9qklhvl4-tab-2" aria-selected="false" aria-controls="tab-e9qklhvl4-panel-2" tabindex="-1">
-      JavaScript
-    </button>
-  </div>
-  <div class="tab-panel active" role="tabpanel" id="tab-e9qklhvl4-panel-0" aria-labelledby="tab-e9qklhvl4-tab-0">
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-yaml"><span class="hljs-comment"># chiron.config.yaml</span>
-project:
-  name: My Documentation
-  base_url: https:<span class="hljs-comment">//example.com</span>
-  
-build:
-  output_dir: docs
-  clean_output: <span class="hljs-literal">true</span>
-  
-theme:
-  primary_color: <span class="hljs-string">&#039;#007bff&#039;</span></code></pre></div>
-  </div>
-  <div class="tab-panel" role="tabpanel" id="tab-e9qklhvl4-panel-1" aria-labelledby="tab-e9qklhvl4-tab-1" hidden="">
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-json">{
-  <span class="hljs-string">&quot;project&quot;</span>: {
-    <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;My Documentation&quot;</span>,
-    <span class="hljs-string">&quot;base_url&quot;</span>: <span class="hljs-string">&quot;https://example.com&quot;</span>
-  },
-  <span class="hljs-string">&quot;build&quot;</span>: {
-    <span class="hljs-string">&quot;output_dir&quot;</span>: <span class="hljs-string">&quot;docs&quot;</span>,
-    <span class="hljs-string">&quot;clean_output&quot;</span>: <span class="hljs-literal">true</span>
-  },
-  <span class="hljs-string">&quot;theme&quot;</span>: {
-    <span class="hljs-string">&quot;primary_color&quot;</span>: <span class="hljs-string">&quot;#007bff&quot;</span>
-  }
-}</code></pre></div>
-  </div>
-  <div class="tab-panel" role="tabpanel" id="tab-e9qklhvl4-panel-2" aria-labelledby="tab-e9qklhvl4-tab-2" hidden="">
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript"><span class="hljs-comment">// chiron.config.js</span>
-module.exports = {
-  project: {
-    name: <span class="hljs-string">&#039;My Documentation&#039;</span>,
-    base_url: <span class="hljs-string">&#039;https://example.com&#039;</span>
-  },
-  build: {
-    output_dir: <span class="hljs-string">&#039;docs&#039;</span>,
-    clean_output: <span class="hljs-literal">true</span>
-  },
-  theme: {
-    primary_color: <span class="hljs-string">&#039;#007bff&#039;</span>
-  }
-};</code></pre></div>
+<p>Some content in between...</p>
+<div class="lazy-app-container" data-lazy-app="html" id="server-island-1764006187161-jy8pgpk4n" data-html-src="/test-fragment.html" data-trigger="visible">
+  <div style="padding: 15px; background: #fff3e0; border-left: 4px solid #ff9800;">
+    🔄 Loading second island...
   </div>
 </div>
 
+<h2 id="self-closing-island-3">Self-Closing Island</h2><div class="lazy-app-container" data-lazy-app="html" id="server-island-1764006187161-anaojdu7p" data-html-src="/test-fragment.html"></div>
 
-<h2 id="platform-specific-commands-8">Platform-Specific Commands</h2><p>Tabs work great for platform-specific instructions:</p>
-<div class="tabs-container" data-tabs-id="tab-4uys10496">
-  <div class="tabs-header" role="tablist">
-    <button class="tab-button active" role="tab" id="tab-4uys10496-tab-0" aria-selected="true" aria-controls="tab-4uys10496-panel-0" tabindex="0">
-      Windows
-    </button>
-    <button class="tab-button" role="tab" id="tab-4uys10496-tab-1" aria-selected="false" aria-controls="tab-4uys10496-panel-1" tabindex="-1">
-      macOS
-    </button>
-    <button class="tab-button" role="tab" id="tab-4uys10496-tab-2" aria-selected="false" aria-controls="tab-4uys10496-panel-2" tabindex="-1">
-      Linux
-    </button>
-  </div>
-  <div class="tab-panel active" role="tabpanel" id="tab-4uys10496-panel-0" aria-labelledby="tab-4uys10496-tab-0">
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-powershell"><span class="hljs-comment"># Windows PowerShell</span>
-$env:NODE_ENV=<span class="hljs-string">&quot;production&quot;</span>
-<span class="hljs-built_in">npm</span> run build
-
-<span class="hljs-comment"># Check if build succeeded</span>
-<span class="hljs-keyword">if</span> ($LASTEXITCODE -eq <span class="hljs-number">0</span>) {
-    Write-Host <span class="hljs-string">&quot;Build successful!&quot;</span> -ForegroundColor Green
-}</code></pre></div>
-  </div>
-  <div class="tab-panel" role="tabpanel" id="tab-4uys10496-panel-1" aria-labelledby="tab-4uys10496-tab-1" hidden="">
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-comment"># macOS / Linux Bash</span>
-<span class="hljs-keyword">export</span> NODE_ENV=production
-<span class="hljs-built_in">npm</span> run build
-
-<span class="hljs-comment"># Check if build succeeded</span>
-<span class="hljs-keyword">if</span> [ $? -eq <span class="hljs-number">0</span> ]; then
-    echo <span class="hljs-string">&quot;Build successful!&quot;</span>
-fi</code></pre></div>
-  </div>
-  <div class="tab-panel" role="tabpanel" id="tab-4uys10496-panel-2" aria-labelledby="tab-4uys10496-tab-2" hidden="">
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-bash"><span class="hljs-comment"># Linux Bash</span>
-<span class="hljs-keyword">export</span> NODE_ENV=production
-<span class="hljs-built_in">npm</span> run build
-
-<span class="hljs-comment"># Alternative: one-liner</span>
-NODE_ENV=production <span class="hljs-built_in">npm</span> run build</code></pre></div>
+<h2 id="island-with-custom-props-3">Island with Custom Props</h2><div class="lazy-app-container" data-lazy-app="html" id="server-island-1764006187161-sif5gazk1" data-html-src="/test-fragment.html" data-trigger="visible" data-custom-prop="test-value" data-data-id="my-island">
+  <div style="padding: 20px; background: #f3e5f5; border: 2px solid #9c27b0; border-radius: 8px;">
+    <h3 style="margin-top: 0;">🏝️ Custom Island</h3>
+    <p>This island has custom data attributes.</p>
+    <p style="font-size: 0.9em; color: #666;">Check the HTML to see data-custom-prop and data-data-id</p>
   </div>
 </div>
 
-
-<h2 id="framework-examples-5">Framework Examples</h2><p>Compare implementations across frameworks:</p>
-<div class="tabs-container" data-tabs-id="tab-g2pnrglus">
-  <div class="tabs-header" role="tablist">
-    <button class="tab-button active" role="tab" id="tab-g2pnrglus-tab-0" aria-selected="true" aria-controls="tab-g2pnrglus-panel-0" tabindex="0">
-      React
-    </button>
-    <button class="tab-button" role="tab" id="tab-g2pnrglus-tab-1" aria-selected="false" aria-controls="tab-g2pnrglus-panel-1" tabindex="-1">
-      Vue
-    </button>
-    <button class="tab-button" role="tab" id="tab-g2pnrglus-tab-2" aria-selected="false" aria-controls="tab-g2pnrglus-panel-2" tabindex="-1">
-      Svelte
-    </button>
-  </div>
-  <div class="tab-panel active" role="tabpanel" id="tab-g2pnrglus-panel-0" aria-labelledby="tab-g2pnrglus-tab-0">
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-jsx"><span class="hljs-keyword">import</span> React, { useState } <span class="hljs-keyword">from</span> <span class="hljs-string">&#039;react&#039;</span>;
-
-<span class="hljs-keyword">function</span> <span class="hljs-title function_">Counter</span>() {
-  <span class="hljs-keyword">const</span> [count, setCount] = <span class="hljs-title function_">useState</span>(<span class="hljs-number">0</span>);
-
-  <span class="hljs-keyword">return</span> (
-    &lt;div&gt;
-      &lt;p&gt;Count: {count}&lt;/p&gt;
-      &lt;button onClick={() =&gt; <span class="hljs-title function_">setCount</span>(count + <span class="hljs-number">1</span>)}&gt;
-        Increment
-      &lt;/button&gt;
-    &lt;/div&gt;
-  );
-}
-
-<span class="hljs-keyword">export</span> default Counter;</code></pre></div>
-  </div>
-  <div class="tab-panel" role="tabpanel" id="tab-g2pnrglus-panel-1" aria-labelledby="tab-g2pnrglus-tab-1" hidden="">
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-vue">&lt;template&gt;
-  &lt;div&gt;
-    &lt;p&gt;Count: {{ count }}&lt;/p&gt;
-    &lt;button @click=<span class="hljs-string">&quot;count++&quot;</span>&gt;
-      Increment
-    &lt;/button&gt;
-  &lt;/div&gt;
-&lt;/template&gt;
-
-&lt;script&gt;
-<span class="hljs-keyword">export</span> default {
-  <span class="hljs-title function_">data</span>() {
-    <span class="hljs-keyword">return</span> {
-      count: <span class="hljs-number">0</span>
-    }
-  }
-}
-&lt;/script&gt;</code></pre></div>
-  </div>
-  <div class="tab-panel" role="tabpanel" id="tab-g2pnrglus-panel-2" aria-labelledby="tab-g2pnrglus-tab-2" hidden="">
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-svelte">&lt;script&gt;
-  <span class="hljs-keyword">let</span> count = <span class="hljs-number">0</span>;
-&lt;/script&gt;
-
-&lt;div&gt;
-  &lt;p&gt;Count: {count}&lt;/p&gt;
-  &lt;button on:click={() =&gt; count++}&gt;
-    Increment
-  &lt;/button&gt;
-&lt;/div&gt;</code></pre></div>
-  </div>
-</div>
-
-
-<h2 id="syntax-23">Syntax</h2><p>Use the following syntax to create tabs in your markdown:</p>
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-markdown">&lt;!--TAB_PLACEHOLDER_5--&gt;</code></pre></div><h2 id="guidelines-5">Guidelines</h2><h3 id="best-practices-52">Best Practices</h3><ul>
-<li><strong>Limit tab count</strong> - Keep to 3-6 tabs for best UX</li>
-<li><strong>Consistent content</strong> - Similar content length across tabs</li>
-<li><strong>Clear labels</strong> - Short, descriptive tab titles</li>
-<li><strong>Mobile-friendly</strong> - Test horizontal scrolling on small screens</li>
-</ul>
-<h3 id="accessibility-35">Accessibility</h3><p>The tab component follows WCAG 2.1 Level AA guidelines:</p>
-<ul>
-<li><strong>Keyboard Navigation</strong> - Full keyboard support (Arrow keys, Home, End)</li>
-<li><strong>Screen Readers</strong> - Proper ARIA labels and roles</li>
-<li><strong>Focus Management</strong> - Clear focus indicators</li>
-<li><strong>High Contrast</strong> - Enhanced borders in high contrast mode</li>
-</ul>
-<h3 id="when-to-use-tabs-8">When to Use Tabs</h3><p>✅ <strong>Good use cases:</strong></p>
-<ul>
-<li>Code examples in multiple languages</li>
-<li>Platform-specific instructions</li>
-<li>Configuration format alternatives</li>
-<li>Framework comparisons</li>
-<li>Before/after examples</li>
-</ul>
-<p>❌ <strong>Avoid tabs for:</strong></p>
-<ul>
-<li>Long-form content (use accordion instead)</li>
-<li>Critical information (might be hidden)</li>
-<li>Sequential steps (use numbered list)</li>
-<li>Single content item (unnecessary complexity)</li>
-</ul>
-<h2 id="technical-details-20">Technical Details</h2><h3 id="html-structure-11">HTML Structure</h3><p>The component generates semantic HTML:</p>
-<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-html">&lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;tabs-container&quot;</span> data-tabs-id=<span class="hljs-string">&quot;tab-xyz&quot;</span>&gt;
-  &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;tabs-header&quot;</span> role=<span class="hljs-string">&quot;tablist&quot;</span>&gt;
-    &lt;button <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;tab-button active&quot;</span> 
-            role=<span class="hljs-string">&quot;tab&quot;</span> 
-            aria-selected=<span class="hljs-string">&quot;true&quot;</span>
-            aria-controls=<span class="hljs-string">&quot;panel-1&quot;</span>&gt;
-      Tab <span class="hljs-number">1</span>
-    &lt;/button&gt;
-  &lt;/div&gt;
-  &lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;tab-panel active&quot;</span> 
-       role=<span class="hljs-string">&quot;tabpanel&quot;</span> 
-       aria-labelledby=<span class="hljs-string">&quot;tab-1&quot;</span>&gt;
-    Content...
-  &lt;/div&gt;
-&lt;/div&gt;</code></pre></div><h3 id="keyboard-shortcuts-9">Keyboard Shortcuts</h3><div class="table-wrapper">
-        <table>
-          <thead><tr>
-<th>Key</th>
-<th>Action</th>
-</tr>
-</thead>
-          <tbody><tr>
-<td><code>Arrow Right</code> / <code>Arrow Down</code></td>
-<td>Next tab</td>
-</tr>
-<tr>
-<td><code>Arrow Left</code> / <code>Arrow Up</code></td>
-<td>Previous tab</td>
-</tr>
-<tr>
-<td><code>Home</code></td>
-<td>First tab</td>
-</tr>
-<tr>
-<td><code>End</code></td>
-<td>Last tab</td>
-</tr>
-<tr>
-<td><code>Tab</code></td>
-<td>Move focus out of tab list</td>
-</tr>
-<tr>
-<td><code>Enter</code> / <code>Space</code></td>
-<td>Activate focused tab</td>
-</tr>
-</tbody>
-        </table>
-      </div><h3 id="browser-support-23">Browser Support</h3><ul>
-<li>✅ Chrome 90+</li>
-<li>✅ Firefox 88+</li>
-<li>✅ Safari 14+</li>
-<li>✅ Edge 90+</li>
-</ul>
-<h2 id="styling-23">Styling</h2><p>The component integrates with Chiron&#39;s design system and supports:</p>
-<ul>
-<li><strong>CSS Variables</strong> - Uses theme colors</li>
-<li><strong>Dark Mode</strong> - Automatic detection</li>
-<li><strong>Responsive</strong> - Mobile-first design</li>
-<li><strong>Print</strong> - Shows all tabs when printing</li>
-</ul>
-<h2 id="future-enhancements-5">Future Enhancements</h2><p>Planned improvements for future versions:</p>
-<ul>
-<li><input disabled="" type="checkbox" name="task"> Vertical tab layout option</li>
-<li><input disabled="" type="checkbox" name="task"> Tab icons support</li>
-<li><input disabled="" type="checkbox" name="task"> Deep linking (URL hash)</li>
-<li><input disabled="" type="checkbox" name="task"> Save tab state in localStorage</li>
-<li><input disabled="" type="checkbox" name="task"> Nested tabs support</li>
-<li><input disabled="" type="checkbox" name="task"> Tab animations (slide/fade)</li>
-</ul>
-<h2 id="examples-in-documentation-8">Examples in Documentation</h2><p>You can find tabs used throughout this documentation:</p>
-<ul>
-<li><a href="./index.html">Getting Started</a> - Installation instructions</li>
-<li><a href="./grid-demo.html">Grid System</a> - Responsive grid examples</li>
-<li><a href="./FORMS.md">Forms</a> - Form validation examples</li>
-<li><a href="./api-reference.html">API Reference</a> - Code snippets</li>
-</ul>
-<h2 id="questions-11">Questions?</h2><p>If you have questions or need help with tabs:</p>
+<h2 id="testing-notes-3">Testing Notes</h2><p>After the build:</p>
 <ol>
-<li>Check the <a href="./index.html">Getting Started Guide</a></li>
-<li>Review <a href="./ACCESSIBILITY.md">Accessibility Guide</a></li>
-<li>See <a href="./CUSTOMIZATION.md">Customization Options</a></li>
-<li>Open an issue on <a href="https://github.com/agilira/chiron" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+<li>Check <code>dist/test-server-island.html</code> for transformed output</li>
+<li>Verify all <code>&lt;ServerIsland&gt;</code> are converted to <code>&lt;div data-html-src=&quot;...&quot;&gt;</code></li>
+<li>Props should be mapped: <code>src</code> → <code>data-html-src</code>, <code>customProp</code> → <code>data-custom-prop</code></li>
+<li>Children content should be preserved</li>
 </ol>
+<h2 id="expected-transformation-3">Expected Transformation</h2><div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-html">&lt;!-- <span class="hljs-title function_">Before </span>(MDX) --&gt;
+&lt;ServerIsland src=<span class="hljs-string">&quot;/api/data.html&quot;</span> trigger=<span class="hljs-string">&quot;visible&quot;</span>&gt;
+  Loading...
+&lt;/ServerIsland&gt;
+
+&lt;!-- <span class="hljs-title function_">After </span>(HTML) --&gt;
+&lt;div data-html-src=<span class="hljs-string">&quot;/api/data.html&quot;</span> data-trigger=<span class="hljs-string">&quot;visible&quot;</span>&gt;
+  Loading...
+&lt;/div&gt;</code></pre></div><h2 id="runtime-testing-3">Runtime Testing</h2><p>To test the runtime loading with <code>lazy-app-loader.js</code>:</p>
+<div class="code-block"><button class="code-copy" aria-label="Copy code to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><pre><code class="language-javascript"><span class="hljs-comment">// Initialize lazy loading for all islands</span>
+document.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#039;DOMContentLoaded&#039;</span>, () =&gt; {
+  <span class="hljs-keyword">const</span> islands = document.<span class="hljs-title function_">querySelectorAll</span>(<span class="hljs-string">&#039;[data-html-src][data-trigger=&quot;visible&quot;]&#039;</span>);
+  
+  <span class="hljs-keyword">const</span> observer = <span class="hljs-keyword">new</span> <span class="hljs-title function_">IntersectionObserver</span>(<span class="hljs-keyword">async</span> (entries) =&gt; {
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> entry of entries) {
+      <span class="hljs-keyword">if</span> (entry.isIntersecting) {
+        <span class="hljs-keyword">await</span> window.LazyAppLoader.<span class="hljs-title function_">loadHtmlFragment</span>(entry.target);
+        observer.<span class="hljs-title function_">unobserve</span>(entry.target);
+      }
+    }
+  });
+  
+  islands.<span class="hljs-title function_">forEach</span>(island =&gt; observer.<span class="hljs-title function_">observe</span>(island));
+});</code></pre></div><hr>
+<p><strong>Status</strong>: Testing Task 3 - Server-Island Plugin ✅</p>
 
                 </div>
 
@@ -1206,11 +879,6 @@ NODE_ENV=production <span class="hljs-built_in">npm</span> run build</code></pre
                 
             </div>
         </main>
-
-        <!-- Right Sidebar (Table of Contents) -->
-        <aside class="toc-sidebar" id="tocSidebar" role="complementary" aria-label="Table of contents" data-toc-depth="2">
-            
-        </aside>
     </div>
 
     <!-- Footer -->
@@ -1523,173 +1191,761 @@ document.addEventListener('click', async (e) => {
 });
 
 
-// Component: tabs
+// Component: lazy-app-loader
 /**
- * Tabs Component - Accessible tab interface
- * Detects: .tabs-container, .tab-button, .tab-panel
+ * Lazy App Loader - Core Module (Testable & Reliable)
  * 
- * @component tabs
+ * @module lazy-app-loader-core
+ * @version 2.0.0
+ * @since 0.8.0
+ * 
+ * Features:
+ * - Reliable script loading with timeout and retry
+ * - Data injection for SSR-like performance
+ * - Zero hydration overhead
+ * - Race condition prevention
+ * - Comprehensive error handling
  */
 
-(() => {
-  const tabContainers = document.querySelectorAll('.tabs-container');
-  if (tabContainers.length === 0) {return;}
+/* global URL */
 
-  tabContainers.forEach(container => {
-    const tabButtons = container.querySelectorAll('.tab-button');
-    const tabPanels = container.querySelectorAll('.tab-panel');
+(function() {
+  'use strict';
 
-    if (tabButtons.length === 0 || tabPanels.length === 0) {return;}
-
-    const switchTab = (index) => {
-      tabButtons.forEach((btn, i) => {
-        const isActive = i === index;
-        btn.classList.toggle('active', isActive);
-        btn.setAttribute('aria-selected', isActive.toString());
-        btn.setAttribute('tabindex', isActive ? '0' : '-1');
-      });
-
-      tabPanels.forEach((panel, i) => {
-        if (i === index) {
-          panel.classList.add('active');
-          panel.removeAttribute('hidden');
-        } else {
-          panel.classList.remove('active');
-          panel.setAttribute('hidden', '');
-        }
-      });
-    };
-
-    tabButtons.forEach((button, index) => {
-      button.addEventListener('click', (e) => {
-        e.preventDefault();
-        switchTab(index);
-      });
-
-      button.addEventListener('keydown', (e) => {
-        let newIndex = -1;
-
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-          e.preventDefault();
-          newIndex = (index + 1) % tabButtons.length;
-        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-          e.preventDefault();
-          newIndex = (index - 1 + tabButtons.length) % tabButtons.length;
-        } else if (e.key === 'Home') {
-          e.preventDefault();
-          newIndex = 0;
-        } else if (e.key === 'End') {
-          e.preventDefault();
-          newIndex = tabButtons.length - 1;
-        }
-
-        if (newIndex !== -1) {
-          switchTab(newIndex);
-          tabButtons[newIndex].focus();
-        }
-      });
-    });
-
-    if (tabButtons.length > 0) {
-      switchTab(0);
-    }
-  });
-})();
-
-
-// Component: toc
-/**
- * Table of Contents Component - Auto-generate TOC and highlight active section
- * Detects: .table-of-contents, .toc-list, .toc-sidebar
- * 
- * @component toc
- */
-
-(() => {
-  const toc = document.querySelector('.table-of-contents, .toc-sidebar');
-  if (!toc) {return;}
-
-  // Check if we should include H3 (default: only H2)
-  // Can be controlled via data-toc-depth="3" attribute
-  const depth = parseInt(toc.getAttribute('data-toc-depth')) || 2;
-  // Exclude headings with data-toc-ignore attribute or .toc-ignore class
-  const headingSelector = depth >= 3 
-    ? 'h2[id]:not([data-toc-ignore]):not(.toc-ignore), h3[id]:not([data-toc-ignore]):not(.toc-ignore)' 
-    : 'h2[id]:not([data-toc-ignore]):not(.toc-ignore)';
-
-  // Auto-generate TOC - only from main content, not modals/header/footer
-  const mainContent = document.querySelector('main, .main-content, article');
-  const headings = mainContent ? mainContent.querySelectorAll(headingSelector) : [];
-  if (headings.length === 0) {return;}
-    
-  let tocList = toc.querySelector('.toc-list');
-    
-  // If no toc-list exists (like in .toc-sidebar), create the structure
-  if (!tocList) {
-    const nav = document.createElement('nav');
-    nav.className = 'toc-nav';
-    nav.setAttribute('aria-label', t('toc_aria', 'Table of contents'));
-        
-    const title = document.createElement('h2');
-    title.className = 'toc-title';
-    title.textContent = t('toc_title', 'On This Page');
-        
-    tocList = document.createElement('ul');
-    tocList.className = 'toc-list';
-        
-    nav.appendChild(title);
-    nav.appendChild(tocList);
-    toc.appendChild(nav);
-  }
-    
-  // Only generate if list is empty
-  if (tocList.children.length > 0) {return;}
-    
-  const fragment = document.createDocumentFragment();
-
-  headings.forEach(heading => {
-    const link = document.createElement('a');
-    link.href = `#${heading.id}`;
-    link.textContent = heading.textContent;
-    link.className = 'toc-link';
-        
-    // Determine level from tag name
-    const level = heading.tagName.toLowerCase() === 'h2' ? 2 : 3;
-    const li = document.createElement('li');
-    li.className = `toc-item toc-level-${level}`;
-    li.appendChild(link);
-    fragment.appendChild(li);
-  });
-    
-  tocList.appendChild(fragment);
-
-  // Highlight current section
-  const updateTOCHighlight = () => {
-    const tocLinks = document.querySelectorAll('.toc-list a');
-    const mainContent = document.querySelector('main, .main-content, article');
-    const sections = mainContent ? mainContent.querySelectorAll(headingSelector) : [];
-        
-    let currentSection = '';
-        
-    sections.forEach(section => {
-      const rect = section.getBoundingClientRect();
-      const header = document.querySelector('.header');
-      const headerHeight = header ? header.offsetHeight : 0;
-            
-      if (rect.top <= headerHeight + (typeof CONFIG !== 'undefined' && CONFIG.UI ? CONFIG.UI.TOC_SCROLL_OFFSET : 100)) {
-        currentSection = section.id;
-      }
-    });
-
-    tocLinks.forEach(link => {
-      link.classList.remove('active');
-      if (link.getAttribute('href') === `#${currentSection}`) {
-        link.classList.add('active');
-      }
-    });
+  // Configuration
+  const CONFIG = {
+    SCRIPT_TIMEOUT: 15000, // 15 seconds (increased for slow connections)
+    INTERSECTION_THRESHOLD: 0.01,
+    INTERSECTION_MARGIN: '200px', // Load 200px before visible (better UX on slow connections)
+    RETRY_DELAY: 1000,
+    MAX_RETRIES: 3,
+    DEBOUNCE_DELAY: 100, // Debounce intersection events (legacy, not used)
+    VISIBILITY_CHECK_DELAY: 100 // Wait before checking visibility after load
   };
 
-  window.addEventListener('scroll', debounce(updateTOCHighlight, 100), { passive: true });
+  // Global state (Symbol keys for true privacy)
+  const loadedScripts = new Set();
+  const loadingScripts = new Map(); // URL -> Promise
+  const loadingApps = new Set();
+  const abortControllers = new Map(); // appId -> AbortController
+  
+  // Unique lock symbol to prevent tampering
+  const LOCK_SYMBOL = Symbol('lazyAppLock');
+
+  /**
+ * Normalize script URL for comparison (removes query params for cache busting)
+ * @param {string} url - Script URL
+ * @returns {string} - Normalized URL
+ */
+  function normalizeScriptUrl(url) {
+    try {
+      const urlObj = new URL(url, window.location.href);
+      // Keep protocol, host, and pathname only (ignore query params)
+      return `${urlObj.protocol}//${urlObj.host}${urlObj.pathname}`;
+    } catch (_e) {
+      // Fallback to original if URL parsing fails
+      return url;
+    }
+  }
+
+  /**
+ * Load a single script with timeout and deduplication
+ * @param {string} src - Script URL
+ * @param {Object} options - Loading options
+ * @param {number} options.timeout - Timeout in ms
+ * @param {boolean} options.async - Load async (default: true)
+ * @param {AbortSignal} options.signal - Abort signal for cancellation
+ * @returns {Promise<void>}
+ */
+  function loadScript(src, options = {}) {
+    const { timeout = CONFIG.SCRIPT_TIMEOUT, async = true, signal } = options;
+    const normalizedSrc = normalizeScriptUrl(src);
+
+    // Check if aborted before starting
+    if (signal?.aborted) {
+      return Promise.reject(new Error('Script loading aborted'));
+    }
+
+    // Return existing promise if already loading
+    if (loadingScripts.has(normalizedSrc)) {
+      return loadingScripts.get(normalizedSrc);
+    }
+
+    // Return resolved promise if already loaded
+    if (loadedScripts.has(normalizedSrc)) {
+      return Promise.resolve();
+    }
+
+    // Check if script exists in DOM (more robust check)
+    const existing = Array.from(document.querySelectorAll('script[src]')).find(
+      script => normalizeScriptUrl(script.src) === normalizedSrc
+    );
+    if (existing) {
+      loadedScripts.add(normalizedSrc);
+      return Promise.resolve();
+    }
+
+    // Create loading promise
+    const promise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.async = async;
+      script.setAttribute('data-lazy-loaded', 'true');
+      script.setAttribute('crossorigin', 'anonymous'); // Better error handling for CORS
+      script.setAttribute('data-normalized-src', normalizedSrc);
+
+      let timeoutId;
+      let aborted = false;
+
+      const cleanup = () => {
+        clearTimeout(timeoutId);
+        script.onload = null;
+        script.onerror = null;
+        if (signal) {
+          signal.removeEventListener('abort', abortHandler);
+        }
+      };
+
+      const abortHandler = () => {
+        aborted = true;
+        cleanup();
+        script.remove();
+        loadingScripts.delete(normalizedSrc);
+        const err = new Error(`Script loading aborted: ${src}`);
+        console.warn('[LazyApp]', err.message);
+        reject(err);
+      };
+
+      // Listen for abort signal
+      if (signal) {
+        signal.addEventListener('abort', abortHandler);
+        if (signal.aborted) {
+          abortHandler();
+          return;
+        }
+      }
+
+      script.onload = () => {
+        if (aborted) {return;}
+        cleanup();
+        loadedScripts.add(normalizedSrc);
+        loadingScripts.delete(normalizedSrc);
+        console.debug(`[LazyApp] ✓ Loaded: ${src}`);
+        resolve();
+      };
+
+      script.onerror = (error) => {
+        if (aborted) {return;}
+        cleanup();
+        script.remove(); // Remove failed script
+        loadingScripts.delete(normalizedSrc);
+        const err = new Error(`Failed to load script: ${src}`);
+        err.cause = error;
+        console.error('[LazyApp]', err);
+        reject(err);
+      };
+
+      // Timeout handler
+      if (timeout > 0) {
+        timeoutId = setTimeout(() => {
+          if (aborted) {return;}
+          cleanup();
+          script.remove();
+          loadingScripts.delete(normalizedSrc);
+          const err = new Error(`Script load timeout (${timeout}ms): ${src}`);
+          console.error('[LazyApp]', err);
+          reject(err);
+        }, timeout);
+      }
+
+      // Only append if not aborted
+      if (!aborted) {
+        document.head.appendChild(script);
+      }
+    });
+
+    loadingScripts.set(normalizedSrc, promise);
+    return promise;
+  }
+
+  /**
+ * Load multiple scripts in parallel
+ * @param {string[]} urls - Array of script URLs
+ * @param {Object} options - Loading options
+ * @returns {Promise<void>}
+ */
+  async function loadScripts(urls, options = {}) {
+    if (!urls || urls.length === 0) {
+      return Promise.resolve();
+    }
+
+    console.debug(`[LazyApp] Loading ${urls.length} script(s) in parallel...`);
+  
+    try {
+      await Promise.all(urls.map(url => loadScript(url, options)));
+      console.debug(`[LazyApp] ✓ All scripts loaded`);
+    } catch (error) {
+      console.error('[LazyApp] Script loading failed:', error);
+      throw error;
+    }
+  }
+
+  /**
+ * Inject data into page for app consumption (Data Island pattern)
+ * @param {string} appId - App container ID
+ * @param {Object} data - Data to inject
+ */
+  function injectData(appId, data) {
+    const dataId = `${appId}-data`;
+  
+    // Remove existing data script if any
+    const existing = document.getElementById(dataId);
+    if (existing) {
+      existing.remove();
+    }
+
+    // Create JSON script tag
+    const script = document.createElement('script');
+    script.type = 'application/json';
+    script.id = dataId;
+  
+    // Safely serialize data (prevents XSS)
+    script.textContent = JSON.stringify(data);
+  
+    // Insert before app container
+    const container = document.getElementById(appId);
+    if (container) {
+      container.parentNode.insertBefore(script, container);
+      console.debug(`[LazyApp] ✓ Data injected for: ${appId}`);
+    } else {
+      console.warn(`[LazyApp] Container not found for data injection: ${appId}`);
+    }
+  }
+
+  /**
+ * Get injected data for an app
+ * @param {string} appId - App container ID
+ * @returns {Object|null} - Parsed data or null
+ */
+  function getData(appId) {
+    const dataScript = document.getElementById(`${appId}-data`);
+    if (!dataScript) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(dataScript.textContent);
+    } catch (error) {
+      console.error(`[LazyApp] Failed to parse data for ${appId}:`, error);
+      return null;
+    }
+  }
+
+  /**
+ * Check if element is truly visible (robust check)
+ * @param {HTMLElement} element - Element to check
+ * @returns {boolean} - True if visible
+ */
+  function isElementVisible(element) {
+    if (!element || !document.body.contains(element)) {
+      return false;
+    }
+    
+    const style = window.getComputedStyle(element);
+    
+    // Check all possible ways element can be hidden
+    if (style.display === 'none' || 
+        style.visibility === 'hidden' || 
+        style.opacity === '0' ||
+        element.offsetParent === null ||
+        element.offsetWidth === 0 ||
+        element.offsetHeight === 0) {
+      return false;
+    }
+    
+    return true;
+  }
+
+  /**
+ * Acquire atomic lock for app loading
+ * @param {HTMLElement} container - Container element
+ * @returns {boolean} - True if lock acquired
+ */
+  function acquireLock(container) {
+    // Atomic check-and-set using Symbol
+    if (container[LOCK_SYMBOL]) {
+      return false; // Already locked
+    }
+    container[LOCK_SYMBOL] = true;
+    return true;
+  }
+
+  /**
+ * Release lock for app loading
+ * @param {HTMLElement} container - Container element
+ */
+  function releaseLock(container) {
+    delete container[LOCK_SYMBOL];
+  }
+
+  /**
+ * Load an app with all dependencies and data
+ * @param {HTMLElement} container - App container element
+ * @param {Object} options - Loading options
+ * @returns {Promise<void>}
+ */
+  async function loadApp(container, options = {}) {
+    const appId = container.id || `app-${Date.now()}`;
+
+    // Atomic lock check - prevents ALL race conditions
+    if (!acquireLock(container)) {
+      console.debug(`[LazyApp] Already loading (locked): ${appId}`);
+      return;
+    }
+
+    // Secondary checks (belt and suspenders)
+    if (loadingApps.has(appId)) {
+      releaseLock(container);
+      console.debug(`[LazyApp] Already loading: ${appId}`);
+      return;
+    }
+
+    if (container.dataset.lazyAppLoaded === 'true') {
+      releaseLock(container);
+      console.debug(`[LazyApp] Already loaded: ${appId}`);
+      return;
+    }
+
+    // Verify container is still in DOM
+    if (!document.body.contains(container)) {
+      releaseLock(container);
+      console.warn(`[LazyApp] Container removed from DOM, aborting: ${appId}`);
+      return;
+    }
+
+    // Create abort controller for this load operation
+    const abortController = new AbortController();
+    abortControllers.set(appId, abortController);
+
+    loadingApps.add(appId);
+
+    const framework = container.dataset.lazyApp || 'react';
+    const scriptSrc = container.dataset.scriptSrc;
+    const htmlSrc = container.dataset.htmlSrc;
+    const depsAttr = container.dataset.dependencies || '';
+    const dependencies = depsAttr.split(',').map(s => s.trim()).filter(Boolean);
+
+    console.log(`[LazyApp] Loading ${framework} app: ${appId}`);
+
+    // Show skeleton loading state
+    const placeholder = container.querySelector('.app-placeholder');
+    if (placeholder) {
+      placeholder.innerHTML = `<div class="skeleton-loader" role="status" aria-label="Loading">
+  <div class="skeleton-line skeleton-line--full"></div>
+  <div class="skeleton-line skeleton-line--short"></div>
+</div>`;
+    }
+
+    try {
+    // Enhanced options with abort signal
+      const loadOptions = {
+        ...options,
+        signal: abortController.signal
+      };
+
+      // Check if this is an HTML fragment (not a JS app)
+      if (htmlSrc && !scriptSrc) {
+        console.log(`[LazyApp] Loading HTML fragment: ${htmlSrc}`);
+        
+        // Check container still exists
+        if (!document.body.contains(container)) {
+          throw new Error('Container removed from DOM during loading');
+        }
+        
+        // Check if aborted
+        if (abortController.signal.aborted) {
+          throw new Error('Loading aborted');
+        }
+        
+        // Load HTML fragment
+        await loadHtmlFragment(container);
+        
+        // Mark as loaded
+        container.dataset.lazyAppLoaded = 'true';
+        container.dataset.lazyAppLoadedAt = Date.now();
+        
+        console.log(`[LazyApp] ✓ HTML fragment loaded successfully: ${appId}`);
+        
+        // Clean up
+        loadingApps.delete(appId);
+        abortControllers.delete(appId);
+        releaseLock(container);
+        
+        return;
+      }
+
+      // Load dependencies first
+      if (dependencies.length > 0) {
+        console.debug(`[LazyApp] Loading ${dependencies.length} dependencies...`);
+      
+        // Check container still exists before loading
+        if (!document.body.contains(container)) {
+          throw new Error('Container removed from DOM during loading');
+        }
+      
+        // Check if aborted
+        if (abortController.signal.aborted) {
+          throw new Error('Loading aborted');
+        }
+      
+        await loadScripts(dependencies, loadOptions);
+      }
+
+      // Load main app script
+      if (scriptSrc) {
+      // Check container still exists before loading app script
+        if (!document.body.contains(container)) {
+          throw new Error('Container removed from DOM during loading');
+        }
+      
+        // Check if aborted
+        if (abortController.signal.aborted) {
+          throw new Error('Loading aborted');
+        }
+      
+        await loadScript(scriptSrc, loadOptions);
+      }
+
+      console.log(`[LazyApp] ✓ App loaded successfully: ${appId}`);
+
+      // Mark as loaded (atomic operation)
+      container.dataset.lazyAppLoaded = 'true';
+      container.dataset.lazyAppLoadedAt = Date.now();
+
+      // Wait a moment for framework to initialize before checking visibility
+      await new Promise(resolve => setTimeout(resolve, CONFIG.VISIBILITY_CHECK_DELAY));
+
+      // Robust visibility check
+      const isVisible = isElementVisible(container);
+
+      // Remove placeholder only if container is visible
+      if (placeholder) {
+        if (isVisible) {
+          // Fade out placeholder smoothly
+          placeholder.style.transition = 'opacity 0.3s ease-out';
+          placeholder.style.opacity = '0';
+          setTimeout(() => {
+            if (placeholder.parentNode) {
+              placeholder.remove();
+            }
+          }, 300);
+        } else {
+          console.warn(`[LazyApp] Container not visible, keeping placeholder: ${appId}`);
+          // Keep placeholder but update its content to show success
+          placeholder.innerHTML = `
+          <div style="text-align: center; padding: 2rem; opacity: 0.6;">
+            <p><strong>App loaded</strong></p>
+            <p style="font-size: 0.875rem; margin-top: 0.5rem;">Scroll back to view</p>
+          </div>
+        `;
+        }
+      }
+
+      // Dispatch custom event
+      const event = new CustomEvent('lazy-app-loaded', {
+        detail: {
+          appId,
+          framework,
+          container,
+          data: getData(appId), // Include injected data
+          visible: isVisible,
+          loadTime: Date.now() - (parseInt(container.dataset.lazyAppLoadStarted) || Date.now())
+        },
+        bubbles: true,
+        cancelable: false
+      });
+      container.dispatchEvent(event);
+
+    } catch (error) {
+      console.error(`[LazyApp] Failed to load app: ${appId}`, error);
+
+      // Show error state with retry
+      if (placeholder) {
+        const retryCount = parseInt(container.dataset.retryCount || '0', 10);
+        const canRetry = retryCount < CONFIG.MAX_RETRIES;
+
+        placeholder.innerHTML = `
+        <div class="app-error">
+          <p><strong>Failed to load app</strong></p>
+          <p class="error-details">${error.message}</p>
+          ${canRetry ? `
+            <button class="retry-btn" data-app-id="${appId}">
+              Retry (${retryCount + 1}/${CONFIG.MAX_RETRIES})
+            </button>
+          ` : `
+            <p class="error-final">Maximum retries exceeded. Please refresh the page.</p>
+          `}
+        </div>
+      `;
+
+        // Attach retry handler
+        if (canRetry) {
+          const retryBtn = placeholder.querySelector('.retry-btn');
+          if (retryBtn) {
+            retryBtn.addEventListener('click', () => retryApp(container));
+          }
+        }
+      }
+
+      throw error; // Re-throw for caller handling
+
+    } finally {
+      // Comprehensive cleanup
+      loadingApps.delete(appId);
+      abortControllers.delete(appId);
+      releaseLock(container);
+      
+      // Remove loading flag (keeps lazyAppLoaded if successful)
+      container.dataset.lazyAppLoading = 'false';
+    }
+  }
+
+  /**
+ * Retry loading an app
+ * @param {HTMLElement} container - App container
+ * @returns {Promise<void>}
+ */
+  async function retryApp(container) {
+    const retryCount = parseInt(container.dataset.retryCount || '0', 10);
+    container.dataset.retryCount = String(retryCount + 1);
+    container.dataset.lazyAppLoaded = 'false';
+
+    console.log(`[LazyApp] Retrying app: ${container.id} (attempt ${retryCount + 1})`);
+
+    // Wait before retry
+    await new Promise(resolve => setTimeout(resolve, CONFIG.RETRY_DELAY));
+
+    // Retry loading
+    return loadApp(container);
+  }
+
+  /**
+ * Cleanup function - aborts all pending loads
+ * Call this on page navigation or before SPA route changes
+ */
+  function cleanup() {
+    console.debug('[LazyApp] Cleaning up...');
+    
+    // Abort all pending loads
+    abortControllers.forEach((controller, appId) => {
+      console.debug(`[LazyApp] Aborting load: ${appId}`);
+      controller.abort();
+    });
+    
+    abortControllers.clear();
+    loadingApps.clear();
+    
+    console.debug('[LazyApp] Cleanup complete');
+  }
+
+  /**
+   * Load HTML fragment from a URL and inject it into a container
+   * @param {HTMLElement} container - The container element with data-html-src attribute
+   * @returns {Promise<void>}
+   */
+  async function loadHtmlFragment(container) {
+    // Check if already loaded
+    if (container.dataset.htmlLoaded === 'true') {
+      console.debug('[LazyApp] HTML fragment already loaded:', container.id || container);
+      return;
+    }
+
+    const url = container.getAttribute('data-html-src');
+    if (!url) {
+      throw new Error('Container must have data-html-src attribute');
+    }
+
+    console.debug('[LazyApp] Loading HTML fragment from:', url);
+
+    try {
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const html = await response.text();
+      
+      // Inject HTML
+      container.innerHTML = html;
+      
+      // Mark as loaded
+      container.dataset.htmlLoaded = 'true';
+      
+      // Dispatch custom event
+      const event = new CustomEvent('html-fragment-loaded', {
+        detail: { url, container }
+      });
+      container.dispatchEvent(event);
+      
+      console.debug('[LazyApp] HTML fragment loaded successfully:', url);
+      
+    } catch (error) {
+      console.error('[LazyApp] Failed to load HTML fragment:', url, error);
+      
+      // Show error state
+      container.innerHTML = `<div class="html-fragment-error">Failed to load content from ${url}</div>`;
+      
+      throw error;
+    }
+  }
+
+  /**
+ * Initialize lazy app loading for all containers on page
+ * @param {HTMLElement|string|null} root - Root element or selector to search within (default: document)
+ * @returns {IntersectionObserver|null} - Observer instance for manual control
+ */
+  function initLazyApps(root = null) {
+    // Resolve root element
+    let rootElement = document;
+    if (root) {
+      if (typeof root === 'string') {
+        rootElement = document.querySelector(root);
+        if (!rootElement) {
+          console.warn(`[LazyApp] Root element not found: ${root}`);
+          return null;
+        }
+      } else if (root instanceof HTMLElement) {
+        rootElement = root;
+      } else {
+        console.warn('[LazyApp] Invalid root parameter, using document');
+        rootElement = document;
+      }
+    }
+
+    const lazyApps = rootElement.querySelectorAll('[data-lazy-app]');
+  
+    if (lazyApps.length === 0) {
+      console.debug('[LazyApp] No lazy apps found');
+      return null;
+    }
+
+    console.debug(`[LazyApp] Found ${lazyApps.length} lazy app(s)`);
+
+    // Setup Intersection Observer
+    const observerOptions = {
+      root: null,
+      rootMargin: CONFIG.INTERSECTION_MARGIN,
+      threshold: CONFIG.INTERSECTION_THRESHOLD
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const container = entry.target;
+          
+          // Triple-check to prevent any possible race condition
+          if (container.dataset.lazyAppLoading === 'true' || 
+              container.dataset.lazyAppLoaded === 'true' ||
+              container[LOCK_SYMBOL]) {
+            return;
+          }
+          
+          // Mark as loading immediately (belt and suspenders with lock)
+          container.dataset.lazyAppLoading = 'true';
+          container.dataset.lazyAppLoadStarted = Date.now();
+          
+          // Stop observing immediately to prevent multiple triggers
+          observer.unobserve(container);
+          
+          console.debug(`[LazyApp] Triggering load: ${container.id}`);
+          
+          // Load app immediately (atomic lock prevents all duplicates)
+          loadApp(container).catch(err => {
+            console.error('[LazyApp] Load error:', err);
+            
+            // On error, comprehensive cleanup and re-observe
+            container.dataset.lazyAppLoading = 'false';
+            releaseLock(container);
+            
+            if (container.dataset.lazyAppLoaded !== 'true') {
+              // Re-observe after a short delay to prevent immediate re-trigger
+              setTimeout(() => {
+                if (document.body.contains(container)) {
+                  observer.observe(container);
+                }
+              }, CONFIG.RETRY_DELAY / 2);
+            }
+          });
+        }
+      });
+    }, observerOptions);
+
+    // Observe all lazy apps
+    lazyApps.forEach((app, index) => {
+    // Assign ID if missing
+      if (!app.id) {
+        app.id = `lazy-app-${index + 1}`;
+      }
+    
+      console.debug(`[LazyApp] Observing: ${app.id}`);
+      observer.observe(app);
+    });
+
+    console.debug('[LazyApp] Initialization complete');
+    
+    // Return observer for manual control
+    return observer;
+  }
+
+  // Export for testing and usage
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+      loadScript,
+      loadScripts,
+      injectData,
+      getData,
+      loadApp,
+      retryApp,
+      loadHtmlFragment,
+      initLazyApps,
+      cleanup,
+      isElementVisible,
+      CONFIG
+    };
+  }
+
+  // Auto-init in browser
+  if (typeof window !== 'undefined') {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initLazyApps);
+    } else {
+      initLazyApps();
+    }
+    
+    // Cleanup on page unload (prevents memory leaks)
+    window.addEventListener('beforeunload', cleanup);
+    
+    // Cleanup on visibility change (user switched tabs during load)
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        console.debug('[LazyApp] Page hidden, aborting pending loads');
+        cleanup();
+      }
+    });
+    
+    // Expose cleanup for SPA frameworks
+    if (!window.LazyAppLoader) {
+      window.LazyAppLoader = {
+        cleanup,
+        initLazyApps,
+        loadApp,
+        loadHtmlFragment,
+        injectData,
+        getData
+      };
+    }
+  }
 })();
 
 </script>

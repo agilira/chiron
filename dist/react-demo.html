@@ -1661,6 +1661,7 @@ document.addEventListener('click', async (e) => {
 
     const framework = container.dataset.lazyApp || 'react';
     const scriptSrc = container.dataset.scriptSrc;
+    const htmlSrc = container.dataset.htmlSrc;
     const depsAttr = container.dataset.dependencies || '';
     const dependencies = depsAttr.split(',').map(s => s.trim()).filter(Boolean);
 
@@ -1681,6 +1682,37 @@ document.addEventListener('click', async (e) => {
         ...options,
         signal: abortController.signal
       };
+
+      // Check if this is an HTML fragment (not a JS app)
+      if (htmlSrc && !scriptSrc) {
+        console.log(`[LazyApp] Loading HTML fragment: ${htmlSrc}`);
+        
+        // Check container still exists
+        if (!document.body.contains(container)) {
+          throw new Error('Container removed from DOM during loading');
+        }
+        
+        // Check if aborted
+        if (abortController.signal.aborted) {
+          throw new Error('Loading aborted');
+        }
+        
+        // Load HTML fragment
+        await loadHtmlFragment(container);
+        
+        // Mark as loaded
+        container.dataset.lazyAppLoaded = 'true';
+        container.dataset.lazyAppLoadedAt = Date.now();
+        
+        console.log(`[LazyApp] ✓ HTML fragment loaded successfully: ${appId}`);
+        
+        // Clean up
+        loadingApps.delete(appId);
+        abortControllers.delete(appId);
+        releaseLock(container);
+        
+        return;
+      }
 
       // Load dependencies first
       if (dependencies.length > 0) {
@@ -1847,14 +1879,85 @@ document.addEventListener('click', async (e) => {
   }
 
   /**
+   * Load HTML fragment from a URL and inject it into a container
+   * @param {HTMLElement} container - The container element with data-html-src attribute
+   * @returns {Promise<void>}
+   */
+  async function loadHtmlFragment(container) {
+    // Check if already loaded
+    if (container.dataset.htmlLoaded === 'true') {
+      console.debug('[LazyApp] HTML fragment already loaded:', container.id || container);
+      return;
+    }
+
+    const url = container.getAttribute('data-html-src');
+    if (!url) {
+      throw new Error('Container must have data-html-src attribute');
+    }
+
+    console.debug('[LazyApp] Loading HTML fragment from:', url);
+
+    try {
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const html = await response.text();
+      
+      // Inject HTML
+      container.innerHTML = html;
+      
+      // Mark as loaded
+      container.dataset.htmlLoaded = 'true';
+      
+      // Dispatch custom event
+      const event = new CustomEvent('html-fragment-loaded', {
+        detail: { url, container }
+      });
+      container.dispatchEvent(event);
+      
+      console.debug('[LazyApp] HTML fragment loaded successfully:', url);
+      
+    } catch (error) {
+      console.error('[LazyApp] Failed to load HTML fragment:', url, error);
+      
+      // Show error state
+      container.innerHTML = `<div class="html-fragment-error">Failed to load content from ${url}</div>`;
+      
+      throw error;
+    }
+  }
+
+  /**
  * Initialize lazy app loading for all containers on page
+ * @param {HTMLElement|string|null} root - Root element or selector to search within (default: document)
+ * @returns {IntersectionObserver|null} - Observer instance for manual control
  */
-  function initLazyApps() {
-    const lazyApps = document.querySelectorAll('[data-lazy-app]');
+  function initLazyApps(root = null) {
+    // Resolve root element
+    let rootElement = document;
+    if (root) {
+      if (typeof root === 'string') {
+        rootElement = document.querySelector(root);
+        if (!rootElement) {
+          console.warn(`[LazyApp] Root element not found: ${root}`);
+          return null;
+        }
+      } else if (root instanceof HTMLElement) {
+        rootElement = root;
+      } else {
+        console.warn('[LazyApp] Invalid root parameter, using document');
+        rootElement = document;
+      }
+    }
+
+    const lazyApps = rootElement.querySelectorAll('[data-lazy-app]');
   
     if (lazyApps.length === 0) {
       console.debug('[LazyApp] No lazy apps found');
-      return;
+      return null;
     }
 
     console.debug(`[LazyApp] Found ${lazyApps.length} lazy app(s)`);
@@ -1920,6 +2023,9 @@ document.addEventListener('click', async (e) => {
     });
 
     console.debug('[LazyApp] Initialization complete');
+    
+    // Return observer for manual control
+    return observer;
   }
 
   // Export for testing and usage
@@ -1931,6 +2037,7 @@ document.addEventListener('click', async (e) => {
       getData,
       loadApp,
       retryApp,
+      loadHtmlFragment,
       initLazyApps,
       cleanup,
       isElementVisible,
@@ -1963,6 +2070,7 @@ document.addEventListener('click', async (e) => {
         cleanup,
         initLazyApps,
         loadApp,
+        loadHtmlFragment,
         injectData,
         getData
       };

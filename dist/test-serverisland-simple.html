@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ServerIsland Test - Simple</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .test-box {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    h1 {
+      color: #333;
+      margin-top: 0;
+    }
+    .placeholder {
+      padding: 20px;
+      background: #e3f2fd;
+      border: 2px dashed #2196F3;
+      border-radius: 8px;
+      text-align: center;
+      color: #1976D2;
+    }
+    .info {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 15px;
+      margin: 20px 0;
+    }
+    .lazy-app-container {
+      min-height: 100px;
+    }
+  </style>
+</head>
+<body>
+  <div class="test-box">
+    <h1>🧪 ServerIsland Component Test</h1>
+    
+    <div class="info">
+      <strong>📋 Test Instructions:</strong>
+      <ol style="margin: 10px 0 0 0;">
+        <li>Apri DevTools (F12) e vai su Network tab</li>
+        <li>Scrolla verso il basso</li>
+        <li>Quando vedi il box, cerca <code>success-fragment.html</code> nel Network</li>
+        <li>Se vedi un box viola con "✅ SUCCESS!" = FUNZIONA!</li>
+      </ol>
+    </div>
+  </div>
+
+  <div style="height: 400px; background: linear-gradient(to bottom, #f5f5f5, white); display: flex; align-items: center; justify-content: center; color: #999;">
+    ⬇️ Scrolla giù per vedere il test ⬇️
+  </div>
+
+  <div class="test-box">
+    <h2>Test ServerIsland:</h2>
+    
+    <!-- Questo è il div che lazy-app-loader dovrebbe osservare e riempire -->
+    <div class="lazy-app-container" data-lazy-app="html" id="test-island" data-html-src="/success-fragment.html">
+      <div class="placeholder">
+        <p style="margin: 0; font-size: 18px;">⏳ Caricamento...</p>
+        <p style="margin: 10px 0 0 0; font-size: 14px;">Questo è il placeholder. Se vedi questo, lazy-app-loader non ha ancora caricato il fragment.</p>
+      </div>
+    </div>
+
+    <div class="info" style="margin-top: 20px;">
+      <strong>🔍 Debug Info:</strong>
+      <ul style="margin: 10px 0 0 0;">
+        <li>Container ID: <code>test-island</code></li>
+        <li>Fragment URL: <code>/success-fragment.html</code></li>
+        <li>Type: <code>data-lazy-app="html"</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Includi lazy-app-loader.js -->
+  <script src="/assets/lazy-app-loader.js"></script>
+  
+  <script>
+    // Debug: Mostra quando lazy-app-loader inizializza
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('🚀 Pagina caricata, lazy-app-loader dovrebbe essere attivo');
+      console.log('📦 Container trovato:', document.getElementById('test-island'));
+      
+      // Listener per vedere quando il fragment viene caricato
+      const container = document.getElementById('test-island');
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+            console.log('✅ Fragment caricato! Contenuto aggiornato.');
+          }
+        });
+      });
+      
+      if (container) {
+        observer.observe(container, { childList: true, subtree: true });
+      }
+    });
+  </script>
+</body>
+</html>

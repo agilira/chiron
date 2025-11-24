@@ -181,6 +181,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://agilira.github.io/chiron/test-server-island.html</loc>
+    <lastmod>2025-11-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://agilira.github.io/chiron/test-shortcodes.html</loc>
     <lastmod>2025-11-24</lastmod>
     <changefreq>weekly</changefreq>

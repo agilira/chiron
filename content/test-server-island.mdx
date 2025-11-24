@@ -1,0 +1,104 @@
+---
+title: Server-Island Plugin Test
+description: Testing async HTML fragment loading with ServerIsland components
+layout: default
+---
+
+# Server-Island Plugin Test
+
+This page demonstrates the `<ServerIsland>` component that transforms into async HTML fragments.
+
+## Basic Example
+
+<ServerIsland src="/test-fragment.html" trigger="visible">
+  <div style="padding: 20px; background: #f0f0f0; border: 2px dashed #999; border-radius: 8px;">
+    <p>⏳ Loading HTML fragment...</p>
+    <p style="font-size: 0.9em; color: #666;">This placeholder will be replaced when the fragment loads.</p>
+  </div>
+</ServerIsland>
+
+## Multiple Islands
+
+Here are multiple server islands that load independently:
+
+<ServerIsland src="/test-fragment.html" trigger="visible">
+  <div style="padding: 15px; background: #e3f2fd; border-left: 4px solid #2196f3;">
+    🔄 Loading first island...
+  </div>
+</ServerIsland>
+
+Some content in between...
+
+<ServerIsland src="/test-fragment.html" trigger="visible">
+  <div style="padding: 15px; background: #fff3e0; border-left: 4px solid #ff9800;">
+    🔄 Loading second island...
+  </div>
+</ServerIsland>
+
+## Self-Closing Island
+
+<ServerIsland src="/test-fragment.html" />
+
+## Island with Custom Props
+
+<ServerIsland 
+  src="/test-fragment.html" 
+  trigger="visible"
+  customProp="test-value"
+  dataId="my-island"
+>
+  <div style="padding: 20px; background: #f3e5f5; border: 2px solid #9c27b0; border-radius: 8px;">
+    <h3 style="margin-top: 0;">🏝️ Custom Island</h3>
+    <p>This island has custom data attributes.</p>
+    <p style="font-size: 0.9em; color: #666;">Check the HTML to see data-custom-prop and data-data-id</p>
+  </div>
+</ServerIsland>
+
+## Testing Notes
+
+After the build:
+
+1. Check `dist/test-server-island.html` for transformed output
+2. Verify all `<ServerIsland>` are converted to `<div data-html-src="...">`
+3. Props should be mapped: `src` → `data-html-src`, `customProp` → `data-custom-prop`
+4. Children content should be preserved
+
+## Expected Transformation
+
+```html
+<!-- Before (MDX) -->
+<ServerIsland src="/api/data.html" trigger="visible">
+  Loading...
+</ServerIsland>
+
+<!-- After (HTML) -->
+<div data-html-src="/api/data.html" data-trigger="visible">
+  Loading...
+</div>
+```
+
+## Runtime Testing
+
+To test the runtime loading with `lazy-app-loader.js`:
+
+```javascript
+// Initialize lazy loading for all islands
+document.addEventListener('DOMContentLoaded', () => {
+  const islands = document.querySelectorAll('[data-html-src][data-trigger="visible"]');
+  
+  const observer = new IntersectionObserver(async (entries) => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        await window.LazyAppLoader.loadHtmlFragment(entry.target);
+        observer.unobserve(entry.target);
+      }
+    }
+  });
+  
+  islands.forEach(island => observer.observe(island));
+});
+```
+
+---
+
+**Status**: Testing Task 3 - Server-Island Plugin ✅

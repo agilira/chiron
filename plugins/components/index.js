@@ -35,6 +35,7 @@ const radioGroupComponent = require('./radio-group');
 const videoComponent = require('./video');
 const audioComponent = require('./audio');
 const sectionComponent = require('./section');
+const serverIslandComponent = require('./server-island');
 
 module.exports = {
   name: 'components',
@@ -127,6 +128,9 @@ module.exports = {
     },
     'Section': (attrs = {}, content = '', context = {}) => {
       return sectionComponent(attrs, content, context);
+    },
+    'ServerIsland': (attrs = {}, content = '', context = {}) => {
+      return serverIslandComponent(attrs, content, context);
     }
   },
   
