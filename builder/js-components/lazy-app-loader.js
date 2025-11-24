@@ -524,13 +524,32 @@
 
   /**
  * Initialize lazy app loading for all containers on page
+ * @param {HTMLElement|string|null} root - Root element or selector to search within (default: document)
+ * @returns {IntersectionObserver|null} - Observer instance for manual control
  */
-  function initLazyApps() {
-    const lazyApps = document.querySelectorAll('[data-lazy-app]');
+  function initLazyApps(root = null) {
+    // Resolve root element
+    let rootElement = document;
+    if (root) {
+      if (typeof root === 'string') {
+        rootElement = document.querySelector(root);
+        if (!rootElement) {
+          console.warn(`[LazyApp] Root element not found: ${root}`);
+          return null;
+        }
+      } else if (root instanceof HTMLElement) {
+        rootElement = root;
+      } else {
+        console.warn('[LazyApp] Invalid root parameter, using document');
+        rootElement = document;
+      }
+    }
+
+    const lazyApps = rootElement.querySelectorAll('[data-lazy-app]');
   
     if (lazyApps.length === 0) {
       console.debug('[LazyApp] No lazy apps found');
-      return;
+      return null;
     }
 
     console.debug(`[LazyApp] Found ${lazyApps.length} lazy app(s)`);
@@ -596,6 +615,9 @@
     });
 
     console.debug('[LazyApp] Initialization complete');
+    
+    // Return observer for manual control
+    return observer;
   }
 
   // Export for testing and usage
