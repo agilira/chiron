@@ -66,3 +66,6 @@ examples/
 # Study/Reference materials
 study/
 dist/assets/*.js
+
+# Allow example components (needed for tests)
+!examples/components/
