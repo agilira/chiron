@@ -1,0 +1,54 @@
+# Graphify ignore — chiron SSG
+# Code-only graph: excludes all generated output and content so the
+# graph maps only the builder/plugin/test/theme source code.
+# This is the correct input for an atomic refactoring session.
+
+# --- SSG generated output ---
+# docs/ is the rendered HTML site — generated artefact, not source.
+docs/
+
+# --- Source content (markdown pages, not code) ---
+# content/ is the input data for the SSG, not the builder logic.
+content/
+examples/
+
+# --- JS dependencies and generated coverage ---
+node_modules/
+coverage/
+
+# --- Graphify own output ---
+graphify-out/
+
+# --- Assets: images, fonts, icons ---
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.svg
+*.ico
+*.mp4
+*.mp3
+*.wav
+assets/
+
+# --- Config and data files (no code logic) ---
+*.yaml
+*.yml
+*.json
+*.toml
+*.env
+*.ini
+*.lock
+package-lock.json
+
+# --- Markup and generated reports ---
+*.html
+*.css
+*.md
+*.mdx
+*.txt
+*.rst
+
+# --- Git internals ---
+.git/

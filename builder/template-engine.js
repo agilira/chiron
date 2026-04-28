@@ -3225,96 +3225,6 @@ class TemplateEngine {
   }
 
   /**
-   * Load blog helper functions (WordPress-style)
-   * These are available in all templates as the_date(), get_posts(), etc.
-   * 
-   * Helper functions that need context (like get_posts) will be wrapped
-   * to inject the plugin context automatically.
-   * 
-   * @param {Object} pluginContext - Plugin context with getData/setData
-   * @returns {Object} Blog helper functions
-   * @private
-   */
-  loadBlogHelpers(pluginContext = null) {
-    try {
-      const helpersPath = path.join(this.rootDir, 'plugins', 'blog', 'helpers.js');
-      if (fs.existsSync(helpersPath)) {
-        const helpers = require(helpersPath);
-
-        // Get theme defaults for blog helpers
-        const helperDefaults = this.themeLoader?.themeConfig?.helpers || {};
-
-        // Wrap context-dependent helpers (get_posts, get_posts_count)
-        // These need access to context.getData('blog-posts')
-        // Also wrap helpers that support options to inject theme defaults
-        if (pluginContext || Object.keys(helperDefaults).length > 0) {
-          const wrappedHelpers = { ...helpers };
-
-          // Wrap get_posts to auto-inject context
-          if (helpers.get_posts) {
-            wrappedHelpers.get_posts = (options = {}) => {
-              return helpers.get_posts(options, pluginContext);
-            };
-          }
-
-          // Wrap get_posts_count to auto-inject context
-          if (helpers.get_posts_count) {
-            wrappedHelpers.get_posts_count = (options = {}) => {
-              return helpers.get_posts_count(options, pluginContext);
-            };
-          }
-
-          // Special wrapper for the_date (supports both legacy and options API)
-          if (helpers.the_date && helperDefaults.the_date) {
-            const originalHelper = helpers.the_date;
-            wrappedHelpers.the_date = function (page, formatOrOptions, locale) {
-              // If user provides options object, merge with theme defaults
-              if (formatOrOptions && typeof formatOrOptions === 'object') {
-                const mergedOptions = { ...helperDefaults.the_date, ...formatOrOptions };
-                return originalHelper.call(this, page, mergedOptions);
-              }
-              // If no format/options provided, use theme defaults
-              if (!formatOrOptions) {
-                return originalHelper.call(this, page, helperDefaults.the_date);
-              }
-              // Legacy format string - pass through as-is (or use theme locale if not specified)
-              const defaultLocale = helperDefaults.the_date?.locale;
-              return originalHelper.call(this, page, formatOrOptions, locale || defaultLocale);
-            };
-          }
-
-          // Wrap other helpers that support options to inject theme defaults
-          const helpersWithOptions = [
-            'the_author', 'the_time', 'the_categories',
-            'the_tags', 'the_excerpt', 'the_featured_image', 'the_read_more',
-            'blog_pagination'
-          ];
-
-          helpersWithOptions.forEach(helperName => {
-            if (helpers[helperName] && helperDefaults[helperName]) {
-              const originalHelper = helpers[helperName];
-              wrappedHelpers[helperName] = function (page, options = {}) {
-                // Merge theme defaults with user options (user options override)
-                const mergedOptions = { ...helperDefaults[helperName], ...options };
-                return originalHelper.call(this, page, mergedOptions);
-              };
-            }
-          });
-
-          return wrappedHelpers;
-        }
-
-        return helpers;
-      }
-    } catch (error) {
-      this.logger.debug('Blog helpers not available', { error: error.message });
-    }
-
-    // Return empty object if helpers not found (blog plugin not installed/enabled)
-    return {};
-  }
-
-  /**
    * Build template placeholders (public method for testing)
    * This is a wrapper around buildEjsData for easier testing
    * 
@@ -3348,9 +3258,7 @@ class TemplateEngine {
 
     // Determine page type prefix
     let prefix = 'page';
-    if (page.layout === 'blog-post' || page.layout === 'single') {
-      prefix = 'post';
-    } else if (page.archiveType) {
+    if (page.archiveType) {
       prefix = 'archive';
     }
 
@@ -3397,13 +3305,9 @@ class TemplateEngine {
     const classes = [];
 
     // 1. Base type class
-    if (page.layout === 'blog-post' || page.layout === 'single') {
-      classes.push('post', 'single-post');
-    } else if (page.archiveType) {
+    if (page.archiveType) {
       classes.push('archive');
       classes.push(`${page.archiveType}-archive`);
-    } else if (page.layout === 'blog-index') {
-      classes.push('blog', 'blog-index');
     } else {
       classes.push('page');
       if (page.layout && page.layout !== 'default') {
@@ -3628,10 +3532,6 @@ class TemplateEngine {
       // Configuration object (for feature flags, etc.)
       config: this.config,
 
-      // Blog helpers (WordPress-style) - spread directly into context for clean DX
-      // Pass plugin manager for context-dependent helpers (get_posts)
-      ...this.loadBlogHelpers(this.pluginManager),
-
       // Scripts helper (WordPress-style) - renders scripts section with placeholders
       scripts: () => {
         let output = '<!-- Scripts -->\n';
@@ -3656,11 +3556,6 @@ class TemplateEngine {
 
         return output;
       },
-
-      // Blog identity (from plugin config, injected by blog plugin)
-      blogName: context.blogName,
-      blogDescription: context.blogDescription,
-      excerptLength: context.excerptLength,
 
       // Will be filled after component detection
       componentScripts: ''

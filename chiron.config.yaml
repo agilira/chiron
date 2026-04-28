@@ -19,7 +19,7 @@ project:
   name: Chiron
   
   title: Chiron - Modern Static Site Generator
-  description: A fast, flexible static site generator with themes, plugins, PWA support, and built-in blog functionality.
+  description: A fast, flexible static site generator with themes, plugins, and PWA support.
   base_url: https://agilira.github.io/chiron
 
 # Language & Internationalization

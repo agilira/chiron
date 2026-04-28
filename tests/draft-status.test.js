@@ -192,7 +192,5 @@ Published`);
 
   // TODO: Add tests for:
   // - Sidebar navigation filtering (requires sidebar config setup)
-  // - Blog index filtering (requires blog plugin setup)
-  // - RSS/Atom feed filtering (requires blog plugin setup)
   // - Backward compatibility (no status = publish)
 });

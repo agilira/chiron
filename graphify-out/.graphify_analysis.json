@@ -1,0 +1,1141 @@
+{
+  "communities": {
+    "0": [
+      "builder_i18n_i18n_loader_js",
+      "builder_template_engine_js",
+      "i18n_loader_i18nloader",
+      "i18n_loader_i18nloader_constructor",
+      "i18n_loader_i18nloader_ensureloaded",
+      "i18n_loader_i18nloader_generateclientconfig",
+      "i18n_loader_i18nloader_getavailablelocales",
+      "i18n_loader_i18nloader_getplaceholders",
+      "i18n_loader_i18nloader_getstring",
+      "i18n_loader_i18nloader_getstrings",
+      "i18n_loader_i18nloader_haslocale",
+      "i18n_loader_i18nloader_loadalllocales",
+      "i18n_loader_i18nloader_loadlocalesfromdir",
+      "i18n_loader_i18nloader_mergelocales",
+      "i18n_loader_i18nloader_settheme",
+      "markdown_parser_markdownparser_detectusedcomponents",
+      "template_engine_templateengine",
+      "template_engine_templateengine_buildejsdata",
+      "template_engine_templateengine_buildlogoimages",
+      "template_engine_templateengine_buildtemplateplaceholders",
+      "template_engine_templateengine_cachetemplate",
+      "template_engine_templateengine_calculatepathtoroot",
+      "template_engine_templateengine_calculateprevnext",
+      "template_engine_templateengine_convertfilenametourl",
+      "template_engine_templateengine_escapehtml",
+      "template_engine_templateengine_flattensidebarpages",
+      "template_engine_templateengine_generatebodyclasses",
+      "template_engine_templateengine_generatebodyid",
+      "template_engine_templateengine_getdependencies",
+      "template_engine_templateengine_getfooterlogo",
+      "template_engine_templateengine_isnavigationitemactive",
+      "template_engine_templateengine_loadbloghelpers",
+      "template_engine_templateengine_loadsvgsprite",
+      "template_engine_templateengine_loadtemplate",
+      "template_engine_templateengine_normalizeclasses",
+      "template_engine_templateengine_postprocesshtml",
+      "template_engine_templateengine_preparebreadcrumbdata",
+      "template_engine_templateengine_prepareheaderactionsdata",
+      "template_engine_templateengine_render",
+      "template_engine_templateengine_renderadobefonts",
+      "template_engine_templateengine_renderbreadcrumb",
+      "template_engine_templateengine_renderbreadcrumbs",
+      "template_engine_templateengine_rendercomponentscripts",
+      "template_engine_templateengine_renderexternalscripts",
+      "template_engine_templateengine_renderexternalstyles",
+      "template_engine_templateengine_renderfooter",
+      "template_engine_templateengine_renderhead",
+      "template_engine_templateengine_renderheader",
+      "template_engine_templateengine_renderheaderactions",
+      "template_engine_templateengine_renderlanguageswitcher",
+      "template_engine_templateengine_rendermenu",
+      "template_engine_templateengine_rendermetatags",
+      "template_engine_templateengine_rendermobileheadernav",
+      "template_engine_templateengine_rendermobileheadersection",
+      "template_engine_templateengine_rendernavigation",
+      "template_engine_templateengine_renderpagination",
+      "template_engine_templateengine_renderscrolltotop",
+      "template_engine_templateengine_rendersearchmodal",
+      "template_engine_templateengine_rendersidebar",
+      "template_engine_templateengine_rendersidebarwithhooks",
+      "template_engine_templateengine_renderstructureddata",
+      "template_engine_templateengine_rendertableofcontents",
+      "template_engine_templateengine_rendertemplate",
+      "template_engine_templateengine_resolveurl",
+      "template_engine_templateengine_shouldshowpagination",
+      "template_engine_templateengine_templateexists",
+      "template_engine_templateengine_translatelabel",
+      "template_engine_templateengine_truncatelabel",
+      "test_utils_mocklogger_debug"
+    ],
+    "1": [
+      "audio_processaudio",
+      "builder_cache_cache_manager_js",
+      "builder_generators_robots_js",
+      "builder_index_js",
+      "builder_markdown_extensions_js",
+      "builder_utils_icon_sprite_generator_js",
+      "builder_utils_image_optimizer_js",
+      "cache_manager_cachemanager",
+      "cache_manager_cachemanager_build",
+      "cache_manager_cachemanager_constructor",
+      "cache_manager_cachemanager_generatemanifest",
+      "cache_manager_cachemanager_generateofflinepage",
+      "cache_manager_cachemanager_generateserviceworker",
+      "cache_manager_cachemanager_getcacheversion",
+      "cache_manager_cachemanager_scanassets",
+      "chiron_builder_fast_glob_test_cleanup",
+      "icon_sprite_generator_iconspritegenerator",
+      "icon_sprite_generator_iconspritegenerator_constructor",
+      "icon_sprite_generator_iconspritegenerator_generate",
+      "image_optimizer_optimizeimage",
+      "index_chironbuilder",
+      "index_chironbuilder_build",
+      "index_chironbuilder_buildcomponentscripts",
+      "index_chironbuilder_buildfallbackentries",
+      "index_chironbuilder_copyassets",
+      "index_chironbuilder_copyassetswithoptimization",
+      "index_chironbuilder_copyscripts",
+      "index_chironbuilder_copystaticfiles",
+      "index_chironbuilder_generate404",
+      "index_chironbuilder_generaterootredirect",
+      "index_chironbuilder_getassetsdir",
+      "index_chironbuilder_getavailablelocalesforpage",
+      "index_chironbuilder_getcontentdir",
+      "index_chironbuilder_getcontentfiles",
+      "index_chironbuilder_getoutputdir",
+      "index_chironbuilder_handleincrementalbuild",
+      "index_chironbuilder_init",
+      "index_chironbuilder_loadconfig",
+      "index_chironbuilder_loadpluginsconfig",
+      "index_chironbuilder_processfallbackentry",
+      "index_chironbuilder_processmarkdownfile",
+      "index_chironbuilder_resolvepath",
+      "index_chironbuilder_watch",
+      "index_injectfooterlink",
+      "markdown_extensions_replaceabbreviations",
+      "markdown_parser_markdownparser_parse",
+      "multilingual_e2e_test_render",
+      "plugin_manager_pluginmanager_cleanupdisabledplugins",
+      "plugin_manager_pluginmanager_executehook",
+      "plugin_manager_pluginmanager_initialize",
+      "plugin_manager_pluginmanager_savepluginstate",
+      "plugin_resolver_pluginresolver_loadregistry",
+      "plugins_components_audio_js",
+      "plugins_components_video_js",
+      "robots_ensuredir",
+      "robots_generaterobots",
+      "search_indexer_searchindexer_save",
+      "template_engine_templateengine_sanitizeurl",
+      "template_engine_templateengine_setpagemetadata",
+      "test_utils_mocklogger_error",
+      "test_utils_mocklogger_info",
+      "test_utils_mocklogger_warn",
+      "tests_chiron_builder_fast_glob_test_js",
+      "tests_multilingual_e2e_test_js",
+      "video_processvideo"
+    ],
+    "2": [
+      "builder_generators_sitemap_js",
+      "builder_theme_loader_js",
+      "builder_utils_css_minifier_js",
+      "builder_utils_file_utils_js",
+      "builder_utils_js_minifier_js",
+      "css_minifier_minifycss",
+      "file_utils_copyandminifyjs",
+      "file_utils_copydirrecursive",
+      "file_utils_copyfile",
+      "file_utils_copyfilewithtimeout",
+      "file_utils_ensuredir",
+      "file_utils_exists",
+      "file_utils_getfilesbyextension",
+      "file_utils_getstats",
+      "file_utils_mdtohtmlpath",
+      "file_utils_readfile",
+      "file_utils_readfilewithtimeout",
+      "file_utils_tourlpath",
+      "file_utils_writefile",
+      "file_utils_writefilewithtimeout",
+      "js_minifier_minifyjs",
+      "sitemap_escapexml",
+      "sitemap_generatesitemap",
+      "tests_theme_loader_test_js",
+      "theme_loader_test_createtempdir",
+      "theme_loader_test_writethemeyaml",
+      "theme_loader_themeloader",
+      "theme_loader_themeloader_constructor",
+      "theme_loader_themeloader_copythemeassets",
+      "theme_loader_themeloader_copythemefiles",
+      "theme_loader_themeloader_copythemescript",
+      "theme_loader_themeloader_copythemestyles",
+      "theme_loader_themeloader_getassetspath",
+      "theme_loader_themeloader_getcolors",
+      "theme_loader_themeloader_getlayout",
+      "theme_loader_themeloader_getrtlstylespath",
+      "theme_loader_themeloader_getstylespath",
+      "theme_loader_themeloader_gettemplatespath",
+      "theme_loader_themeloader_getthemeinfo",
+      "theme_loader_themeloader_getthemescriptpath",
+      "theme_loader_themeloader_gettypography",
+      "theme_loader_themeloader_hascustomjs",
+      "theme_loader_themeloader_loadthemeconfig",
+      "theme_loader_themeloader_resolvethemepath",
+      "theme_loader_themeloader_supports",
+      "theme_loader_themeloader_supportsrtl"
+    ],
+    "3": [
+      "builder_plugin_loader_js",
+      "builder_plugin_resolver_js",
+      "font_downloader_fontdownloader_constructor",
+      "index_chironbuilder_constructor",
+      "markdown_parser_markdownparser_constructor",
+      "plugin_context_plugincontext_createlogger",
+      "plugin_loader_pluginloader",
+      "plugin_loader_pluginloader_constructor",
+      "plugin_loader_pluginloader_getplugininfo",
+      "plugin_loader_pluginloader_getpluginsource",
+      "plugin_loader_pluginloader_listbuiltinplugins",
+      "plugin_loader_pluginloader_loadallplugins",
+      "plugin_loader_pluginloader_loadallpluginswithdependencies",
+      "plugin_loader_pluginloader_loadbuiltinplugin",
+      "plugin_loader_pluginloader_loadlocalplugin",
+      "plugin_loader_pluginloader_loadnpmplugin",
+      "plugin_loader_pluginloader_loadplugin",
+      "plugin_loader_pluginloader_loadscopedplugin",
+      "plugin_loader_pluginloader_mergeconfig",
+      "plugin_loader_pluginloader_normalizepluginname",
+      "plugin_loader_pluginloader_prepareplugin",
+      "plugin_loader_pluginloader_sanitizepluginname",
+      "plugin_loader_pluginloader_validateplugin",
+      "plugin_manager_pluginmanager_constructor",
+      "plugin_resolver_pluginresolver",
+      "plugin_resolver_pluginresolver_constructor",
+      "plugin_resolver_pluginresolver_findprovider",
+      "plugin_resolver_pluginresolver_getallplugins",
+      "plugin_resolver_pluginresolver_getplugin",
+      "plugin_resolver_pluginresolver_hasplugin",
+      "plugin_resolver_pluginresolver_resolve",
+      "plugin_resolver_pluginresolver_resolvedependencies",
+      "plugin_resolver_pluginresolver_validate",
+      "search_indexer_searchindexer_constructor",
+      "template_engine_templateengine_constructor",
+      "test_utils_mocklogger_child"
+    ],
+    "4": [
+      "builder_plugin_context_js",
+      "font_downloader_test_createfontpackage",
+      "font_downloader_test_createtempworkspace",
+      "font_downloader_test_normalize",
+      "font_downloader_test_readfile",
+      "plugin_context_cloneimmutable",
+      "plugin_context_ensurewithinroot",
+      "plugin_context_plugincontext",
+      "plugin_context_plugincontext_config",
+      "plugin_context_plugincontext_constructor",
+      "plugin_context_plugincontext_deletedata",
+      "plugin_context_plugincontext_fileexists",
+      "plugin_context_plugincontext_getbuildtimestamp",
+      "plugin_context_plugincontext_getchironversion",
+      "plugin_context_plugincontext_getdata",
+      "plugin_context_plugincontext_getregisteredscripts",
+      "plugin_context_plugincontext_getregisteredstylesheets",
+      "plugin_context_plugincontext_hasdata",
+      "plugin_context_plugincontext_logger",
+      "plugin_context_plugincontext_outputdir",
+      "plugin_context_plugincontext_readfile",
+      "plugin_context_plugincontext_registerasset",
+      "plugin_context_plugincontext_registerscript",
+      "plugin_context_plugincontext_registerstylesheet",
+      "plugin_context_plugincontext_resolveoutputpath",
+      "plugin_context_plugincontext_resolvepath",
+      "plugin_context_plugincontext_rootdir",
+      "plugin_context_plugincontext_setdata",
+      "plugin_context_plugincontext_theme",
+      "plugin_context_plugincontext_tojson",
+      "plugin_context_plugincontext_writeoutputfile",
+      "tests_font_downloader_test_js"
+    ],
+    "5": [
+      "base_debounce",
+      "base_getstoredtheme",
+      "base_hashcode",
+      "base_scrolltotop",
+      "base_setstoredtheme",
+      "base_settheme",
+      "base_t",
+      "base_togglescrollbutton",
+      "base_updateactivenavigation",
+      "base_updatehighlighttheme",
+      "base_updatelogosfortheme",
+      "builder_js_components_base_js",
+      "builder_js_components_embed_loader_js",
+      "embed_loader_createembedcontainer",
+      "embed_loader_createtwitterblockquote",
+      "embed_loader_initembedloaders",
+      "embed_loader_inittwitterembeds",
+      "embed_loader_loadembed",
+      "plugins_search_local_search_client_js",
+      "search_client_cleanup",
+      "search_client_closemodal",
+      "search_client_detectlanguage",
+      "search_client_highlightmatches",
+      "search_client_loadsearchindex",
+      "search_client_openmodal",
+      "search_client_performsearch",
+      "search_client_setactive",
+      "search_client_simplesearch"
+    ],
+    "6": [
+      "builder_js_components_lumos_player_js",
+      "chiron_builder_404_template_test_createbuilder",
+      "chiron_builder_404_template_test_createloggerstub",
+      "chiron_builder_404_template_test_createtempproject",
+      "lumos_player_lumosplayer",
+      "lumos_player_lumosplayer_bindevents",
+      "lumos_player_lumosplayer_constructor",
+      "lumos_player_lumosplayer_formattime",
+      "lumos_player_lumosplayer_handlekey",
+      "lumos_player_lumosplayer_hidecontrols",
+      "lumos_player_lumosplayer_init",
+      "lumos_player_lumosplayer_rendercontrols",
+      "lumos_player_lumosplayer_showcontrols",
+      "lumos_player_lumosplayer_skip",
+      "lumos_player_lumosplayer_starthidetimer",
+      "lumos_player_lumosplayer_togglefullscreen",
+      "lumos_player_lumosplayer_toggleplay",
+      "lumos_player_lumosplayer_updateduration",
+      "lumos_player_lumosplayer_updateplaystate",
+      "lumos_player_lumosplayer_updateprogressvisuals",
+      "lumos_player_lumosplayer_updatetime",
+      "lumos_player_lumosplayer_updatevolumeui",
+      "tests_chiron_builder_404_template_test_js"
+    ],
+    "7": [
+      "lazy_app_loader_cleanup",
+      "plugin_context_plugincontext_cleardata",
+      "plugin_loader_pluginloader_clearcache",
+      "plugin_manager_pluginmanager_shutdown",
+      "template_engine_templateengine_cleardependencies",
+      "test_utils_cleanuptempdir",
+      "test_utils_createmockfiles",
+      "test_utils_createtemptestdir",
+      "test_utils_extractcachedassets",
+      "test_utils_extractcacheversion",
+      "test_utils_measuretime",
+      "test_utils_mocklogger",
+      "test_utils_mocklogger_clear",
+      "test_utils_mocklogger_constructor",
+      "test_utils_mocklogger_haserror",
+      "test_utils_mocklogger_haswarning",
+      "test_utils_setuplargesite",
+      "test_utils_setuptypicalsite",
+      "test_utils_validatemanifest",
+      "test_utils_validateserviceworkersyntax",
+      "test_utils_waitfor",
+      "tests_fixtures_cache_manager_test_utils_js"
+    ],
+    "8": [
+      "builder_config_config_loader_js",
+      "builder_utils_validator_js",
+      "config_loader_loadconfig",
+      "config_loader_loadmenus",
+      "config_loader_loadsidebars",
+      "config_loader_validatebuildconfig",
+      "config_loader_validatecacheconfig",
+      "config_loader_validateconfig",
+      "config_loader_validatenavigationconfig",
+      "config_loader_validatenavigationitem",
+      "config_loader_validateprojectconfig",
+      "config_loader_validaterobotsconfig",
+      "config_loader_validatesitemapconfig",
+      "validator_getnestedvalue",
+      "validator_validatearray",
+      "validator_validateboolean",
+      "validator_validateenum",
+      "validator_validatenumber",
+      "validator_validaterequiredfields",
+      "validator_validatestring",
+      "validator_validateurl"
+    ],
+    "9": [
+      "archive_generator_archivegenerator",
+      "archive_generator_archivegenerator_constructor",
+      "archive_generator_archivegenerator_filterposts",
+      "archive_generator_archivegenerator_generate",
+      "archive_generator_archivegenerator_getauthorcounts",
+      "archive_generator_archivegenerator_getcategorycounts",
+      "archive_generator_archivegenerator_gettagcounts",
+      "archive_generator_archivegenerator_slugify",
+      "index_categorizecookie",
+      "index_categorizescript",
+      "index_generatemanagecookiespage",
+      "index_getcookiesbycategory",
+      "index_getdetectedcookies",
+      "index_updatecookiemetadata",
+      "plugin_lifecycle_test_getdata",
+      "plugin_lifecycle_test_registerscript",
+      "plugin_lifecycle_test_setdata",
+      "plugins_blog_generators_archive_generator_js",
+      "plugins_cookies_scanner_index_js",
+      "tests_plugins_search_local_plugin_lifecycle_test_js"
+    ],
+    "10": [
+      "file_utils_createslug",
+      "helpers_archive_title",
+      "helpers_blog_pagination",
+      "helpers_get_posts",
+      "helpers_get_posts_count",
+      "helpers_is_blog_post",
+      "helpers_post_attributes",
+      "helpers_the_archive_url",
+      "helpers_the_author",
+      "helpers_the_categories",
+      "helpers_the_date",
+      "helpers_the_excerpt",
+      "helpers_the_featured_image",
+      "helpers_the_feed_url",
+      "helpers_the_permalink",
+      "helpers_the_read_more",
+      "helpers_the_tags",
+      "helpers_the_time",
+      "helpers_the_title",
+      "plugins_blog_helpers_js"
+    ],
+    "11": [
+      "builder_markdown_parser_js",
+      "markdown_parser_markdownparser",
+      "markdown_parser_markdownparser_escapehtml",
+      "markdown_parser_markdownparser_executecomponent",
+      "markdown_parser_markdownparser_getavailableworker",
+      "markdown_parser_markdownparser_gettoc",
+      "markdown_parser_markdownparser_highlightcode",
+      "markdown_parser_markdownparser_parsecomponentattributes",
+      "markdown_parser_markdownparser_parseinworker",
+      "markdown_parser_markdownparser_parsemultipleinworkers",
+      "markdown_parser_markdownparser_parsewithfallback",
+      "markdown_parser_markdownparser_processaccordions",
+      "markdown_parser_markdownparser_processcomponents",
+      "markdown_parser_markdownparser_processnewtabs",
+      "markdown_parser_markdownparser_processtabs",
+      "markdown_parser_markdownparser_releaseworker",
+      "markdown_parser_markdownparser_setpluginmanager",
+      "markdown_parser_markdownparser_terminateworkers"
+    ],
+    "12": [
+      "builder_plugin_manager_js",
+      "plugin_manager_pluginmanager",
+      "plugin_manager_pluginmanager_executecomponent",
+      "plugin_manager_pluginmanager_executeshortcode",
+      "plugin_manager_pluginmanager_getcomponents",
+      "plugin_manager_pluginmanager_getplugin",
+      "plugin_manager_pluginmanager_getplugins",
+      "plugin_manager_pluginmanager_getshortcodes",
+      "plugin_manager_pluginmanager_getstats",
+      "plugin_manager_pluginmanager_hascomponent",
+      "plugin_manager_pluginmanager_hasshortcode",
+      "plugin_manager_pluginmanager_preparehookargs",
+      "plugin_manager_pluginmanager_registercomponent",
+      "plugin_manager_pluginmanager_registerhook",
+      "plugin_manager_pluginmanager_registerplugin",
+      "plugin_manager_pluginmanager_registershortcode"
+    ],
+    "13": [
+      "blog_scanner_blogscanner",
+      "blog_scanner_blogscanner_assignpostids",
+      "blog_scanner_blogscanner_constructor",
+      "blog_scanner_blogscanner_detectlanguage",
+      "blog_scanner_blogscanner_generateslug",
+      "blog_scanner_blogscanner_getposts",
+      "blog_scanner_blogscanner_getpostsbylanguage",
+      "blog_scanner_blogscanner_getpostsbylanguagecode",
+      "blog_scanner_blogscanner_isexcluded",
+      "blog_scanner_blogscanner_loadcounter",
+      "blog_scanner_blogscanner_parsefile",
+      "blog_scanner_blogscanner_savecounter",
+      "blog_scanner_blogscanner_scan",
+      "blog_scanner_blogscanner_scandirectory",
+      "blog_scanner_blogscanner_validatefrontmatter",
+      "plugins_blog_blog_scanner_js"
+    ],
+    "14": [
+      "builder_errors_js",
+      "errors_chironerror",
+      "errors_chironerror_constructor",
+      "errors_chironerror_tojson",
+      "errors_configurationerror",
+      "errors_configurationerror_constructor",
+      "errors_filesystemerror",
+      "errors_filesystemerror_constructor",
+      "errors_parseerror",
+      "errors_parseerror_constructor",
+      "errors_templateerror",
+      "errors_templateerror_constructor",
+      "errors_validationerror",
+      "errors_validationerror_constructor"
+    ],
+    "15": [
+      "builder_logger_js",
+      "logger_logger",
+      "logger_logger_child",
+      "logger_logger_colorize",
+      "logger_logger_constructor",
+      "logger_logger_debug",
+      "logger_logger_error",
+      "logger_logger_formatmessage",
+      "logger_logger_gettimestamp",
+      "logger_logger_info",
+      "logger_logger_setlevel",
+      "logger_logger_shouldlog",
+      "logger_logger_verbose",
+      "logger_logger_warn"
+    ],
+    "16": [
+      "builder_js_components_lazy_app_loader_js",
+      "lazy_app_loader_acquirelock",
+      "lazy_app_loader_getdata",
+      "lazy_app_loader_initlazyapps",
+      "lazy_app_loader_injectdata",
+      "lazy_app_loader_iselementvisible",
+      "lazy_app_loader_loadapp",
+      "lazy_app_loader_loadscript",
+      "lazy_app_loader_loadscripts",
+      "lazy_app_loader_normalizescripturl",
+      "lazy_app_loader_releaselock",
+      "lazy_app_loader_retryapp"
+    ],
+    "17": [
+      "builder_utils_font_downloader_js",
+      "font_downloader_fontdownloader",
+      "font_downloader_fontdownloader_build",
+      "font_downloader_fontdownloader_cleanoldfonts",
+      "font_downloader_fontdownloader_copyfontfiles",
+      "font_downloader_fontdownloader_generatecssvariables",
+      "font_downloader_fontdownloader_generatefontfacecss",
+      "font_downloader_fontdownloader_installfont",
+      "font_downloader_fontdownloader_isfontinstalled",
+      "font_downloader_fontdownloader_normalizefontname",
+      "font_downloader_fontdownloader_parsefontconfig"
+    ],
+    "18": [
+      "chart_generatechart",
+      "chart_parseattributes",
+      "chart_parsedata",
+      "chart_processchart",
+      "image_generateimage",
+      "image_parseattributes",
+      "image_processimage",
+      "plugins_components_chart_js",
+      "plugins_components_image_js"
+    ],
+    "19": [
+      "builder_i18n_i18n_helpers_js",
+      "i18n_helpers_createariahelper",
+      "i18n_helpers_createconditionalhelper",
+      "i18n_helpers_createi18ncontext",
+      "i18n_helpers_createpluralhelper",
+      "i18n_helpers_createtranslationhelper",
+      "i18n_helpers_escapehtml",
+      "i18n_helpers_getlanguagecode",
+      "i18n_helpers_isvalidlocale"
+    ],
+    "20": [
+      "plugins_search_local_search_indexer_js",
+      "search_indexer_searchindexer",
+      "search_indexer_searchindexer_detectlanguage",
+      "search_indexer_searchindexer_extractheadings",
+      "search_indexer_searchindexer_generate",
+      "search_indexer_searchindexer_indexfile",
+      "search_indexer_searchindexer_isexcluded",
+      "search_indexer_searchindexer_scandirectory",
+      "search_indexer_searchindexer_striphtml"
+    ],
+    "21": [
+      "builder_dependency_graph_js",
+      "dependency_graph_dependencygraph",
+      "dependency_graph_dependencygraph_adddependency",
+      "dependency_graph_dependencygraph_clear",
+      "dependency_graph_dependencygraph_clearnode",
+      "dependency_graph_dependencygraph_constructor",
+      "dependency_graph_dependencygraph_getalldependents",
+      "dependency_graph_dependencygraph_getdependents"
+    ],
+    "22": [
+      "builder_utils_external_scripts_js",
+      "external_scripts_getallowedcdndomains",
+      "external_scripts_getavailablepresets",
+      "external_scripts_getscriptconfig",
+      "external_scripts_isallowedcdn",
+      "external_scripts_isrelativeurl",
+      "external_scripts_renderexternalscripts",
+      "external_scripts_renderexternalstyles"
+    ],
+    "23": [
+      "embed_extracttwitterid",
+      "embed_parseattributes",
+      "embed_processcodepen",
+      "embed_processembeds",
+      "embed_processstackblitz",
+      "embed_processtwitter",
+      "embed_processyoutube",
+      "plugins_components_embed_js"
+    ],
+    "24": [
+      "form_field_addariadescribedby",
+      "form_field_ensureid",
+      "form_field_escapehtml",
+      "form_field_extractinnerelement",
+      "form_field_extractorgenerateid",
+      "form_field_parseattributes",
+      "form_field_processformfield",
+      "plugins_components_form_field_js"
+    ],
+    "25": [
+      "feed_generator_feedgenerator",
+      "feed_generator_feedgenerator_constructor",
+      "feed_generator_feedgenerator_escapexml",
+      "feed_generator_feedgenerator_generateatom",
+      "feed_generator_feedgenerator_generatefeeds",
+      "feed_generator_feedgenerator_generaterss",
+      "feed_generator_feedgenerator_striphtml",
+      "plugins_blog_generators_feed_generator_js"
+    ],
+    "26": [
+      "builder_js_components_theme_js",
+      "theme_getstoredtheme",
+      "theme_setstoredtheme",
+      "theme_settheme",
+      "theme_updatehighlighttheme",
+      "theme_updatelogosfortheme"
+    ],
+    "27": [
+      "app_generateid",
+      "app_isinsidecodeblock",
+      "app_parseattributes",
+      "app_processapp",
+      "app_processappcomponent",
+      "plugins_components_app_js"
+    ],
+    "28": [
+      "builder_js_components_sidebar_js",
+      "sidebar_closesidebar",
+      "sidebar_getfocusableelements",
+      "sidebar_opensidebar",
+      "sidebar_togglesidebar"
+    ],
+    "29": [
+      "builder_js_components_core_js",
+      "core_debounce",
+      "core_hashcode",
+      "core_showtoast",
+      "core_t"
+    ],
+    "30": [
+      "plugins_components_tooltip_js",
+      "tooltip_escapehtml",
+      "tooltip_parseattributes",
+      "tooltip_processtooltip",
+      "tooltip_validateposition"
+    ],
+    "31": [
+      "plugins_components_radio_group_js",
+      "radio_group_escapehtml",
+      "radio_group_parseattributes",
+      "radio_group_parseoptions",
+      "radio_group_processradiogroup"
+    ],
+    "32": [
+      "checkbox_group_escapehtml",
+      "checkbox_group_parseattributes",
+      "checkbox_group_parseoptions",
+      "checkbox_group_processcheckboxgroup",
+      "plugins_components_checkbox_group_js"
+    ],
+    "33": [
+      "chiron_builder_test_createbuilder",
+      "chiron_builder_test_createloggerstub",
+      "chiron_builder_test_createtempproject",
+      "tests_chiron_builder_test_js"
+    ],
+    "34": [
+      "icon_sprite_generator_test_buildgenerator",
+      "icon_sprite_generator_test_createtempdir",
+      "icon_sprite_generator_test_withconsolemocks",
+      "tests_icon_sprite_generator_test_js"
+    ],
+    "35": [
+      "plugins_components_skeleton_js",
+      "skeleton_generateskeleton",
+      "skeleton_parseattributes",
+      "skeleton_processskeleton"
+    ],
+    "36": [
+      "callout_parseattributes",
+      "callout_processcallout",
+      "callout_validatevariant",
+      "plugins_components_callout_js"
+    ],
+    "37": [
+      "builder_js_components_dropdowns_js",
+      "dropdowns_closedropdown",
+      "dropdowns_opendropdown"
+    ],
+    "38": [
+      "builder_js_components_scroll_to_top_js",
+      "scroll_to_top_scrolltotop",
+      "scroll_to_top_togglescrollbutton"
+    ],
+    "39": [
+      "multilingual_core_test_createbuilder",
+      "multilingual_core_test_createtempproject",
+      "tests_multilingual_core_test_js"
+    ],
+    "40": [
+      "plugins_components_tabs_js",
+      "tabs_processtabs",
+      "tabs_resetcounter"
+    ],
+    "41": [
+      "plugins_blog_template_hierarchy_js",
+      "template_hierarchy_gettemplatehierarchy",
+      "template_hierarchy_resolvearchivetemplate"
+    ],
+    "42": [
+      "index_generatega4snippet",
+      "index_generategtmsnippet",
+      "plugins_google_analytics_index_js"
+    ],
+    "43": [
+      "builder_js_components_tabs_js",
+      "tabs_switchtab"
+    ],
+    "44": [
+      "builder_js_components_navigation_js",
+      "navigation_updateactivenavigation"
+    ],
+    "45": [
+      "builder_js_components_toc_js",
+      "toc_updatetochighlight"
+    ],
+    "46": [
+      "builder_build_e2e_test_render",
+      "tests_builder_build_e2e_test_js"
+    ],
+    "47": [
+      "file_utils_test_createtempdir",
+      "tests_file_utils_test_js"
+    ],
+    "48": [
+      "chiron_builder_init_test_createtempproject",
+      "tests_chiron_builder_init_test_js"
+    ],
+    "49": [
+      "draft_status_test_render",
+      "tests_draft_status_test_js"
+    ],
+    "50": [
+      "chiron_builder_errors_test_createtempproject",
+      "tests_chiron_builder_errors_test_js"
+    ],
+    "51": [
+      "chiron_builder_security_test_createtempproject",
+      "tests_chiron_builder_security_test_js"
+    ],
+    "52": [
+      "mock_data_generatemockfilesystem",
+      "tests_fixtures_cache_manager_mock_data_js"
+    ],
+    "53": [
+      "feature_card_processfeaturecard",
+      "plugins_components_feature_card_js"
+    ],
+    "54": [
+      "button_group_processbuttongroup",
+      "plugins_components_button_group_js"
+    ],
+    "55": [
+      "button_processbutton",
+      "plugins_components_button_js"
+    ],
+    "56": [
+      "index_attrstostring",
+      "plugins_components_index_js"
+    ],
+    "57": [
+      "grid_processgrid",
+      "plugins_components_grid_js"
+    ],
+    "58": [
+      "badge_processbadge",
+      "plugins_components_badge_js"
+    ],
+    "59": [
+      "accordion_processaccordion",
+      "plugins_components_accordion_js"
+    ],
+    "60": [
+      "babel_config_js"
+    ],
+    "61": [
+      "jest_config_js"
+    ],
+    "62": [
+      "jest_transform_js"
+    ],
+    "63": [
+      "eslint_config_js"
+    ],
+    "64": [
+      "builder_js_components_accessibility_js"
+    ],
+    "65": [
+      "builder_js_components_language_switcher_js"
+    ],
+    "66": [
+      "builder_js_components_code_blocks_js"
+    ],
+    "67": [
+      "builder_js_components_blockquotes_js"
+    ],
+    "68": [
+      "builder_js_components_developer_tools_js"
+    ],
+    "69": [
+      "builder_js_components_smooth_scroll_js"
+    ],
+    "70": [
+      "builder_js_components_info_boxes_js"
+    ],
+    "71": [
+      "builder_workers_markdown_worker_js"
+    ],
+    "72": [
+      "tests_cache_manifest_generation_test_js"
+    ],
+    "73": [
+      "tests_path_calculation_test_js"
+    ],
+    "74": [
+      "tests_i18n_helpers_test_js"
+    ],
+    "75": [
+      "tests_template_engine_menu_helper_test_js"
+    ],
+    "76": [
+      "tests_component_feature_card_test_js"
+    ],
+    "77": [
+      "tests_plugin_manager_components_test_js"
+    ],
+    "78": [
+      "tests_google_analytics_plugin_test_js"
+    ],
+    "79": [
+      "tests_plugin_context_test_js"
+    ],
+    "80": [
+      "tests_component_button_test_js"
+    ],
+    "81": [
+      "tests_plugin_system_integration_test_js"
+    ],
+    "82": [
+      "tests_template_engine_post_process_test_js"
+    ],
+    "83": [
+      "tests_lazy_app_loader_test_js"
+    ],
+    "84": [
+      "tests_component_video_test_js"
+    ],
+    "85": [
+      "tests_blog_helper_defaults_test_js"
+    ],
+    "86": [
+      "tests_component_skeleton_test_js"
+    ],
+    "87": [
+      "tests_template_engine_breadcrumb_v2_test_js"
+    ],
+    "88": [
+      "tests_template_engine_sidebar_hooks_test_js"
+    ],
+    "89": [
+      "tests_template_engine_header_actions_test_js"
+    ],
+    "90": [
+      "tests_chiron_builder_build_simple_test_js"
+    ],
+    "91": [
+      "tests_config_optional_sidebar_test_js"
+    ],
+    "92": [
+      "tests_template_engine_custom_menus_test_js"
+    ],
+    "93": [
+      "tests_component_callout_test_js"
+    ],
+    "94": [
+      "tests_incremental_build_test_js"
+    ],
+    "95": [
+      "tests_component_accordion_test_js"
+    ],
+    "96": [
+      "tests_cache_config_test_js"
+    ],
+    "97": [
+      "tests_robots_test_js"
+    ],
+    "98": [
+      "tests_file_utils_slug_test_js"
+    ],
+    "99": [
+      "tests_watch_mode_test_js"
+    ],
+    "100": [
+      "tests_template_engine_test_js"
+    ],
+    "101": [
+      "tests_markdown_parser_test_js"
+    ],
+    "102": [
+      "tests_dependency_graph_test_js"
+    ],
+    "103": [
+      "tests_i18n_loader_test_js"
+    ],
+    "104": [
+      "tests_component_tabs_test_js"
+    ],
+    "105": [
+      "tests_plugin_loader_test_js"
+    ],
+    "106": [
+      "tests_cache_sw_generation_test_js"
+    ],
+    "107": [
+      "tests_template_engine_section_classes_test_js"
+    ],
+    "108": [
+      "tests_plugin_manager_test_js"
+    ],
+    "109": [
+      "tests_plugin_dependencies_test_js"
+    ],
+    "110": [
+      "tests_component_grid_test_js"
+    ],
+    "111": [
+      "tests_sitemap_test_js"
+    ],
+    "112": [
+      "tests_component_image_test_js"
+    ],
+    "113": [
+      "tests_cache_manager_test_js"
+    ],
+    "114": [
+      "tests_markdown_parser_worker_test_js"
+    ],
+    "115": [
+      "tests_component_audio_test_js"
+    ],
+    "116": [
+      "tests_component_embed_test_js"
+    ],
+    "117": [
+      "tests_component_badge_test_js"
+    ],
+    "118": [
+      "tests_config_loader_test_js"
+    ],
+    "119": [
+      "tests_markdown_parser_comphensive_test_js"
+    ],
+    "120": [
+      "tests_template_engine_breadcrumb_data_test_js"
+    ],
+    "121": [
+      "tests_component_button_group_test_js"
+    ],
+    "122": [
+      "tests_debug_sidebar_rendering_test_js"
+    ],
+    "123": [
+      "tests_template_engine_structured_data_test_js"
+    ],
+    "124": [
+      "tests_template_engine_ejs_data_test_js"
+    ],
+    "125": [
+      "tests_template_engine_custom_sidebar_test_js"
+    ],
+    "126": [
+      "tests_template_engine_active_state_test_js"
+    ],
+    "127": [
+      "tests_template_engine_component_scripts_test_js"
+    ],
+    "128": [
+      "tests_external_scripts_test_js"
+    ],
+    "129": [
+      "tests_plugin_resolver_test_js"
+    ],
+    "130": [
+      "tests_component_app_test_js"
+    ],
+    "131": [
+      "tests_components_tooltip_test_js"
+    ],
+    "132": [
+      "tests_components_radio_group_test_js"
+    ],
+    "133": [
+      "tests_components_form_field_test_js"
+    ],
+    "134": [
+      "tests_components_checkbox_group_test_js"
+    ],
+    "135": [
+      "tests_builder_utils_image_optimizer_test_js"
+    ],
+    "136": [
+      "tests_builder_utils_css_minifier_test_js"
+    ],
+    "137": [
+      "tests_builder_utils_js_minifier_test_js"
+    ],
+    "138": [
+      "tests_plugins_blog_scanner_test_js"
+    ],
+    "139": [
+      "tests_plugins_search_local_search_client_test_js"
+    ],
+    "140": [
+      "tests_plugins_search_local_search_indexer_test_js"
+    ],
+    "141": [
+      "plugins_blog_index_js"
+    ],
+    "142": [
+      "plugins_cookie_consent_index_js"
+    ],
+    "143": [
+      "plugins_search_local_index_js"
+    ]
+  },
+  "cohesion": {},
+  "god_nodes": [
+    {
+      "id": "template_engine_templateengine",
+      "label": "TemplateEngine",
+      "degree": 56
+    },
+    {
+      "id": "plugin_context_plugincontext",
+      "label": "PluginContext",
+      "degree": 26
+    },
+    {
+      "id": "index_chironbuilder",
+      "label": "ChironBuilder",
+      "degree": 24
+    },
+    {
+      "id": "plugin_manager_pluginmanager",
+      "label": "PluginManager",
+      "degree": 21
+    },
+    {
+      "id": "theme_loader_themeloader",
+      "label": "ThemeLoader",
+      "degree": 20
+    },
+    {
+      "id": "markdown_parser_markdownparser",
+      "label": "MarkdownParser",
+      "degree": 20
+    },
+    {
+      "id": "plugin_loader_pluginloader",
+      "label": "PluginLoader",
+      "degree": 18
+    },
+    {
+      "id": "lumos_player_lumosplayer",
+      "label": "LumosPlayer",
+      "degree": 18
+    },
+    {
+      "id": "blog_scanner_blogscanner",
+      "label": "BlogScanner",
+      "degree": 15
+    },
+    {
+      "id": "logger_logger",
+      "label": "Logger",
+      "degree": 13
+    }
+  ],
+  "surprises": [
+    {
+      "source": "generateRobots()",
+      "target": "writeFile()",
+      "source_files": [
+        "/home/antonio-giordano/Desktop/GitHub/chiron/builder/generators/robots.js",
+        "/home/antonio-giordano/Desktop/GitHub/chiron/builder/utils/file-utils.js"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "writeThemeYaml()",
+      "target": "writeFile()",
+      "source_files": [
+        "/home/antonio-giordano/Desktop/GitHub/chiron/tests/theme-loader.test.js",
+        "/home/antonio-giordano/Desktop/GitHub/chiron/builder/utils/file-utils.js"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; peripheral node `writeThemeYaml()` unexpectedly reaches hub `writeFile()`"
+    },
+    {
+      "source": "categorizeCookie()",
+      "target": "getData()",
+      "source_files": [
+        "/home/antonio-giordano/Desktop/GitHub/chiron/plugins/cookies-scanner/index.js",
+        "/home/antonio-giordano/Desktop/GitHub/chiron/tests/plugins/search-local/plugin-lifecycle.test.js"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; peripheral node `categorizeCookie()` unexpectedly reaches hub `getData()`"
+    },
+    {
+      "source": "getDetectedCookies()",
+      "target": "getData()",
+      "source_files": [
+        "/home/antonio-giordano/Desktop/GitHub/chiron/plugins/cookies-scanner/index.js",
+        "/home/antonio-giordano/Desktop/GitHub/chiron/tests/plugins/search-local/plugin-lifecycle.test.js"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; peripheral node `getDetectedCookies()` unexpectedly reaches hub `getData()`"
+    },
+    {
+      "source": "getCookiesByCategory()",
+      "target": "getData()",
+      "source_files": [
+        "/home/antonio-giordano/Desktop/GitHub/chiron/plugins/cookies-scanner/index.js",
+        "/home/antonio-giordano/Desktop/GitHub/chiron/tests/plugins/search-local/plugin-lifecycle.test.js"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; peripheral node `getCookiesByCategory()` unexpectedly reaches hub `getData()`"
+    }
+  ]
+}

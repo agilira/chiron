@@ -48,26 +48,6 @@ plugins:
       maxContentLength: 5000     # Max content length to index
       concurrencyLimit: 50       # Max concurrent file processing
   
-  # Blog Plugin
-  # Full-featured blog system with categories, tags, RSS, and multilingual support
-  # Zero-config: automatically detects content/blog/ or content/blog/{lang}/
-  # Documentation: plugins/blog/README.md
-  # Note: Disabled for Metis documentation theme - will be enabled with dedicated blog themes
-  - name: "blog"
-    enabled: false               # Disabled - Metis is a documentation theme
-    config:
-      blogName: "Blog"           # Blog name (available as <%- blogName %> in templates)
-      blogDescription: ""        # Blog description (available as <%- blogDescription %> in templates)
-      postsPerPage: 10           # WordPress-style pagination (posts per page)
-      excerptLength: 150         # Default excerpt length in characters (override per-post with frontmatter)
-      showExcerpts: true
-      enableCategories: true
-      enableTags: true
-      enableRSS: true
-      # excludePaths:             # Exclude draft posts
-      #   - "blog/drafts/**"
-      #   - "**/*-draft.md"
-  
   # MDX Framework Plugin
   # Enable MDX (Markdown + JSX) support with framework-agnostic component rendering
   # Supports Preact, Svelte, Vue components with lazy-loading via lazy-app-loader

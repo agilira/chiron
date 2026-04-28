@@ -1552,17 +1552,6 @@ ${analyticsSnippet}
     const contentData = this.getContentFiles();
     const { files: contentFiles, pageRegistry, locales, isMultilingualEnabled } = contentData;
 
-    // Add virtual pages from plugins (e.g., blog pagination)
-    const virtualPages = this.pluginContext?.getData('blog-virtual-pages') || [];
-    if (virtualPages.length > 0) {
-      this.logger.info(`Adding ${virtualPages.length} virtual page(s) from plugins`);
-      contentFiles.push(...virtualPages.map(vp => ({
-        ...vp,
-        file: vp.path,
-        isVirtual: true
-      })));
-    }
-
     // Store page registry for later use (language switcher, fallback logic)
     this.pageRegistry = pageRegistry;
     this.detectedLocales = locales;
