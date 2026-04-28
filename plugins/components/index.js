@@ -194,7 +194,7 @@ module.exports = {
       }
       
       // Process Image components (enhanced images with modern formats)
-      parsed.html = imageComponent.process(parsed.html);
+      parsed.html = imageComponent.process(parsed.html, context);
       
       // Process Chart components (static SVG charts)
       parsed.html = chartComponent.process(parsed.html);

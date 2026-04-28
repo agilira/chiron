@@ -71,6 +71,18 @@ function generateImage(attrs) {
   const avif = attrs.avif;
   const figureClass = attrs.figureClass;
   const role = attrs.role;
+  const context = attrs._context; // Hidden context passed from processImage
+  const config = context?.config;
+
+  // Auto-detect optimized formats if optimizeImages is enabled
+  let autoWebp = webp;
+  let autoAvif = avif;
+
+  if (config?.build?.optimizeImages !== false && src.startsWith('/') && !src.startsWith('//')) {
+    // Only for local absolute paths (starts with /)
+    if (!autoWebp) autoWebp = src.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+    if (!autoAvif) autoAvif = src.replace(/\.(jpg|jpeg|png)$/i, '.avif');
+  }
 
   // Build img element attributes
   const imgAttrs = [];
@@ -93,19 +105,19 @@ function generateImage(attrs) {
   // Build img element
   const imgElement = `<img ${imgAttrs.join(' ')}>`;
 
-  // Wrap in picture element if modern formats provided
+  // Wrap in picture element if modern formats provided or auto-detected
   let imageContent = imgElement;
-  if (avif || webp) {
+  if (autoAvif || autoWebp) {
     const sources = [];
     
     // AVIF first (better compression)
-    if (avif) {
-      sources.push(`<source srcset="${avif}" type="image/avif">`);
+    if (autoAvif) {
+      sources.push(`<source srcset="${autoAvif}" type="image/avif">`);
     }
     
     // WebP second
-    if (webp) {
-      sources.push(`<source srcset="${webp}" type="image/webp">`);
+    if (autoWebp) {
+      sources.push(`<source srcset="${autoWebp}" type="image/webp">`);
     }
     
     imageContent = `<picture>\n  ${sources.join('\n  ')}\n  ${imgElement}\n</picture>`;
@@ -150,9 +162,10 @@ function generateImage(attrs) {
 /**
  * Process Image components
  * @param {string} content - Content to process
+ * @param {Object} context - Optional context with config
  * @returns {string} Processed content
  */
-function processImage(content) {
+function processImage(content, context = null) {
   // Type check
   if (typeof content !== 'string') {
     return content;
@@ -187,10 +200,12 @@ function processImage(content) {
   content = content.replace(/<[Ii]mage(\s+([^>]*?))?\s*\/?>(.*?<\/[Ii]mage>)?/gi, (match, attrsWithSpace, attrs) => {
     if (attrs) {
       const parsed = parseAttributes(attrs);
+      // Inject context for auto-detection
+      parsed._context = context;
       return generateImage(parsed);
     } else {
       // No attributes - needs at least src
-      return generateImage({});
+      return generateImage({ _context: context });
     }
   });
   

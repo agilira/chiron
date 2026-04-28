@@ -34,29 +34,33 @@ async function optimizeImage(inputPath, outputPath, options = {}) {
   const results = [];
 
   try {
-    // Generate WebP version
+    // Generate AVIF version (best compression)
+    const avifPath = outputPath.replace(/\.(jpg|jpeg|png|gif)$/i, '.avif');
+    await sharp(inputPath)
+      .avif({ quality: Math.max(quality - 15, 30) }) // AVIF needs lower quality number for same visual results
+      .toFile(avifPath);
+
+    // Generate WebP version (broad modern support)
     const webpPath = outputPath.replace(/\.(jpg|jpeg|png|gif)$/i, '.webp');
-    
     await sharp(inputPath)
       .webp({ quality })
       .toFile(webpPath);
     
-    // Optimize and save original format
+    // Optimize and save original format (fallback)
     if (ext === '.jpg' || ext === '.jpeg') {
       await sharp(inputPath)
-        .jpeg({ quality: originalQuality })
+        .jpeg({ quality: originalQuality, mozjpeg: true })
         .toFile(outputPath);
     } else if (ext === '.png') {
       await sharp(inputPath)
-        .png({ quality: originalQuality })
+        .png({ quality: originalQuality, palette: true })
         .toFile(outputPath);
     } else {
-      // For other formats (gif, etc.), use sharp's auto format
       await sharp(inputPath)
         .toFile(outputPath);
     }
     
-    results.push(outputPath, webpPath);
+    results.push(outputPath, webpPath, avifPath);
     
     return results;
   } catch (error) {

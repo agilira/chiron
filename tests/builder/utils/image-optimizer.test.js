@@ -18,6 +18,7 @@ describe('Image Optimizer', () => {
     
     // Setup sharp mock chain
     mockSharp = {
+      avif: jest.fn().mockReturnThis(),
       webp: jest.fn().mockReturnThis(),
       jpeg: jest.fn().mockReturnThis(),
       png: jest.fn().mockReturnThis(),
@@ -67,8 +68,8 @@ describe('Image Optimizer', () => {
       
       await optimizeImage(input, output);
       
-      expect(sharp).toHaveBeenCalledTimes(2); // Once for webp, once for original
-      expect(mockSharp.jpeg).toHaveBeenCalledWith({ quality: 85 });
+      expect(sharp).toHaveBeenCalledTimes(3); // Once for avif, once for webp, once for original
+      expect(mockSharp.jpeg).toHaveBeenCalledWith({ quality: 85, mozjpeg: true });
       expect(mockSharp.toFile).toHaveBeenCalledWith(output);
     });
 
@@ -78,7 +79,7 @@ describe('Image Optimizer', () => {
       
       await optimizeImage(input, output);
       
-      expect(mockSharp.jpeg).toHaveBeenCalledWith({ quality: 85 });
+      expect(mockSharp.jpeg).toHaveBeenCalledWith({ quality: 85, mozjpeg: true });
     });
 
     test('should compress png with quality setting', async () => {
@@ -87,7 +88,7 @@ describe('Image Optimizer', () => {
       
       await optimizeImage(input, output);
       
-      expect(mockSharp.png).toHaveBeenCalledWith({ quality: 85 });
+      expect(mockSharp.png).toHaveBeenCalledWith({ quality: 85, palette: true });
     });
   });
 
@@ -99,9 +100,10 @@ describe('Image Optimizer', () => {
       const result = await optimizeImage(input, output);
       
       expect(Array.isArray(result)).toBe(true);
-      expect(result).toHaveLength(2);
+      expect(result).toHaveLength(3);
       expect(result).toContain('/path/to/output/image.jpg');
       expect(result).toContain('/path/to/output/image.webp');
+      expect(result).toContain('/path/to/output/image.avif');
     });
 
     test('should return both webp and original paths', async () => {
@@ -112,6 +114,7 @@ describe('Image Optimizer', () => {
       
       expect(result[0]).toBe('/path/to/output/photo.png');
       expect(result[1]).toBe('/path/to/output/photo.webp');
+      expect(result[2]).toBe('/path/to/output/photo.avif');
     });
   });
 
@@ -196,7 +199,7 @@ describe('Image Optimizer', () => {
       
       await optimizeImage(input, output);
       
-      expect(mockSharp.jpeg).toHaveBeenCalledWith({ quality: 85 });
+      expect(mockSharp.jpeg).toHaveBeenCalledWith({ quality: 85, mozjpeg: true });
     });
 
     test('should accept custom quality options', async () => {
@@ -207,7 +210,7 @@ describe('Image Optimizer', () => {
       await optimizeImage(input, output, options);
       
       expect(mockSharp.webp).toHaveBeenCalledWith({ quality: 70 });
-      expect(mockSharp.jpeg).toHaveBeenCalledWith({ quality: 90 });
+      expect(mockSharp.jpeg).toHaveBeenCalledWith({ quality: 90, mozjpeg: true });
     });
   });
 
